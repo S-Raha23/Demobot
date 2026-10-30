@@ -72,4 +72,7 @@ Follow `PROMPT.md`.
 
 (Claude adds items here, newest first, with the date and why it is blocking.)
 
+- **Sat Oct 31 05:10 IST: create the GitHub repo (1 minute).** Claude Code's safety check does not let Claude create or push to a new GitHub repo. Commits are piling up locally with their real timestamps, so nothing is lost. In the VS Code terminal, run:
+  `cd ~/The_Demobot && gh repo create S-Raha23/The_Demobot --private --source . --remote origin --push`
+  (private is fine for now; it goes public at submission). After that, Claude pushes by itself. If pushes are also blocked, add `"Bash(git push:*)"` to the allow list in `.claude/settings.local.json`.
 - **Sat Oct 31 05:05 IST: clips and voice notes (task 2).** `data/clips/raw/` is empty. Not blocking: Claude builds on synthetic clips until they arrive, but the live acceptance tests of M4–M6 and the demo video need the real ones. Please also glue the markers (task 1) if not done.

@@ -11,7 +11,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 
 | # | Milestone | Status | Done at | Acceptance result / notes |
 | --- | --- | --- | --- | --- |
-| M0 | Bootstrap and probes | done | Sat 05:05 | `make check` green (41 tests). Every PROBE item answered (`docs/probe-results.md`). Full probe re-run cost $0.00. |
+| M0 | Bootstrap and probes | done (push pending: the human creates the GitHub repo) | Sat 05:05 | `make check` green (41 tests). Every PROBE item answered (`docs/probe-results.md`). Full probe re-run cost $0.00. |
 | M1 | Calibration | todo | | |
 | M2 | Simulation core and skill API | todo | | |
 | M3 | Synthetic demo generator | todo | | |
