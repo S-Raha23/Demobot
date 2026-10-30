@@ -13,3 +13,7 @@ Append one line per decision that changes the plan: `YYYY-MM-DD — decision —
 - 2026-10-31 — 3D twin in the browser (three.js + urdf-loader) from trajectories exported by PyBullet — far more impressive than PyBullet MP4s, and interactive (Try-it).
 - 2026-10-31 — Drop Neon Postgres; the SQLite ledger plus per-pool caps suffice; the Space runs in judge mode with daily caps — less setup.
 - 2026-10-31 — No Streamlit (on the organisers' list of projects to avoid).
+- 2026-10-31 — The docs' table frame (+x to marker 1, +y to marker 3/robot, z up) is left-handed, so it stays a 2D frame; 3D maths uses (x, y, z_down) and PyBullet uses X = x/100, Y = −y/100, Z up — keeps the documented relations (left_of = −x, in_front_of = +y) and a right-handed simulator.
+- 2026-10-31 — Focal length: checkerboard intrinsics if present (human's phone: f ≈ 1544 px at 1920, long-side FOV 63.7°), else Zhang's single-view estimate when tilt ≥ 12°, else a 64° phone FOV default with a warning — a near top-down view cannot determine focal length from one homography.
+- 2026-10-31 — Synthetic marker tables are rendered by warping a texture through an exact pinhole camera (fast, exact ground truth); M3 adds 3D objects and the hand — calibration tests run in milliseconds.
+- 2026-10-31 — No lens undistortion of marker corners (the phone video is already mostly corrected; residual < 1 px) — simpler, revisit if real-clip reprojection > 1.5 px.

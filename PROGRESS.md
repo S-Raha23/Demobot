@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M1 Calibration (M0 done Sat Oct 31, 05:05 IST)
+**Now:** M2 Simulation core and skill API (M1 done Sat Oct 31, 05:50 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -12,7 +12,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | # | Milestone | Status | Done at | Acceptance result / notes |
 | --- | --- | --- | --- | --- |
 | M0 | Bootstrap and probes | done (push pending: the human creates the GitHub repo) | Sat 05:05 | `make check` green (41 tests). Every PROBE item answered (`docs/probe-results.md`). Full probe re-run cost $0.00. |
-| M1 | Calibration | todo | | |
+| M1 | Calibration | done (live check waits for real clips) | Sat 05:50 | Synthetic tables at 0–45° tilt: marker error 0.22–0.36 cm (< 0.8), reprojection < 0.1 px (< 1.5). Checkerboard intrinsics: f ≈ 1544 px at 1080×1920. **Live:** run `demobot calibrate data/clips/raw/01_pens_in_mug.mp4` when clips arrive. |
 | M2 | Simulation core and skill API | todo | | |
 | M3 | Synthetic demo generator | todo | | |
 | M4 | Listen + Watch + cross-watch | todo | | |
@@ -51,6 +51,6 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M1 Calibration: read `docs/04-pipeline.md` (calibrate section) and `docs/06-simulation.md`/`docs/09-quality.md` as needed. Build `backend/demobot/calibrate.py` + `media.py` (port `reference/old_demobot/backend/demobot/media.py`).
-2. M1's acceptance is on synthetic clips, so M3's generator (or a minimal renderer of the marker table) may come first.
-3. No real clips yet (`data/clips/raw/` empty): use synthetic clips.
+1. M2: read `docs/06-simulation.md`, port `reference/old_demobot/backend/demobot/sim/{scene,skills,constants}.py` and `predicates.py` (+ tests) into `backend/demobot/sim/` and `goal_dsl.py`, adapting to the table frame (PyBullet X = x/100, Y = −y/100; see docs/decisions.md).
+2. When real clips arrive: `uv run demobot calibrate data/clips/raw/01_pens_in_mug.mp4` (M1 live check: all 4 markers found).
+3. The GitHub repo still needs creating by the human (HUMAN_TASKS.md); keep committing locally.
