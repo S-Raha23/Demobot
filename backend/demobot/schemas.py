@@ -76,3 +76,111 @@ class Calibration(BaseModel):
     rectify_origin_cm: Vec2 = (0.0, 0.0)  # table point at rectified pixel (0, 0)
     rectify_size: tuple[int, int] = (0, 0)
     warnings: list[str] = Field(default_factory=list)
+
+
+# ---------- scene objects, layouts and the goal DSL ----------
+Role = Literal["moved", "container", "reference", "distractor"]
+Shape = Literal["box", "cylinder"]
+
+
+class SceneObject(BaseModel):
+    """One object: in a layout, in a grounded state or in a simulated final state.
+    x, y, z are the centre in table cm (z above the table top); yaw in degrees."""
+
+    name: str
+    kind: str
+    role: Role = "moved"
+    shape: Shape = "box"
+    x: float
+    y: float
+    z: float = 0.0
+    yaw: float = 0.0
+    w: float  # cm along x at yaw 0
+    d: float  # cm along y at yaw 0
+    h: float
+    color: str = "#9aa3ad"
+    texture: str | None = None
+
+    @property
+    def is_container(self) -> bool:
+        return self.role == "container"
+
+    def extents(self) -> tuple[float, float]:
+        """Half-extents of the axis-aligned footprint at this yaw (cylinders ignore yaw)."""
+        if self.shape == "cylinder":
+            r = max(self.w, self.d) / 2
+            return r, r
+        import math
+
+        c, s = abs(math.cos(math.radians(self.yaw))), abs(math.sin(math.radians(self.yaw)))
+        return (self.w * c + self.d * s) / 2, (self.w * s + self.d * c) / 2
+
+
+class Layout(BaseModel):
+    id: str = "demo"
+    source: str = "demo"  # demo | redteam:<persona> | random | user
+    description: str = ""
+    seed: int | None = None
+    objects: list[SceneObject]
+    work_area: Rect
+    robot_base_cm: Vec2
+
+    def by_name(self) -> dict[str, SceneObject]:
+        return {o.name: o for o in self.objects}
+
+
+Quant = Literal["the", "all", "pair"]
+Pred = Literal[
+    "inside", "left_of", "right_of", "in_front_of", "behind", "near", "collinear", "swapped"
+]
+
+
+class Selector(BaseModel):
+    name: str | None = None
+    kind: str | None = None
+    role: Role | None = None
+    names: list[str] | None = None
+
+
+class GoalClause(BaseModel):
+    quant: Quant
+    select: Selector
+    pred: Pred
+    target: Selector | None = None
+    point_cm: Vec2 | None = None
+    order_by: Literal["x", "y"] | None = None
+    order: list[str] | None = None
+
+
+class ClauseResult(BaseModel):
+    clause: GoalClause
+    holds: bool
+    code: str | None = None  # EMPTY_SELECTION, TARGET_MISSING, ... when it cannot be evaluated
+    objects: list[str] = Field(default_factory=list)
+    measured: dict[str, float | bool | str] = Field(default_factory=dict)
+    detail: str = ""
+
+
+class SkillCall(BaseModel):
+    skill: str
+    args: dict[str, object] = Field(default_factory=dict)
+    ok: bool = True
+    error: str | None = None
+    t: float = 0.0  # sim seconds at the start of the call
+
+
+class SimResult(BaseModel):
+    ok: bool
+    error: str | None = None
+    error_type: str | None = None
+    layout_id: str = "demo"
+    skill_calls: list[SkillCall] = Field(default_factory=list)
+    logs: list[str] = Field(default_factory=list)
+    final_state: list[SceneObject] = Field(default_factory=list)
+    goal_results: list[ClauseResult] = Field(default_factory=list)
+    goal_ok: bool = False
+    collisions: list[str] = Field(default_factory=list)
+    renders: dict[str, str] = Field(default_factory=dict)
+    twin_trajectory: str | None = None
+    duration_s: float = 0.0  # simulated seconds
+    wall_s: float = 0.0

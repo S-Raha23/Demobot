@@ -17,3 +17,8 @@ Append one line per decision that changes the plan: `YYYY-MM-DD — decision —
 - 2026-10-31 — Focal length: checkerboard intrinsics if present (human's phone: f ≈ 1544 px at 1920, long-side FOV 63.7°), else Zhang's single-view estimate when tilt ≥ 12°, else a 64° phone FOV default with a warning — a near top-down view cannot determine focal length from one homography.
 - 2026-10-31 — Synthetic marker tables are rendered by warping a texture through an exact pinhole camera (fast, exact ground truth); M3 adds 3D objects and the hand — calibration tests run in milliseconds.
 - 2026-10-31 — No lens undistortion of marker corners (the phone video is already mostly corrected; residual < 1 px) — simpler, revisit if real-clip reprojection > 1.5 px.
+- 2026-10-31 — `place_in` stands an object upright inside a container when it does not fit lying flat (pens into a mug): the gripper lets go above the rim and the object slides in over 24 physics steps — that is how a person puts pens in a mug, and a flat 14 cm pen cannot fit a 9 cm mug.
+- 2026-10-31 — Skill API additions: `free_spot(avoid=[(x, y, w, d)])` and +6 cm clearance around objects taller than 5 cm (the Panda hand is ~20 cm wide) — robust hand-written programs needed both; Wonder will too.
+- 2026-10-31 — Collision = another object displaced > 1 cm by a skill (objects jostled but still inside the target container are fine); raised as `Collision` so the program's author sees it.
+- 2026-10-31 — Sandbox memory limit 2 GB of address space instead of 1 GB (PyBullet + NumPy map more than 1 GB); CPU 20 s per task via RLIMIT_CPU on a reused spawn worker; wall timeout 90 s.
+- 2026-10-31 — The camera-pose render hides the robot: it is compared with the human's real final frame, which has no robot.
