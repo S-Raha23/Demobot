@@ -24,6 +24,7 @@ test("acceptance: home, run page, costs", async ({ page }) => {
 });
 
 test("acceptance: try-it for every skill card", async ({ page }) => {
+  test.setTimeout(600_000); // ~11 skills x WebGL load each; the default 120 s cannot cover them
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.getByTestId("skills")).toBeVisible();
   // collect the Try-it URLs first: clicking through the live DOM re-renders the grid
@@ -33,8 +34,8 @@ test("acceptance: try-it for every skill card", async ({ page }) => {
   );
   expect(hrefs.length).toBeGreaterThan(0);
   for (let i = 0; i < hrefs.length; i++) {
-    await page.goto(hrefs[i], { waitUntil: "domcontentloaded" });
-    await expect(page.getByTestId("try-run")).toBeVisible();
+    await page.goto(hrefs[i], { waitUntil: "commit" });
+    await expect(page.getByTestId("try-run")).toBeVisible({ timeout: 30_000 });
     await page.screenshot(shot(`a4-try-it-${i}`));
   }
 });
