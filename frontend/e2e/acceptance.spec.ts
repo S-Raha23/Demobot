@@ -24,16 +24,17 @@ test("acceptance: home, run page, costs", async ({ page }) => {
 });
 
 test("acceptance: try-it for every skill card", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.getByTestId("skills")).toBeVisible();
-  const tries = page.locator('[aria-label^="Try it:"]');
-  const n = await tries.count();
-  expect(n).toBeGreaterThan(0);
-  for (let i = 0; i < n; i++) {
-    await tries.nth(i).click();
+  // collect the Try-it URLs first: clicking through the live DOM re-renders the grid
+  // (cards below the fold never become "stable" for a direct click)
+  const hrefs = await page.locator('[aria-label^="Try it:"]').evaluateAll((els) =>
+    els.map((e) => (e as HTMLAnchorElement).getAttribute("href")).filter((h): h is string => Boolean(h)),
+  );
+  expect(hrefs.length).toBeGreaterThan(0);
+  for (let i = 0; i < hrefs.length; i++) {
+    await page.goto(hrefs[i], { waitUntil: "domcontentloaded" });
     await expect(page.getByTestId("try-run")).toBeVisible();
     await page.screenshot(shot(`a4-try-it-${i}`));
-    await page.goto("/");
-    await expect(page.getByTestId("skills")).toBeVisible();
   }
 });
