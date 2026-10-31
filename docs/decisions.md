@@ -31,3 +31,4 @@ Append one line per decision that changes the plan: `YYYY-MM-DD — decision —
 - 2026-10-31 — The judge gets the object list with roles, so it can tell a distractor from a goal object.
 - 2026-10-31 — GitHub repo is S-Raha23/Demobot (created by the human).
 - 2026-10-31 — A stand-in SAM cannot see in the render makes the perceptual check *inconclusive* (UI: grey), not failed; only a seen contradiction is a perception_gap — SAM is unreliable on simulated primitives, and a false failure would send correct runs to the supervisor.
+- 2026-10-31 — The supervisor does not offer `adjust_skill`: skill parameters (grasp height, approach offset) are not plumbed into the skill API in this build, and a tool that does nothing would mislead it. One supervision per run, at most 4 decisions.

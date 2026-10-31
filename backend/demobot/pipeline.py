@@ -29,6 +29,7 @@ from demobot.schemas import (
     TaskSpec,
     Track,
     Transcript,
+    Verification,
 )
 from demobot.sim.layouts import reach_map, repair, validate
 
@@ -225,7 +226,7 @@ def demo_layout(run: Run) -> Layout:
     return Layout.model_validate(scene["layout"])
 
 
-async def stage_program(run: Run) -> str:
+async def stage_program(run: Run, feedback: str = "") -> str:
     spec = run.read("taskspec.json", TaskSpec)
     gd = run.read("grounded.json", GroundedDemo)
     info = run.read("ingest.json", IngestInfo)
@@ -241,11 +242,18 @@ async def stage_program(run: Run) -> str:
         )
     kf = list(zip(info.keyframe_times, [run.art / k for k in info.keyframes], strict=True))
     picks = [kf[0], kf[len(kf) // 3], kf[2 * len(kf) // 3], kf[-1]] if len(kf) >= 4 else kf
-    si = synth.SynthInput(spec=spec, grounded=gd, layouts={"demo": layout}, transcript=tr, keyframes=picks,
-                          calibration_json=cal.model_dump_json(), art=run.art)  # fmt: skip
+    previous: list[dict[str, Any]] = []
+    start_code = None
+    if feedback and (run.art / "programs.json").exists():  # the supervisor sends it back
+        previous = json.loads((run.art / "programs.json").read_text())
+        start_code = latest_program(run).code
+    si = synth.SynthInput(spec=spec, grounded=gd, layouts={"demo": textured(run, layout)}, transcript=tr, keyframes=picks,
+                          calibration_json=cal.model_dump_json(), art=run.art, start_code=start_code,
+                          extra=f"## Feedback from the supervisor\n{feedback}" if feedback else "",
+                          first_version=len(previous) + 1, drafts=not feedback)  # fmt: skip
     out = await synth.synthesize(run.ctx, si)
     (run.art / "programs.json").write_text(
-        json.dumps([json.loads(p.model_dump_json()) for p in out.versions], indent=1)
+        json.dumps(previous + [json.loads(p.model_dump_json()) for p in out.versions], indent=1)
     )
     (run.art / "synthesis_trace.json").write_text(json.dumps({
         "submitted": out.submitted, "turns": out.turns, "winner": out.winner, "drafts": out.drafts,
@@ -331,6 +339,35 @@ def keep_sim(run: Run, res: Any, tag: str, version: int) -> Any:
     return res
 
 
+async def _supervise(run: Run, stage: str, error: DemoBotError) -> str | None:
+    """Hand a program or verify failure to the supervisor; a summary if it recovered."""
+    if stage not in ("program", "verify") or error.code not in ("PROGRAM_FAILED", "VERIFY_FAILED"):
+        return None
+    if run.meta().get("supervised"):
+        return None  # one supervision per run (at most 4 decisions)
+    from demobot.agents.supervisor import supervise
+
+    run.update_meta(supervised=True)
+    run.ctx.emit("stage_start", "supervise")
+    out = await supervise(run, error)
+    run.ctx.emit("stage_end", "supervise", payload={"ok": out.accepted, "summary": out.caveat or out.stopped or
+                                                     ("recovered" if out.accepted else "not recovered"),
+                                                     "decisions": len(out.decisions)})  # fmt: skip
+    if not out.accepted:
+        return None
+    if out.caveat and (run.art / "verify.json").exists():
+        ver = run.read("verify.json", Verification)
+        ver.accepted_caveat = out.caveat
+        run.write("verify.json", ver)
+    run.update_meta(caveat=out.caveat or None)
+    if stage == "program":  # the program now exists and has been verified by the supervisor
+        run.set_stage("program", "done")
+        return "recovered by the supervisor"
+    return (
+        f"accepted by the supervisor: {out.caveat}" if out.caveat else "recovered by the supervisor"
+    )
+
+
 StageFn = Callable[[Run], Awaitable[str]]
 STAGE_FNS: dict[str, StageFn] = {
     "ingest": stage_ingest,
@@ -362,10 +399,13 @@ async def run_pipeline(run: Run, until: str | None = None) -> None:
         try:
             summary = await fn(run)
         except DemoBotError as e:
-            run.set_stage(stage, "failed")
             run.ctx.emit("error", stage, payload=e.as_dict())
-            run.update_meta(status="failed", error=e.as_dict())
-            raise
+            recovered = await _supervise(run, stage, e)
+            if recovered is None:
+                run.set_stage(stage, "failed")
+                run.update_meta(status="failed", error=e.as_dict())
+                raise
+            summary = recovered
         run.set_stage(stage, "done")
         run.ctx.emit("stage_end", stage, payload={"ok": True, "summary": summary,
                                                   "duration_s": round(time.monotonic() - t0, 1)})  # fmt: skip

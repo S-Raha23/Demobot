@@ -349,6 +349,7 @@ class Verification(BaseModel):
     failure_class: (
         Literal["spec_mismatch", "program_bug", "perception_gap", "judge_dissent"] | None
     ) = None
+    accepted_caveat: str | None = None  # the supervisor accepted the run despite a failed check
     renders: dict[str, str] = Field(default_factory=dict)  # real, camera, top (artifact paths)
 
 

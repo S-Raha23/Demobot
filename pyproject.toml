@@ -80,5 +80,6 @@ plugins = ["pydantic.mypy"]
 "scripts/make_fixture_run.py" = ["E501"]
 "backend/demobot/program/synth.py" = ["E501"]  # tool schemas and prompt text
 "backend/demobot/verify.py" = ["E501"]
+"backend/demobot/agents/supervisor.py" = ["E501"]  # the prompt and tool table
 "backend/tests/**" = ["E501"]
 "synth/**" = ["E501"]

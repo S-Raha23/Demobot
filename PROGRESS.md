@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M8 Supervisor agent (M7 done Sat 12:20 IST)
+**Now:** M9 Red team + hardening (M8 done Sat 13:10 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -19,7 +19,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M5 | Perceive + Ground | done on synthetic (live check waits for real clips) | Sat 10:40 | Synthetic set: **median start error 0.60 cm, end error 0.47 cm** (< 2 cm). Weakness: SAM misses some featureless synthetic teal bars (real goal holds on 5/10); kind and "<colour> object" fallback phrases added. `eval/grounding_synth.py`. |
 | M6 | Coder (Wonder) + MVP gate | doing | | Stateless Wonder tool loop + 2 Spark Open drafts works live (syn7-00: submitted v2 in 3 turns, ~$0.10). Restart of the program stage = $0 new spend (verified). Live ≥ 4/5 needs real clips; run on more synthetic clips next. |
 | M7 | Verify (three ways + judge) | done | Sat 12:20 | Fault injection on syn7-01: **5/5 faults caught, 4/5 with the exact class** (the sim-only offset was caught by the judge, not by perceptual, because SAM did not see that stand-in). SAM on simulated stand-ins is unreliable, so an unseen stand-in is *inconclusive* (shown grey), never a silent pass or a false failure. `eval/fault_injection.py`. |
-| M8 | Supervisor agent | todo | | |
+| M8 | Supervisor agent | done | Sat 13:10 | Spark Open (Baseten → Modal → fixed policy) with rewatch, retrack, revise_spec, reprogram, ask_user, accept, stop; ≤ 4 decisions, each a decision event. **Recovered 4/5 injected failures** (judge dissent → rewatch + accept with caveat; program bug → reprogram; wrong relation and wrong object → rewatch + revise_spec; a lost track was not recovered). `eval/supervisor_injection.py`. `adjust_skill` is not offered (skill parameters are not plumbed in this build). |
 | M9 | Red team + hardening | todo | | |
 | M10 | Voice correction | todo | | |
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
@@ -38,6 +38,7 @@ Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 | Sat Oct 31 06:35 | Meta ($130 cap) | 8 Muse Image textures | 0.08 | 0.137 | not yet |
 | Sat Oct 31 08:40 | Meta ($130 cap) | M4 watch + arbitration on 10 synthetic clips (+2 reruns) | 0.61 | 0.75 | not yet |
 | Sat Oct 31 08:40 | Modal ($110 cap) | M4 cross-watch on 12 clips | 0.16 | 0.18 | not yet |
+| Sat Oct 31 13:10 | Meta ($130 cap) | M5–M8 on synthetic (SAM, Wonder, verify, supervisor) | ~3.3 | ~4.1 | not yet |
 | Sat Oct 31 05:00 | Baseten ($90 cap) | M0 probes | 0.007 | 0.007 | not yet |
 | Sat Oct 31 05:00 | Modal ($110 cap) | M0 probes (LLM) + Sandbox test | 0.02 | 0.02 | `modal billing summary`: $0.02 covered by credits, $0 billed |
 
@@ -54,7 +55,7 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M8 supervisor (Spark Open on Baseten, bounded tool loop; handles judge_dissent, perception_gap, spec_mismatch, program_bug).
+1. M9 red team + hardening (`docs/05-agents.md` §C).
 3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
 4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
 5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.
