@@ -33,8 +33,9 @@ def samples() -> list[dict[str, Any]]:
                 )
                 out[d.name] = {"id": d.name, "title": meta.get("title", d.name.replace("_", " ")),
                                "duration_s": meta.get("duration_s"), "thumb": f"/api/samples/{d.name}/thumb"
-                               if (d / "thumb.jpg").exists() else None}  # fmt: skip
-    return list(out.values())
+                               if (d / "thumb.jpg").exists() else None, "source": meta.get("source", "synthetic"),
+                               "cached": (d / "cache").exists()}  # fmt: skip
+    return sorted(out.values(), key=lambda s: s["source"] != "real")  # real clips first
 
 
 def sample_dir(sample_id: str) -> Path:
@@ -72,17 +73,35 @@ async def _run_job(run: pipeline.Run) -> None:
                 )
 
 
-def start_run(clip: Path, title: str = "", task_hint: str = "") -> str:
+def start_run(clip: Path, title: str = "", task_hint: str = "", prepared: Path | None = None,
+              source_kind: str | None = None) -> str:  # fmt: skip
     run = pipeline.create_run(clip, title or clip.stem, mode=settings.demobot_mode)
-    run.update_meta(status="queued", task_hint=task_hint or None)
+    if prepared is not None:
+        shutil.copytree(prepared, run.dir / "input" / "prepared", dirs_exist_ok=True)
+    run.update_meta(
+        status="queued",
+        task_hint=task_hint or None,
+        **({"source_kind": source_kind} if source_kind else {}),
+    )
     _spawn(_run_job(run))
     return run.run_id
 
 
 def start_sample(sample_id: str) -> str:
+    """A sample may ship its ingested media (prepared/) and the model responses of its recorded run
+    (cache/): then the run re-uses them and costs nothing; every cache hit shows as "cached"."""
+    from demobot import gateway
+
     d = sample_dir(sample_id)
     meta = json.loads((d / "sample.json").read_text()) if (d / "sample.json").exists() else {}
-    return start_run(d / "clip.mp4", meta.get("title", sample_id))
+    if (d / "cache").exists():
+        dest = gateway.cache_dir()
+        dest.mkdir(parents=True, exist_ok=True)
+        for f in (d / "cache").glob("*.json"):
+            if not (dest / f.name).exists():
+                shutil.copy(f, dest / f.name)
+    return start_run(d / "clip.mp4", meta.get("title", sample_id), prepared=d / "prepared" if (d / "prepared").exists() else None,
+                     source_kind=meta.get("source", "synthetic"))  # fmt: skip
 
 
 async def _correct_job(run: pipeline.Run, text: str, audio: Path | None) -> None:

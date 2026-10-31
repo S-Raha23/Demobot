@@ -53,6 +53,7 @@ export interface TwinSceneOptions {
   labels?: boolean;
   onMove?: (name: string, x: number, y: number, yaw: number) => void;
   onSelect?: (name: string | null) => void;
+  frameRobot?: boolean; // the default view keeps the whole arm in frame (homepage hero)
 }
 
 export class TwinScene {
@@ -164,6 +165,10 @@ export class TwinScene {
     this.resize();
     this.setCameraMode("orbit");
     if (opts.editable) this.bindEditing();
+    else
+      this.renderer.domElement.addEventListener("pointermove", (ev) => {
+        this.hovered = this.pickObject(ev);
+      });
     this.loop();
   }
 
@@ -327,10 +332,20 @@ export class TwinScene {
       geo.rotateX(Math.PI / 2);
       add(geo);
     } else if (spec.shape === "sphere") {
-      add(new THREE.SphereGeometry(Math.max(w, d, h) / 2, 32, 20));
+      const tex = this.textureFor(spec.name);
+      add(new THREE.SphereGeometry(Math.max(w, d, h) / 2, 32, 20), tex ? this.texturedMaterial(tex) : mat);
     } else {
       const r = Math.min(w, d, h) * 0.18;
       add(roundedBox(w, d, h, r));
+    }
+    // the object's real top-down crop on its top face, so the twin (and SAM, looking at it) sees it
+    const top = spec.open || spec.shape === "sphere" ? null : this.textureFor(spec.name);
+    if (top) {
+      const geo = spec.shape === "cylinder" ? new THREE.CircleGeometry(Math.max(w, d) / 2 * 0.98, 36) : new THREE.PlaneGeometry(w * 0.96, d * 0.92);
+      geo.translate(0, 0, h / 2 + 0.0008);
+      const m = new THREE.Mesh(geo, this.texturedMaterial(top));
+      m.userData.objName = spec.name;
+      g.add(m);
     }
     // a zero-size anchor at the object's top (positioned by CSS2DRenderer) holding the pill and a
     // leader line; layoutLabels() moves pills apart each frame
@@ -366,6 +381,30 @@ export class TwinScene {
     g.userData.objName = spec.name;
     this.pb.add(g);
     return { spec, group: g, label, pill, line, off: [0, -6], body };
+  }
+
+  private textures = new Map<string, string>();
+  private texCache = new Map<string, THREE.Texture>();
+
+  /** Object name -> URL of its top-down crop (set before the objects are built). */
+  setObjectTextures(urls: Record<string, string>) {
+    this.textures = new Map(Object.entries(urls));
+  }
+
+  private textureFor(name: string): THREE.Texture | null {
+    const url = this.textures.get(name);
+    if (!url) return null;
+    let t = this.texCache.get(url);
+    if (!t) {
+      t = this.texLoader.load(url);
+      t.colorSpace = THREE.SRGBColorSpace;
+      this.texCache.set(url, t);
+    }
+    return t;
+  }
+
+  private texturedMaterial(t: THREE.Texture): THREE.MeshStandardMaterial {
+    return new THREE.MeshStandardMaterial({ map: t, roughness: 0.75, metalness: 0.0 });
   }
 
   private ensureObjects(specs: ObjSpec[]) {
@@ -405,6 +444,7 @@ export class TwinScene {
 
   setTrajectory(traj: TwinTrajectory | null) {
     this.traj = traj;
+    this.updateRobotVisibility();
     if (traj) {
       this.ensureObjects(
         traj.objects.map((o: TwinObject) => ({
@@ -496,7 +536,7 @@ export class TwinScene {
         this.robot = robot;
 
         this.pb.add(robot);
-        robot.visible = this.mode !== "real";
+        this.updateRobotVisibility();
         if (this.robotBase) this.setRobotBase(this.robotBase);
         this.setJoints(PANDA_HOME);
         if (this.traj) this.applyTime(this.timeSource?.() ?? 0);
@@ -568,7 +608,7 @@ export class TwinScene {
     const cx = (wa.x0 + wa.x1) / 200;
     const cz = (wa.y0 + wa.y1) / 200;
     this.orbitTarget.set(cx, 0.02, cz);
-    if (this.robot) this.robot.visible = this.mode !== "real";
+    this.updateRobotVisibility();
     if (this.mode === "real") {
       // The robot stands where the phone was, so it is hidden in the phone's view (as in the
       // verification render); held objects still move.
@@ -590,6 +630,25 @@ export class TwinScene {
     this.resize();
   }
 
+  /** The robot shows in the 3D views; in the phone's view it is hidden (as in the verification
+   *  render), and in the top-down edit view it shows only while it runs, with a thin ring at its
+   *  base otherwise, so it never covers the table you are arranging. */
+  private baseRing: THREE.Mesh | null = null;
+
+  private updateRobotVisibility() {
+    const top = this.mode === "top";
+    if (this.robot) this.robot.visible = this.mode !== "real" && (!top || this.traj != null);
+    if (!this.baseRing && this.robotBase) {
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.075, 0.082, 48), new THREE.MeshBasicMaterial({ color: "#94a3b8", transparent: true, opacity: 0.8 }));
+      this.pb.add(ring);
+      this.baseRing = ring;
+    }
+    if (this.baseRing && this.robotBase) {
+      this.baseRing.position.set(this.robotBase[0], this.robotBase[1], 0.002);
+      this.baseRing.visible = top && this.traj == null;
+    }
+  }
+
   /** The default orbit view: from the side opposite the robot, ~45° down, so the objects (and
    *  their labels) sit in front of the robot; the distance fits the table and the arm to the
    *  panel's aspect ratio, so a wide, short panel does not shrink them. */
@@ -602,6 +661,7 @@ export class TwinScene {
     // base and lower links stay in view, its top may be cut off (orbit to see all of it)
     const pts = [
       [x0, 0, z0], [x1, 0, z0], [x0, 0, z1], [x1, 0, z1], [xr, 0, zr], [xr, 0.25, zr],
+      ...(this.opts.frameRobot ? [[xr, 0.72, zr], [xr - 0.12, 0.6, zr - 0.15], [xr + 0.12, 0.6, zr - 0.15]] : []),
     ].map(([x, y, z]) => new THREE.Vector3(x, y, z));
     for (const e of this.objects.values()) {
       const q = e.group.getWorldPosition(new THREE.Vector3());
@@ -701,6 +761,7 @@ export class TwinScene {
       el.style.cursor = "grabbing";
     });
     el.addEventListener("pointermove", (ev) => {
+      if (!this.dragging) this.hovered = this.pickObject(ev);
       if (!this.dragging) {
         if (!this.traj) el.style.cursor = this.pickObject(ev) ? "grab" : "default";
         return;
@@ -763,13 +824,25 @@ export class TwinScene {
   /** Keep labels readable when objects are close together: place them nearest-first (lowest on
    *  screen), each at the first free spot among offsets above, below and beside its object
    *  (preferring last frame's spot, so they do not jump), with a leader line once moved. */
+  private focus: Set<string> | null = null; // names labelled by default (null: all)
+  private hovered: string | null = null;
+
+  /** Label these objects by default (the moved ones and their targets); others on hover or when selected. */
+  setLabelFocus(names: string[] | null) {
+    this.focus = names ? new Set(names) : null;
+  }
+
   private layoutLabels() {
     if (!this.labelsOn) return;
+    for (const e of this.objects.values()) {
+      const shown = !this.focus || this.focus.has(e.spec.name) || e.spec.name === this.hovered || e.spec.name === this.selected;
+      e.label.element.style.display = shown ? "" : "none";
+    }
     const w = this.host.clientWidth, h = this.host.clientHeight;
     const items: { e: ObjEntry; x: number; y: number; bw: number; bh: number }[] = [];
     const v = new THREE.Vector3();
     for (const e of this.objects.values()) {
-      if (!e.label.visible || !e.label.element.isConnected) continue;
+      if (!e.label.visible || !e.label.element.isConnected || e.label.element.style.display === "none") continue;
       e.label.getWorldPosition(v).project(this.camera);
       if (v.z > 1) continue;
       items.push({ e, x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h, bw: e.pill.offsetWidth + 4, bh: e.pill.offsetHeight + 3 });

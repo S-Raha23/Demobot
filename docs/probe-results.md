@@ -39,3 +39,4 @@ Run: Sat Oct 31, 2026, 04:35–04:50 IST, by `scripts/probe_models.py`. Raw resp
 - SAM: `perceive.parse_sam()` wraps `meta_sam_parser`; cost from `video_frames_processed` / `images_processed`.
 - Cross-watch on Modal sends the 10 fps analysis clip as a `video_url` data URL (no keyframe fallback needed unless the clip is large).
 - Muse Image: decode base64 WebP, convert to PNG; cards and textures are generated off the critical path.
+| Spark Open reasoning effort (Oct 31, 23:30) | Chat Completions `reasoning_effort="low"` is accepted on Baseten and Modal; the same tiny prompt used 150 completion tokens without it and ~30 with it. |

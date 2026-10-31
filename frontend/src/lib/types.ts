@@ -25,7 +25,8 @@ export interface RunMeta {
   run_id: string;
   title: string;
   created_at: string;
-  source: string;
+  source: "real" | "synthetic"; // from the run's clip (docs/11 Fix 0, item 5)
+  clip?: string;
   mode: string;
   status: string;
   fixture?: boolean;
@@ -475,6 +476,23 @@ export interface SkillCard {
   run_id: string;
   run_title?: string;
   fixture?: boolean;
+  source?: "real" | "synthetic";
+  version?: number;
+  version_label?: string;
+}
+
+/** One version of a run's skill: v1 from the demo, later ones from spoken corrections. */
+export interface SkillVersion {
+  version: number;
+  label: string;
+  title: string;
+  taskspec: string;
+  program_version: number | null;
+  said?: string;
+  language?: string;
+  spec: TaskSpec;
+  program: Program | null;
+  versions: { version: number; label: string; title: string }[];
 }
 
 export interface CostsFile {
@@ -532,4 +550,5 @@ export interface Health {
   mode: string;
   version: string;
   headroom_usd: Record<string, unknown>;
+  frontier?: { forge: boolean; live: boolean; ask: boolean };
 }

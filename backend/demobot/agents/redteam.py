@@ -70,7 +70,8 @@ def _prompt(persona: str, layout: Layout, goal: list[GoalClause]) -> str:
         "but still solvable: every object fully inside the work area, at least 2.5 cm between any two objects, all reachable, "
         "nothing already satisfying the goal, nothing stacked. List every existing object with its new x, y and yaw "
         "(degrees). Containers and references may move too. Add new objects only if your persona says so. "
-        'Return JSON {"layouts": [{"why_hard": "<one sentence>", "objects": [...]}]}.'
+        "Think briefly. Output compact JSON only: x and y rounded to 0.5 cm, yaw to 15°, why_hard at most 12 words. "
+        'Return JSON {"layouts": [{"why_hard": "<short>", "objects": [...]}]}.'
     )
 
 
@@ -176,7 +177,7 @@ async def propose(
             messages: list[dict[str, Any]] = messages,
         ) -> gateway.Route:
             return gateway.Route(provider, model, req, 0.03, providers.chat_call(provider, model, messages=messages,
-                                 response_format=fmt, max_tokens=12000, temperature=0.8), f"{model} @ {provider}")  # fmt: skip
+                                 response_format=fmt, max_tokens=4000, temperature=0.8, reasoning_effort="low"), f"{model} @ {provider}")  # fmt: skip
 
         def validate(raw: Any) -> Proposal:
             try:

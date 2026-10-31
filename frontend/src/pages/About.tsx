@@ -62,8 +62,8 @@ export default function About() {
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
           <div className="panel p-5">
             <div className="flex flex-wrap gap-10">
-              <Stat label="Cost per learned skill" value={usd(agg.perSkill, 3)} sub={`mean over ${agg.n} run${agg.n === 1 ? "" : "s"}${agg.fixtures ? ` (${agg.fixtures} synthetic, simulated prices)` : ""}`} />
-              <Stat label="Open-weight share" value={`${agg.total ? Math.round((agg.open / agg.total) * 100) : 0}%`} sub="of run spend on Spark Open" color="#2dd4bf" />
+              <Stat label="Cost per learned skill" value={usd(agg.perSkill, 3)} sub={`mean over ${agg.n} run${agg.n === 1 ? "" : "s"}${agg.fixtures ? `, incl. ${agg.fixtures} fixture run${agg.fixtures === 1 ? "" : "s"} whose model calls are simulated (they cost $0)` : ""}`} />
+              <Stat label="Open-weight share of spend" value={`${agg.total ? Math.round((agg.open / agg.total) * 100) : 0}%`} sub="of run spend on Spark Open (the eval reports the share of calls)" color="#2dd4bf" />
               <Stat label="Runs" value={agg.n} />
             </div>
             <div className="eyebrow mb-2 mt-6">Spend per model, across runs</div>
@@ -98,7 +98,10 @@ export default function About() {
             </div>
             {costs?.ledger && (
               <div>
-                <div className="eyebrow mb-2">Build ledger (every paid call while building)</div>
+                <div className="eyebrow mb-2">
+                  Build ledger (every paid call while building)
+                  {costs.ledger.snapshot ? <span className="ml-1 normal-case tracking-normal text-ink-400">· snapshot of {costs.ledger.snapshot}</span> : null}
+                </div>
                 <div className="space-y-1">
                   {Object.entries(costs.ledger.by_provider).map(([p, r]) => (
                     <div key={p} className="flex items-center gap-2 text-[12.5px]">

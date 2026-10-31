@@ -44,5 +44,7 @@
  ],
  "demo_passes": true,
  "stress_passed": "4/12",
- "real_world": "superseded: the correction changes the goal the demo showed"
+ "real_world": "superseded: the correction changes the goal the demo showed",
+ "version": 2,
+ "taskspec": "taskspec_v2.json"
 }

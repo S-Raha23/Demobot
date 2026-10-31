@@ -1,5 +1,5 @@
 {
- "summary": "Put the green ball in the tub",
+ "summary": "The person moved two light blue pens from the left of the white box to the right side of the white box.",
  "objects": [
   {
    "name": "left light blue pen",
@@ -117,11 +117,11 @@
    "quant": "all",
    "select": {
     "name": null,
-    "kind": "tennis ball",
+    "kind": "pen",
     "role": null,
     "names": null
    },
-   "pred": "inside",
+   "pred": "right_of",
    "target": {
     "name": "white box",
     "kind": null,
@@ -133,7 +133,7 @@
    "order": null
   }
  ],
- "generalization": "put the green ball in the tub, wherever things start.",
+ "generalization": "Every pen goes to the right of the white box, wherever it starts.",
  "uncertainties": [
   "Identity of the untouched light blue object left of the pens is uncertain; described as spoon but could be pen cap or plastic knife.",
   "The two pens were moved together in one hand motion, so splitting into two steps with overlapping times is approximate.",

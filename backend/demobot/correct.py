@@ -17,7 +17,6 @@ from demobot.schemas import (
     GroundedDemo,
     IngestInfo,
     StressReport,
-    TaskSpec,
     Transcript,
 )  # fmt: skip
 
@@ -30,7 +29,11 @@ async def correct(run: Any, text: str = "", audio: Path | None = None) -> dict[s
     ctx = run.ctx.at("correct")
     n = len(list(run.art.glob("correction_*.json"))) + 1
     ctx.emit("stage_start", payload={"correction": n})
-    spec = run.read("taskspec.json", TaskSpec)
+    from demobot import versions
+
+    vs = versions.load(run.dir)
+    base = vs[-1]  # a correction builds on the newest version of the skill, and never overwrites it
+    spec = versions.spec(run.dir, base)
     if audio is not None:
         wav = run.art / f"correction_{n}.wav"
         media.to_wav(audio, wav)
@@ -51,7 +54,7 @@ async def correct(run: Any, text: str = "", audio: Path | None = None) -> dict[s
     info = run.read("ingest.json", IngestInfo)
     cal = run.read("calibration.json", Calibration)
     demo = pipeline.textured(run, pipeline.repair(pipeline.demo_layout(run))[0])
-    current = pipeline.latest_program(run)
+    current = versions.program(run.dir, base) or pipeline.latest_program(run)
     stress = run.read("stress.json", StressReport) if (run.art / "stress.json").exists() else None
     layouts = {"demo": demo} | ({c.layout.id: c.layout for c in stress.cases} if stress else {})
     previous = json.loads((run.art / "programs.json").read_text())
@@ -78,25 +81,16 @@ async def correct(run: Any, text: str = "", audio: Path | None = None) -> dict[s
         )
     goal_before = spec.goal
     goal_after = out.goal or spec.goal
-    if out.goal is not None:
-        (run.art / f"taskspec_before_correction_{n}.json").write_text(
-            spec.model_dump_json(indent=1)
-        )
-        gloss = (out.gloss or "").strip()
-        update: dict[str, object] = {"goal": goal_after}
-        if gloss:  # the skill now does what the person said, so describe it that way
-            update |= {
-                "summary": gloss[0].upper() + gloss[1:],
-                "generalization": f"{gloss.rstrip('.')}, wherever things start.",
-            }
-        run.write("taskspec.json", spec.model_copy(update=update))
-        if gloss:
-            first = run.meta().get("title", "")
-            demo = first.split(" (demo: ")[-1].rstrip(")") if " (demo: " in first else first
-            run.update_meta(
-                title=f"{update['summary']} (corrected by voice; demo: {demo})".replace(". (", " (")
-            )
-    run.update_meta(program_version=out.program.version)
+    gloss = (out.gloss or "").strip()
+    update: dict[str, object] = {"goal": goal_after}
+    if gloss:  # the new version does what the person said, so it is described that way
+        update |= {
+            "summary": gloss[0].upper() + gloss[1:],
+            "generalization": f"{gloss.rstrip('.')}, wherever things start.",
+        }
+    new_v = len(vs) + 1
+    spec_file = f"taskspec_v{new_v}.json"
+    (run.art / spec_file).write_text(spec.model_copy(update=update).model_dump_json(indent=1))
     others = [lay for k, lay in layouts.items() if k != "demo"]
     results = (
         await redteam.simulate_all(
@@ -126,15 +120,29 @@ async def correct(run: Any, text: str = "", audio: Path | None = None) -> dict[s
             )
             if sum(r.goal_ok for r in res2) > passed:
                 out.program, results, passed = hard.program, res2, sum(r.goal_ok for r in res2)
-                run.update_meta(program_version=out.program.version)
     record = {
         "n": n, "transcript": tr.model_dump(), "gloss": out.gloss, "program_before": current.version,
         "program_after": out.program.version, "goal_before": [c.model_dump(exclude_none=True) for c in goal_before],
         "goal_after": [c.model_dump(exclude_none=True) for c in goal_after], "demo_passes": True,
         "stress_passed": f"{passed}/{len(results)}", "real_world": "superseded: the correction changes the goal the demo showed",
     }  # fmt: skip
+    record |= {"version": new_v, "taskspec": spec_file}
     path = run.art / f"correction_{n}.json"
     path.write_text(json.dumps(record, indent=1))
+    how = "voice" if audio is not None else "text"
+    title = str(update.get("summary") or spec.summary).rstrip(".")
+    versions.save(run.dir, [*vs, {"version": new_v, "label": f"corrected by {how}", "title": title, "taskspec": spec_file,
+                                  "program_version": out.program.version, "said": tr.text, "language": tr.language,
+                                  "from_version": base["version"]}])  # fmt: skip
+    ctx.emit(
+        "artifact",
+        payload={
+            "name": "skills.json",
+            "path": "artifacts/skills.json",
+            "kind": "json",
+            "label": "Skill versions",
+        },
+    )
     ctx.emit(
         "artifact",
         payload={

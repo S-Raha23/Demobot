@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { CodeView } from "../components/CodeView";
 import { Icon } from "../components/Icon";
 import { Segmented, Toggle } from "../components/PanelHeader";
@@ -9,7 +9,7 @@ import { Empty, OkMark, Pill, Spinner } from "../components/ui";
 import { api, ApiError } from "../lib/api";
 import { clauseSentence } from "../lib/goal";
 import { skillSpans } from "../lib/sync";
-import type { Layout, Program, RunMeta, SceneObject, SkillCard, TaskSpec, TryLayoutResponse, TwinScene as TwinSceneData } from "../lib/types";
+import type { Layout, Program, RunMeta, SceneObject, SkillCard, SkillVersion, TaskSpec, TryLayoutResponse, TwinScene as TwinSceneData } from "../lib/types";
 import { useArtifact } from "../replay/useRun";
 import type { TwinHandle } from "../twin/TwinView";
 
@@ -53,6 +53,8 @@ function hints(layout: Layout, reach: TwinSceneData["reach"] | undefined): Map<s
 export default function TryIt() {
   const { id } = useParams();
   const nav = useNavigate();
+  const [q] = useSearchParams();
+  const version = Number(q.get("v") ?? 1) || 1;
   const [skills, setSkills] = useState<SkillCard[] | null>(null);
   const [runs, setRuns] = useState<RunMeta[] | null>(null);
   useEffect(() => {
@@ -72,15 +74,19 @@ export default function TryIt() {
           skills && skills.length > 0 ? (
             <div className="flex justify-center">
               <select
-                value={id ?? ""}
-                onChange={(e) => nav(`/try/${e.target.value}`)}
+                value={id ? `${id}@${version}` : ""}
+                onChange={(e) => {
+                  const [rid, v] = e.target.value.split("@");
+                  nav(`/try/${rid}${v && v !== "1" ? `?v=${v}` : ""}`);
+                }}
                 className="h-8 max-w-[420px] rounded-lg bg-ink-800 px-3 text-[12.5px] font-medium text-ink-100 ring-1 ring-inset ring-ink-600 outline-none"
                 aria-label="Skill"
               >
                 {skills.map((s) => (
-                  <option key={s.run_id} value={s.run_id}>
+                  <option key={`${s.run_id}@${s.version ?? 1}`} value={`${s.run_id}@${s.version ?? 1}`}>
                     {s.title}
-                    {s.fixture ? " (synthetic)" : ""}
+                    {(s.version ?? 1) > 1 ? ` (v${s.version}: ${s.version_label})` : ""}
+                    {s.source === "synthetic" || s.fixture ? " (synthetic clip)" : ""}
                   </option>
                 ))}
               </select>
@@ -88,15 +94,19 @@ export default function TryIt() {
           ) : null
         }
       />
-      {id ? <Playground key={id} runId={id} /> : <div className="flex flex-1 items-center justify-center">{skills && !skills.length ? <Empty icon="cube" title="No skills to try yet" /> : <Spinner />}</div>}
+      {id ? <Playground key={`${id}@${version}`} runId={id} version={version} /> : <div className="flex flex-1 items-center justify-center">{skills && !skills.length ? <Empty icon="cube" title="No skills to try yet" /> : <Spinner />}</div>}
     </div>
   );
 }
 
-function Playground({ runId }: { runId: string }) {
+function Playground({ runId, version }: { runId: string; version: number }) {
   const scene = useArtifact<TwinSceneData>(runId, "artifacts/twin_scene.json");
-  const spec = useArtifact<TaskSpec>(runId, "artifacts/taskspec.json");
-  const programs = useArtifact<Program[]>(runId, "artifacts/programs.json");
+  // title, goal and program all come from one skill-version record (docs/11 Fix 0, item 2)
+  const [skill, setSkill] = useState<SkillVersion | null>(null);
+  useEffect(() => {
+    api.skill(runId, version).then(setSkill).catch(() => setSkill(null));
+  }, [runId, version]);
+  const spec: TaskSpec | null = skill?.spec ?? null;
   const [layout, setLayout] = useState<Layout | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [busy, setBusy] = useState<"run" | "shuffle" | null>(null);
@@ -155,6 +165,7 @@ function Playground({ runId }: { runId: string }) {
       const r = await api.tryLayout(
         runId,
         layout.objects.map((o) => ({ name: o.name, x: o.x, y: o.y, yaw: o.yaw })),
+        version,
       );
       setRes(r);
       twin.current?.select(null);
@@ -190,7 +201,7 @@ function Playground({ runId }: { runId: string }) {
   const spans = res?.ok && res.result && trajectory ? skillSpans(res.result.skill_calls, trajectory.duration_s) : [];
   const activeSpan = spans.findIndex((s) => simT >= s.t0 && simT < s.t1);
   const done = trajectory ? simT >= trajectory.duration_s - 1e-3 : false;
-  const program = programs ? [...programs].filter((p) => p.passed_demo).sort((a, b) => b.version - a.version)[0] ?? programs[programs.length - 1] : null;
+  const program: Program | null = skill?.program ?? null;
   const sel = layout?.objects.find((o) => o.name === selected);
 
   if (!scene || !layout)
@@ -281,7 +292,13 @@ function Playground({ runId }: { runId: string }) {
       <aside className="flex min-h-0 flex-col gap-3 lg:overflow-y-auto scroll-thin">
         <div className="panel p-4">
           <div className="eyebrow">The skill</div>
-          <div className="mt-1 text-[16px] font-semibold leading-snug text-ink-50">{spec?.summary ?? "…"}</div>
+          <div className="mt-1 text-[16px] font-semibold leading-snug text-ink-50">{skill?.title ?? spec?.summary ?? "…"}</div>
+          {skill && skill.version > 1 && (
+            <div className="mt-1.5 inline-flex rounded-full bg-voice/10 px-2 py-0.5 text-[11px] font-semibold text-voice ring-1 ring-inset ring-voice/30">
+              v{skill.version} · {skill.label}
+              {skill.said ? `: “${skill.said}”` : ""}
+            </div>
+          )}
           {spec?.generalization && <div className="mt-1 text-[12.5px] text-ink-300">{spec.generalization}</div>}
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" className="btn btn-primary flex-1 justify-center !py-2.5" onClick={run} disabled={busy != null} data-testid="try-run">

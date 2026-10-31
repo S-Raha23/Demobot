@@ -236,7 +236,7 @@ def section(title: str, rows: list[dict[str, Any]], extra: dict[str, Any]) -> li
             f"| Cost per skill | **${st.mean(costs):.2f}** mean (min ${min(costs):.2f}, max ${max(costs):.2f}) | spend of the run's own model calls (cache hits count $0) |"
         )
         L.append(
-            f"| Open-weight share | **{pct(open_calls / calls if calls else None)}** of model calls | Muse Spark Open on Baseten and Modal |"
+            f"| Open-weight share of calls | **{pct(open_calls / calls if calls else None)}** of model calls | Muse Spark Open on Baseten and Modal (the costs page shows the share of spend) |"
         )
     ps = [r["pipeline_s"] for r in done if r.get("pipeline_s")]
     if ps:
@@ -337,6 +337,13 @@ def main() -> None:
     head = headline(real_rows, "real") if real_rows else headline(rows, "synthetic")
     data = {"sha": sha, "headline": head, "synthetic": rows, "real": real_rows}
     (ROOT / "eval" / "results.json").write_text(json.dumps(data, indent=1, default=str))
+    # the deployed site has an empty ledger of its own: it shows this snapshot of the build ledger
+    from demobot import budget
+
+    snap = budget.summary() | {
+        "snapshot": datetime.now(UTC).astimezone().strftime("%a %b %d %Y, %H:%M %Z")
+    }
+    (ROOT / "eval" / "ledger_snapshot.json").write_text(json.dumps(snap, indent=1, default=str))
     print(out.read_text())
 
 

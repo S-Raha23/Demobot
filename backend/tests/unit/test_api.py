@@ -68,6 +68,8 @@ def test_live_endpoints(monkeypatch, tmp_path) -> None:
         "title": "Pens into the box",
         "duration_s": None,
         "thumb": None,
+        "source": "synthetic",
+        "cached": False,
     }
     started: list[tuple[str, str]] = []
     monkeypatch.setattr(jobs, "start_sample", lambda s: started.append(("sample", s)) or "run-1")
@@ -107,3 +109,24 @@ def test_page_is_revalidated_and_hashed_bundles_are_cached() -> None:
     c = TestClient(app)
     assert c.get("/api/health").headers["cache-control"] == "no-cache"
     assert "immutable" in c.get("/assets/franka_panda/panda.urdf").headers["cache-control"]
+
+
+def test_a_correction_is_a_new_skill_version_and_never_overwrites_the_demo_skill() -> None:
+    """Library entry, Try-it record and the simulated program all come from one version (Fix 0, item 2)."""
+    from fastapi.testclient import TestClient
+
+    from demobot.api import app
+
+    c = TestClient(app)
+    run = "real-spoon-in-tub"
+    entries = [s for s in c.get("/api/skills").json() if s["run_id"] == run]
+    assert [e["version"] for e in entries] == [1, 2]
+    v1, v2 = (c.get(f"/api/runs/{run}/skill?v={v}").json() for v in (1, 2))
+    assert entries[0]["title"] == v1["title"] and entries[1]["title"] == v2["title"] != v1["title"]
+    assert "spoon" in v1["spec"]["goal"][0]["select"]["name"] and "ball" in str(
+        v2["spec"]["goal"][0]["select"]
+    )
+    assert v1["program"]["version"] == v1["program_version"] != v2["program"]["version"]
+    r1 = c.post(f"/api/runs/{run}/try-layout", json={"objects": [], "version": 1}).json()
+    assert r1["ok"] and r1["program_version"] == v1["program_version"]
+    assert c.get(f"/api/runs/{run}").json()["run"]["title"] == v1["title"]

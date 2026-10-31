@@ -16,6 +16,7 @@ import { Timeline } from "../components/Timeline";
 import { TopNav } from "../components/TopNav";
 import { TwinPanel } from "../components/TwinPanel";
 import { Pill, Spinner } from "../components/ui";
+import { api } from "../lib/api";
 import { istDate, usd } from "../lib/format";
 import { STAGE_DOING, STAGE_LABEL } from "../lib/models";
 import { buildAnchors, skillSpans, videoToRobot } from "../lib/sync";
@@ -28,6 +29,7 @@ import type {
   Program,
   SimResult,
   SkillCard,
+  SkillVersion,
   StressReport,
   TaskSpec,
   ToolCallPayload,
@@ -305,6 +307,12 @@ function TabDot({ tab, pb, verify, stress }: { tab: Tab; pb: RunPlayback; verify
 
 function RunMeta({ pb, title }: { pb: RunPlayback; title: string }) {
   const run = pb.detail?.run;
+  // the demo skill is the title; spoken corrections are separate, labelled versions (Fix 0, item 3)
+  const [versions, setVersions] = useState<SkillVersion["versions"]>([]);
+  useEffect(() => {
+    if (!pb.finished) return;
+    api.skill(pb.runId).then((s) => setVersions(s.versions)).catch(() => setVersions([]));
+  }, [pb.runId, pb.finished]);
   return (
     <div className="panel hidden w-[250px] shrink-0 flex-col justify-center gap-1.5 px-3.5 py-2 xl:flex">
       <div className="line-clamp-2 text-[13px] font-semibold leading-snug text-ink-50" title={title}>
@@ -320,6 +328,14 @@ function RunMeta({ pb, title }: { pb: RunPlayback; title: string }) {
         ) : run ? (
           <Pill tone="info" className="!whitespace-normal">Replay of a recorded run ({istDate(run.created_at)})</Pill>
         ) : null}
+        {run && run.source === "synthetic" && !run.fixture && <Pill tone="warn">synthetic clip</Pill>}
+        {versions.filter((v) => v.version > 1).map((v) => (
+          <Link key={v.version} to={`/try/${pb.runId}?v=${v.version}`} title="Try this version">
+            <Pill tone="neutral" className="!whitespace-normal !text-voice">
+              v{v.version}: {v.label}: {v.title}
+            </Pill>
+          </Link>
+        ))}
       </div>
     </div>
   );

@@ -1,0 +1,19 @@
+[
+ {
+  "version": 1,
+  "label": "from your demo",
+  "title": "Put every pen right of the white box",
+  "taskspec": "taskspec.json",
+  "program_version": 13
+ },
+ {
+  "version": 2,
+  "label": "corrected by voice",
+  "title": "put the green ball in the tub",
+  "taskspec": "taskspec_v2.json",
+  "program_version": 15,
+  "said": "put the green ball in the tub.",
+  "language": "English",
+  "from_version": 1
+ }
+]

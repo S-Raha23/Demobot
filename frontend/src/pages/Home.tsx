@@ -15,8 +15,8 @@ const MOMENTS = [
   { icon: "code", title: "It wrote its own program", text: "Muse Wonder writes the robot program, runs it in simulation, reads the failure and fixes it.", models: ["muse-wonder-1.0"] },
   { icon: "shield", title: "It checks itself", text: "The same eyes judge the twin from your camera's pose: symbolic, real-world and perceptual checks.", models: ["sam-3.1", "meta-models/muse-spark-open-1026"] },
   { icon: "grid", title: "It attacks itself", text: "A swarm of open-weight Spark Open personas invents layouts to break it. Wonder hardens it.", models: ["meta-models/muse-spark-open-1026", "muse-wonder-1.0"] },
-  { icon: "mic", title: "Talk to it", text: "Correct it by voice in English, Hindi or Bengali. The goal and the code change; it re-verifies.", models: ["muse-voice-transcribe-1.0", "muse-wonder-1.0"] },
-  { icon: "hand", title: "Your turn", text: "Drag anything on the 3D twin. The robot re-plans and does it, live and free.", models: ["muse-image-1.0"] },
+  { icon: "mic", title: "Talk to it", text: "Correct it by voice in English, Hindi or Bengali. The goal and the code change as a new skill version; it re-verifies.", models: ["muse-voice-transcribe-1.0", "muse-wonder-1.0"] },
+  { icon: "hand", title: "Your turn", text: "Drag anything on the 3D twin. The learned program runs on your layout in PyBullet: no model calls, free. Each skill gets a card illustrated by Muse Image.", models: ["muse-image-1.0"], note: "simulation only" },
 ];
 
 function cardImage(c: SkillCard): string {
@@ -124,10 +124,12 @@ export default function Home() {
                 </div>
                 <div className="text-[15px] font-semibold tracking-tight text-ink-50">{m.title}</div>
                 <div className="flex-1 text-[12.5px] leading-relaxed text-ink-300">{m.text}</div>
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap items-center gap-1">
+                  {"note" in m && m.note && <span className="rounded-full bg-ink-800 px-2 py-0.5 text-[10.5px] font-semibold text-ink-300 ring-1 ring-inset ring-ink-600">{m.note}</span>}
                   {m.models.map((x) => (
                     <ModelBadge key={x} model={x} size="xs" showProvider={false} />
                   ))}
+                  {"note" in m && m.note && <span className="text-[10.5px] text-ink-500">(card)</span>}
                 </div>
               </div>
             ))}
@@ -253,7 +255,7 @@ function Hero({ run }: { run: RunMeta | null }) {
           <div className="pointer-events-none relative aspect-video bg-ink-900">
             {scene && traj ? (
               <Suspense fallback={<div className="flex h-full items-center justify-center"><Spinner /></div>}>
-                <TwinView runId={run.run_id} scene={scene} trajectory={traj} timeSource={timeSource} cameraMode="orbit" labels className="h-full w-full" />
+                <TwinView runId={run.run_id} scene={scene} trajectory={traj} timeSource={timeSource} cameraMode="orbit" labels options={{ frameRobot: true }} className="h-full w-full" />
               </Suspense>
             ) : (
               <div className="flex h-full items-center justify-center"><Spinner /></div>
@@ -278,17 +280,26 @@ function Hero({ run }: { run: RunMeta | null }) {
 }
 
 function SkillCardView({ card, run }: { card: SkillCard; run?: RunMeta }) {
-  const fixture = card.fixture ?? run?.fixture;
+  const synthetic = Boolean(card.fixture ?? run?.fixture) || (card.source ?? run?.source) === "synthetic";
+  const v = card.version ?? 1;
+  const tryUrl = `/try/${card.run_id}${v > 1 ? `?v=${v}` : ""}`;
   return (
     <div className="panel group flex flex-col overflow-hidden !p-0 transition hover:-translate-y-0.5 hover:ring-1 hover:ring-ink-500">
-      <Link to={`/run/${card.run_id}`} className="relative block aspect-[16/10] overflow-hidden bg-ink-850">
+      <Link to={`/run/${card.run_id}`} className="relative block aspect-[16/10] overflow-hidden bg-ink-850" aria-label={`Replay: ${card.title}`}>
         <img src={cardImage(card)} alt={card.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent" />
         {!card.image && <span className="absolute right-2 top-2 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-medium text-white/80">final frame</span>}
-        {fixture && <span className="absolute left-2 top-2 rounded bg-warn/90 px-1.5 py-0.5 text-[10px] font-bold text-ink-950">synthetic</span>}
+        <span className={`absolute left-2 top-2 rounded px-1.5 py-0.5 text-[10px] font-bold text-ink-950 ${synthetic ? "bg-warn/90" : "bg-ok/90"}`}>
+          {synthetic ? "synthetic clip" : "real clip"}
+        </span>
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="text-[15px] font-semibold leading-snug tracking-tight text-ink-50">{card.title}</div>
+        {v > 1 && (
+          <div className="-mt-1 text-[11.5px] font-semibold text-voice">
+            v{v} · {card.version_label} (from the demo: {card.run_title})
+          </div>
+        )}
         <div className="flex-1 text-[12.5px] leading-relaxed text-ink-300">{card.description}</div>
         <div className="flex flex-wrap gap-1.5">
           {card.robustness != null && (
@@ -302,10 +313,10 @@ function SkillCardView({ card, run }: { card: SkillCard; run?: RunMeta }) {
           <Pill tone="neutral">v{card.program_version}</Pill>
         </div>
         <div className="mt-1 flex gap-2">
-          <Link to={`/run/${card.run_id}`} className="btn flex-1 justify-center !py-1.5 !text-[12px]">
+          <Link to={`/run/${card.run_id}`} className="btn flex-1 justify-center !py-1.5 !text-[12px]" aria-label={`Replay: ${card.title}`}>
             <Icon name="play" size={11} /> Replay
           </Link>
-          <Link to={`/try/${card.run_id}`} className="btn flex-1 justify-center !py-1.5 !text-[12px]">
+          <Link to={tryUrl} className="btn flex-1 justify-center !py-1.5 !text-[12px]" aria-label={`Try it: ${card.title}`}>
             <Icon name="hand" size={13} /> Try it
           </Link>
         </div>
@@ -333,12 +344,12 @@ function Samples({ samples, runs }: { samples: Sample[] | null; runs: RunMeta[] 
   };
   // Until the server lists sample clips, the recorded runs stand in (replays are free).
   const items = samples.length
-    ? samples.slice(0, 3).map((s) => ({ key: s.id, title: s.title, thumb: s.thumb ?? null, sub: s.duration_s ? `${s.duration_s.toFixed(0)} s clip` : "sample clip", action: () => start(s), label: "Run it live", live: true }))
+    ? samples.slice(0, 3).map((s) => ({ key: s.id, title: s.title, thumb: s.thumb ?? null, sub: `${s.source === "real" ? "real clip" : "synthetic clip"}${s.duration_s ? ` · ${s.duration_s.toFixed(0)} s` : ""}${s.cached ? " · cached responses, free" : ""}`, action: () => start(s), label: "Run it live", live: true }))
     : runs.slice(0, 3).map((r) => ({
         key: r.run_id,
         title: r.title,
         thumb: artifactUrl(r.run_id, "artifacts/keyframes/kf_00.jpg"),
-        sub: r.fixture ? "synthetic clip · recorded run" : `recorded ${istDate(r.created_at)}`,
+        sub: r.fixture || r.source === "synthetic" ? "synthetic clip · recorded run" : `real clip · recorded ${istDate(r.created_at)}`,
         action: () => nav(`/run/${r.run_id}`),
         label: "Watch the recorded run",
         live: false,

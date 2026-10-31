@@ -223,11 +223,12 @@ async def judge(
         "stage": "judge",
         "text": text,
         "imgs": [gateway.sha256_file(real), gateway.sha256_file(render)],
+        "effort": "low",
     }
 
     def chat(provider: str, model: str) -> gateway.Call:
         return providers.chat_call(provider, model, affinity_key=ctx.run_id, messages=[{"role": "user", "content": chat_content}],
-                                   response_format=fmt, max_tokens=3000)  # fmt: skip
+                                   response_format=fmt, max_tokens=1800, reasoning_effort="low")  # fmt: skip
 
     spark = providers.responses_call(
         settings.model_spark,

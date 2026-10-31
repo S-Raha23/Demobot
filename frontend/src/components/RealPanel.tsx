@@ -86,6 +86,7 @@ export function RealPanel(props: Props) {
       const uniqueIds = ids.every((x) => x != null) && new Set(ids).size === ids.length;
       if (tracks && (masks || trails)) {
         const moving = new Set((grounded?.segments ?? []).filter((m) => t >= m.t0 - 0.2 && t <= m.t1 + 0.2).map((m) => m.object));
+        const placed: [number, number, number, number][] = []; // label boxes this frame, so none hides another
         tracks.tracks.forEach((tr, ti) => {
           const col = trackColor(tracks.tracks, tr.name);
           const fr = tr.frames;
@@ -151,7 +152,10 @@ export function RealPanel(props: Props) {
           g.font = "600 11.5px Inter Variable, Inter, sans-serif";
           const tw = g.measureText(text).width;
           const lx = Math.max(ox + 2, Math.min(minX, ox + iw * s - tw - 16));
-          const ly = Math.max(oy + 2, minY - 22);
+          let ly = Math.max(oy + 2, minY - 22);
+          const hits = (y: number) => placed.some(([px, py, pw, ph]) => lx < px + pw && px < lx + tw + 14 && y < py + ph && py < y + 18);
+          for (let k = 0; k < 6 && hits(ly); k++) ly = ly - 20 >= oy + 2 ? ly - 20 : ly + 40;
+          placed.push([lx, ly, tw + 14, 18]);
           g.fillStyle = "rgba(8,12,18,0.78)";
           roundRect(g, lx, ly, tw + 14, 18, 9);
           g.fill();

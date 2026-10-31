@@ -83,7 +83,8 @@ def _read_json(p: Path) -> Any:
 def health() -> dict[str, object]:
     mode = settings.demobot_mode
     headroom = {} if mode == "replay" else {p: budget.remaining(mode, p) for p in PROVIDERS}
-    return {"ok": True, "mode": mode, "version": app.version, "headroom_usd": headroom}
+    return {"ok": True, "mode": mode, "version": app.version, "headroom_usd": headroom,
+            "frontier": settings.frontier()}  # fmt: skip
 
 
 @app.get("/api/runs")
@@ -96,9 +97,28 @@ def list_runs() -> list[dict[str, Any]]:
             meta = _read_json(d / "run.json")
             if meta and d.name not in seen:
                 card = _read_json(d / "artifacts" / "card.json")
-                seen[d.name] = {**meta, "baked": root == BAKED, "card": card}
+                seen[d.name] = {
+                    **meta,
+                    "baked": root == BAKED,
+                    "card": card,
+                    "clip": meta.get("source"),
+                    "source": run_source(meta),
+                }
     ordered = sorted(seen.values(), key=lambda r: r.get("created_at", ""), reverse=True)
-    return sorted(ordered, key=lambda r: bool(r.get("fixture")))  # real runs before fixture runs
+    # real clips first, then synthetic clips, then fixture runs (simulated model calls)
+    return sorted(ordered, key=lambda r: (bool(r.get("fixture")), r["source"] != "real"))
+
+
+def run_source(meta: dict[str, Any]) -> str:
+    """real | synthetic, from the run's clip: always shown as a badge (docs/11 Fix 0, item 5)."""
+    if meta.get("source_kind") in ("real", "synthetic"):
+        return str(meta["source_kind"])
+    hint = " ".join(
+        str(meta.get(k, "")) for k in ("note", "baked_from", "source", "run_id")
+    ).lower()
+    if meta.get("fixture") or "synth" in hint or "syn7" in hint:
+        return "synthetic"
+    return "real" if "real" in hint else "synthetic"
 
 
 @app.get("/api/runs/{run_id}")
@@ -107,8 +127,9 @@ def get_run(run_id: str) -> dict[str, Any]:
     files = sorted(
         str(p.relative_to(d)) for p in (d / "artifacts").rglob("*") if p.is_file()
     ) if (d / "artifacts").exists() else []  # fmt: skip
+    meta = _read_json(d / "run.json") or {}
     return {
-        "run": _read_json(d / "run.json"),
+        "run": {**meta, "clip": meta.get("source"), "source": run_source(meta)} if meta else None,
         "state": _read_json(d / "state.json"),
         "artifacts": files,
     }
@@ -192,15 +213,22 @@ def _latest_program(d: Path) -> tuple[str, int]:
 async def try_layout(run_id: str, body: dict[str, Any]) -> dict[str, Any]:
     """Run the skill's program on a judge-edited layout: simulation only, free.
     Body: {"objects": [{name, x, y, yaw?}]} (moves applied to the demo layout) or a full Layout."""
+    from demobot import versions
     from demobot.program.sandbox import simulate
-    from demobot.sim.layouts import validate
+    from demobot.sim.layouts import repair, validate
 
     d = run_dir(run_id)
     scene = _read_json(d / "artifacts" / "twin_scene.json")
-    spec = _read_json(d / "artifacts" / "taskspec.json")
-    if not scene or not spec:
+    if not scene or not (d / "artifacts" / "taskspec.json").exists():
         raise HTTPException(409, "this run has no twin yet")
-    base = Layout.model_validate(scene["layout"])
+    try:
+        rec = versions.get(d, body.get("version"))
+    except KeyError:
+        raise HTTPException(404, "no such skill version") from None
+    spec = json.loads(versions.spec(d, rec).model_dump_json())
+    base = repair(Layout.model_validate(scene["layout"]))[
+        0
+    ]  # runs built before the repair at twin_build may overlap
     if "work_area" in body:
         layout = Layout.model_validate(body)
     else:
@@ -215,7 +243,8 @@ async def try_layout(run_id: str, body: dict[str, Any]) -> dict[str, Any]:
     problems = validate(layout)
     if problems:
         return {"ok": False, "problems": problems}
-    code, version_ = _latest_program(d)
+    prog = versions.program(d, rec)
+    code, version_ = (prog.code, prog.version) if prog else _latest_program(d)
     goal = [GoalClause.model_validate(g) for g in spec["goal"]]
     res = await simulate(code, layout, goal, render=False)
     out = res.model_dump(mode="json")
@@ -241,8 +270,50 @@ def shuffle(run_id: str, seed: int = 0) -> dict[str, Any]:
 
 @app.get("/api/skills")
 def skills() -> list[dict[str, Any]]:
-    return [r["card"] | {"run_title": r.get("title"), "fixture": r.get("fixture", False)}
-            for r in list_runs() if r.get("card")]  # fmt: skip
+    """One entry per skill version: the demo skill (v1) and any corrected versions, each with its
+    own title, goal and program (never mixed)."""
+    from demobot import versions
+    from demobot.verify import clause_words
+
+    out = []
+    for r in list_runs():
+        if not r.get("card"):
+            continue
+        d = run_dir(r["run_id"])
+        base = r["card"] | {
+            "run_title": r.get("title"),
+            "fixture": r.get("fixture", False),
+            "source": r.get("source"),
+        }
+        for v in versions.load(d):
+            entry = base | {
+                "version": v["version"],
+                "version_label": v["label"],
+                "program_version": v.get("program_version"),
+            }
+            if v["version"] > 1:
+                sp = versions.spec(d, v)
+                entry |= {"title": v["title"], "description": sp.generalization or sp.summary,
+                          "goal_text": "; ".join(clause_words(c) for c in sp.goal),
+                          "skill_id": f"{base['skill_id']}@v{v['version']}"}  # fmt: skip
+            out.append(entry)
+    return out
+
+
+@app.get("/api/runs/{run_id}/skill")
+def skill_version(run_id: str, v: int | None = None) -> dict[str, Any]:
+    """A skill version as one record: title, spec (goal) and program, for Try-it and the run page."""
+    from demobot import versions
+
+    d = run_dir(run_id)
+    try:
+        rec = versions.get(d, v)
+    except KeyError:
+        raise HTTPException(404, f"no version {v}") from None
+    prog = versions.program(d, rec)
+    return {**rec, "spec": json.loads(versions.spec(d, rec).model_dump_json()),
+            "program": json.loads(prog.model_dump_json()) if prog else None,
+            "versions": [{k: x[k] for k in ("version", "label", "title")} for x in versions.load(d)]}  # fmt: skip
 
 
 @app.get("/api/skills/{run_id}/export")
@@ -265,7 +336,13 @@ def costs() -> dict[str, Any]:
         c = _read_json(run_dir(r["run_id"]) / "artifacts" / "costs.json")
         if c:
             runs.append({"run_id": r["run_id"], "title": r.get("title"), **c})
-    return {"ledger": budget.summary(), "runs": runs}
+    ledger = budget.summary()
+    if not any(r.get("usd") for r in ledger.get("by_provider", {}).values()):
+        # the deployed site has its own (empty) ledger: show the build ledger's snapshot instead
+        snap = _read_json(ROOT / "eval" / "ledger_snapshot.json")
+        if snap:
+            ledger = snap
+    return {"ledger": ledger, "runs": runs}
 
 
 # ---------- live work: runs, samples, corrections ----------

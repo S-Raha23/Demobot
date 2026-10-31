@@ -1,5 +1,5 @@
 {
- "summary": "Put the green (yellow tennis) ball inside the tub.",
+ "summary": "The person put the spoon inside the tub.",
  "objects": [
   {
    "name": "silver spoon",
@@ -122,7 +122,7 @@
   {
    "quant": "the",
    "select": {
-    "name": "yellow tennis ball",
+    "name": "silver spoon",
     "kind": null,
     "role": null,
     "names": null
@@ -139,7 +139,7 @@
    "order": null
   }
  ],
- "generalization": "Put the green (yellow tennis) ball inside the tub, wherever things start.",
+ "generalization": "Put the silver spoon inside the white plastic tub wherever they start.",
  "uncertainties": [
   "Exact number and type of the light-blue pen-like objects is unclear; counted as three separate pens as distractors.",
   "Exact dimensions and colors are estimates from video.",

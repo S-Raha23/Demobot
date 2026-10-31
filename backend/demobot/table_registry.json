@@ -1,0 +1,96 @@
+{
+ "_note": "The human's table (Oct 31, 2026): canonical names for every run, card and Try-it page. Edit data/registry/table.json to override.",
+ "objects": [
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "color": "white",
+   "size_cm": [
+    14,
+    14,
+    9
+   ],
+   "count": 1,
+   "looks": "square white plastic tub (a food container with a printed label), open top",
+   "shape": "box"
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "color": "teal",
+   "size_cm": [
+    14,
+    1.2,
+    1.2
+   ],
+   "count": 2,
+   "looks": "thin teal/light-blue ballpoint pen: a narrow rod with a clip and a pointed tip",
+   "shape": "box"
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "color": "teal",
+   "size_cm": [
+    13,
+    2.2,
+    1.2
+   ],
+   "count": 1,
+   "looks": "teal/light-blue utility knife: flatter and wider than a pen, with a blade slider, no clip",
+   "shape": "box"
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "color": "white",
+   "size_cm": [
+    3.2,
+    3.2,
+    8.5
+   ],
+   "count": 1,
+   "looks": "small upright white glue bottle with a blue cap and a printed label",
+   "shape": "cylinder"
+  },
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "color": "yellow-green",
+   "size_cm": [
+    6.6,
+    6.6,
+    6.6
+   ],
+   "count": 1,
+   "looks": "fuzzy yellow-green tennis ball",
+   "shape": "sphere"
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "color": "silver",
+   "size_cm": [
+    14,
+    3,
+    1
+   ],
+   "count": 1,
+   "looks": "shiny steel spoon",
+   "shape": "box"
+  },
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "color": "white",
+   "size_cm": [
+    8,
+    8,
+    9
+   ],
+   "count": 1,
+   "looks": "white ceramic mug with a handle",
+   "shape": "cylinder"
+  }
+ ]
+}

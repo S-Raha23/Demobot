@@ -1,0 +1,29 @@
+[
+ {
+  "version": 1,
+  "label": "from your demo",
+  "title": "Put the teal pen left of the white box",
+  "taskspec": "taskspec.json",
+  "program_version": 4
+ },
+ {
+  "version": 2,
+  "label": "corrected by text",
+  "title": "The back teal pen goes to the right of the white box instead of the left",
+  "taskspec": "taskspec_v2.json",
+  "program_version": 6,
+  "said": "No, the pen goes to the right of the box instead.",
+  "language": "English",
+  "from_version": 1
+ },
+ {
+  "version": 3,
+  "label": "corrected by voice",
+  "title": "The back teal pen goes to the left of the white box instead of the right",
+  "taskspec": "taskspec_v3.json",
+  "program_version": 7,
+  "said": "no, the pen goes to the left of the box instead.",
+  "language": "English",
+  "from_version": 2
+ }
+]

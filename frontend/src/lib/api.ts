@@ -1,4 +1,4 @@
-import type { Health, Layout, RunDetail, RunEvent, RunMeta, SkillCard, TryLayoutResponse } from "./types";
+import type { Health, Layout, RunDetail, RunEvent, RunMeta, SkillCard, SkillVersion, TryLayoutResponse } from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -65,12 +65,13 @@ export const api = {
   events: (id: string) => req<RunEvent[]>(`/api/runs/${encodeURIComponent(id)}/events.json`),
   skills: () => req<SkillCard[]>("/api/skills"),
   costs: () => req<CostsResponse>("/api/costs"),
-  tryLayout: (id: string, objects: { name: string; x: number; y: number; yaw?: number }[]) =>
+  tryLayout: (id: string, objects: { name: string; x: number; y: number; yaw?: number }[], version?: number) =>
     req<TryLayoutResponse>(`/api/runs/${encodeURIComponent(id)}/try-layout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ objects }),
+      body: JSON.stringify({ objects, version }),
     }),
+  skill: (id: string, v?: number) => req<SkillVersion>(`/api/runs/${encodeURIComponent(id)}/skill${v ? `?v=${v}` : ""}`),
   shuffle: (id: string, seed: number) =>
     req<Layout>(`/api/runs/${encodeURIComponent(id)}/shuffle?seed=${seed}`, { method: "POST" }),
   createRun: (form: FormData) => req<{ run_id: string }>("/api/runs", { method: "POST", body: form }),
@@ -96,6 +97,8 @@ export interface Sample {
   title: string;
   duration_s?: number;
   thumb?: string;
+  source?: "real" | "synthetic";
+  cached?: boolean; // ships its recorded run's model responses: runs for free
 }
 
 export interface LedgerRow {
@@ -106,6 +109,6 @@ export interface LedgerRow {
 }
 
 export interface CostsResponse {
-  ledger: { by_provider: Record<string, LedgerRow>; by_model: Record<string, LedgerRow>; remaining?: unknown } | null;
+  ledger: { by_provider: Record<string, LedgerRow>; by_model: Record<string, LedgerRow>; remaining?: unknown; snapshot?: string } | null;
   runs: ({ run_id: string; title?: string } & import("./types").CostsFile)[];
 }

@@ -78,8 +78,16 @@ export const TwinView = forwardRef<TwinHandle, TwinViewProps>(function TwinView(
   }, [p.scene, p.cameraTrack, p.runId]);
 
   useEffect(() => {
-    if (layout) tw.current?.setLayout(layout.objects.map((o) => ({ ...o })));
-  }, [layout]);
+    if (!layout) return;
+    const tex: Record<string, string> = {};
+    for (const o of p.scene?.layout.objects ?? layout.objects)
+      if (o.texture) tex[o.name] = artifactUrl(p.runId, o.texture.startsWith("artifacts/") ? o.texture : `artifacts/${o.texture}`);
+    tw.current?.setObjectTextures(tex);
+    // label what the task is about by default (moved objects, containers, references); distractors on hover
+    tw.current?.setLabelFocus(layout.objects.filter((o) => o.role !== "distractor").map((o) => o.name));
+    tw.current?.setLayout(layout.objects.map((o) => ({ ...o })));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout, p.scene, p.runId]);
 
   useEffect(() => {
     tw.current?.setTrajectory(p.trajectory);

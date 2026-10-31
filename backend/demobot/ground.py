@@ -252,9 +252,13 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
     contact_list: list[Contact] = []
     ref_k = round(cal.reference_t * fps)
     unseen_start: set[str] = set()
+    from demobot import registry
+
+    entries = registry.load()
     for o in spec.objects:
         t = by.get(o.name)
-        h = float(min(20.0, max(1.0, o.est_height_cm)))
+        ent = registry.entry_for(o.name, entries)
+        h = float(ent.size_cm[2]) if ent else float(min(20.0, max(1.0, o.est_height_cm)))
         if t is None or "not_found" in t.flags:
             flags.append(f"{o.name}: not tracked")
             continue
@@ -278,6 +282,12 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
                 2.0, min(w, d) if o.role == "container" or shape == "sphere" else (w + d) / 2
             )
             yaw = 0.0
+        if (
+            ent is not None
+        ):  # the registry knows this object: its true shape and size; position and yaw are measured
+            shape, w, d = ent.shape, float(ent.size_cm[0]), float(ent.size_cm[1])
+            if shape != "box":
+                yaw = 0.0
         is_open = o.role == "container" or o.kind.lower() in {
             "box",
             "bowl",

@@ -6,10 +6,10 @@
  "mode": "dev",
  "status": "done",
  "fixture": false,
- "program_version": 7,
+ "program_version": 4,
  "error": {
   "code": "VERIFY_FAILED",
-  "message": "perception_gap: symbolic \u2713 real-world \u2713 perceptual \u2717 judge \u2713",
+  "message": "perception_gap: symbolic ✓ real-world ✓ perceptual ✗ judge ✓",
   "stage": "verify"
  },
  "cost_usd": 1.6895,

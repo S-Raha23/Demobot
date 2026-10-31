@@ -11,6 +11,10 @@ PROVIDERS: tuple[ProviderName, ...] = ("meta", "baseten", "modal")
 ROOT = Path(__file__).resolve().parents[2]
 
 
+# frontier features whose acceptance test has passed, so judge mode shows them (docs/11 ground rule 2)
+JUDGE_ACCEPTED: set[str] = set()
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ROOT / ".env", extra="ignore", protected_namespaces=()
@@ -36,6 +40,22 @@ class Settings(BaseSettings):
 
     # app
     demobot_mode: Literal["dev", "replay", "judge"] = "dev"
+    # frontier features (docs/11): on in dev; on in judge mode only once their acceptance test passes
+    frontier_forge: bool | None = None
+    frontier_live: bool | None = None
+    frontier_ask: bool | None = None
+
+    def frontier(self) -> dict[str, bool]:
+        """Which frontier features are on: an explicit env value wins, else on in dev and off in
+        judge/replay mode until the feature is accepted (JUDGE_ACCEPTED below)."""
+        out = {}
+        for name in ("forge", "live", "ask"):
+            v = getattr(self, f"frontier_{name}")
+            out[name] = (
+                v if v is not None else (self.demobot_mode == "dev" or name in JUDGE_ACCEPTED)
+            )
+        return out
+
     demobot_fixtures: bool = False
     data_dir: str = "data"
     fixtures_dir: str = "backend/tests/fixtures/responses"

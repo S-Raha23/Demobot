@@ -1,5 +1,5 @@
 {
- "summary": "Put the green ball in the tub",
+ "summary": "The person put two blue pens into the white plastic tub.",
  "objects": [
   {
    "name": "left blue pen",
@@ -132,7 +132,7 @@
    "quant": "all",
    "select": {
     "name": null,
-    "kind": "tennis ball",
+    "kind": "pen",
     "role": null,
     "names": null
    },
@@ -148,7 +148,7 @@
    "order": null
   }
  ],
- "generalization": "put the green ball in the tub, wherever things start.",
+ "generalization": "Every pen goes into the white plastic tub, wherever it starts.",
  "uncertainties": [
   "The light-blue object left on the table looks like a pen cap but could be a third pen; classified as pen cap distractor with different kind.",
   "Both pens appear to be grasped together and released together in the tub, so individual start/end times are approximate and overlapping.",

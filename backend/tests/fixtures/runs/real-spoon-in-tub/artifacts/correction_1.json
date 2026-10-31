@@ -1,7 +1,7 @@
 {
  "n": 1,
  "transcript": {
-  "text": "green ball \u0915\u094b tub \u0915\u0947 \u0905\u0902\u0926\u0930 \u0930\u0916\u094b.",
+  "text": "green ball को tub के अंदर रखो.",
   "language": "Hindi",
   "languages": [
    "Hindi"
@@ -10,7 +10,7 @@
    {
     "t0": 0.0,
     "t1": 8.17,
-    "text": "green ball \u0915\u094b tub \u0915\u0947 \u0905\u0902\u0926\u0930 \u0930\u0916\u094b."
+    "text": "green ball को tub के अंदर रखो."
    }
   ],
   "source": "correction"
@@ -44,5 +44,7 @@
  ],
  "demo_passes": true,
  "stress_passed": "12/12",
- "real_world": "superseded: the correction changes the goal the demo showed"
+ "real_world": "superseded: the correction changes the goal the demo showed",
+ "version": 2,
+ "taskspec": "taskspec_v2.json"
 }

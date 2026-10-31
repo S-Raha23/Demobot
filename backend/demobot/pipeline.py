@@ -14,6 +14,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import cv2
+
 from demobot import calibrate, ground, listen, media, perceive, verify, watch
 from demobot.config import settings
 from demobot.errors import DemoBotError
@@ -103,6 +105,7 @@ def create_run(
             "run_id": rid, "title": title or clip.stem.replace("_", " "),
             "created_at": datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "source": clip.name, "mode": mode or settings.demobot_mode, "status": "created", "fixture": False,
+            "source_kind": "synthetic" if "synth" in str(clip.resolve()).lower() else "real",
         }, indent=1))  # fmt: skip
     return open_run(rid)
 
@@ -118,9 +121,16 @@ def open_run(run_id: str) -> Run:
 
 # ---------- stages ----------
 async def stage_ingest(run: Run) -> str:
-    clip = next((run.dir / "input").glob("clip.*"))
-    info = media.ingest(clip, run.art)
-    run.write("ingest.json", info)
+    prepared = run.dir / "input" / "prepared"
+    if (prepared / "ingest.json").exists():
+        # a sample clip ships its ingested media, so every later step (and its cached model calls)
+        # matches the recorded run exactly, whatever ffmpeg this machine has
+        shutil.copytree(prepared, run.art, dirs_exist_ok=True)
+        info = run.read("ingest.json", IngestInfo)
+    else:
+        clip = next((run.dir / "input").glob("clip.*"))
+        info = media.ingest(clip, run.art)
+        run.write("ingest.json", info)
     run.artifact("ingest", run.art / "keyframes" / "kf_00.jpg", "image", "First frame")
     return f"{info.duration_s:.1f} s of action, {info.width}×{info.height}" + (
         ", with narration" if info.has_audio else ""
@@ -175,6 +185,7 @@ async def stage_perceive(run: Run) -> str:
     info = run.read("ingest.json", IngestInfo)
     spec = run.read("taskspec.json", TaskSpec)
     tracks, final = await perceive.perceive(run.ctx, run.art, info, spec)
+    tracks, final = await _identify(run, spec, tracks, final)
     (run.art / "tracks.json").write_text(json.dumps({
         "fps": info.analysis_fps, "size": [info.width, info.height],
         "tracks": [json.loads(t.model_dump_json()) for t in tracks]}))  # fmt: skip
@@ -182,6 +193,53 @@ async def stage_perceive(run: Run) -> str:
     run.artifact("perceive", run.art / "tracks.json", "json", "SAM 3.1 tracks")
     good = [t for t in tracks if t.quality >= 0.5 and t.name != "hand"]
     return f"{len(good)}/{len(tracks) - 1} objects tracked well, plus the hand"
+
+
+async def _identify(
+    run: Run, spec: TaskSpec, tracks: list[Track], final: dict[str, Any]
+) -> tuple[list[Track], dict[str, Any]]:
+    """The crop check against the table's registry (docs/11 Fix 0, items 1 and 4): canonical names
+    and kinds for every tracked object, so a cutter called a pen stops being one."""
+    from demobot import registry
+
+    made = registry.crop_grid(run.art / "analysis.mp4", tracks)
+    if made is None:
+        return tracks, final
+    grid, crop_names = made
+    gp = run.art / "identify_grid.jpg"
+    cv2.imwrite(str(gp), grid, [cv2.IMWRITE_JPEG_QUALITY, 88])
+    entries = registry.load()
+    try:
+        labels = await registry.identify(run.ctx.at("perceive"), gp, len(crop_names), entries)
+    except DemoBotError as e:
+        run.ctx.emit(
+            "log",
+            "perceive",
+            payload={"message": f"object check unavailable ({e.code}); keeping Watch's names"},
+        )
+        return tracks, final
+    by_track = {
+        crop_names[lab.crop - 1]: (lab.object, lab.confidence)
+        for lab in labels
+        if 1 <= lab.crop <= len(crop_names)
+    }
+    plan = registry.plan_renames(spec, tracks, by_track, entries)
+    names = registry.new_names(spec, tracks, plan)
+    for old, new in names.items():
+        if old != new:
+            run.ctx.emit(
+                "log", "perceive", payload={"message": f"object check: '{old}' is the {new}"}
+            )
+    if not (run.art / "taskspec_watch.json").exists():
+        (run.art / "taskspec_watch.json").write_text(spec.model_dump_json(indent=1))
+    new_spec = registry.apply(spec, plan, names)
+    run.write("taskspec.json", new_spec)
+    run.artifact(
+        "perceive", run.art / "taskspec.json", "json", "What it understood (canonical names)"
+    )
+    tracks = [t.model_copy(update={"name": names.get(t.name, t.name)}) for t in tracks]
+    final = {names.get(k, k): v for k, v in final.items()}
+    return tracks, final
 
 
 async def stage_ground(run: Run) -> str:
@@ -210,7 +268,17 @@ async def stage_ground(run: Run) -> str:
 async def stage_twin_build(run: Run) -> str:
     cal = run.read("calibration.json", Calibration)
     gd = run.read("grounded.json", GroundedDemo)
-    layout = Layout(objects=gd.initial, work_area=cal.work_area, robot_base_cm=cal.robot_base_cm)
+    layout, notes = repair(
+        Layout(objects=gd.initial, work_area=cal.work_area, robot_base_cm=cal.robot_base_cm)
+    )
+    if notes:  # measured positions can overlap by a few mm: separate them once, here
+        run.ctx.emit(
+            "log",
+            "twin_build",
+            payload={
+                "message": f"layout repair: {len(notes)} small nudge(s) to separate overlapping stand-ins"
+            },
+        )
     scene = {"layout": json.loads(layout.model_dump_json()), "markers": [json.loads(m.model_dump_json()) for m in cal.markers],
              "camera": json.loads(cal.camera.model_dump_json()), "image_size": list(cal.image_size),
              "table_texture": "artifacts/rectified_first.png",
