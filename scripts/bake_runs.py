@@ -36,7 +36,8 @@ def bake(src_id: str, new_id: str) -> Path:
     (dst / "events.jsonl").write_text("\n".join(lines) + "\n")
     meta = json.loads((dst / "run.json").read_text())
     meta |= {"run_id": new_id, "baked_from": src_id, "status": "done", "fixture": False,
-             "note": "real model calls; the input clip is synthetic" if "synthetic" in str(meta.get("source", "")) or src_id.startswith("syn")
+             "note": "real model calls; the input clip is synthetic"
+             if "synthetic" in str(meta.get("source", "")) or src_id.startswith("syn")
              else "real model calls on a real clip"}  # fmt: skip
     (dst / "run.json").write_text(json.dumps(meta, indent=1))
     card = dst / "artifacts" / "card.json"

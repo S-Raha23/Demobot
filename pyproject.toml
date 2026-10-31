@@ -54,7 +54,7 @@ markers = ["live: calls a real paid API (run by hand, never in make check)"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-extend-exclude = ["docs", "data", "reference", "frontend", "media"]
+extend-exclude = ["docs", "data", "reference", "frontend", "media", "backend/tests/fixtures"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
