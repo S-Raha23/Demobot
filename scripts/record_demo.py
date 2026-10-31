@@ -329,7 +329,9 @@ def build(run: str, url: str, short: bool) -> Path:
         if footage is not None:
             s.video(footage, 0.5, total / 2, "I showed it once.")
             s.sound(footage, 0.5, total / 2)
-            s.take("hook", hook_start, hook["_length"], total / 2, "It learned the task.", hook_crop)
+            s.take(
+                "hook", hook_start, hook["_length"], total / 2, "It learned the task.", hook_crop
+            )
         else:
             s.take(
                 "hook",
@@ -416,7 +418,9 @@ def main() -> None:
         "--speed", type=float, default=1.0, help="replay speed while recording (lower = smoother)"
     )
     ap.add_argument("--skip-record", action="store_true", help="reuse the takes in data/demo_takes")
-    ap.add_argument("--takes", default="", help="re-record only these takes (comma-separated: hook,main,try)")
+    ap.add_argument(
+        "--takes", default="", help="re-record only these takes (comma-separated: hook,main,try)"
+    )
     a = ap.parse_args()
     if not shutil.which("ffmpeg"):
         sys.exit("ffmpeg is required")
