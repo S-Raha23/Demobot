@@ -112,5 +112,5 @@ def test_api_reference_lists_the_contract() -> None:
         "class Obj",
     ):
         assert needle in ref
-    text, sha = synth.system_prompt()
+    text, _ = synth.system_prompt()
     assert "{api}" not in text and "{examples}" not in text and "place_in" in text
