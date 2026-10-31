@@ -6,6 +6,7 @@ Builds the frontend, (re)creates the `demobot-keys` Modal secret from .env throu
 are never printed), then runs `modal deploy deploy/modal_app.py`.
 """
 
+import contextlib
 import subprocess
 import sys
 from pathlib import Path
@@ -29,10 +30,8 @@ KEYS = {
 def main() -> None:
     subprocess.run(["npx", "vite", "build"], cwd=ROOT / "frontend", check=True)
     env = {k: v for k, v in KEYS.items() if v}
-    try:
+    with contextlib.suppress(Exception):  # the first deploy has no secret to replace
         modal.Secret.objects.delete("demobot-keys")
-    except Exception:
-        pass
     modal.Secret.objects.create("demobot-keys", env)
     print(f"secret demobot-keys: {len(env)} values set")
     subprocess.run(["modal", "deploy", "deploy/modal_app.py"], cwd=ROOT, check=True)
