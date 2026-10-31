@@ -64,7 +64,7 @@ Follow `PROMPT.md`.
 - [x] 0. Checkerboard calibration video (1080×1920, 60 s) is in `data/calibration/checkerboard.mp4`
 
 - [x] 1. Markers glued (confirmed by you: still glued properly)
-- [ ] 2. Clips and voice notes in `data/clips/raw/`
+- [x] 2. Clips and voice notes in `data/clips/raw/` (06_push_box 1080p/16 s + 07 received; note: you rotated the **silver spoon**, so the file is renamed `07_rotate_spoon.mp4`; `correction_bn.m4a` 5.4 s also received. Clips stay local — `data/` is gitignored.)
 - [x] 3. `.env` filled (all 14 variables present); `gh` logged in (S-Raha23); Modal token present and the Modal credit covers LLM calls (checked Sat Oct 31 05:00 IST). Meta and Baseten credit pages not checkable by Claude.
 - [x] 4. Claude Code started (Sat Oct 31, 04:30 IST)
 
