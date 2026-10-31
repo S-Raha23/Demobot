@@ -21,7 +21,15 @@ from demobot.config import PROVIDERS, ROOT, settings
 from demobot.errors import DemoBotError
 from demobot.schemas import GoalClause, Layout, SceneObject
 
-app = FastAPI(title="DemoBot", version=version("demobot"))
+
+def _version() -> str:
+    try:
+        return version("demobot")
+    except Exception:  # the deployed image adds the source without installing the package
+        return "2.0.0"
+
+
+app = FastAPI(title="DemoBot", version=_version())
 app.add_middleware(
     CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_methods=["*"], allow_headers=["*"],
@@ -244,9 +252,38 @@ def costs() -> dict[str, Any]:
 
 
 # ---------- live work: runs, samples, corrections ----------
-def _live_allowed() -> None:
+JUDGE_MIN_HEADROOM_USD = 1.0
+UPLOADS_PER_IP_PER_DAY = 2
+_uploads: dict[tuple[str, str], int] = {}
+
+
+def _live_allowed(request: Request | None = None, upload: bool = False) -> None:
+    """Replay mode has no live runs; judge mode stops at the daily caps (docs/03) and limits
+    uploads per visitor. Try-it (simulation) is always free and never comes here."""
     if settings.demobot_mode == "replay":
         raise HTTPException(405, "live runs are off in replay mode")
+    if settings.demobot_mode != "judge":
+        return
+    for provider in PROVIDERS:
+        left = budget.remaining("judge", provider).get(f"{provider}_judge_daily", 0.0)
+        if left < JUDGE_MIN_HEADROOM_USD:
+            raise HTTPException(
+                429,
+                "Live budget for today is used. Enjoy the recorded runs and the free Try-it page.",
+            )
+    if upload and request is not None and request.client is not None:
+        import hashlib
+        from datetime import UTC, datetime
+
+        key = (
+            hashlib.sha256(request.client.host.encode()).hexdigest()[:16],
+            datetime.now(UTC).date().isoformat(),
+        )
+        if _uploads.get(key, 0) >= UPLOADS_PER_IP_PER_DAY:
+            raise HTTPException(
+                429, f"Uploads are limited to {UPLOADS_PER_IP_PER_DAY} per visitor per day."
+            )
+        _uploads[key] = _uploads.get(key, 0) + 1
 
 
 @app.get("/api/samples")
@@ -271,8 +308,9 @@ async def create_run(request: Request) -> dict[str, str]:
     """Multipart `clip` (+ optional `task_hint`), or JSON {"sample": id}."""
     from demobot import jobs, media
 
-    _live_allowed()
-    if request.headers.get("content-type", "").startswith("application/json"):
+    is_json = request.headers.get("content-type", "").startswith("application/json")
+    _live_allowed(request, upload=not is_json)
+    if is_json:
         body = await request.json()
         return {"run_id": jobs.start_sample(str(body.get("sample", "")))}
     form = await request.form()

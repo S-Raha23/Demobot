@@ -84,3 +84,16 @@ def test_live_endpoints(monkeypatch, tmp_path) -> None:
     assert c.post("/api/runs", json={"sample": "pens"}).status_code == 405
     assert c.get("/assets/print/markers.pdf").headers["content-type"] == "application/pdf"
     assert "markdown" in c.get("/api/eval").json()
+
+
+def test_judge_mode_limits(monkeypatch) -> None:
+    from demobot import api, jobs
+
+    c = TestClient(app)
+    monkeypatch.setattr(settings, "demobot_mode", "judge")
+    monkeypatch.setattr(jobs, "start_sample", lambda s: "run-1")
+    assert c.post("/api/runs", json={"sample": "x"}).status_code == 202
+    monkeypatch.setattr(settings, "cap_meta_judge_daily_usd", 0.5)  # below the headroom floor
+    r = c.post("/api/runs", json={"sample": "x"})
+    assert r.status_code == 429 and "Try-it" in r.text
+    _ = api

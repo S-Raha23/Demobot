@@ -72,5 +72,8 @@ Follow `PROMPT.md`.
 
 (Claude adds items here, newest first, with the date and why it is blocking.)
 
+- **Sat Oct 31 14:10 IST: deploy the judge site (2 minutes, one command).** Hugging Face now charges (PRO, $9/month) for any Docker Space, so DemoBot deploys to **Modal** instead, on the Modal credits you already have. Claude Code's safety check does not let Claude run a production deploy itself. In the VS Code terminal run:
+  `cd ~/The_Demobot && uv run python scripts/deploy_modal.py`
+  It builds the frontend, stores your keys as a Modal secret (never printed), deploys, and prints the URL (`https://<workspace>--demobot.modal.run`). Then tell Claude the URL. (Prefer Hugging Face? Subscribe to PRO and run `uv run python scripts/deploy_space.py` instead.) To let Claude redeploy updates later by itself, add `"Bash(uv run python scripts/deploy_modal.py)"` to the allow list in `.claude/settings.local.json`.
 - (done Sat 11:15 IST) GitHub repo created by you: https://github.com/S-Raha23/Demobot (private until submission; Claude pushes after each milestone).
 - **Sat Oct 31 05:05 IST: clips and voice notes (task 2).** Expected by Sun Nov 1 evening (filmed handheld, landscape, by a friend). `data/clips/raw/` is empty. Not blocking: Claude builds on synthetic clips until they arrive, but the live acceptance tests of M4–M6 and the demo video need the real ones. Please also glue the markers (task 1) if not done.

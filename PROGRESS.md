@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M13 Deploy judge mode (MVP gate passed Sat 13:20 IST: three full real runs baked: `pens-in-cup`, `pen-left-of-box`, `swap-two`)
+**Now:** M14 eval, README, demo video (M13 waits for the human's one deploy command)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -24,7 +24,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M10 | Voice correction | done in English (Hindi/Bengali waits for the human's voice notes) | Sat 12:40 | `correct.py` + Wonder correction mode with an `update_goal` tool (goal diff + English gloss) → new program → re-checked on demo + red-team. Live: a typed and a **spoken English** correction flipped `left_of`↔`right_of` on syn7-01 (v4 → v6 → v7, red-team 12/12 each). espeak-ng Hindi/Bengali speech is too robotic for STT, so that check needs `correction_bn.m4a` from the human. Voice Transcribe returns `turns: []` even with speech (one segment is used). |
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
 | M12 | Skill cards, library and export | done | Sat 13:00 | Muse Image anchored-edit cards (template fallback), imperative titles/steps from the goal, `costs.json` per run from its own events (syn7-01: $1.68 to learn, 51% of spend on open weights), export zip (`/api/skills/{id}/export`), `docs/skill_api.md`. |
-| M13 | Deploy judge mode | todo | | |
+| M13 | Deploy judge mode | blocked: the human runs one deploy command | | Hugging Face needs PRO ($9/mo) for Docker Spaces, so the target is a Modal ASGI endpoint (`deploy/modal_app.py`, ledger on a Modal Volume so caps survive restarts; `scripts/deploy_modal.py`). Dockerfile kept for portability. Judge mode: 429 when a provider's judge-daily headroom < $1; 2 uploads per visitor per day; 3 synthetic sample clips + 3 baked real runs. The auto-mode classifier refuses production deploys by Claude. |
 | M14 | Eval, README, demo video | todo | | |
 | S1–S3 | Stretch goals | — | | |
 
@@ -55,7 +55,8 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M13: Dockerfile, HF Space via huggingface_hub, secrets from .env, baked runs + sample clips.
+1. M14: `eval/run_eval.py` → `eval/results.md`; README per docs/10; `scripts/record_demo.py` → `media/demo/demo_final.mp4`.
+2. After the human deploys: open the URL, check health, a replay, Try-it and one live sample run.
 3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
 4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
 5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.
