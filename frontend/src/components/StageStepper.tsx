@@ -29,7 +29,7 @@ export function StageStepper({ stages, finalStatus }: { stages: Record<string, S
                 <StatusDot status={status} accent={accent} index={i + 1} />
                 <span className={`truncate text-[12.5px] font-semibold ${status === "todo" || status === "skipped" ? "text-ink-400" : "text-ink-50"}`}>{STAGE_LABEL[s]}</span>
               </div>
-              <div className="flex min-h-[18px] flex-wrap gap-1">
+              <div className="hidden min-h-[18px] flex-wrap gap-1 min-[1400px]:flex">
                 {status === "skipped" ? (
                   <span className="text-[10px] font-medium text-ink-500">skipped · not needed</span>
                 ) : models.length ? (
