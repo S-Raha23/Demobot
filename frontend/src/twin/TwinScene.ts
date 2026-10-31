@@ -36,6 +36,9 @@ interface ObjEntry {
   spec: ObjSpec;
   group: THREE.Group;
   label: CSS2DObject;
+  pill: HTMLElement; // the visible label, offset from the anchor so labels never overlap
+  line: HTMLElement; // leader line from the object to a label that had to move
+  off: [number, number];
   body: THREE.Mesh[];
 }
 
@@ -70,6 +73,7 @@ export class TwinScene {
   private raf = 0;
   private ro: ResizeObserver;
   private mode: CameraMode = "orbit";
+  private userMoved = false; // the person orbited/zoomed: stop refitting the view on resize
   private phone: PhoneCam | null = null;
   private orbitTarget = new THREE.Vector3(0.3, 0.0, 0.2);
   private selected: string | null = null;
@@ -119,6 +123,9 @@ export class TwinScene {
     this.controls.maxPolarAngle = Math.PI * 0.49;
     this.controls.minDistance = 0.3;
     this.controls.maxDistance = 4;
+    this.controls.addEventListener("start", () => {
+      this.userMoved = true;
+    });
 
     this.pb.rotation.x = -Math.PI / 2;
     this.scene.add(this.pb);
@@ -165,6 +172,7 @@ export class TwinScene {
   /** The table: a slab plus the rectified top-down photo of the human's table. */
   setTable(work: Rect, robotBaseCm: Vec2 | null, texture?: { url: string; originCm: Vec2; pxPerCm: number } | null) {
     this.workArea = work;
+    if (this.mode === "orbit" && !this.userMoved) this.fitOrbit();
     this.table.clear();
     const x0 = Math.min(work.x0, -10) - 12;
     const x1 = Math.max(work.x1, 70) + 12;
@@ -324,27 +332,40 @@ export class TwinScene {
       const r = Math.min(w, d, h) * 0.18;
       add(roundedBox(w, d, h, r));
     }
+    // a zero-size anchor at the object's top (positioned by CSS2DRenderer) holding the pill and a
+    // leader line; layoutLabels() moves pills apart each frame
     const el = document.createElement("div");
-    el.className = "twin-label";
-    el.textContent = spec.name;
-    Object.assign(el.style, {
+    Object.assign(el.style, { width: "0px", height: "0px", pointerEvents: "none" } as CSSStyleDeclaration);
+    const line = document.createElement("div");
+    Object.assign(line.style, {
+      position: "absolute", left: "0px", top: "0px", height: "1px", width: "0px",
+      background: "rgba(148,163,184,0.7)", transformOrigin: "0 0", display: "none",
+    } as CSSStyleDeclaration);
+    const pill = document.createElement("div");
+    pill.className = "twin-label";
+    pill.textContent = spec.name;
+    Object.assign(pill.style, {
+      position: "absolute",
+      left: "0px",
+      top: "0px",
       font: "600 10.5px Inter Variable, Inter, sans-serif",
       color: "#e6edf5",
-      background: "rgba(10,15,22,0.72)",
+      background: "rgba(10,15,22,0.82)",
       border: "1px solid rgba(91,107,128,0.5)",
       padding: "1px 6px",
       borderRadius: "999px",
       whiteSpace: "nowrap",
-      transform: "translateY(-10px)",
+      transform: "translate(-50%, -100%) translate(0px, -6px)",
       pointerEvents: "none",
     } as CSSStyleDeclaration);
+    el.append(line, pill);
     const label = new CSS2DObject(el);
     label.position.set(0, 0, h / 2 + 0.025);
     label.visible = this.labelsOn;
     g.add(label);
     g.userData.objName = spec.name;
     this.pb.add(g);
-    return { spec, group: g, label, body };
+    return { spec, group: g, label, pill, line, off: [0, -6], body };
   }
 
   private ensureObjects(specs: ObjSpec[]) {
@@ -404,6 +425,7 @@ export class TwinScene {
 
   setRobotBase(base: [number, number, number, number]) {
     this.robotBase = base;
+    if (this.mode === "orbit" && !this.userMoved) this.fitOrbit();
     if (this.robot) {
       this.robot.position.set(base[0], base[1], base[2]);
       this.robot.rotation.set(0, 0, base[3]);
@@ -540,6 +562,7 @@ export class TwinScene {
 
   setCameraMode(mode: CameraMode) {
     this.mode = mode === "real" && !this.phone ? "orbit" : mode;
+    this.userMoved = false;
     const wa = this.workArea ?? { x0: 0, y0: 0, x1: 60, y1: 40 };
     const cx = (wa.x0 + wa.x1) / 200;
     const cz = (wa.y0 + wa.y1) / 200;
@@ -559,15 +582,45 @@ export class TwinScene {
     } else {
       this.controls.enabled = true;
       this.controls.enableRotate = true;
-      // a three-quarter view from the far right corner, looking across the table at the robot
-      this.camera.position.set(cx + 1.05, 0.9, cz - 0.95);
-      this.orbitTarget.set(cx, 0.26, cz + 0.18);
-      this.controls.target.copy(this.orbitTarget);
       this.camera.up.set(0, 1, 0);
       this.camera.fov = 40;
+      this.fitOrbit();
     }
     this.resize();
   }
+
+  /** The default orbit view: from the side opposite the robot, ~45° down, so the objects (and
+   *  their labels) sit in front of the robot; the distance fits the table and the arm to the
+   *  panel's aspect ratio, so a wide, short panel does not shrink them. */
+  private fitOrbit() {
+    const wa = this.workArea ?? { x0: 0, y0: 0, x1: 60, y1: 40 };
+    const x0 = wa.x0 / 100, x1 = wa.x1 / 100, z0 = wa.y0 / 100, z1 = wa.y1 / 100;
+    const xr = this.robotBase ? this.robotBase[0] : (x0 + x1) / 2;
+    const zr = this.robotBase ? -this.robotBase[1] : z1 + 0.25;
+    // what must stay in view: the table top's corners, and the arm (base, top, forward reach)
+    const pts = [
+      [x0, 0, z0], [x1, 0, z0], [x0, 0, z1], [x1, 0, z1],
+      [xr, 0, zr], [xr, 0.72, zr], [xr - 0.12, 0.62, zr - 0.15], [xr + 0.12, 0.62, zr - 0.15],
+    ].map(([x, y, z]) => new THREE.Vector3(x, y, z));
+    const centre = new THREE.Vector3((x0 + x1) / 2, 0.16, (z0 + Math.max(z1, zr)) / 2);
+    const dir = new THREE.Vector3(0.3, 0.95, -1).normalize();
+    this.camera.aspect = Math.max(0.3, this.host.clientWidth / Math.max(1, this.host.clientHeight));
+    this.camera.updateProjectionMatrix();
+    let dist = 1.6;
+    for (let k = 0; k < 6; k++) {
+      this.camera.position.copy(centre).addScaledVector(dir, dist);
+      this.camera.lookAt(centre);
+      this.camera.updateMatrixWorld(true);
+      const m = Math.max(...pts.map((q) => { const v = q.clone().project(this.camera); return Math.max(Math.abs(v.x), Math.abs(v.y)); }));
+      dist *= 1 + (m / 0.92 - 1) * 0.9; // settle where the farthest point is at 92% of the edge
+    }
+    dist = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, dist));
+    this.orbitTarget.copy(centre);
+    this.controls.target.copy(centre);
+    this.camera.position.copy(centre).addScaledVector(dir, dist);
+    this.camera.lookAt(centre);
+  }
+
 
   private applyPhoneProjection(w: number, h: number) {
     const p = this.phone!;
@@ -587,6 +640,7 @@ export class TwinScene {
     this.renderer.setSize(w, h, false);
     this.labelRenderer.setSize(w, h);
     this.camera.aspect = w / h;
+    if (this.mode === "orbit" && !this.userMoved) this.fitOrbit();
     if (this.mode === "real" && this.phone) this.applyPhoneProjection(w, h);
     else this.camera.updateProjectionMatrix();
   }
@@ -620,8 +674,8 @@ export class TwinScene {
         mat.emissive = new THREE.Color(on ? "#2dd4bf" : "#000000");
         mat.emissiveIntensity = on ? 0.35 : 0;
       }
-      e.label.element.style.borderColor = on ? "#2dd4bf" : "rgba(91,107,128,0.5)";
-      e.label.element.style.color = on ? "#5eead4" : "#e6edf5";
+      e.pill.style.borderColor = on ? "#2dd4bf" : "rgba(91,107,128,0.5)";
+      e.pill.style.color = on ? "#5eead4" : "#e6edf5";
     }
     this.opts.onSelect?.(name);
   }
@@ -698,7 +752,52 @@ export class TwinScene {
     if (this.mode !== "real") this.controls.update();
     this.renderer.render(this.scene, this.camera);
     this.labelRenderer.render(this.scene, this.camera);
+    this.layoutLabels();
   };
+
+  /** Keep labels readable when objects are close together: place them nearest-first (lowest on
+   *  screen), each at the first free spot among offsets above, below and beside its object
+   *  (preferring last frame's spot, so they do not jump), with a leader line once moved. */
+  private layoutLabels() {
+    if (!this.labelsOn) return;
+    const w = this.host.clientWidth, h = this.host.clientHeight;
+    const items: { e: ObjEntry; x: number; y: number; bw: number; bh: number }[] = [];
+    const v = new THREE.Vector3();
+    for (const e of this.objects.values()) {
+      if (!e.label.visible || !e.label.element.isConnected) continue;
+      e.label.getWorldPosition(v).project(this.camera);
+      if (v.z > 1) continue;
+      items.push({ e, x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h, bw: e.pill.offsetWidth + 4, bh: e.pill.offsetHeight + 3 });
+    }
+    items.sort((a, b) => b.y - a.y);
+    const placed: [number, number, number, number][] = [];
+    const free = (x0: number, y0: number, bw: number, bh: number) =>
+      placed.every(([px, py, pw, ph]) => x0 + bw <= px || px + pw <= x0 || y0 + bh <= py || py + ph <= y0);
+    for (const it of items) {
+      const cands: [number, number][] = [it.e.off, [0, -6]];
+      for (let k = 1; k <= 6; k++) {
+        const s = k * (it.bh + 2);
+        cands.push([0, -6 - s], [0, s + 2], [it.bw * 0.6, -6 - s / 2], [-it.bw * 0.6, -6 - s / 2]);
+      }
+      let pick = cands[cands.length - 1];
+      for (const c of cands) {
+        const x0 = it.x + c[0] - it.bw / 2, y0 = it.y + c[1] - it.bh;
+        if (free(x0, y0, it.bw, it.bh)) { pick = c; break; }
+      }
+      placed.push([it.x + pick[0] - it.bw / 2, it.y + pick[1] - it.bh, it.bw, it.bh]);
+      it.e.off = pick;
+      it.e.pill.style.transform = `translate(-50%, -100%) translate(${pick[0].toFixed(0)}px, ${pick[1].toFixed(0)}px)`;
+      // the leader line runs from the object to the pill's nearest edge
+      const moved = Math.abs(pick[0]) > 1 || pick[1] < -7 || pick[1] > 0;
+      it.e.line.style.display = moved ? "block" : "none";
+      if (moved) {
+        const ty = pick[1] > 0 ? pick[1] - it.bh : pick[1];
+        const len = Math.hypot(pick[0], ty);
+        it.e.line.style.width = `${len.toFixed(0)}px`;
+        it.e.line.style.transform = `rotate(${Math.atan2(ty, pick[0])}rad)`;
+      }
+    }
+  }
 
   dispose() {
     this.disposed = true;
