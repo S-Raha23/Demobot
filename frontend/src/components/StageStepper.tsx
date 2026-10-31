@@ -6,7 +6,7 @@ import { ModelBadge } from "./ModelBadge";
 
 export function StageStepper({ stages, finalStatus }: { stages: Record<string, StageInfo>; finalStatus?: Record<string, string> | null }) {
   return (
-    <div className="panel scroll-thin flex items-stretch overflow-x-auto px-2 py-2" data-testid="stepper">
+    <div className="panel scroll-thin flex items-stretch overflow-x-auto px-1 py-2" data-testid="stepper">
       {STAGES.map((s, i) => {
         const st = stages[s];
         let status = st?.status ?? "todo";
@@ -40,7 +40,7 @@ export function StageStepper({ stages, finalStatus }: { stages: Record<string, S
               </div>
             </div>
             {i < STAGES.length - 1 && (
-              <div className="flex w-2 shrink-0 items-center">
+              <div className="flex w-1 shrink-0 items-center min-[1400px]:w-2">
                 <div className={`h-px w-full ${done ? "bg-ink-400" : "bg-ink-700"}`} />
               </div>
             )}
