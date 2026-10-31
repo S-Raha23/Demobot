@@ -18,7 +18,7 @@ from demobot.schemas import AgentDecision, GoalClause, GroundedDemo, TaskSpec, V
 MAX_DECISIONS = 4
 BUDGET = {"rewatch": 2, "retrack": 2, "reprogram": 1}
 FIXED_POLICY = {"spec_mismatch": "rewatch", "program_bug": "reprogram", "perception_gap": "retrack",
-                "judge_dissent": "accept"}  # fmt: skip
+                "judge_dissent": "accept", "inconclusive": "retrack"}  # fmt: skip
 
 SYSTEM = """You are the supervisor of DemoBot, a system that learns a robot program from one video of a person doing a tabletop task.
 A run has failed a check. Decide the single best next action, using exactly one tool call per turn.
@@ -28,6 +28,7 @@ Failure classes:
 - program_bug: the robot program fails the goal in simulation. Use reprogram with concrete feedback.
 - perception_gap: the simulated result looks wrong to the vision model. Try retrack with a better phrase, or accept if the symbolic and real-world checks pass and the gap is explained.
 - judge_dissent: the visual judge disagrees although the checks pass. Read its reasons; accept with a caveat if they concern something outside the goal (a distractor, rendering style), otherwise investigate.
+- inconclusive: a check could not see enough to confirm the goal (nothing contradicts it, but the evidence is incomplete). Try retrack with a better phrase to get visible evidence; do not accept on inconclusive evidence alone.
 
 Be economical: each tool has a budget. Accept only when the evidence supports the goal, and say so plainly in the caveat. Stop if recovery is not possible.
 Keep the reason for each decision to one sentence."""
@@ -325,14 +326,28 @@ class Supervisor:
             return f"verify still fails: {e.message}"
 
     async def loop(self) -> Outcome:
-        for step in range(1, MAX_DECISIONS + 1):
+        unattended_asks = 0
+        while len(self.out.decisions) < MAX_DECISIONS:
             obs = observation(self.run, self.error)
             tool, args, who = await self.decide(obs)
             reason = str(args.pop("reason", ""))[:300]
             result = await self.act(tool, dict(args))
+            if tool == "ask_user" and result.startswith("no answer"):
+                # Unattended: nobody answered, so this must not burn a decision.
+                unattended_asks += 1
+                self.history.append(
+                    {
+                        "tool": tool,
+                        "args": {k: v for k, v in args.items() if not k.startswith("_")},
+                        "result": result,
+                    }
+                )
+                if unattended_asks >= MAX_DECISIONS:
+                    break
+                continue
             if result.startswith("verify passes") or "verify passes" in result:
                 self.out.accepted = True
-            d = AgentDecision(agent="supervisor", step=step, observation=_obs_summary(obs), reasoning_summary=reason or f"{who} chose {tool}",
+            d = AgentDecision(agent="supervisor", step=len(self.out.decisions) + 1, observation=_obs_summary(obs), reasoning_summary=reason or f"{who} chose {tool}",
                               tool=tool, args={k: v for k, v in args.items() if not k.startswith("_")}, result=result[:600])  # fmt: skip
             self.out.decisions.append(d)
             self.ctx.emit("decision", payload=d.model_dump(mode="json") | {"by": who})

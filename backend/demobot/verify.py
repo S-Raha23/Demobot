@@ -279,6 +279,8 @@ def classify(
         return "program_bug"
     if not perc.ok:
         return "perception_gap"
+    if symbolic.inconclusive or real.inconclusive or perc.inconclusive:
+        return "inconclusive"
     if (
         verdict is not None
         and not verdict.same_goal_achieved

@@ -6,7 +6,9 @@ Pure geometry on table-cm states; no I/O. Tolerances are ported from the first r
 - relations: a gap of −1 to 8 cm and a lateral offset ≤ 3 cm + half the larger depth;
 - near: ≤ 4 cm (centre to point, or footprint gap to a target);
 - collinear: PCA residual ≤ 2 cm, order equal to `order` or its reverse; `order_by` = "x" or
-  "y" requires the line to run within 30° of that axis;
+  "y" requires the line to run within 30° of that axis; neighbouring objects along the line
+  must be at most COLLINEAR_MAX_GAP_CM apart (footprint gap), so two distant objects do not
+  pass vacuously (any two points define a line);
 - swapped: each object ≤ 4 cm from the other's initial position;
 - turned: yaw within 15° of `yaw_deg` (mod 180°), and with `point_cm` also ≤ 4 cm from it.
 """
@@ -29,6 +31,7 @@ NEAR_CM = 4.0
 TURNED_DEG = 15.0
 COLLINEAR_RESIDUAL_CM = 2.0
 COLLINEAR_AXIS_DEG = 30.0
+COLLINEAR_MAX_GAP_CM = 10.0
 SWAPPED_CM = 4.0
 RELATIONS = ("left_of", "right_of", "in_front_of", "behind")
 _EPS = 1e-9
@@ -105,7 +108,7 @@ def collinear(
     objs: Sequence[SceneObject], order: Sequence[str] | None, order_by: str | None
 ) -> tuple[bool, dict[str, float | bool | str]]:
     if len(objs) < 2:
-        return True, {"residual_cm": 0.0}
+        return True, {"residual_cm": 0.0, "max_gap_cm": 0.0, "spacing_ok": True}
     pts = np.array([(o.x, o.y) for o in objs], float)
     centred = pts - pts.mean(axis=0)
     if len(objs) == 2:
@@ -129,11 +132,17 @@ def collinear(
         axis_ok = angle <= COLLINEAR_AXIS_DEG
     elif order_by == "y":
         axis_ok = angle >= 90 - COLLINEAR_AXIS_DEG
-    holds = residual <= COLLINEAR_RESIDUAL_CM + _EPS and order_ok and axis_ok
+    ordered = [objs[i] for i in sorted(range(len(objs)), key=lambda i: proj[i])]
+    gaps = [footprint_gap(ordered[i], ordered[i + 1]) for i in range(len(ordered) - 1)]
+    max_gap = max(gaps) if gaps else 0.0
+    spacing_ok = max_gap <= COLLINEAR_MAX_GAP_CM + _EPS
+    holds = residual <= COLLINEAR_RESIDUAL_CM + _EPS and order_ok and axis_ok and spacing_ok
     return holds, {
         "residual_cm": round(residual, 2),
         "order_ok": order_ok,
         "axis_ok": axis_ok,
+        "max_gap_cm": round(max_gap, 2),
+        "spacing_ok": spacing_ok,
         "order": ",".join(got),
     }
 
@@ -183,7 +192,7 @@ def evaluate_clause(
             holds=holds,
             objects=names,
             measured=measured,
-            detail=f"{what} in a line: residual {measured['residual_cm']} cm",
+            detail=f"{what} in a line: residual {measured['residual_cm']} cm, max gap {measured['max_gap_cm']} cm",
         )
 
     targets: list[SceneObject] = []

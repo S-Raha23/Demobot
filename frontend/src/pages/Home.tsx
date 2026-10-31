@@ -5,7 +5,7 @@ import { ModelBadge } from "../components/ModelBadge";
 import { Toolkit } from "../components/Toolkit";
 import { TopNav } from "../components/TopNav";
 import { Pill, Spinner } from "../components/ui";
-import { api, ApiError, artifactUrl, fetchArtifactJson, type Sample } from "../lib/api";
+import { api, ApiError, artifactUrl, fetchArtifactJson, skillExportUrl, type Sample } from "../lib/api";
 import { istDate, usd } from "../lib/format";
 import type { Health, RunMeta, SkillCard, TwinScene as TwinSceneData, TwinTrajectory } from "../lib/types";
 
@@ -323,6 +323,9 @@ function SkillCardView({ card, run }: { card: SkillCard; run?: RunMeta }) {
             <Icon name="hand" size={13} /> Try it
           </Link>
         </div>
+        <a href={skillExportUrl(card.run_id)} download className="btn justify-center !py-1.5 !text-[12px]" aria-label={`Export skill (.zip): ${card.title}`}>
+          <Icon name="download" size={11} /> Export skill (.zip)
+        </a>
       </div>
     </div>
   );
@@ -381,16 +384,26 @@ function Samples({ samples, runs }: { samples: Sample[] | null; runs: RunMeta[] 
   );
 }
 
+function MarkersLink() {
+  return (
+    <a href="/assets/print/markers.pdf" download className="font-medium text-sparkopen underline-offset-2 hover:underline">
+      Download markers.pdf
+    </a>
+  );
+}
+
 function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [hint, setHint] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [noMarkers, setNoMarkers] = useState(false);
   const nav = useNavigate();
   const submit = async () => {
     if (!file) return;
     setBusy(true);
     setErr(null);
+    setNoMarkers(false);
     try {
       const f = new FormData();
       f.append("clip", file);
@@ -399,8 +412,10 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
       nav(`/run/${r.run_id}`);
     } catch (e) {
       if (e instanceof ApiError && (e.status === 404 || e.status === 405)) setErr("Live runs are not enabled on this server. Enjoy the recorded runs and the free Try-it page.");
-      else if (e instanceof ApiError && e.code === "NO_MARKERS") setErr("The four printed markers must be visible in the clip so it can measure the table in centimetres.");
-      else if (e instanceof ApiError && e.status === 429) setErr("Live budget for today is used. Enjoy the recorded runs and the free Try-it page.");
+      else if (e instanceof ApiError && e.code === "NO_MARKERS") {
+        setErr("The four printed markers must be visible in the clip so it can measure the table in centimetres.");
+        setNoMarkers(true);
+      } else if (e instanceof ApiError && e.status === 429) setErr("Live budget for today is used. Enjoy the recorded runs and the free Try-it page.");
       else setErr(e instanceof Error ? e.message : String(e));
     } finally {
       setBusy(false);
@@ -420,6 +435,9 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
           <li>2. Hold your phone in one hand and do the task once with the other (10–30 s).</li>
           <li>3. Narrate if you like, in English, Hindi or Bengali.</li>
         </ol>
+        <p className="mt-2 text-[12.5px] text-ink-300">
+          No markers yet? <MarkersLink /> and print it at 100% scale.
+        </p>
         <label className="mt-4 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-500 bg-ink-850 px-4 py-7 text-center transition hover:border-sparkopen/60">
           <Icon name="upload" size={22} className="text-ink-300" />
           <span className="text-[13px] font-medium text-ink-100">{file ? file.name : "Choose a video (mp4, mov)"}</span>
@@ -432,7 +450,17 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
           className="mt-3 h-10 w-full rounded-lg bg-ink-850 px-3 text-[13px] text-ink-100 ring-1 ring-inset ring-ink-600 outline-none placeholder:text-ink-500 focus:ring-sparkopen/50"
         />
         {mode === "replay" && <div className="mt-3 text-[12px] text-ink-400">This server runs in replay mode, so live runs may be off.</div>}
-        {err && <div className="mt-3 text-[12.5px] text-warn">{err}</div>}
+        {err && (
+          <div className="mt-3 text-[12.5px] text-warn">
+            {err}
+            {noMarkers && (
+              <>
+                {" "}
+                <MarkersLink />
+              </>
+            )}
+          </div>
+        )}
         <div className="mt-5 flex justify-end gap-2">
           <button type="button" className="btn" onClick={onClose}>
             Cancel

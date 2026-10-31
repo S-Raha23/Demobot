@@ -227,6 +227,21 @@ async def red_team(
     for persona, layouts in zip(PERSONAS, results, strict=True):
         for lay, why in layouts:
             out.append((lay.model_copy(update={"id": f"red-{len(out):02d}"}), persona, why))
+    requested = len(PERSONAS) * LAYOUTS_PER_PERSONA
+    ctx.emit(
+        "metric",
+        payload={
+            "name": "redteam_layouts",
+            "delivered": len(out),
+            "requested": requested,
+            "value": len(out),
+        },
+    )
+    if len(out) < requested:
+        ctx.emit(
+            "log",
+            payload={"message": f"red team delivered {len(out)}/{requested} layouts"},
+        )
     return out
 
 

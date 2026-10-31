@@ -73,9 +73,25 @@ def test_collinear_order_reverse_residual_and_axis() -> None:
     assert line({"order": ["c", "b", "a"]}, a, b, c)  # reverse passes
     assert not line({"order": ["b", "a", "c"]}, a, b, c)
     assert not line({}, a, o("b", 20, 24), c)  # residual > 2 cm
-    assert line({}, o("a", 10, 10), o("b", 25, 30))  # 2 objects always pass
+    # was "2 objects always pass" (vacuous: any two points define a line) -- now spacing-bound
+    assert line({}, o("a", 10, 10), o("b", 18, 10))
+    assert not line({}, o("a", 10, 10), o("b", 25, 30))
     assert line({"order_by": "x"}, a, b, c) and not line({"order_by": "y"}, a, b, c)
     assert line({"order_by": "y"}, o("a", 20, 5), o("b", 21, 15), o("c", 20, 25))
+
+
+def test_collinear_two_objects_must_be_close() -> None:
+    # two points always define a line, so collinearity alone is vacuous for a pair:
+    # a distant pair must fail the max-gap requirement, a close pair passes
+    assert line({}, o("a", 10, 10), o("b", 16, 10))  # footprint gap 2 cm
+    assert not line({}, o("a", 10, 10), o("b", 40, 10))  # footprint gap 26 cm
+    r = g.evaluate_clause(
+        clause(quant="all", select=Selector(role="moved"), pred="collinear"),
+        st(o("a", 10, 10), o("b", 40, 10)),
+        st(o("a", 10, 10), o("b", 40, 10)),
+    )
+    assert not r.holds and r.measured["spacing_ok"] is False
+    assert r.measured["max_gap_cm"] > g.COLLINEAR_MAX_GAP_CM
 
 
 def swap_clause() -> GoalClause:

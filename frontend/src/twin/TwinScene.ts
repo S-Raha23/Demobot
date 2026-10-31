@@ -570,10 +570,13 @@ export class TwinScene {
   private ghost = false;
   private robotMaterials: THREE.Material[] = [];
 
-  /** Fade the robot (Try it's edit mode: objects under the arm stay visible). */
+  /** Ghost the robot (Try it's edit mode: objects under the arm stay visible). While
+   *  ghosted and no trajectory is playing, the robot is hidden outright (see
+   *  updateRobotVisibility), so it can never cover the table being arranged. */
   setRobotGhost(on: boolean) {
     this.ghost = on;
     this.applyGhost();
+    this.updateRobotVisibility();
   }
 
   private applyGhost() {
@@ -631,13 +634,15 @@ export class TwinScene {
   }
 
   /** The robot shows in the 3D views; in the phone's view it is hidden (as in the verification
-   *  render), and in the top-down edit view it shows only while it runs, with a thin ring at its
-   *  base otherwise, so it never covers the table you are arranging. */
+   *  render), and while a layout is being edited (no trajectory, ghost on) it is hidden in every
+   *  view, with a thin ring at its base instead, so it never covers the table you are arranging.
+   *  It appears, solid, once a run starts (the trajectory arrives and the ghost turns off). */
   private baseRing: THREE.Mesh | null = null;
 
   private updateRobotVisibility() {
     const top = this.mode === "top";
-    if (this.robot) this.robot.visible = this.mode !== "real" && (!top || this.traj != null);
+    const editing = this.traj == null;
+    if (this.robot) this.robot.visible = this.mode !== "real" && !(top && editing) && !(this.ghost && editing);
     if (!this.baseRing && this.robotBase) {
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.075, 0.082, 48), new THREE.MeshBasicMaterial({ color: "#94a3b8", transparent: true, opacity: 0.8 }));
       this.pb.add(ring);
@@ -645,7 +650,7 @@ export class TwinScene {
     }
     if (this.baseRing && this.robotBase) {
       this.baseRing.position.set(this.robotBase[0], this.robotBase[1], 0.002);
-      this.baseRing.visible = top && this.traj == null;
+      this.baseRing.visible = editing && this.mode !== "real";
     }
   }
 

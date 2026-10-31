@@ -29,8 +29,11 @@ class FakeRun:
 
 
 def test_fixed_policy_covers_every_failure_class() -> None:
+    # "inconclusive" added with the verify fix: it was previously missing because
+    # inconclusive checks silently passed (classify returned None)
     assert supervisor.FIXED_POLICY == {"spec_mismatch": "rewatch", "program_bug": "reprogram",
-                                       "perception_gap": "retrack", "judge_dissent": "accept"}  # fmt: skip
+                                       "perception_gap": "retrack", "judge_dissent": "accept",
+                                       "inconclusive": "retrack"}  # fmt: skip
 
 
 async def test_without_a_model_the_fixed_policy_decides_visibly(
@@ -57,6 +60,33 @@ async def test_without_a_model_the_fixed_policy_decides_visibly(
     assert len(dec) == 1 and dec[0]["tool"] == "accept" and dec[0]["by"] == "fixed policy"
     assert dec[0]["observation"] and dec[0]["result"] and dec[0]["reasoning_summary"]
     assert any(e.payload.get("fallback") for e in events if e.type == "log")
+
+
+async def test_unattended_ask_user_does_not_consume_a_decision(tmp_path: Path, monkeypatch) -> None:
+    run = FakeRun(tmp_path)
+    s = supervisor.Supervisor(run, DemoBotError("VERIFY_FAILED", "x"))
+    monkeypatch.setattr(supervisor, "observation", lambda r, e: {"failure_class": "inconclusive"})
+    calls: list[str] = []
+
+    async def fake_decide(obs):  # type: ignore[no-untyped-def]
+        calls.append("decide")
+        if len(calls) == 1:
+            return (
+                "ask_user",
+                {"question": "which?", "options": ["a", "b"], "reason": "unsure"},
+                "test",
+            )
+        return "accept", {"caveat": "ok", "reason": "enough evidence"}, "test"
+
+    monkeypatch.setattr(s, "decide", fake_decide)
+    out = await s.loop()
+    # the unattended ask got no answer and is not counted: only the accept is a decision,
+    # numbered step 1, and the question event was still emitted by act()
+    assert out.accepted and len(out.decisions) == 1 and out.decisions[0].tool == "accept"
+    assert out.decisions[0].step == 1 and len(calls) == 2
+    events = list(read_events(tmp_path / "events.jsonl"))
+    assert any(e.type == "question" for e in events)
+    assert len([e for e in events if e.type == "decision"]) == 1
 
 
 async def test_accept_is_refused_when_checks_fail_and_budgets_hold(

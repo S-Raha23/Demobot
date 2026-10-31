@@ -115,3 +115,14 @@ About $41 spent by Oct 31 evening; since then roughly $10 more (rebake, correcti
 - **F3 (core done):** deterministic `backend/demobot/goal_solver.py` (`solve`, `consistent`, `choose_probe`, `separating_pairs`) + `test_goal_solver.py`. Selector has no colour field, so hypotheses vary name/kind/role only. Wonder/Image/UI/paid acceptance still open.
 - **F2 (core done):** `backend/demobot/live.py` `LiveTracker` (3-frame confirmation, smoothing, gate, ≥2 Hz check) + `test_live.py`. Modal GPU app, `/live` routes, phone test still open (human/GPU).
 - **Remaining human-only:** film 06/07, SAM HF licence click if asked, 5-min phone test, local Playwright/Lighthouse runs, production redeploy, YouTube/submission/X. See HUMAN_TASKS "Waiting on you".
+
+## Judge panel (Meta Hackathon 2026 simulation)
+
+**Round 1 scores:** UI/UX **6/10** · Functionality **7/10** · Details **6/10** · Meta-story **7/10** (avg 6.5). Full issue lists were returned by four judge agents; the fixable ones are being fixed by developer agents below, then re-judged. Human-only blockers (video/X links, hardware run, dashboard reconciliation) stay in HUMAN_TASKS and cap the Details score until done.
+
+Round-1 top issues → fix status (developer agents, verified by `make check`: **185 backend + 19 frontend**):
+- [x] verify inconclusive is now a distinct non-pass state routed to the supervisor (`verify.classify`, `FIXED_POLICY["inconclusive"]="retrack"`) · 2-object `collinear` needs spacing ≤ 10 cm · unattended `ask_user` no longer burns a decision · red-team emits delivered/requested metric. (`fill_goal` self-scoring and stale-`final_masks` retrack noted, not changed — they need a design call on scoring semantics.)
+- [x] Try-it ghost Panda hidden while editing · global `:focus-visible` ring + AA contrast tokens · markers.pdf download link (dialog + `NO_MARKERS` error) · "Export skill (.zip)" on skill cards · real 404 view. Pointer-only timeline/dragging remains (keyboard equivalents still open).
+- [x] README: tagline scoped to pick-and-place, Frontier section added, Bengali claim scoped, eval regenerated at HEAD.
+
+**Round 2:** pending re-judge (same four panels).

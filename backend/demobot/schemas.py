@@ -358,7 +358,8 @@ class Verification(BaseModel):
     judge: JudgeVerdict | None = None
     agree: bool
     failure_class: (
-        Literal["spec_mismatch", "program_bug", "perception_gap", "judge_dissent"] | None
+        Literal["spec_mismatch", "program_bug", "perception_gap", "judge_dissent", "inconclusive"]
+        | None
     ) = None
     accepted_caveat: str | None = None  # the supervisor accepted the run despite a failed check
     masks: dict[str, list[dict[str, object]]] = Field(

@@ -469,6 +469,9 @@ async def stage_stress(run: Run) -> str:
     base = textured(run, repair(demo_layout(run))[0])
     prog = latest_program(run)
     proposals = await redteam.red_team(run.ctx, base, spec.goal)
+    run.ctx.emit("metric", "stress", payload={"name": "redteam_layouts", "delivered": len(proposals),
+                                              "requested": len(redteam.PERSONAS) * redteam.LAYOUTS_PER_PERSONA,
+                                              "value": len(proposals)})  # fmt: skip
     if not proposals:
         raise DemoBotError(
             "REDTEAM_EMPTY", "the red team produced no valid layouts", stage="stress"

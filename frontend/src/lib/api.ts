@@ -30,6 +30,8 @@ async function req<T>(url: string, init?: RequestInit): Promise<T> {
 export const artifactUrl = (runId: string, path: string) =>
   `/api/runs/${encodeURIComponent(runId)}/artifacts/${path.replace(/^\/+/, "")}`;
 
+export const skillExportUrl = (runId: string) => `/api/skills/${encodeURIComponent(runId)}/export`;
+
 const jsonCache = new Map<string, Promise<unknown>>();
 
 /** Artifacts are immutable once announced, so JSON is cached per URL. */

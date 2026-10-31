@@ -32,6 +32,20 @@ def test_failure_classes_in_priority_order() -> None:
     assert verify.classify(OK, OK, OK, None) is None  # no judge available: three checks decide
 
 
+def test_inconclusive_is_not_agreement() -> None:
+    agree = JudgeVerdict(same_goal_achieved=True, confidence=0.9)
+    inconc = CheckResult(ok=True, inconclusive=True)
+    # an inconclusive check must route to the supervisor, not silently pass
+    assert verify.classify(OK, OK, inconc, agree) == "inconclusive"
+    assert verify.classify(OK, inconc, OK, agree) == "inconclusive"
+    assert verify.classify(inconc, OK, OK, agree) == "inconclusive"
+    assert verify.classify(OK, OK, inconc, None) == "inconclusive"
+    # hard failures still take priority over inconclusive
+    assert verify.classify(OK, BAD, inconc, agree) == "spec_mismatch"
+    assert verify.classify(BAD, OK, inconc, agree) == "program_bug"
+    assert verify.classify(OK, OK, BAD, agree) == "perception_gap"
+
+
 def calib() -> Calibration:
     """A top-down camera 100 cm above (30, 20), focal 1000: 10 px per cm at the table."""
     import cv2

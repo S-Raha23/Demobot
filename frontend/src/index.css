@@ -11,8 +11,8 @@
   --color-ink-750: #151f2d;
   --color-ink-700: #1b2737;
   --color-ink-600: #243246;
-  --color-ink-500: #33445c;
-  --color-ink-400: #5b6b80;
+  --color-ink-500: #76879e;
+  --color-ink-400: #8296ad;
   --color-ink-300: #8a9bb0;
   --color-ink-200: #b7c4d4;
   --color-ink-100: #dfe7f1;
@@ -89,6 +89,11 @@ body {
   font-feature-settings: "cv11", "ss01", "ss03";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sparkopen);
+  outline-offset: 2px;
 }
 
 .num {
