@@ -7,7 +7,8 @@ Pure geometry on table-cm states; no I/O. Tolerances are ported from the first r
 - near: ≤ 4 cm (centre to point, or footprint gap to a target);
 - collinear: PCA residual ≤ 2 cm, order equal to `order` or its reverse; `order_by` = "x" or
   "y" requires the line to run within 30° of that axis;
-- swapped: each object ≤ 4 cm from the other's initial position.
+- swapped: each object ≤ 4 cm from the other's initial position;
+- turned: yaw within 15° of `yaw_deg` (mod 180°), and with `point_cm` also ≤ 4 cm from it.
 """
 
 import math
@@ -25,6 +26,7 @@ GAP_MIN_CM = -1.0
 GAP_MAX_CM = 8.0
 LATERAL_BASE_CM = 3.0
 NEAR_CM = 4.0
+TURNED_DEG = 15.0
 COLLINEAR_RESIDUAL_CM = 2.0
 COLLINEAR_AXIS_DEG = 30.0
 SWAPPED_CM = 4.0
@@ -200,7 +202,10 @@ def evaluate_clause(
             failed.append(o.name)
         for k, v in one.items():
             measured_all[f"{o.name}.{k}" if len(objs) > 1 else k] = v
-    tname = describe(clause.target) if clause.target else str(clause.point_cm)
+    if clause.target:
+        tname = describe(clause.target)
+    else:
+        tname = f"to {clause.yaw_deg:.0f}°" if clause.pred == "turned" else str(clause.point_cm)
     rel = clause.pred.replace("_", " ")
     detail = f"{what} {rel} {tname}" if not failed else f"not {rel} {tname}: {', '.join(failed)}"
     return ClauseResult(
@@ -213,6 +218,15 @@ def _check_one(
 ) -> tuple[bool, dict[str, float | bool]]:
     """Holds against any of the targets (a kind target means 'any container of that kind')."""
     best: tuple[bool, dict[str, float | bool]] = (False, {})
+    if clause.pred == "turned":
+        assert clause.yaw_deg is not None
+        diff = abs(
+            ((o.yaw - clause.yaw_deg) + 90.0) % 180.0 - 90.0
+        )  # long objects look the same turned 180°
+        ok = diff <= TURNED_DEG + _EPS
+        if clause.point_cm is not None:  # "in place": also near where it was
+            ok = ok and math.dist((o.x, o.y), clause.point_cm) <= NEAR_CM + _EPS
+        return ok, {"yaw_off_deg": round(diff, 1)}
     if clause.pred == "near" and not targets:
         assert clause.point_cm is not None
         dist = math.dist((o.x, o.y), clause.point_cm)

@@ -35,6 +35,7 @@ FOREARM_R, FOREARM_L = 3.3, 30.0
 # (offset across the palm cm, length cm, splay degrees): four fingers and a thumb
 FINGERS = ((-2.9, 5.5, 0), (-1.0, 6.3, 0), (1.0, 6.0, 0), (2.9, 5.0, 0), (0.0, 4.8, 55))
 FAMILIES = ("place_in", "next_to", "line_up", "sort", "swap")
+FRONTIER_FAMILIES = ("push", "rotate")  # docs/11 F1: motions that need a forged skill
 RELATIONS = ("left_of", "right_of", "in_front_of", "behind")
 
 
@@ -42,9 +43,10 @@ RELATIONS = ("left_of", "right_of", "in_front_of", "behind")
 class Move:
     obj: str
     to: tuple[float, float]
-    action: str  # place_in | place_next_to | place_at
+    action: str  # place_in | place_next_to | place_at | slide | turn
     target: str | None = None
     relation: str | None = None
+    yaw: float = 0.0  # turn: degrees to add
 
 
 @dataclass
@@ -159,6 +161,56 @@ def plan_task(family: str, table: TableTruth, rng: np.random.Generator) -> Plan:
         ]
         return Plan(family, lay, moves, goal, f"Pens into the {mug.name}, everything else into the {box.name}.",
                     "Pens go in the mug and the rest in the box.")  # fmt: skip
+    if family == "push":  # F1: slide the box along the table with the fingertips (too wide to pick)
+        box = _obj("box", rng, "moved", taken)
+        extra = [
+            _obj(k, rng, "distractor", taken)
+            for k in pick(int(rng.integers(1, 3)), ["pen", "tennis ball", "glue bottle"])
+        ]
+        lay = _layout([box, *extra], table, seed)
+        b = next(o for o in lay.objects if o.name == box.name)
+        wa = lay.work_area
+        others = [o for o in lay.objects if o.name != b.name]
+
+        def clear(dx: float) -> bool:  # the whole swept path stays clear and inside the work area
+            for k in range(11):
+                q = b.model_copy(update={"x": b.x + dx * k / 10})
+                ex, _ey = q.extents()
+                if (
+                    q.x - ex < wa.x0 + 1
+                    or q.x + ex > wa.x1 - 1
+                    or any(footprint_gap(q, o) < 3 for o in others)
+                ):
+                    return False
+            return True
+
+        dx = next((d for d in (13.0, -13.0, 10.0, -10.0) if clear(d)), None)
+        if dx is None:
+            raise ValueError("no clear slide path on this layout")
+        to = (round(b.x + dx, 1), round(b.y, 1))
+        goal = [C(quant="the", select=S(name=box.name), pred="near", point_cm=to)]
+        side = "right" if dx > 0 else "left"
+        return Plan(family, lay, [Move(box.name, to, "slide")], goal, f"Slide the {box.name} about 13 cm to the {side}.",
+                    f"Push the {box.kind} to the {side}.", {"dx": dx})  # fmt: skip
+    if family == "rotate":  # F1: turn the cutter 90 degrees where it lies
+        cutter = _obj("box cutter", rng, "moved", taken)
+        extra = [
+            _obj(k, rng, "distractor", taken)
+            for k in pick(2, ["pen", "tennis ball", "glue bottle"])
+        ]
+        lay = _layout([cutter, *extra], table, seed)
+        c = next(o for o in lay.objects if o.name == cutter.name)
+        goal = [
+            C(
+                quant="the",
+                select=S(name=c.name),
+                pred="turned",
+                yaw_deg=round((c.yaw + 90) % 180, 1),
+                point_cm=(round(c.x, 1), round(c.y, 1)),
+            )
+        ]
+        return Plan(family, lay, [Move(c.name, (c.x, c.y), "turn", yaw=90.0)], goal, f"Turn the {c.name} 90 degrees in place.",
+                    f"Turn the {c.kind} sideways.")  # fmt: skip
     # 05: swap two items through a free spot
     a, b = (
         _obj(k, rng, "moved", taken)
@@ -232,6 +284,10 @@ def resolve_moves(plan: Plan) -> list[Move]:
         return out
     for m in plan.moves:
         o = state[m.obj]
+        if m.action in ("slide", "turn"):  # targets set by the plan
+            out.append(m)
+            put(m.obj, m.to)
+            continue
         if m.action == "place_in":
             c = state[m.target or ""]
             out.append(Move(m.obj, (c.x, c.y), m.action, m.target))
@@ -422,6 +478,51 @@ def animate(
         sx, sy, sz = state[m.obj][0], state[m.obj][1], state[m.obj][2]
         top = sz + o.h / 2
         t_start = len(frames) / FPS
+        if m.action == "slide":  # fingertips behind the box, push it along, never lift it
+            d = math.hypot(m.to[0] - sx, m.to[1] - sy) or 1.0
+            ux, uy = (m.to[0] - sx) / d, (m.to[1] - sy) / d
+            half = (abs(ux) * o.w + abs(uy) * o.d) / 2 + PALM[0] / 2 + 0.5
+            z = max(o.h * 0.5, PALM[2] / 2 + 0.5)
+            go((sx - ux * half, sy - uy * half, z + 10), rng.uniform(0.8, 1.2))
+            go((sx - ux * half, sy - uy * half, z), 0.45)
+            n = max(2, int(rng.uniform(1.3, 1.8) * FPS))
+            for i in range(n):
+                a = ease((i + 1) / n)
+                state[m.obj][0], state[m.obj][1] = sx + (m.to[0] - sx) * a, sy + (m.to[1] - sy) * a
+                emit(
+                    1,
+                    lambda _a, a=a, sx=sx, sy=sy, ux=ux, uy=uy, half=half, z=z, to=m.to: (
+                        sx - ux * half + (to[0] - sx) * a,
+                        sy - uy * half + (to[1] - sy) * a,
+                        z,
+                    ),
+                )
+            go((m.to[0] - ux * (half + 2), m.to[1] - uy * (half + 2), z), 0.25)
+            go((m.to[0] - ux * (half + 2), m.to[1] - uy * (half + 2), z + 12), 0.35)
+            steps.append({"action": "other_motion", "motion": "slide", "object": m.obj, "target": None, "relation": None,
+                          "t_start": round(t_start, 2), "t_end": round(len(frames) / FPS, 2),
+                          "from_cm": [round(sx, 2), round(sy, 2)], "to_cm": [round(m.to[0], 2), round(m.to[1], 2)]})  # fmt: skip
+            continue
+        if m.action == "turn":  # grasp, lift a little, turn, set it back down in the same spot
+            go((sx, sy, top + 12), rng.uniform(0.8, 1.2))
+            go((sx, sy, top + PALM[2] / 2 + 0.3), 0.4)
+            wait(0.15)
+            holding, hold_off = m.obj, PALM[2] / 2 + 0.3 + o.h / 2
+            go((sx, sy, top + PALM[2] / 2 + 2.0), 0.3)
+            y0 = state[m.obj][3]
+            n = max(2, int(0.9 * FPS))
+            for i in range(n):
+                state[m.obj][3] = y0 + m.yaw * ease((i + 1) / n)
+                emit(1, lambda _a: tuple(hand))
+            go((sx, sy, top + PALM[2] / 2 + 0.3), 0.3)
+            holding = None
+            state[m.obj][2] = o.h / 2
+            wait(0.12)
+            go((sx, sy, top + 12), 0.35)
+            steps.append({"action": "other_motion", "motion": "turn in place", "object": m.obj, "target": None, "relation": None,
+                          "t_start": round(t_start, 2), "t_end": round(len(frames) / FPS, 2), "yaw_deg": m.yaw,
+                          "from_cm": [round(sx, 2), round(sy, 2)], "to_cm": [round(sx, 2), round(sy, 2)]})  # fmt: skip
+            continue
         go((sx, sy, top + 12), rng.uniform(0.8, 1.2))
         go((sx, sy, top + PALM[2] / 2 + 0.3), rng.uniform(0.35, 0.5))
         wait(0.15)
@@ -670,7 +771,10 @@ def make_clip(family: str, seed: int, out_dir: Path, shake: float = 1.0) -> dict
     table = draw_texture(sample_markers(rng), rng)
     cam = sample_camera(table, rng, W, H)
     for _ in range(30):  # no object may hide a marker from this camera (a real failure mode)
-        plan = plan_task(family, table, rng)
+        try:
+            plan = plan_task(family, table, rng)
+        except ValueError:  # e.g. no clear slide path on this layout: draw another
+            continue
         if not occludes_markers(plan.layout.objects, table, cam):
             break
     moves = resolve_moves(plan)

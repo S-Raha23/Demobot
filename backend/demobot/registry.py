@@ -122,12 +122,14 @@ def crop_grid(
 
 async def identify(ctx: RunContext, grid_path: Path, n: int, entries: list[Entry]) -> list[Label]:
     """Which registry object is each numbered crop (one vision call, cached)."""
-    menu = "\n".join(f"- {e.name}: {e.looks}" for e in entries)
+    menu = "\n".join(f"- {e.name} ({e.count} on this table): {e.looks}" for e in entries)
     text = (
         f"The image shows {n} numbered crops of objects on a table (number in the top-left of each crop). "
         f"The objects that can be on this table are:\n{menu}\n- other: anything not listed (e.g. the person's hand).\n"
-        "For every crop, say which object it is. Look closely at shape: a pen is a thin rod with a clip and a tip; "
-        "a box cutter is flatter and wider with a blade slider. "
+        "For every crop, say which object it is (the object in the centre of the crop). Look closely at shape and compare "
+        "the crops with each other: a pen is a thin round rod with a clip and a tip; a box cutter is flatter and wider, with a "
+        "blade slider and no clip. Each object exists only as many times as listed, so two crops cannot both be the one "
+        "box cutter. "
         'Return JSON {"labels": [{"crop": number, "object": name or "other", "confidence": 0..1}]}.'
     )
     url = (

@@ -329,6 +329,44 @@ def export_skill(run_id: str) -> Any:
                     headers={"Content-Disposition": f'attachment; filename="{run_id}-skill.zip"'})  # fmt: skip
 
 
+@app.get("/api/toolkit")
+def toolkit() -> dict[str, Any]:
+    """The robot's skills: the built-in primitives and those DemoBot invented (Skill Forge)."""
+    from demobot.program import api as skill_api
+    from demobot.program import forge
+
+    built_in = [
+        n
+        for n in ("pick", "place_at", "place_in", "place_next_to", "move", "home")
+        if hasattr(skill_api.Robot, n)
+    ]
+    invented = []
+    for e in forge.index():
+        f = forge.FORGED_DIR / f"{e['name']}.py"
+        invented.append(
+            {
+                **e,
+                "code": f.read_text() if f.exists() else "",
+                "doc": forge._doc(f.read_text(), e["name"])[1] if f.exists() else "",
+            }
+        )
+    return {"built_in": built_in, "invented": invented, "skill_api_version": forge.skill_api_version(),
+            "enabled": settings.frontier()["forge"]}  # fmt: skip
+
+
+@app.get("/api/toolkit/{name}/twin/{k}")
+def toolkit_twin(name: str, k: int) -> Any:
+    """A twin recording of one of a forged skill's tests."""
+    from demobot.program import forge
+
+    if not name.isidentifier():
+        raise HTTPException(404, "no such skill")
+    f = forge.FORGED_DIR / f"{name}_twins" / f"{int(k)}.json"
+    if not f.exists():
+        raise HTTPException(404, "no such recording")
+    return FileResponse(f, media_type="application/json")
+
+
 @app.get("/api/costs")
 def costs() -> dict[str, Any]:
     runs = []

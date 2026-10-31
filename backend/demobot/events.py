@@ -21,6 +21,8 @@ EventType = Literal[
     "log",
     "error",
     "question",
+    "skill_forged",
+    "intent_resolved",
 ]
 ProviderTag = Literal["meta", "baseten", "modal", "local"]
 

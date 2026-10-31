@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { ModelBadge } from "../components/ModelBadge";
+import { Toolkit } from "../components/Toolkit";
 import { TopNav } from "../components/TopNav";
 import { Pill, Spinner } from "../components/ui";
 import { api, ApiError, artifactUrl, fetchArtifactJson, type Sample } from "../lib/api";
@@ -107,6 +108,8 @@ export default function Home() {
             </div>
           )}
         </section>
+
+        <Toolkit />
 
         <section>
           <SectionTitle eyebrow="Samples" title="Run a sample clip" sub="Three clips you can send through the whole pipeline. Live runs use a small daily budget; recorded runs and Try it are always free." />

@@ -32,6 +32,7 @@ export function clauseSentence(c: GoalClause): string {
   if (c.pred === "collinear") return `${s} ${c.quant === "all" ? "are" : "is"} lined up${c.order_by ? ` along ${c.order_by}` : c.order ? ` in the order ${c.order.join(", ")}` : ""}.`;
   if (c.pred === "swapped") return `${s} have swapped places.`;
   if (c.pred === "near" && c.point_cm) return `${s} is within 4 cm of (${c.point_cm[0].toFixed(0)}, ${c.point_cm[1].toFixed(0)}) cm.`;
+  if (c.pred === "turned") return `${s} is turned to ${(c.yaw_deg ?? 0).toFixed(0)}°${c.point_cm ? " in place" : ""}.`;
   return `${s} ${PRED[c.pred] ?? c.pred} ${selText(c.target)}.`;
 }
 

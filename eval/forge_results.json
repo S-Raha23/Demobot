@@ -1,0 +1,22 @@
+{
+ "rotate_in_place": {
+  "promoted": true,
+  "pass_rate": 1.0,
+  "regression": {
+   "checked": 100,
+   "worse": [],
+   "ok": true
+  },
+  "turns": 7,
+  "reason": "",
+  "skill_api_version": "1.1"
+ },
+ "push": {
+  "promoted": false,
+  "pass_rate": 0.5,
+  "regression": {},
+  "turns": 10,
+  "reason": "not promoted after 10 turns (best pass rate 50%)",
+  "skill_api_version": "1.1"
+ }
+}

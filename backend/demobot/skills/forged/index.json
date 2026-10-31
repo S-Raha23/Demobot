@@ -1,0 +1,72 @@
+[
+ {
+  "name": "rotate_in_place",
+  "signature": "rotate_in_place(robot, scene, obj, dyaw_deg)",
+  "purpose": "Turn an object by dyaw_deg degrees where it lies (it ends within 2 cm of where it was).",
+  "evidence": "the goal needs the teal box cutter turned 90 degrees in place; pick/place_at keep the orientation unless yaw is given, and no primitive turns an object without moving it.",
+  "pass_rate": 1.0,
+  "regression": {
+   "checked": 100,
+   "worse": [],
+   "ok": true
+  },
+  "promoted_at": "2026-10-31T18:13:12+00:00",
+  "run_id": "forge-synth",
+  "explanation": "rotate_in_place captures the object's fresh pose, picks it, and places it back at the identical centre with yaw = original yaw + dyaw (normalized). It verifies the result and, if off by >1cm or >5\u00b0, performs one corrective pick/place with a compensated yaw. Passed 10/10 randomised layouts across +90, -90, +45 and 180 degree tests, staying within 2cm and 10\u00b0 and not displacing other objects.",
+  "grid": [
+   {
+    "layout": "forge-7724",
+    "passed": true,
+    "skipped": false,
+    "twin": 0
+   },
+   {
+    "layout": "forge-7725",
+    "passed": true,
+    "skipped": false,
+    "twin": 1
+   },
+   {
+    "layout": "forge-7726",
+    "passed": true,
+    "skipped": false,
+    "twin": 2
+   },
+   {
+    "layout": "forge-7727",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7728",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7729",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7730",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7731",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7732",
+    "passed": true,
+    "skipped": false
+   },
+   {
+    "layout": "forge-7733",
+    "passed": true,
+    "skipped": false
+   }
+  ]
+ }
+]

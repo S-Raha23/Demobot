@@ -16,6 +16,7 @@ from demobot.schemas import (
     Calibration,
     CameraTrack,
     Contact,
+    GoalClause,
     GroundedDemo,
     MotionSegment,
     SceneObject,
@@ -241,6 +242,26 @@ def _hand_covered(t: Track, hand: Track, k: int, pad: float = 30.0) -> bool:
     return False
 
 
+def fill_goal(
+    goal: list[GoalClause], initial: list[SceneObject], final: list[SceneObject]
+) -> list[GoalClause]:
+    """Watch cannot know table centimetres: a `near` clause with neither target nor point gets the
+    measured end position; a `turned` clause without yaw gets the measured end yaw (and its start
+    point, so it means "turned in place")."""
+    end = {o.name: o for o in final}
+    start = {o.name: o for o in initial}
+    out = []
+    for c in goal:
+        name = c.select.name
+        if c.pred == "near" and c.target is None and c.point_cm is None and name in end:
+            c = c.model_copy(update={"point_cm": (round(end[name].x, 1), round(end[name].y, 1))})
+        elif c.pred == "turned" and c.yaw_deg is None and name in end:
+            c = c.model_copy(update={"yaw_deg": round(end[name].yaw, 1),
+                                     "point_cm": (round(start[name].x, 1), round(start[name].y, 1))})  # fmt: skip
+        out.append(c)
+    return out
+
+
 def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal: Calibration, cam: CameraTrack,
            fps: float, art: Path | None = None) -> GroundedDemo:  # fmt: skip
     by = {t.name: t for t in tracks}
@@ -295,14 +316,27 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
             "cup",
             "tray",
             "basket",
+            "tub",
+            "container",
             "jar",
         }
         base = SceneObject(name=o.name, kind=o.kind, role=o.role, shape=shape, x=round(float(start[0]), 2),
                            y=round(float(start[1]), 2), yaw=round(yaw if shape == "box" else 0.0, 1),
                            w=round(w, 1), d=round(d, 1), h=round(h, 1), color=_color(o.color), hollow=is_open)  # fmt: skip
         init_objs.append(base)
+        end_yaw = base.yaw
+        if (
+            fm and fm.get("poly") and shape == "box"
+        ):  # the final mask's long axis: turns are measurable
+            _, _, end_yaw = footprint(t, ref_k, cam, h, final_poly=fm["poly"])
         final_objs.append(
-            base.model_copy(update={"x": round(float(end[0]), 2), "y": round(float(end[1]), 2)})
+            base.model_copy(
+                update={
+                    "x": round(float(end[0]), 2),
+                    "y": round(float(end[1]), 2),
+                    "yaw": round(float(end_yaw), 1),
+                }
+            )
         )
         segs = segments(s)
         first_seen = next(
@@ -345,7 +379,8 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
         matches.append(StepMatch(step=i, segment=best, confidence=conf,
                                  timing_delta_s=round(max(abs(st.t_start - sg.t0), abs(st.t_end - sg.t1)), 2)))  # fmt: skip
     final_objs = _settle_into_containers(spec, final_objs)
-    real = goal_dsl.evaluate(spec.goal, goal_dsl.to_state(final_objs), goal_dsl.to_state(init_objs))
+    goal = fill_goal(spec.goal, init_objs, final_objs)
+    real = goal_dsl.evaluate(goal, goal_dsl.to_state(final_objs), goal_dsl.to_state(init_objs))
     grounded = {o.name for o in init_objs}
     spec_state = {o.name: o for o in spec.objects}
     for r in real:  # an untracked object must not make a clause hold vacuously
@@ -362,7 +397,7 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
             r.detail += f"; {', '.join(sorted(unseen_start & set(r.objects)))} was hidden at the start, so this is inconclusive"
     gd = GroundedDemo(initial=init_objs, final=final_objs, segments=all_segments,
                       contacts=sorted(contact_list, key=lambda c: c.t), matches=matches,
-                      real_world=real, flags=flags)  # fmt: skip
+                      real_world=real, flags=flags, goal=goal)  # fmt: skip
     if art is not None:
         _crops(gd, art, cal, cam)
     return gd

@@ -164,7 +164,15 @@ class Layout(BaseModel):
 
 Quant = Literal["the", "all", "pair"]
 Pred = Literal[
-    "inside", "left_of", "right_of", "in_front_of", "behind", "near", "collinear", "swapped"
+    "inside",
+    "left_of",
+    "right_of",
+    "in_front_of",
+    "behind",
+    "near",
+    "collinear",
+    "swapped",
+    "turned",
 ]
 
 
@@ -183,6 +191,7 @@ class GoalClause(BaseModel):
     point_cm: Vec2 | None = None
     order_by: Literal["x", "y"] | None = None
     order: list[str] | None = None
+    yaw_deg: float | None = None  # "turned": the object's yaw (degrees, table frame), within 15°
 
 
 class ClauseResult(BaseModel):
@@ -245,7 +254,8 @@ class SpecObject(BaseModel):
 
 
 class Step(BaseModel):
-    action: Literal["place_in", "place_next_to", "place_at"]
+    action: Literal["place_in", "place_next_to", "place_at", "other_motion"]
+    motion: str = ""  # other_motion: "slide" | "turn in place" | "stack" | "tip", what the hand did
     object: str
     target: str | None = None
     relation: Literal["left_of", "right_of", "in_front_of", "behind"] | None = None
@@ -311,6 +321,7 @@ class GroundedDemo(BaseModel):
     matches: list[StepMatch]
     real_world: list[ClauseResult] = Field(default_factory=list)
     flags: list[str] = Field(default_factory=list)
+    goal: list[GoalClause] | None = None  # the spec's goal with measured numbers filled in
 
 
 # ---------- programs, verification, agents ----------

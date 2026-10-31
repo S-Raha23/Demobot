@@ -65,6 +65,16 @@ TOOLS: list[dict[str, Any]] = [
      "parameters": {"type": "object", "properties": {"goal": {"type": "array", "items": {"type": "object"}},
                                                      "gloss": {"type": "string", "description": "the correction in English"}},
                     "required": ["goal", "gloss"], "additionalProperties": False}},
+    {"type": "function", "name": "request_new_skill",
+     "description": "Only when no combination of the skills above can achieve the goal (e.g. the object is wider than the gripper "
+                    "opens, so robot.pick raises TooWide; the goal needs a turn in place; a stack): ask the Skill Forge to invent "
+                    "a new skill. Cite evidence (the failed simulate result or a measured size). If it is promoted, call it in your "
+                    "program as name(robot, scene, ...). At most one per program.",
+     "parameters": {"type": "object", "properties": {
+         "name": {"type": "string", "description": "a short snake_case verb, e.g. push or rotate_in_place"},
+         "signature": {"type": "string", "description": "e.g. push(robot, scene, obj, dx_cm, dy_cm)"},
+         "purpose": {"type": "string"}, "evidence": {"type": "string"}},
+         "required": ["name", "signature", "purpose", "evidence"], "additionalProperties": False}},
     {"type": "function", "name": "submit",
      "description": "Submit the final program. Accepted only if your last simulate on \"demo\" with exactly this code passed every clause.",
      "parameters": {"type": "object", "properties": {"code": {"type": "string"}, "explanation": {"type": "string"}},
@@ -80,7 +90,7 @@ def api_reference() -> str:
         doc = inspect.getdoc(cls) or ""
         lines += [f"    # {d}" for d in doc.splitlines() if d.strip()]
         for name, fn in inspect.getmembers(cls, inspect.isfunction):
-            if name.startswith("_"):
+            if name.startswith("_") or name in skill_api.FORGE_ATTRS:
                 continue
             sig = str(inspect.signature(fn)).replace("self, ", "").replace("(self)", "()")
             sig = sig.replace("demobot.program.api.", "")
@@ -88,6 +98,12 @@ def api_reference() -> str:
             for d in (inspect.getdoc(fn) or "").splitlines():
                 lines.append(f"        # {d}")
     lines.append("def log(msg: str) -> None  # a line in the run log, shown in the UI")
+    from demobot.program.forge import reference as forged_reference
+
+    forged = forged_reference()
+    if forged:
+        lines.append("# Skills DemoBot invented (Skill Forge); call them like functions:")
+        lines.append(forged)
     lines.append(
         "# Errors: "
         + ", ".join(e.__name__ for e in skill_api.API_ERRORS)
@@ -198,6 +214,7 @@ class Loop:
         self.out = SynthOutcome(program=None)
         self.last_demo: tuple[str, bool] | None = None
         self.errors: list[str] = []
+        self.forged_once = False
 
     # ---------- tools ----------
     async def simulate(
@@ -326,6 +343,31 @@ class Loop:
                                            "after": [c.model_dump(exclude_none=True) for c in clauses], "gloss": gloss})  # fmt: skip
         return {"accepted": True, "new_goal": [c.model_dump(exclude_none=True) for c in clauses]}
 
+    async def request_new_skill(self, args: dict[str, Any]) -> dict[str, Any]:
+        """Hand a capability gap to the Skill Forge (docs/11 F1); at most once per program."""
+        from demobot.program import forge
+
+        name = str(args.get("name", "")).strip()
+        if not settings.frontier()["forge"]:
+            return {"error": "the Skill Forge is off on this deployment"}
+        if self.forged_once:
+            return {"error": "one new skill per program; use what you have"}
+        if not name.isidentifier() or name in forge.load_forged() or hasattr(skill_api.Robot, name):
+            return {
+                "error": f"{name!r} is not a valid new skill name (snake_case, not an existing skill)"
+            }
+        self.forged_once = True
+        req = forge.ForgeRequest(name=name, signature=str(args.get("signature", "")), purpose=str(args.get("purpose", "")),
+                                 evidence=str(args.get("evidence", "")))  # fmt: skip
+        self.ctx.emit("tool_call", payload={"agent": "coder", "iteration": self.out.turns, "tool": "request_new_skill",
+                                            "args": {"name": name, "signature": req.signature}, "result": {"ok": True}})  # fmt: skip
+        out = await forge.forge(self.ctx, req, self.si.layouts["demo"], self.si.art)
+        if not out.promoted:
+            return {"promoted": False, "reason": out.reason}
+        sig, doc = forge._doc(out.code, name)
+        return {"promoted": True, "signature": sig, "doc": doc, "pass_rate": out.pass_rate,
+                "use": f"call {sig} in your program; it is available in every simulate from now on"}  # fmt: skip
+
     def submit(self, code: str, explanation: str) -> dict[str, Any]:
         ok = self.last_demo is not None and self.last_demo[0] == code and self.last_demo[1]
         self.ctx.emit("tool_call", payload={"agent": "coder", "iteration": self.out.turns, "tool": "submit",
@@ -359,6 +401,8 @@ class Loop:
                 return self.update_goal(list(args.get("goal", [])), str(args.get("gloss", ""))), []
             if name == "submit":
                 return self.submit(str(args.get("code", "")), str(args.get("explanation", ""))), []
+            if name == "request_new_skill":
+                return await self.request_new_skill(args), []
         except (ValueError, TypeError) as e:
             return {"error": f"bad arguments: {e}"}, []
         return {"error": f"no tool {name!r}"}, []

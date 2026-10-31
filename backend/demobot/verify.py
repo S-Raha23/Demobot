@@ -45,6 +45,12 @@ def clause_words(c: GoalClause) -> str:
         (f"every {c.select.role} object" if c.select.role else " and ".join(c.select.names or []))  # fmt: skip
     if c.pred == "swapped":
         return f"{sel} have swapped places"
+    if c.pred == "turned":
+        return f"{sel} {'is' if c.quant == 'the' else 'are'} turned to {c.yaw_deg or 0:.0f}°" + (
+            " in place" if c.point_cm else ""
+        )
+    if c.pred == "near" and not c.target and c.point_cm:
+        return f"{sel} {'is' if c.quant == 'the' else 'are'} within 4 cm of ({c.point_cm[0]:.0f}, {c.point_cm[1]:.0f}) cm"
     if c.pred == "collinear":
         return f"{sel} stand in a straight {'left-to-right row' if c.order_by != 'y' else 'front-to-back column'}"
     tgt = (c.target.name or c.target.kind or c.target.role) if c.target else str(c.point_cm)

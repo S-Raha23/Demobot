@@ -111,6 +111,24 @@ class Scene:
         self.recorder.capture()
         return self.recorder
 
+    def set_movable(self, names: set[str], on: bool) -> None:
+        """Open containers are fixed to the table (things are dropped into them); a forged skill
+        that pushes one makes it a free body with its real mass for the duration, then fixes it
+        where it ended up."""
+        for n in names:
+            obj = self.objects.get(n)
+            if obj is None or not obj.spec.is_open:
+                continue
+            if not on:
+                self.step(60)
+            if on:  # a tub sliding on a table stops when the push stops: real friction, no coasting
+                p.changeDynamics(obj.body, -1, mass=OPEN_CONTAINER_KG, lateralFriction=0.8, linearDamping=0.9,
+                                 angularDamping=0.95, physicsClientId=self.client)  # fmt: skip
+            else:
+                p.changeDynamics(obj.body, -1, mass=0.0, physicsClientId=self.client)
+            if not on:
+                p.resetBaseVelocity(obj.body, [0, 0, 0], [0, 0, 0], physicsClientId=self.client)
+
     def pose_cm(self, name: str) -> XYZ:
         """Body centre in table cm (z up from the table top)."""
         pos, _ = p.getBasePositionAndOrientation(
@@ -239,6 +257,9 @@ def _shapes(o: SceneObject, cid: int) -> tuple[int, int]:
     col = p.createCollisionShape(p.GEOM_BOX, halfExtents=box, physicsClientId=cid)
     vis = p.createVisualShape(p.GEOM_BOX, halfExtents=box, rgbaColor=rgba, physicsClientId=cid)
     return col, vis
+
+
+OPEN_CONTAINER_KG = 0.25  # a plastic tub with its rim, when a forged skill pushes it
 
 
 def mass_kg(o: SceneObject) -> float:

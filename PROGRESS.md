@@ -1,4 +1,4 @@
-PROJECT_STATUS: IN_PROGRESS
+PROJECT_STATUS: BLOCKED_ON_HUMAN
 
 # PROGRESS
 
@@ -32,8 +32,8 @@ Single source of truth for status. Update it in the same commit that finishes a 
 
 | # | Milestone | Status | Latest (IST) | Done at | Acceptance test |
 | --- | --- | --- | --- | --- | --- |
-| G0 | Gate 0: baseline Definition of Done holds, tag `v1-submittable` | doing | before any feature | | Deployed site, README, `eval/results.md`, demo video v1, repo public, no secrets; tag pushed. |
-| F0 | Fix 0: the 17 live-site bugs | todo | before F1 | | Playwright over Home, one run page, Try-it for every skill, Costs; screenshots reviewed; all 17 items checked off below; affected runs rebaked; redeployed. |
+| G0 | Gate 0: baseline Definition of Done holds, tag `v1-submittable` | done | before any feature | Sat 23:45 | Deployed site, README, `eval/results.md`, demo video v1, repo public, no secrets; tag pushed. |
+| F0 | Fix 0: the 17 live-site bugs | doing | before F1 | | Playwright over Home, one run page, Try-it for every skill, Costs; screenshots reviewed; all 17 items checked off below; affected runs rebaked; redeployed. |
 | F1 | Skill Forge (`FRONTIER_FORGE`) | todo | Sun Nov 1, 20:00 | | Synthetic: forges `push` and `rotate`, each ≥ 9/10 on fresh seeds, regression gate green. Real (when 06_push_box arrives): final program uses a forged skill, all checks pass, Toolkit shows it. |
 | F2 | Live Twin on open-weight SAM 3.1, Modal GPU (`FRONTIER_LIVE`) | todo | Mon Nov 2, 16:00 | | Live replay of clip_01: twin ≥ 2 Hz, median position error < 2.5 cm vs offline, "Run it now" completes. Human 5-min phone test. GPU spend ≤ $30. |
 | F3 | "Did you mean…?" (`FRONTIER_ASK`) | todo | Mon Nov 2, 23:00 | | On clip_02 or synthetic pens: ≥ 2 consistent hypotheses, a separating probe layout, cards render; "teal things" vs "pens" give different verified goals and programs; replay baked for judge mode. |
@@ -48,6 +48,10 @@ Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 ## Budget log (update after any live batch; reconcile with dashboards daily)
 
 | Sat Oct 31 16:30 IST | all | 10 synthetic runs end to end (incl. re-runs) | — | Meta $9.89, Baseten $4.31, Modal $0.61 spent; caps left: Meta $120, Baseten $86, Modal $109 | not yet |
+
+**Estimate before batch (Sun Nov 1 02:00 IST), F1 forge:** forge `push` and `rotate_in_place` on synthetic layouts, ≤ 10 Wonder turns each at ~$0.3 ≈ **≤ $6** (Meta). Simulation is local and free.
+
+**Estimate before batch (Sun Nov 1 00:30 IST), Fix 0 rebake:** 5 real clips from scratch with the registry check and the cheaper red team/judge (Watch and SAM mostly cached): ~$1.0 per clip + 2 voice corrections ~$0.5 each ≈ **$6 total** (Meta ~$3.5, Baseten ~$2, Modal ~$0.5). Red team before the fix: ~$0.95 per round (≈21 calls, ≈210k output tokens); judge 41.8 s.
 
 **Estimate before batch (Sat Oct 31 18:30 IST):** 5 real clips end to end (ingest → card): ~$1.5 per clip (synthetic mean $1.48) ≈ **$7.50 total** (Meta ~$4.50, Baseten ~$2.70, Modal ~$0.30). Pools after: Meta ~$14 of $130, Baseten ~$7 of $90, Modal ~$1 of $110.
 
@@ -77,15 +81,25 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-Real clips arrived Sat Oct 31 (5 clips, 2 voice notes, table photo). Done since (Sat Oct 31, IST evening):
-- Fixed marker layout (`demobot layout`), all 5 real clips calibrate (0.45–1.06 px); clips 03/04 with marker 1 hidden work.
-- All 5 real clips run end to end; Watch goal matches the labels 5/5 (clip 05 is a swap per its narration); robustness 67% → 90%; voice corrections: Hindi (real-03, spoon → ball, 12/12) and English (real-04, pens → ball, 10/10; real-02 earlier 4/12 before the correction hardening round existed).
-- Fixes from real clips: moving-instance preference in perceive, unseen-start → inconclusive for swaps, correction hardening round, `place_at(yaw)` + turned-fit hint, red-team side-room validator.
-- Real runs baked for replay as `real-*` fixtures; eval has a real section; README results updated.
-- Git re-initialised Sat Oct 31 and pushed to the new https://github.com/S-Raha23/Demobot (public). Commits: author Soubhagya Raha only, never a Co-Authored-By trailer.
+**Stopped by the human on Sun Nov 1 (about 02:30 IST) mid-F1.** The baseline (`v1-submittable`, commit `1cb448e`) is untouched and complete. Everything below is on `main` after it, `make check` green (166 backend + 19 frontend tests).
 
-Next:
-1. Video done: `media/demo/demo_final.mp4` (3:00) and `demo_30s.mp4`, from real-03 (Hindi correction). Capture is ~3.4 fps; long stages are sped up so they look smooth, short ones are slightly steppy.
-2. Judge site: the human runs `uv run python scripts/deploy_modal.py`; then check health, replay, Try-it, one live sample.
-3. Optional: add a real clip as a judge-mode sample (`backend/tests/fixtures/samples/`), Lighthouse ≥ 70, stepper at 1366 px.
-4. At submission: fill the video and X links in `docs/submission-form.md`.
+### Done since v1-submittable (docs/11)
+- **Gate 0:** done. Tag `v1-submittable` pushed. `eval/results.md` now carries the git SHA.
+- **Fix 0 (17 items), code done, rebake only partly done:**
+  1 object registry + crop check (`registry.py`, `table_registry.json`; teal cutter no longer a third pen) · 2/3 skill versions (`versions.py`, `skills.json`, `/api/skills`, `/api/runs/{id}/skill`, Try-it and run header use one record; migration script) · 4 canonical names · 5 real/synthetic badges, real-first library, sample source/cached fields · 6 truthful "Your turn" badge · 7 robot framed in the hero, hidden/ringed in top-down edit · 8 registry shapes + real top-down crops as textures · 9 layout repaired once at twin_build · 10 label focus + collision avoidance (twin and overlay) · 11 compact red-team JSON, low effort, 4000 tokens · 12 judge low effort, 1800 tokens (the 15 s target is not measured yet) · 13 ledger snapshot `eval/ledger_snapshot.json` · 14 eval SHA · 15/16 costs-page labels · 17 aria-labels.
+  - **Not done for Fix 0:** the Playwright acceptance run over Home, a run page, Try-it for every skill and Costs; the red-team cost before/after number; the judge latency measurement; re-measuring "perceptual inconclusive" with textures; baking the rebuilt runs. `data/runs/real-01..05` are rebuilt with the new code (old ones in the scratchpad `old_runs/pre_f0`); **`backend/tests/fixtures/runs/real-*` (what the site shows) are still the pre-Fix-0 bakes.** Next: `uv run python scripts/bake_runs.py real-01:real-ball-in-tub real-02:real-pens-in-tub real-03:real-spoon-in-tub real-04:real-pens-right-of-tub real-05:real-swap-cutter-glue`, re-label their `note`, then rerun `scripts/migrate_skill_versions.py` if needed, `uv run python -m eval.run_eval`, `update_readme.py`.
+  - Known: tub objects were not marked hollow in old runs; fixed in code (`ground.py`) and patched in `data/runs/real-04/05` (twin_scene, stress layouts). real-04 correction re-run gives a combined goal (pens right of tub and ball in tub), red-team 7/7. real-02/03 corrections were not re-run after the rebuild.
+- **F1 Skill Forge (flag `FRONTIER_FORGE`, on in dev, off in judge until accepted via `JUDGE_ACCEPTED` in `config.py`):**
+  - Forge tier in the sandbox (`ee_pose`, `move_ee`, `grip`, `wait`, `scene.pose/in_contact/gripper_width_max`), `TooWide` for objects wider than the 8 cm gripper, `turned` goal predicate, `other_motion` step, goal completion with measured end position/yaw, `request_new_skill` coder tool, `program/forge.py` (Wonder loop with write_skill/write_tests/run_tests/inspect_physics/promote, 9/10 fresh seeds, regression gate), Forge tab, Toolkit section, `/api/toolkit`, synthetic `push` and `rotate` clip families (`data/synth/frontier/`), `eval/forge_synth.py`.
+  - **Result:** `rotate_in_place` **promoted, 10/10 on fresh layouts, regression gate green over 100 library runs, 7 turns** (`backend/demobot/skills/forged/`). **`push` not promoted:** best 50% (about $0.4 per 10-turn attempt, five attempts, ~$2 in total). Physics works (a hand-written open-gripper push at yaw 0 passes 6 of the 8 layouts where it ran; fingers across the push direction, yaw 90 for pushes along y); failures were collisions with neighbours and tests that skip almost everywhere. My last test (a clear-path check) skipped on all 10 layouts because its clearance margins were too strict: loosen them, then give Wonder the lesson in `PHYSICS_NOTES`, and retry.
+  - Not done: forge from a Watch `other_motion` demo (trigger 1), real clips 06/07 (not filmed), the Forge acceptance on a real clip, wiring `request_new_skill` end to end on a synthetic push clip, `JUDGE_ACCEPTED` flag flip.
+- **F2 Live Twin, F3 "Did you mean…?", Video + README v2:** not started.
+
+### Next steps, in order
+1. Finish `push` (see above), run `uv run python -m eval.forge_synth`, then an end-to-end run of `data/synth/frontier/push_11001/clip.mp4`; add `"forge"` to `JUDGE_ACCEPTED` only after the acceptance passes.
+2. Finish Fix 0 (bake, Playwright acceptance, measurements), commit, redeploy (`uv run python scripts/deploy_modal.py`).
+3. F2 (Modal GPU, $30 sub-cap), F3, video and README v2, per docs/11 and its cut rules.
+4. Latest times in docs/11: F1 Sun Nov 1 20:00, F2 Mon Nov 2 16:00, F3 Mon Nov 2 23:00, video/README Tue Nov 3 18:00, freeze Wed Nov 4 14:00 IST.
+
+### Budget
+About $41 spent by Oct 31 evening; since then roughly $10 more (rebake, corrections, forge attempts). Caps untouched; Modal GPU not used yet.

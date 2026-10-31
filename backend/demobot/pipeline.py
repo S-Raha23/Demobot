@@ -252,6 +252,15 @@ async def stage_ground(run: Run) -> str:
     final = json.loads((run.art / "final_masks.json").read_text())
     gd = ground.ground(spec, tracks, final, cal, cam, info.analysis_fps, run.art)
     run.write("grounded.json", gd)
+    if (
+        gd.goal is not None and gd.goal != spec.goal
+    ):  # measured end positions / yaw filled into the goal
+        run.write("taskspec.json", spec.model_copy(update={"goal": gd.goal}))
+        run.ctx.emit(
+            "log",
+            "ground",
+            payload={"message": "goal completed with the measured end position / orientation"},
+        )
     run.artifact("ground", run.art / "grounded.json", "json", "Measured in centimetres")
     ok = all(r.holds for r in gd.real_world)
     run.ctx.emit("metric", "ground", payload={"name": "real_world_goal", "value": ok})

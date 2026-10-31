@@ -57,7 +57,9 @@ export type EventType =
   | "metric"
   | "log"
   | "error"
-  | "question";
+  | "question"
+  | "skill_forged"
+  | "intent_resolved";
 
 export interface Tokens {
   in: number;
@@ -224,7 +226,8 @@ export type Pred =
   | "behind"
   | "near"
   | "collinear"
-  | "swapped";
+  | "swapped"
+  | "turned";
 
 export interface Selector {
   name?: string | null;
@@ -241,6 +244,7 @@ export interface GoalClause {
   point_cm?: Vec2 | null;
   order_by?: "x" | "y" | null;
   order?: string[] | null;
+  yaw_deg?: number | null;
 }
 
 export interface ClauseResult {

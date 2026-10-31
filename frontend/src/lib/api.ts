@@ -71,6 +71,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ objects, version }),
     }),
+  toolkit: () => req<Toolkit>("/api/toolkit"),
   skill: (id: string, v?: number) => req<SkillVersion>(`/api/runs/${encodeURIComponent(id)}/skill${v ? `?v=${v}` : ""}`),
   shuffle: (id: string, seed: number) =>
     req<Layout>(`/api/runs/${encodeURIComponent(id)}/shuffle?seed=${seed}`, { method: "POST" }),
@@ -111,4 +112,24 @@ export interface LedgerRow {
 export interface CostsResponse {
   ledger: { by_provider: Record<string, LedgerRow>; by_model: Record<string, LedgerRow>; remaining?: unknown; snapshot?: string } | null;
   runs: ({ run_id: string; title?: string } & import("./types").CostsFile)[];
+}
+
+export interface ForgedSkill {
+  name: string;
+  signature: string;
+  purpose: string;
+  evidence: string;
+  pass_rate: number;
+  promoted_at: string;
+  doc: string;
+  code: string;
+  grid?: { layout: string; passed: boolean; skipped?: boolean; twin?: number }[];
+  regression?: { checked?: number; ok?: boolean };
+}
+
+export interface Toolkit {
+  built_in: string[];
+  invented: ForgedSkill[];
+  skill_api_version: string;
+  enabled: boolean;
 }

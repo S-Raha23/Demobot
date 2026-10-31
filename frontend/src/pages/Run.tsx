@@ -8,6 +8,7 @@ import { Segmented } from "../components/PanelHeader";
 import { RealPanel, trackColor } from "../components/RealPanel";
 import { StageStepper } from "../components/StageStepper";
 import { CostsTab } from "../components/tabs/CostsTab";
+import { ForgeTab, type ForgeRecord } from "../components/tabs/ForgeTab";
 import { ProgramTab, type Iteration } from "../components/tabs/ProgramTab";
 import { SpecTab } from "../components/tabs/SpecTab";
 import { StressTab } from "../components/tabs/StressTab";
@@ -43,12 +44,13 @@ import { MediaClock } from "../replay/mediaClock";
 import { hasArtifact, latestArtifact } from "../replay/state";
 import { RunContext, useArtifact, useRunPlayback, useTicker, type RunPlayback } from "../replay/useRun";
 
-type Tab = "spec" | "program" | "verify" | "stress" | "costs";
+type Tab = "spec" | "program" | "verify" | "stress" | "forge" | "costs";
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "spec", label: "Spec", icon: "eye" },
   { id: "program", label: "Program", icon: "code" },
   { id: "verify", label: "Verify", icon: "shield" },
   { id: "stress", label: "Stress", icon: "grid" },
+  { id: "forge", label: "Forge", icon: "bolt" },
   { id: "costs", label: "Costs", icon: "dollar" },
 ];
 
@@ -88,6 +90,9 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
   const verify = useArtifact<Verification>(runId, announced("verify.json"));
   const stress = useArtifact<StressReport>(runId, announced("stress.json"));
   const card = useArtifact<SkillCard>(runId, announced("card.json"));
+  // Skill Forge (docs/11 F1): a forged skill's record, when this run invented one
+  const forgeArt = view.artifactList.find((a) => a.name.startsWith("forge_") && a.name.endsWith(".json")) ?? null;
+  const forgeRec = useArtifact<ForgeRecord>(runId, forgeArt?.path ?? null);
   // after a spoken correction the newest program does the corrected task; next to the video the
   // twin shows by default the program that does what the video shows (the one before the correction)
   const correction = useArtifact<{ program_before: number; program_after: number }>(runId, announced("correction_1.json"));
@@ -252,7 +257,7 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
           </div>
           <div className="panel flex min-h-[420px] flex-col overflow-hidden lg:min-h-0" data-testid="tabs">
             <div className="flex h-10 shrink-0 items-center gap-1 border-b border-ink-700/60 px-2">
-              {TABS.map((t) => (
+              {TABS.filter((t) => t.id !== "forge" || forgeArt).map((t) => (
                 <button
                   key={t.id}
                   type="button"
@@ -282,6 +287,7 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
                   attempts={iterations.filter((i) => i.p.agent === "redteam").map((i) => i.p)}
                   running={view.stages.stress?.status === "running"}
                 />}
+              {tab === "forge" && <ForgeTab runId={runId} rec={forgeRec} />}
               {tab === "costs" && <CostsTab cost={view.cost} fixture={Boolean(run?.fixture)} />}
             </div>
           </div>

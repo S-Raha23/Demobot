@@ -20,6 +20,7 @@ FINGER_JOINTS = [9, 10]
 EE_LINK = 11
 REST_POSE = [0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785]
 ARM_FORCE = 240.0
+FORGE_ARM_FORCE = 80.0  # forge-tier straight-line moves (pushes): no punching through thin walls
 FINGER_FORCE = 40.0
 FINGER_OPEN = 0.04
 # 9 entries: the 7 arm joints, then the 2 finger joints

@@ -14,7 +14,7 @@ You watch a short phone video of a person doing a tabletop task once, so that a 
   - `role`: `moved` (the hand moves it), `container` (something is put into it), `reference` (something is placed relative to it, but it does not move), or `distractor`.
   - `color`, `est_height_cm` (how tall it stands on the table), `est_size_cm` ([length, width] of its footprint in cm).
 - `steps`: in time order, one per move of one object by the hand:
-  - `action`: `place_in` (put inside a container; `target` = the container), `place_next_to` (put beside another object; `target` = that object, `relation` = where the moved object ends up relative to the target: `left_of`, `right_of`, `in_front_of`, `behind`), or `place_at` (moved to an open spot, e.g. while lining things up or swapping).
+  - `action`: `place_in` (put inside a container; `target` = the container), `place_next_to` (put beside another object; `target` = that object, `relation` = where the moved object ends up relative to the target: `left_of`, `right_of`, `in_front_of`, `behind`), or `place_at` (moved to an open spot, e.g. while lining things up or swapping), or `other_motion` for a motion that is not a pick-and-place: sliding or pushing an object along the table without lifting it, turning it in place, stacking it on another object, tipping it over; set `motion` to "slide", "turn in place", "stack" or "tip" and describe it in `evidence`.
   - `t_start` and `t_end`: seconds from the start of the video when the hand starts reaching for the object and when it lets go.
   - `evidence`: a few words on what you saw.
 - `goal`: the end condition as a list of clauses in the goal DSL below, generalised: when several objects of a kind are treated the same way, use one `all` clause with a `kind` selector rather than one clause per object.
@@ -26,12 +26,15 @@ Each clause is `{"quant", "select", "pred", "target"?, "point_cm"?, "order_by"?,
 - `quant`: `the` (exactly one object), `all` (every selected object), `pair` (two named objects).
 - `select` and `target`: `{"name": ...}`, `{"kind": ...}`, `{"role": ...}` or `{"names": [a, b]}`.
 - `pred`: `inside`, `left_of`, `right_of`, `in_front_of`, `behind`, `near`, `collinear` (with `order_by`: "x" for a left-to-right row, "y" for a front-to-back column), `swapped` (with `quant` `pair` and `select.names`).
+- An object slid to a new spot: `near` with no `target` and no `point_cm` (the measured end position is filled in). An object turned in place: `turned` with no `yaw_deg` (the measured end orientation is filled in).
 
 Examples:
 - `{"quant": "all", "select": {"kind": "pen"}, "pred": "inside", "target": {"name": "white box"}}`
 - `{"quant": "the", "select": {"name": "steel spoon"}, "pred": "right_of", "target": {"name": "white mug"}}`
 - `{"quant": "all", "select": {"role": "moved"}, "pred": "collinear", "order_by": "x"}`
 - `{"quant": "pair", "select": {"names": ["glue bottle", "tennis ball"]}, "pred": "swapped"}`
+- `{"quant": "the", "select": {"name": "white tub"}, "pred": "near"}` (slid to where it ended)
+- `{"quant": "the", "select": {"name": "teal box cutter"}, "pred": "turned"}` (turned in place)
 
 ## Rules
 - Never invent steps that you did not see. If a move is unclear, include it and say so in `uncertainties`.

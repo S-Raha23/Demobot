@@ -18,12 +18,13 @@ import multiprocessing as mp
 import resource
 import time
 import traceback
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from typing import Any
 
 from demobot import goal_dsl
 from demobot.config import settings
-from demobot.program.api import API_ERRORS, SkillApiError, make_api
+from demobot.program.api import API_ERRORS, FORGE_ATTRS, Obj, SkillApiError, make_api
 from demobot.schemas import GoalClause, Layout, SimResult
 from demobot.sim import constants as C
 from demobot.sim.scene import build_scene
@@ -87,9 +88,13 @@ def _defined_names(tree: ast.Module) -> set[str]:
     return names
 
 
-def guard(code: str) -> ast.Module:
-    """Parse and check a program against the allowlist; returns the tree or raises GuardError
-    listing every problem with its line number."""
+def guard(
+    code: str, mode: str = "program", skill: str | None = None, extra_names: Iterable[str] = ()
+) -> ast.Module:
+    """Parse and check code against the allowlist; returns the tree or raises GuardError listing
+    every problem with its line number. mode: "program" (def run(scene, robot); forge-tier
+    primitives are not allowed), "skill" (a forged skill: def <skill>(robot, scene, ...), forge tier
+    allowed) or "tests" (def test_<x>(robot, scene, skill) functions)."""
     if len(code) > MAX_CODE_CHARS:
         raise GuardError([f"the program is longer than {MAX_CODE_CHARS} characters"])
     try:
@@ -109,12 +114,34 @@ def guard(code: str) -> ast.Module:
         if isinstance(stmt, ast.Assign | ast.AnnAssign) and _is_literal(stmt.value):
             continue  # module-level constants
         bad(stmt, "only functions, `import math` and constant assignments may be at module level")
-    run = [s for s in tree.body if isinstance(s, ast.FunctionDef) and s.name == "run"]
-    if not run:
-        problems.append("define `def run(scene, robot):`")
-    elif [a.arg for a in run[0].args.args] != ["scene", "robot"]:
-        bad(run[0], "run must take exactly (scene, robot)")
-    known = set(SAFE_BUILTINS) | set(INJECTED) | set(CONSTANTS) | _defined_names(tree)
+    funcs = [s for s in tree.body if isinstance(s, ast.FunctionDef)]
+    if mode == "program":
+        run = [f for f in funcs if f.name == "run"]
+        if not run:
+            problems.append("define `def run(scene, robot):`")
+        elif [a.arg for a in run[0].args.args] != ["scene", "robot"]:
+            bad(run[0], "run must take exactly (scene, robot)")
+    elif mode == "skill":
+        fn = [f for f in funcs if f.name == skill]
+        if not fn:
+            problems.append(f"define `def {skill}(robot, scene, ...):`")
+        elif [a.arg for a in fn[0].args.args][:2] != ["robot", "scene"]:
+            bad(fn[0], f"{skill} must start with (robot, scene, ...)")
+    else:
+        tests = [f for f in funcs if f.name.startswith("test_")]
+        if not tests:
+            problems.append("define at least one `def test_<name>(robot, scene, skill):`")
+        for f in tests:
+            if [a.arg for a in f.args.args] != ["robot", "scene", "skill"]:
+                bad(f, f"{f.name} must take exactly (robot, scene, skill)")
+    known = (
+        set(SAFE_BUILTINS)
+        | set(INJECTED)
+        | set(CONSTANTS)
+        | _defined_names(tree)
+        | set(extra_names)
+        | {"Obj"}
+    )
     for node in ast.walk(tree):
         if type(node) in _NODE_MESSAGES:
             bad(node, _NODE_MESSAGES[type(node)])
@@ -130,6 +157,8 @@ def guard(code: str) -> ast.Module:
             node.attr.startswith("_") or node.attr in FORBIDDEN_ATTRS
         ):
             bad(node, f"attribute `{node.attr}` is not allowed")
+        if mode == "program" and isinstance(node, ast.Attribute) and node.attr in FORGE_ATTRS:
+            bad(node, f"`{node.attr}` is a forge-tier primitive: only forged skills may use it")
         if isinstance(node, ast.Name):
             if node.id.startswith("_"):
                 bad(node, f"names starting with _ are not allowed (`{node.id}`)")
@@ -187,6 +216,51 @@ def _trim_traceback(e: BaseException) -> str:
 
 
 # ---------- execution ----------
+def _safe_env(tick: Callable[[], None]) -> dict[str, Any]:
+    return {
+        "__builtins__": {n: getattr(builtins, n) for n in SAFE_BUILTINS},
+        "_tick": tick,
+        "math": math,
+        "Obj": Obj,
+    }
+
+
+def load_skills(
+    forged: dict[str, str], env: dict[str, Any], sim: Any
+) -> dict[str, Callable[..., Any]]:
+    """Forged skills as functions a program can call: name(robot, scene, ...). While one runs, the
+    forge tier is open, the objects passed to it may be touched (and open containers among them
+    become movable), and everything else must stay put."""
+    out: dict[str, Callable[..., Any]] = {}
+    envs: list[dict[str, Any]] = []
+    for name, src in forged.items():
+        tree = ast.fix_missing_locations(
+            _Ticker().visit(guard(src, mode="skill", skill=name, extra_names=forged))
+        )
+        tree.body = [st for st in tree.body if not isinstance(st, ast.Import)]
+        senv = _safe_env(env["_tick"]) | {"log": env["log"]}
+        exec(compile(tree, f"<skill {name}>", "exec"), senv)
+        envs.append(senv)
+        fn = senv[name]
+
+        def wrapper(
+            robot: Any, scene: Any, *args: Any, _fn: Callable[..., Any] = fn, **kw: Any
+        ) -> Any:
+            targets = {a.name for a in (*args, *kw.values()) if isinstance(a, Obj)}
+            scene._forge.append(targets)
+            sim.set_movable(targets, True)
+            try:
+                return _fn(robot, scene, *args, **kw)
+            finally:
+                scene._forge.pop()
+                sim.set_movable(targets, False)
+
+        out[name] = wrapper
+    for senv in envs:  # forged skills may call each other
+        senv.update(out)
+    return out
+
+
 def execute(
     code: str,
     layout: Layout,
@@ -194,11 +268,14 @@ def execute(
     out_dir: Path | None = None,
     render: bool = False,
     calibration_json: str | None = None,
+    forged: dict[str, str] | None = None,
 ) -> SimResult:
-    """Run a program on a layout in this process. Never raises for program errors."""
+    """Run a program on a layout in this process. Never raises for program errors. `forged`:
+    the promoted forged skills (name -> source) the program may call."""
     t0 = time.monotonic()
+    forged = forged or {}
     try:
-        tree = guard(code)
+        tree = guard(code, extra_names=forged)
     except GuardError as e:
         return SimResult(ok=False, error=str(e), error_type="GuardError", layout_id=layout.id)
     tree.body = [s for s in tree.body if not isinstance(s, ast.Import)]  # math is injected
@@ -223,6 +300,7 @@ def execute(
         }
         error = error_type = None
         try:
+            env |= load_skills(forged, env, sim)
             exec(compile(tree, "<program>", "exec"), env)
             env["run"](env["scene"], env["robot"])
         except (*API_ERRORS, LoopLimit) as e:
@@ -267,6 +345,70 @@ def execute(
         sim.close()
 
 
+def execute_test(skill: str, skill_code: str, tests_code: str, test: str, layout: Layout,
+                 out_dir: Path | None = None) -> dict[str, Any]:  # fmt: skip
+    """Run one forge test on one layout: test(robot, scene, skill) on a fresh scene. Returns
+    {passed, skipped, error, error_type, calls} (and a twin + top-down render when out_dir)."""
+    try:
+        ttree = guard(tests_code, mode="tests", extra_names=[skill])
+    except GuardError as e:
+        return {"passed": False, "skipped": False, "error": str(e), "error_type": "GuardError"}
+    ttree.body = [s for s in ttree.body if not isinstance(s, ast.Import)]
+    ttree = ast.fix_missing_locations(_Ticker().visit(ttree))
+    sim = build_scene(layout)
+    try:
+        recorder = sim.record() if out_dir is not None else None
+        calls: list[Any] = []
+        logs: list[str] = []
+        ticks = [0]
+
+        def _tick() -> None:
+            ticks[0] += 1
+            if ticks[0] > MAX_LOOP_TICKS:
+                raise LoopLimit(f"loops ran more than {MAX_LOOP_TICKS} times")
+
+        env = _safe_env(_tick) | make_api(sim, calls, logs)
+        out: dict[str, Any] = {"passed": False, "skipped": False, "error": None, "error_type": None}
+        try:
+            fn = load_skills({skill: skill_code}, env, sim)[skill]
+            tenv = _safe_env(_tick) | {"log": env["log"], skill: fn}
+            exec(compile(ttree, "<tests>", "exec"), tenv)
+            got = tenv[test](env["robot"], env["scene"], fn)
+            sim.step(C.SETTLE_STEPS)
+            out["skipped"] = got == "skip"
+            out["passed"] = got != "skip"
+        except AssertionError as e:
+            out["error"], out["error_type"] = f"assertion failed: {e}"[:400], "AssertionError"
+        except GuardError as e:
+            out["error"], out["error_type"] = str(e)[:400], "GuardError"
+        except Exception as e:
+            out["error"], out["error_type"] = _trim_traceback(e)[:400], type(e).__name__
+        out["calls"] = [c.skill for c in calls][:40]
+        if out_dir is not None and recorder is not None:
+            from demobot.sim import render as render_mod
+            from demobot.sim.twin_export import write_twin
+
+            out_dir.mkdir(parents=True, exist_ok=True)
+            out["twin"] = str(write_twin(sim, recorder, layout, out_dir / f"twin_{layout.id}.json"))
+            out["renders"] = render_mod.render_all(sim, layout, out_dir, layout.id, None)
+        return out
+    finally:
+        sim.close()
+
+
+async def run_test(skill: str, skill_code: str, tests_code: str, test: str, layout: Layout,
+                   out_dir: Path | None = None, workers: int = 4) -> dict[str, Any]:  # fmt: skip
+    payload = json.dumps({"kind": "test", "skill": skill, "skill_code": skill_code, "tests_code": tests_code, "test": test,
+                          "layout": layout.model_dump(mode="json"), "out_dir": str(out_dir) if out_dir else None})  # fmt: skip
+    fut = asyncio.get_running_loop().run_in_executor(pool(workers), _worker_run, payload)
+    try:
+        return dict(json.loads(await asyncio.wait_for(fut, WALL_TIMEOUT_S)))
+    except (TimeoutError, cf.process.BrokenProcessPool) as e:
+        _reset_pool()
+        return {"passed": False, "skipped": False, "error": f"the test {'took too long' if isinstance(e, TimeoutError) else 'used too much CPU or memory'}",
+                "error_type": "Timeout"}  # fmt: skip
+
+
 # ---------- the process pool ----------
 def _worker_init() -> None:
     resource.setrlimit(resource.RLIMIT_AS, (MEMORY_LIMIT_BYTES, MEMORY_LIMIT_BYTES))
@@ -283,6 +425,9 @@ def _worker_run(payload: str) -> str:
     _, hard = resource.getrlimit(resource.RLIMIT_CPU)
     a = json.loads(payload)
     resource.setrlimit(resource.RLIMIT_CPU, (spent + int(a.get("cpu_limit_s", CPU_LIMIT_S)), hard))
+    if a.get("kind") == "test":
+        return json.dumps(execute_test(a["skill"], a["skill_code"], a["tests_code"], a["test"],
+                                       Layout.model_validate(a["layout"]), Path(a["out_dir"]) if a["out_dir"] else None))  # fmt: skip
     res = execute(
         a["code"],
         Layout.model_validate(a["layout"]),
@@ -290,6 +435,7 @@ def _worker_run(payload: str) -> str:
         Path(a["out_dir"]) if a["out_dir"] else None,
         a["render"],
         a["calibration_json"],
+        a.get("forged") or {},
     )
     return res.model_dump_json()
 
@@ -319,7 +465,13 @@ def _reset_pool() -> None:
     _pool = None
 
 
-def sim_key(code: str, layout: Layout, goal: list[GoalClause], render: bool) -> str:
+def sim_key(
+    code: str,
+    layout: Layout,
+    goal: list[GoalClause],
+    render: bool,
+    forged: dict[str, str] | None = None,
+) -> str:
     blob = json.dumps(
         {
             "code": code,
@@ -327,6 +479,7 @@ def sim_key(code: str, layout: Layout, goal: list[GoalClause], render: bool) -> 
             "goal": [g.model_dump(mode="json") for g in goal],
             "render": render,
             "v": SIM_VERSION,
+            **({"forged": forged} if forged else {}),
         },
         sort_keys=True,
     )
@@ -343,10 +496,16 @@ async def simulate(
     workers: int = 2,
     use_cache: bool = True,
     cpu_limit_s: int = CPU_LIMIT_S,
+    forged: dict[str, str] | None = None,
 ) -> SimResult:
-    """Run a program in a worker process; cached by (code, layout, goal, render, sim version).
+    """Run a program in a worker process; cached by (code, layout, goal, render, sim version,
+    forged skills). Every promoted forged skill is available unless `forged` says otherwise.
     Artifacts (twin, renders) live in data/cache/sim/<key>/."""
-    key = sim_key(code, layout, goal, render)
+    if forged is None:
+        from demobot.program.forge import load_forged
+
+        forged = load_forged()
+    key = sim_key(code, layout, goal, render, forged)
     out_dir = settings.data_path / "cache" / "sim" / key
     cached = out_dir / "result.json"
     if use_cache and cached.exists():
@@ -360,6 +519,7 @@ async def simulate(
             "render": render,
             "calibration_json": calibration_json,
             "cpu_limit_s": cpu_limit_s,
+            "forged": forged,
         }
     )
     loop = asyncio.get_running_loop()

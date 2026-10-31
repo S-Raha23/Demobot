@@ -15,6 +15,7 @@ from demobot import goal_dsl
 from demobot.schemas import SkillCall
 from demobot.sim import constants as C
 from demobot.sim.scene import Scene as SimScene
+from demobot.sim.scene import to_table
 from demobot.sim.skills import SkillError, Skills, container_slot
 
 
@@ -55,7 +56,18 @@ class TooManySkillCalls(SkillApiError):
     """A program may make at most 40 robot calls."""
 
 
+class TooWide(SkillApiError):
+    """The object is wider than the gripper opens: it cannot be picked (a forged skill may move it)."""
+
+
+class ForgeOnly(SkillApiError):
+    """A forge-tier primitive was used outside a forged skill."""
+
+
 SIDES = ("left_of", "right_of", "in_front_of", "behind")
+GRIPPER_MAX_CM = 2 * C.FINGER_OPEN * 100  # the Panda's fingers open 8 cm
+# low-level primitives a forged skill may use (docs/11 F1); normal programs cannot
+FORGE_ATTRS = {"ee_pose", "move_ee", "grip", "wait", "pose", "in_contact", "gripper_width_max"}
 TALL_CM = 5.0
 TALL_EXTRA_CM = 6.0
 
@@ -86,6 +98,38 @@ class Scene:
     def __init__(self, sim: SimScene) -> None:
         self._sim = sim
         self._held: str | None = None
+        self._forge: list[set[str]] = []  # stack of the running forged skills' target objects
+
+    def _forge_only(self, what: str) -> None:
+        if not self._forge:
+            raise ForgeOnly(f"{what} is a forge-tier primitive: only forged skills may use it")
+
+    # ---------- forge tier (inside forged skills only) ----------
+    def pose(self, obj: Obj) -> tuple[float, float, float, float]:
+        """(x, y, z, yaw) of `obj` now, in cm and degrees (forge tier)."""
+        self._forge_only("scene.pose")
+        o = self._snap(obj.name)
+        return o.x, o.y, o.z, o.yaw
+
+    def in_contact(self, a: Obj, b: Obj | str) -> bool:
+        """True if `a` touches `b` (another object, or "robot") right now (forge tier)."""
+        self._forge_only("scene.in_contact")
+        import pybullet as pb
+
+        body_a = self._sim.objects[a.name].body
+        body_b = (
+            self._sim.robot
+            if b == "robot"
+            else self._sim.objects[b.name if isinstance(b, Obj) else b].body
+        )
+        return bool(
+            pb.getContactPoints(bodyA=body_a, bodyB=body_b, physicsClientId=self._sim.client)
+        )
+
+    def gripper_width_max(self) -> float:
+        """How wide the gripper opens, in cm (about 8) (forge tier)."""
+        self._forge_only("scene.gripper_width_max")
+        return GRIPPER_MAX_CM
 
     def _snap(self, name: str) -> Obj:
         s = self._sim.snapshot(name)
@@ -272,7 +316,11 @@ class Robot:
             raise self._fail(
                 call, NotReachable(f"{obj.name} at ({x:.0f}, {y:.0f}) is out of reach")
             )
-        if self._sim.objects[obj.name].spec.is_open:
+        spec = self._sim.objects[obj.name].spec
+        if spec.shape != "sphere" and min(spec.w, spec.d) > GRIPPER_MAX_CM:
+            raise self._fail(call, TooWide(f"{obj.name} is {min(spec.w, spec.d):.1f} cm wide; the gripper opens "
+                                           f"{GRIPPER_MAX_CM:.0f} cm, so it cannot be picked (request a new skill to move it)"))  # fmt: skip
+        if spec.is_open:
             raise self._fail(call, NotReachable(f"{obj.name} is a container; containers stay put"))
         before = self._snapshot_xy()
         try:
@@ -383,6 +431,68 @@ class Robot:
         self._begin("home")
         self._skills.home()
 
+    # ---------- forge tier (inside forged skills only) ----------
+    def ee_pose(self) -> tuple[float, float, float, float]:
+        """(x, y, z, yaw) of the gripper in table cm and degrees (forge tier)."""
+        self._scene._forge_only("robot.ee_pose")
+        pos = self._skills.ee_pos()
+        x, y = to_table(pos)
+        return round(x, 2), round(y, 2), round(pos[2] * 100, 2), round(self._skills.ee_yaw_deg(), 1)
+
+    def move_ee(
+        self, x: float, y: float, z: float, yaw: float | None = None, speed: float = 1.0
+    ) -> None:
+        """Move the gripper in a straight line to (x, y, z) cm (z above the table), turning to `yaw`
+        degrees if given. Raises NotReachable, or Collision if anything but the skill's own objects
+        moves more than 1 cm (forge tier)."""
+        self._scene._forge_only("robot.move_ee")
+        call = self._begin(
+            "move_ee", x=round(x, 1), y=round(y, 1), z=round(z, 1), yaw=yaw, speed=speed
+        )
+        if not self.can_reach(x, y):
+            raise self._fail(call, NotReachable(f"({x:.0f}, {y:.0f}) is out of reach"))
+        before = self._snapshot_xy()
+        try:
+            self._skills.move_line((x, y, z), yaw, max(0.1, min(2.0, float(speed))))
+        except SkillError as e:
+            raise self._fail(
+                call, NotReachable(f"cannot move to ({x:.0f}, {y:.0f}, {z:.0f}): {e.reason}")
+            ) from None
+        allowed = set().union(*self._scene._forge) | (
+            {self._scene._held} if self._scene._held else set()
+        )
+        self._check_disturbed(call, before, allowed)
+
+    def grip(self, state: str, width_cm: float | None = None) -> None:
+        """ "close": close the fingers (to `width_cm` if given); an object between them is grasped.
+        "open": open them (to `width_cm` if given) and let go of anything held (forge tier)."""
+        self._scene._forge_only("robot.grip")
+        call = self._begin("grip", state=state, width_cm=width_cm)
+        if state not in ("open", "close"):
+            raise self._fail(call, NotReachable('grip state must be "open" or "close"'))
+        if state == "open":
+            if self._scene._held is not None:
+                self._skills.detach()
+                self._skills.release()
+                self._scene._held = None
+            self._skills.set_fingers((width_cm or GRIPPER_MAX_CM) / 200)
+            self._sim.step(30)
+            return
+        name = self._skills.between_fingers()
+        if name is not None and self._scene._held is None:
+            spec = self._sim.objects[name].spec
+            if min(spec.w, spec.d) <= GRIPPER_MAX_CM or spec.shape == "sphere":
+                self._skills.attach(name)
+                self._scene._held = name
+                return
+        self._skills.set_fingers((width_cm or 0.0) / 200)
+        self._sim.step(30)
+
+    def wait(self, seconds: float) -> None:
+        """Let the physics run for `seconds` (at most 3) so things settle (forge tier)."""
+        self._scene._forge_only("robot.wait")
+        self._sim.step(int(max(0.0, min(3.0, float(seconds))) / C.TIME_STEP))
+
 
 def make_api(sim: SimScene, calls: list[SkillCall], logs: list[str]) -> dict[str, Any]:
     """The only names injected into a program, besides safe builtins."""
@@ -399,5 +509,5 @@ def make_api(sim: SimScene, calls: list[SkillCall], logs: list[str]) -> dict[str
 
 API_ERRORS = (
     NotReachable, NothingHeld, AlreadyHolding, NoFreeSpot, Collision, NoSuchObject, PlaceFailed,
-    TooManySkillCalls,
+    TooManySkillCalls, TooWide, ForgeOnly,
 )  # fmt: skip

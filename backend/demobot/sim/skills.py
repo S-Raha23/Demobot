@@ -94,6 +94,7 @@ class Skills:
         self.contacts: set[int] = set()
         self.held: str | None = None
         self._constraint: int | None = None
+        self.arm_force = C.ARM_FORCE
         scene.on_step.append(self._record_contacts)
 
     # ---------- low level ----------
@@ -234,7 +235,7 @@ class Skills:
             C.ARM_JOINTS,
             p.POSITION_CONTROL,
             targetPositions=target,
-            forces=[C.ARM_FORCE] * 7,
+            forces=[self.arm_force] * 7,
             physicsClientId=self.cid,
         )
 
@@ -250,6 +251,65 @@ class Skills:
             if max(abs(a - b) for a, b in zip(self._arm_q(), q, strict=True)) < C.MOVE_HOLD_TOL_RAD:
                 break
             self.scene.step()
+
+    # ---------- forge tier: yaw, straight lines, what is between the fingers ----------
+    def set_yaw(self, yaw_deg: float | None) -> None:
+        """Point the gripper down with this yaw (table degrees) for the next IK solves; None: default."""
+        eul = (
+            C.EE_DOWN_EULER
+            if yaw_deg is None
+            else (C.EE_DOWN_EULER[0], C.EE_DOWN_EULER[1], -math.radians(yaw_deg))
+        )
+        self.orn = p.getQuaternionFromEuler(eul)
+        self._target_rot = np.asarray(p.getMatrixFromQuaternion(self.orn)).reshape(3, 3)
+
+    def ee_yaw_deg(self) -> float:
+        state = p.getLinkState(
+            self.robot, C.EE_LINK, computeForwardKinematics=True, physicsClientId=self.cid
+        )
+        r = np.asarray(p.getMatrixFromQuaternion(state[5])).reshape(3, 3)
+        return -math.degrees(math.atan2(r[1, 0], r[0, 0]))
+
+    def move_line(
+        self, target_cm: tuple[float, float, float], yaw_deg: float | None, speed: float
+    ) -> None:
+        """A straight Cartesian line to (x, y, z) cm in ~1 cm waypoints, turning to `yaw_deg` along
+        the way; slower `speed` means more physics steps per centimetre (gentle pushes)."""
+        start = np.asarray(self.ee_pos())
+        tx, ty = to_sim(target_cm[:2])
+        end = np.array([tx, ty, target_cm[2] / 100.0])
+        y0 = self.ee_yaw_deg()
+        dyaw = 0.0 if yaw_deg is None else ((yaw_deg - y0 + 180.0) % 360.0) - 180.0
+        n = max(
+            1,
+            int(np.linalg.norm(end - start) * 100)
+            + (int(abs(dyaw) / 10) if yaw_deg is not None else 0),
+        )
+        steps = max(3, int(10 / speed))
+        self.arm_force = (
+            C.FORGE_ARM_FORCE
+        )  # gentle: the arm stalls against an object instead of pushing through it
+        try:
+            for k in range(1, n + 1):
+                f = k / n
+                self.set_yaw(y0 + dyaw * f if yaw_deg is not None else y0)
+                self.move_ee(tuple(start + (end - start) * f), steps)
+        finally:
+            self.arm_force = C.ARM_FORCE
+            self.set_yaw(None if yaw_deg is None and abs(y0) < 1 else (y0 + dyaw))
+
+    def between_fingers(self) -> str | None:
+        """The object the open gripper is around right now (its footprint under the fingertips)."""
+        ex, ey, ez = self.ee_pos()
+        best, best_d = None, math.inf
+        for name, obj in self.scene.objects.items():
+            pos, _ = p.getBasePositionAndOrientation(obj.body, physicsClientId=self.cid)
+            reach = max(obj.spec.w, obj.spec.d) / 200 + 0.01
+            d = math.hypot(pos[0] - ex, pos[1] - ey)
+            top = pos[2] + obj.spec.h / 200
+            if d < reach and ez - C.GRASP_OFFSET - 0.03 < top and d < best_d:
+                best, best_d = name, d
+        return best
 
     def set_fingers(self, opening_m: float) -> None:
         q = min(max(opening_m, 0.0), C.FINGER_OPEN)
