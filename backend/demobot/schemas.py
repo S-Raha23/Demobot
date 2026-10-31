@@ -336,6 +336,7 @@ class CheckResult(BaseModel):
     ok: bool
     clauses: list[ClauseResult] = Field(default_factory=list)
     detail: str = ""
+    inconclusive: bool = False  # nothing contradicts the goal, but the evidence is incomplete
 
 
 class Verification(BaseModel):

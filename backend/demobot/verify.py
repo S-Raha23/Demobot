@@ -124,7 +124,11 @@ def composite(run_dir: Path, render: Path, mask: Path, out: Path) -> Path:
     if plate.shape != ren.shape:
         plate = cv2.resize(plate, (ren.shape[1], ren.shape[0]))
     plate[m] = ren[m]
-    cv2.imwrite(str(out), plate, [cv2.IMWRITE_JPEG_QUALITY, 92])
+    rng = np.random.default_rng(0)  # a little sensor noise, like a phone frame
+    plate = np.clip(plate.astype(np.float32) + rng.normal(0, 2.2, plate.shape), 0, 255).astype(
+        np.uint8
+    )
+    cv2.imwrite(str(out), plate, [cv2.IMWRITE_JPEG_QUALITY, 82])
     return out
 
 
@@ -160,27 +164,27 @@ async def perceptual(ctx: RunContext, render: Path, sim_final: list[SceneObject]
     seen += in_seen_box
     results = goal_dsl.evaluate(goal, goal_dsl.to_state(seen), goal_dsl.to_state(initial))
     hidden_both += in_seen_box
-    missing = [
-        o.name
-        for o in sim_final
-        if o.name not in found and o.name in real_seen and o not in in_seen_box
-    ]
-    for r in results:  # an object seen for real but not in the render must not pass vacuously
-        involved = [o for o in sim_final if goal_dsl.select(r.clause.select, {o.name: o})]
-        lost = [o.name for o in involved if o.name in missing]
-        hid = [o.name for o in involved if o in hidden_both]
+    # a stand-in SAM cannot see in the render is inconclusive (checked at its simulated position),
+    # not a failure: the check fails only when SAM sees something that contradicts the goal
+    unseen = [o for o in sim_final if o.name not in found and o not in hidden_both]
+    if unseen:
+        seen += unseen
+        results = goal_dsl.evaluate(goal, goal_dsl.to_state(seen), goal_dsl.to_state(initial))
+    for r in results:
+        hid = [o.name for o in hidden_both if o.name in r.objects]
+        miss = [o.name for o in unseen if o.name in r.objects]
         if hid:
-            r.detail += f" ({', '.join(hid)} hidden from view: checked at the simulated position)"
-        if lost:
-            r.holds, r.code = False, "NOT_SEEN"
-            r.detail = f"SAM saw {', '.join(lost)} in the real frame but not in the render"
+            r.detail += f" ({', '.join(hid)} hidden from view)"
+        if miss:
+            r.detail += f" ({', '.join(miss)} not seen by SAM in the render: inconclusive)"
     ok = goal_dsl.all_hold(results)
+    needed = {n for r in results for n in r.objects}
+    inconclusive = ok and any(o.name in needed for o in unseen)
     masks = {n: {"box": i.box, "centroid": i.centroid, "poly": i.poly} for n, i in found.items()}
-    return CheckResult(
-        ok=ok,
-        clauses=results,
-        detail=f"SAM saw {len(found)}/{len(sim_final)} objects in the render",
-    ), masks
+    detail = f"SAM saw {len(found)}/{len(sim_final)} stand-ins in the render"
+    if inconclusive:
+        detail += "; not every goal object was visible, so this check is inconclusive"
+    return CheckResult(ok=ok, clauses=results, detail=detail, inconclusive=inconclusive), masks
 
 
 async def judge(

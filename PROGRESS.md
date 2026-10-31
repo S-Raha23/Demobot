@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M7 Verify (fault-injection acceptance), then M8 supervisor. Frontend M11 core done (Sat 11:30 IST); its backend requests are listed below.
+**Now:** M8 Supervisor agent (M7 done Sat 12:20 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -18,7 +18,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M4 | Listen + Watch + cross-watch | done on synthetic (live check waits for real clips) | Sat 08:40 | Spark 1.3 watch + Spark Open @ Modal cross-watch (video) + Wonder arbitration (decision events). Synthetic set: **goal correct on 9/10** (misses: a line-up with 3–7 cm nudges); cross-watch agreement mostly 1.0 once objects are aligned through step timing. `eval/understanding_synth.py`. Live: run on the 5 real clips, label them in `eval/labels/`. Listen: parser + language detection tested; `turns[]` timestamps still unconfirmed (no speech yet). |
 | M5 | Perceive + Ground | done on synthetic (live check waits for real clips) | Sat 10:40 | Synthetic set: **median start error 0.60 cm, end error 0.47 cm** (< 2 cm). Weakness: SAM misses some featureless synthetic teal bars (real goal holds on 5/10); kind and "<colour> object" fallback phrases added. `eval/grounding_synth.py`. |
 | M6 | Coder (Wonder) + MVP gate | doing | | Stateless Wonder tool loop + 2 Spark Open drafts works live (syn7-00: submitted v2 in 3 turns, ~$0.10). Restart of the program stage = $0 new spend (verified). Live ≥ 4/5 needs real clips; run on more synthetic clips next. |
-| M7 | Verify (three ways + judge) | doing | | symbolic + real-world + perceptual (SAM on the sim render composited onto an inpainted clean plate of the real table) + Spark Open judge. syn7-00: three checks pass; the judge dissents over an untracked distractor (goes to the supervisor). |
+| M7 | Verify (three ways + judge) | done | Sat 12:20 | Fault injection on syn7-01: **5/5 faults caught, 4/5 with the exact class** (the sim-only offset was caught by the judge, not by perceptual, because SAM did not see that stand-in). SAM on simulated stand-ins is unreliable, so an unseen stand-in is *inconclusive* (shown grey), never a silent pass or a false failure. `eval/fault_injection.py`. |
 | M8 | Supervisor agent | todo | | |
 | M9 | Red team + hardening | todo | | |
 | M10 | Voice correction | todo | | |
@@ -54,8 +54,7 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M7: fault-injection acceptance (wrong target, wrong relation, missing step, wrong object, sim-only offset → correct failure class on ≥ 4/5), then mark done.
-2. M8 supervisor (Spark Open on Baseten, bounded tool loop; handles judge_dissent, perception_gap, spec_mismatch, program_bug).
+1. M8 supervisor (Spark Open on Baseten, bounded tool loop; handles judge_dissent, perception_gap, spec_mismatch, program_bug).
 3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
 4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
 5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.
