@@ -67,10 +67,10 @@ Real clips arrived Sat Oct 31 (5 clips, 2 voice notes, table photo). Done since 
 - All 5 real clips run end to end; Watch goal matches the labels 5/5 (clip 05 is a swap per its narration); robustness 67% → 90%; voice corrections: Hindi (real-03, spoon → ball, 12/12) and English (real-04, pens → ball, 10/10; real-02 earlier 4/12 before the correction hardening round existed).
 - Fixes from real clips: moving-instance preference in perceive, unseen-start → inconclusive for swaps, correction hardening round, `place_at(yaw)` + turned-fit hint, red-team side-room validator.
 - Real runs baked for replay as `real-*` fixtures; eval has a real section; README results updated.
-- Git was removed by the human (Sat Oct 31); no commits or pushes until they say so.
+- Git re-initialised Sat Oct 31 and pushed to the new https://github.com/S-Raha23/Demobot (public). Commits: author Soubhagya Raha only, never a Co-Authored-By trailer.
 
 Next:
 1. Video done: `media/demo/demo_final.mp4` (3:00) and `demo_30s.mp4`, from real-03 (Hindi correction). Capture is ~3.4 fps; long stages are sped up so they look smooth, short ones are slightly steppy.
 2. Judge site: the human runs `uv run python scripts/deploy_modal.py`; then check health, replay, Try-it, one live sample.
 3. Optional: add a real clip as a judge-mode sample (`backend/tests/fixtures/samples/`), Lighthouse ≥ 70, stepper at 1366 px.
-4. At submission: `git init`, commit, push to the human's new repo only when they say so; make it public; fill links in `docs/submission-form.md`.
+4. At submission: fill the video and X links in `docs/submission-form.md`.

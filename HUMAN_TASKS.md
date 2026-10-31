@@ -75,7 +75,7 @@ Follow `PROMPT.md`.
 - **Sat Oct 31 21:30 IST: the last steps (about 20 minutes).** Everything else is built and checked.
   1. Watch `media/demo/demo_final.mp4` (3:00) and `media/demo/demo_30s.mp4` (for X). Upload the 3:00 one to YouTube (unlisted).
   2. Redeploy once (`uv run python scripts/deploy_modal.py`) to pick up the last fix.
-  3. Create the new GitHub repo and tell Claude when to `git init`, commit and push (Claude will not push until you say so). Make it public at submission.
+  3. (done Sat Oct 31) New repo https://github.com/S-Raha23/Demobot pushed; only you are listed as a contributor; it is already public.
   4. Fill the links in `docs/submission-form.md`, submit the form, post on X with the 30 s clip.
 
 
@@ -83,5 +83,5 @@ Follow `PROMPT.md`.
 - (old) **Sat Oct 31 14:10 IST: deploy the judge site (2 minutes, one command).** Hugging Face now charges (PRO, $9/month) for any Docker Space, so DemoBot deploys to **Modal** instead, on the Modal credits you already have. Claude Code's safety check does not let Claude run a production deploy itself. In the VS Code terminal run:
   `cd ~/The_Demobot && uv run python scripts/deploy_modal.py`
   It builds the frontend, stores your keys as a Modal secret (never printed), deploys, and prints the URL (`https://<workspace>--demobot.modal.run`). Then tell Claude the URL. (Prefer Hugging Face? Subscribe to PRO and run `uv run python scripts/deploy_space.py` instead.) To let Claude redeploy updates later by itself, add `"Bash(uv run python scripts/deploy_modal.py)"` to the allow list in `.claude/settings.local.json`.
-- (Sat Oct 31) You removed git from the project folder and will create a new GitHub repo; Claude does not push to it. Tell Claude when to `git init` and commit again.
+- (done Sat Oct 31) Git re-initialised and pushed to the new repo, commits authored by you only (no Claude trailer).
 - (done Sat Oct 31 18:00 IST) Clips and voice notes received: clip_01–05, table_photo.jpg, voice_1.m4a (Hindi: "green ball cup के अंदर रखो"), voice_2.m4a (English: "put the green ball in the tub."). The marker layout is fitted once from the photo + clip_01 and all five clips calibrate (0.45–1.06 px).
