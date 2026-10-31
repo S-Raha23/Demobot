@@ -1,0 +1,128 @@
+{
+ "summary": "The person put both teal pens into the white cup.",
+ "objects": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "teal stick",
+    "left blue pen"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    12.0,
+    1.0
+   ]
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "teal stick",
+    "right blue pen"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    12.0,
+    1.0
+   ]
+  },
+  {
+   "name": "white cup",
+   "kind": "cup",
+   "alt_names": [
+    "white pen holder",
+    "gray cup"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 8.0,
+   "est_size_cm": [
+    7.0,
+    7.0
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "yellow ball",
+    "tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "alt_names": [
+    "grey bar",
+    "gray stick"
+   ],
+   "role": "distractor",
+   "color": "gray",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    8.0,
+    2.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "right teal pen",
+   "target": "white cup",
+   "relation": null,
+   "t_start": 2.5,
+   "t_end": 5.5,
+   "evidence": "picked horizontal pen beside cup and stood it in cup"
+  },
+  {
+   "action": "place_in",
+   "object": "left teal pen",
+   "target": "white cup",
+   "relation": null,
+   "t_start": 6.0,
+   "t_end": 9.5,
+   "evidence": "picked left pen and dropped it in cup"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "all",
+   "select": {
+    "name": null,
+    "kind": "pen",
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white cup",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Every teal pen goes inside the white cup, wherever it starts.",
+ "uncertainties": [
+  "Teal objects called pens could be sticks or markers; exact kind uncertain.",
+  "Both pens end overlapped in cup so second pen inside is partly occluded but inferred.",
+  "Gray object called block could be eraser or marker cap; function uncertain.",
+  "Exact start and end times are approximate."
+ ]
+}

@@ -1,0 +1,127 @@
+{
+ "summary": "The person picked up both teal sticks and placed them inside the white octagonal cup.",
+ "objects": [
+  {
+   "name": "right teal stick",
+   "kind": "stick",
+   "alt_names": [
+    "teal block near cup",
+    "horizontal teal stick"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    6.0,
+    1.2
+   ]
+  },
+  {
+   "name": "left teal stick",
+   "kind": "stick",
+   "alt_names": [
+    "teal block on left",
+    "vertical teal stick"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    6.0,
+    1.2
+   ]
+  },
+  {
+   "name": "white octagonal cup",
+   "kind": "cup",
+   "alt_names": [
+    "white container",
+    "gray octagonal cup"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 8.0,
+   "est_size_cm": [
+    7.0,
+    7.0
+   ]
+  },
+  {
+   "name": "gray rectangular block",
+   "kind": "block",
+   "alt_names": [
+    "gray bar",
+    "gray stick"
+   ],
+   "role": "distractor",
+   "color": "gray",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    6.5,
+    1.5
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "yellow ball",
+    "tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "right teal stick",
+   "target": "white octagonal cup",
+   "relation": null,
+   "t_start": 2.8,
+   "t_end": 6.0,
+   "evidence": "hand grasps horizontal teal stick behind cup and drops it upright inside cup"
+  },
+  {
+   "action": "place_in",
+   "object": "left teal stick",
+   "target": "white octagonal cup",
+   "relation": null,
+   "t_start": 6.4,
+   "t_end": 9.6,
+   "evidence": "hand reaches to left teal stick, lifts it and inserts it into same cup next to first stick"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "all",
+   "select": {
+    "name": "right teal stick",
+    "kind": "stick",
+    "role": "moved",
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white octagonal cup",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Every teal stick on the table goes inside the white octagonal cup, regardless of its starting position.",
+ "uncertainties": [
+  "Second insertion is partially occluded by hand and cup rim; final view shows only one teal stick clearly visible but both appear to be inside and overlap exactly from this viewpoint.",
+  "No narration available; intent inferred from two identical place-in actions; exact timing estimates approximate.",
+  "Kind labels stick vs block used to distinguish teal objects from gray block despite similar shape."
+ ]
+}

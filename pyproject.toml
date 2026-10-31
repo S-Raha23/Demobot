@@ -60,6 +60,9 @@ extend-exclude = ["docs", "data", "reference", "frontend", "media"]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
 ignore = ["RUF001", "RUF002", "RUF003"]  # en dashes and × in prose are intended
 
+[tool.ruff.lint.pycodestyle]
+max-line-length = 130  # the formatter wraps at 100; hand-formatted request blocks may run longer
+
 [tool.ruff.lint.isort]
 known-first-party = ["demobot"]
 

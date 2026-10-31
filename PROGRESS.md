@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M4 Listen + Watch + cross-watch (M3 done Sat Oct 31, 07:30 IST); frontend subagent building M11 in parallel on fixture runs
+**Now:** M5 Perceive + Ground (M4 done on synthetic, Sat Oct 31, 08:40 IST); frontend subagent building M11 in parallel
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -15,7 +15,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M1 | Calibration | done (live check waits for real clips) | Sat 06:50 | **Handheld** (spec change): joint bundle fit + per-frame homographies, smoothing with a no-lag guard, interpolation (+ similarity correction from 1–2 visible markers), blur flags, last-clean-frame reference, stabilised display. 10/10 synthetic handheld clips: marker error 0.23–0.42 cm (< 0.8), reprojection ≤ 0.51 px (< 1.5), per-frame p95 ≤ 0.72 cm (`eval/calibration_synth.py`). **Live:** `demobot calibrate data/clips/raw/01_pens_in_mug.mp4` when clips arrive. |
 | M2 | Simulation core and skill API | done | Sat 07:20 | 20 hand-written programs (4 × 5 families) pass on 3 random layouts each (60/60, 34 s). The guard rejects 20 malicious snippets. Twin trajectory validates against `TwinTrajectory`. Renders: top-down and camera-pose. 117 tests. |
 | M3 | Synthetic demo generator | done | Sat 07:30 | `synth/`: the human's real objects (white box, mug, teal pens, teal box cutter, glue bottle, tennis ball, steel spoon), Muse Image textures, a skin-toned hand with fingers, handheld shake, landscape 1280×720. 10 clips × 5 families with exact truth in `data/synth/set7` (`python -m synth.make_set --n 10 --seed 7`). 3 fixture runs baked for the UI. |
-| M4 | Listen + Watch + cross-watch | todo | | |
+| M4 | Listen + Watch + cross-watch | done on synthetic (live check waits for real clips) | Sat 08:40 | Spark 1.3 watch + Spark Open @ Modal cross-watch (video) + Wonder arbitration (decision events). Synthetic set: **goal correct on 9/10** (misses: a line-up with 3–7 cm nudges); cross-watch agreement mostly 1.0 once objects are aligned through step timing. `eval/understanding_synth.py`. Live: run on the 5 real clips, label them in `eval/labels/`. Listen: parser + language detection tested; `turns[]` timestamps still unconfirmed (no speech yet). |
 | M5 | Perceive + Ground | todo | | |
 | M6 | Coder (Wonder) + MVP gate | todo | | |
 | M7 | Verify (three ways + judge) | todo | | |
@@ -36,6 +36,8 @@ Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 | --- | --- | --- | --- | --- | --- |
 | Sat Oct 31 05:00 | Meta ($130 cap) | M0 probes (Spark, Wonder, SAM, Voice, Image) | 0.057 | 0.057 | not yet |
 | Sat Oct 31 06:35 | Meta ($130 cap) | 8 Muse Image textures | 0.08 | 0.137 | not yet |
+| Sat Oct 31 08:40 | Meta ($130 cap) | M4 watch + arbitration on 10 synthetic clips (+2 reruns) | 0.61 | 0.75 | not yet |
+| Sat Oct 31 08:40 | Modal ($110 cap) | M4 cross-watch on 12 clips | 0.16 | 0.18 | not yet |
 | Sat Oct 31 05:00 | Baseten ($90 cap) | M0 probes | 0.007 | 0.007 | not yet |
 | Sat Oct 31 05:00 | Modal ($110 cap) | M0 probes (LLM) + Sandbox test | 0.02 | 0.02 | `modal billing summary`: $0.02 covered by credits, $0 billed |
 
@@ -52,8 +54,7 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M4: `listen.py` (Voice Transcribe; `turns[]` format still to confirm on real speech), `watch.py` (Spark 1.3 video → TaskSpec, prompts/watch.md), cross-watch on Modal (video_url) + Wonder arbitration, semantic checks. Live acceptance: goal correct on ≥ 4/5 clips. Until real clips arrive, run on `data/synth/set7` (truth in truth.json) and record fixtures.
-2. Frontend subagent is building `frontend/` (M11). When it reports: review its screenshots, integrate, make `make check` green including web-check, commit.
-3. Synthetic clips have no audio (no TTS available): Listen is tested with fixtures; real narration comes with the human's clips.
-4. When real clips arrive: `uv run demobot calibrate data/clips/raw/01_pens_in_mug.mp4`; then label the 5 clips into `eval/labels/*.json` (M4).
-5. The GitHub repo still needs creating by the human (HUMAN_TASKS.md); keep committing locally.
+1. M5 Perceive + Ground: `perceive.py` (SAM 3.1 video per phrase, sequential, `meta_sam_parser`, alt-name retries, image mode on the reference frame, crops) and `ground.py` (per-frame H_t + parallax from `camera_track.json`, cleaning, motion segments, contacts, step matching, real-world check). Acceptance on synthetic: median start/end error < 2 cm (truth in `data/synth/set7/*/truth.json`; runs `data/runs/syn7-*` already have ingest→watch done; `demobot run <clip> --run-id syn7-<name>` resumes).
+2. Frontend subagent is building `frontend/` (M11). When it reports: review screenshots, integrate, make `make check` green including web-check, commit.
+3. When real clips arrive: calibrate (M1 live), run up to watch (M4 live), label them in `eval/labels/*.json`.
+4. The GitHub repo still needs creating by the human (HUMAN_TASKS.md); keep committing locally.

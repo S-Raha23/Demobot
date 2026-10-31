@@ -5,6 +5,7 @@ from pathlib import Path
 import typer
 
 from demobot import budget
+from demobot.config import settings
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -60,3 +61,52 @@ def version() -> None:
     from importlib.metadata import version as v
 
     typer.echo(v("demobot"))
+
+
+@app.command()
+def run(
+    clip: Path,
+    until: str = typer.Option(None, help="stop after this stage"),
+    run_id: str = typer.Option(None, help="resume or name a run"),
+    title: str = "",
+) -> None:
+    """Run the pipeline on a clip (resumes an existing run id; finished stages are skipped)."""
+    import asyncio
+
+    from demobot import pipeline
+    from demobot.logging import configure_logging
+
+    configure_logging(settings.log_level)
+    r = pipeline.create_run(clip, title, run_id)
+    typer.echo(f"run {r.run_id} in {r.dir}")
+    asyncio.run(pipeline.run_pipeline(r, until))
+    for stage, status in r.state()["stages"].items():
+        typer.echo(f"  {stage:<10} {status}")
+
+
+@app.command()
+def fixtures(run_id: str) -> None:
+    """Copy a run's cached model responses into backend/tests/fixtures/responses/."""
+    import shutil
+
+    from sqlmodel import select
+
+    from demobot import db, gateway
+    from demobot.db import ApiCall
+
+    with db.session() as s:
+        keys = {
+            r.cache_key
+            for r in s.exec(select(ApiCall).where(ApiCall.run_id == run_id))
+            if r.cache_key
+        }
+    dest = settings.fixtures_path
+    dest.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for k in keys:
+        src = settings.data_path / "cache" / f"{k}.json"
+        if src.exists():
+            shutil.copy(src, dest / src.name)
+            n += 1
+    typer.echo(f"copied {n} of {len(keys)} responses to {dest}")
+    _ = gateway

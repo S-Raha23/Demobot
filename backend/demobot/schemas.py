@@ -351,7 +351,7 @@ class Verification(BaseModel):
 
 
 class AgentDecision(BaseModel):
-    agent: Literal["supervisor", "coder", "redteam"]
+    agent: Literal["supervisor", "coder", "redteam", "arbiter"]
     step: int
     observation: str
     reasoning_summary: str  # one sentence, never a chain of thought
