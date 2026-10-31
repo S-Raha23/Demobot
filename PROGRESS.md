@@ -125,4 +125,4 @@ Round-1 top issues → fix status (developer agents, verified by `make check`: *
 - [x] Try-it ghost Panda hidden while editing · global `:focus-visible` ring + AA contrast tokens · markers.pdf download link (dialog + `NO_MARKERS` error) · "Export skill (.zip)" on skill cards · real 404 view. Pointer-only timeline/dragging remains (keyboard equivalents still open).
 - [x] README: tagline scoped to pick-and-place, Frontier section added, Bengali claim scoped, eval regenerated at HEAD.
 
-**Round 2:** pending re-judge (same four panels).
+**Round 2 scores:** UI/UX **8/10** · Functionality **8.5/10** · Details **7/10** · Meta-story **8/10** (avg 7.9). Details fixes applied: submission-form tagline/Bengali scoped, README Listen row qualified, eval regenerated at the frozen code commit (`35715cd`; this docs commit follows it, so the SHA names the code the numbers measure, not the docs commit). Round 3 (Details only) pending.
