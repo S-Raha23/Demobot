@@ -60,6 +60,11 @@ TOOLS: list[dict[str, Any]] = [
     {"type": "function", "name": "list_layouts",
      "description": "The ids and one-line descriptions of the layouts you can simulate on.",
      "parameters": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"type": "function", "name": "update_goal",
+     "description": "Correction mode only: replace the goal with the corrected one (goal DSL clauses), and give an English gloss of the spoken correction. Simulations are then checked against the new goal.",
+     "parameters": {"type": "object", "properties": {"goal": {"type": "array", "items": {"type": "object"}},
+                                                     "gloss": {"type": "string", "description": "the correction in English"}},
+                    "required": ["goal", "gloss"], "additionalProperties": False}},
     {"type": "function", "name": "submit",
      "description": "Submit the final program. Accepted only if your last simulate on \"demo\" with exactly this code passed every clause.",
      "parameters": {"type": "object", "properties": {"code": {"type": "string"}, "explanation": {"type": "string"}},
@@ -124,6 +129,8 @@ class SynthOutcome:
     drafts: list[dict[str, Any]] = field(default_factory=list)
     winner: str = "wonder"
     trace: list[dict[str, Any]] = field(default_factory=list)
+    goal: list[GoalClause] | None = None  # correction mode: the goal after update_goal
+    gloss: str = ""
 
 
 def _clause_text(c: GoalClause) -> str:
@@ -184,6 +191,8 @@ class Loop:
         self.ctx = ctx.at("program")
         self.si = si
         self.goal = si.spec.goal
+        self.goal_before = si.spec.goal
+        self.gloss = ""
         self.version = si.first_version - 1
         self.code_version: dict[str, int] = {}
         self.out = SynthOutcome(program=None)
@@ -295,6 +304,28 @@ class Loop:
             {"id": k, "description": v.description or v.source} for k, v in self.si.layouts.items()
         ]
 
+    def update_goal(self, goal: list[Any], gloss: str) -> dict[str, Any]:
+        if self.si.mode != "correct":
+            return {"error": "update_goal is only available when applying a correction"}
+        try:
+            clauses = [GoalClause.model_validate(g) for g in goal]
+        except Exception as e:
+            return {"error": f"the goal does not parse: {str(e)[:300]}"}
+        from demobot.watch import check_goal
+
+        problems = check_goal(clauses, self.si.spec)
+        if not clauses or problems:
+            return {"error": "; ".join(problems or ["the goal is empty"])[:400]}
+        self.goal_before = self.goal
+        self.goal, self.gloss = clauses, gloss
+        self.last_demo = None  # earlier simulations were checked against the old goal
+        self.ctx.emit("tool_call", payload={"agent": "coder", "iteration": self.out.turns, "tool": "update_goal",
+                                            "args": {"gloss": gloss}, "result": {"ok": True}})  # fmt: skip
+        self.ctx.emit("artifact", payload={"name": "goal_diff", "path": "", "kind": "json", "label": "Goal change",
+                                           "before": [c.model_dump(exclude_none=True) for c in self.goal_before],
+                                           "after": [c.model_dump(exclude_none=True) for c in clauses], "gloss": gloss})  # fmt: skip
+        return {"accepted": True, "new_goal": [c.model_dump(exclude_none=True) for c in clauses]}
+
     def submit(self, code: str, explanation: str) -> dict[str, Any]:
         ok = self.last_demo is not None and self.last_demo[0] == code and self.last_demo[1]
         self.ctx.emit("tool_call", payload={"agent": "coder", "iteration": self.out.turns, "tool": "submit",
@@ -324,6 +355,8 @@ class Loop:
                 return self.check_reach(float(args.get("x_cm", 0)), float(args.get("y_cm", 0))), []
             if name == "list_layouts":
                 return self.list_layouts(), []
+            if name == "update_goal":
+                return self.update_goal(list(args.get("goal", [])), str(args.get("gloss", ""))), []
             if name == "submit":
                 return self.submit(str(args.get("code", "")), str(args.get("explanation", ""))), []
         except (ValueError, TypeError) as e:
@@ -451,6 +484,8 @@ class Loop:
                         "message": f"Wonder did not submit; using v{passing[-1].version}, which passed the demo"
                     },
                 )
+        if self.si.mode == "correct":
+            self.out.goal, self.out.gloss = self.goal, self.gloss
         if draft and self.out.program and self.out.program.code.strip() == draft["code"].strip():
             self.out.winner = "spark-open-draft"
         return self.out

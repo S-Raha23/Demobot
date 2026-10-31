@@ -223,12 +223,12 @@ class Supervisor:
                 goal = [GoalClause.model_validate(g) for g in args.get("goal", [])]
             except Exception as e:
                 return f"rejected: the goal does not parse ({str(e)[:200]})"
-            from demobot.watch import check_spec
+            from demobot.watch import check_goal
 
             new = spec.model_copy(
                 update={"goal": goal, "summary": args.get("summary") or spec.summary}
             )
-            problems = check_spec(new, 1e9)
+            problems = check_goal(goal, new) or ([] if goal else ["the goal is empty"])
             if problems:
                 return "rejected: " + "; ".join(problems)[:400]
             run.write("taskspec.json", new)

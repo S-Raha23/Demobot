@@ -53,3 +53,34 @@ def test_panda_assets_are_served() -> None:
 
 def test_health() -> None:
     assert TestClient(app).get("/api/health").json()["ok"] is True
+
+
+def test_live_endpoints(monkeypatch, tmp_path) -> None:
+    from demobot import jobs
+
+    c = TestClient(app)
+    sample = settings.data_path / "samples" / "pens"
+    sample.mkdir(parents=True)
+    (sample / "clip.mp4").write_bytes(b"x")
+    (sample / "sample.json").write_text('{"title": "Pens into the box"}')
+    assert c.get("/api/samples").json()[0] == {
+        "id": "pens",
+        "title": "Pens into the box",
+        "duration_s": None,
+        "thumb": None,
+    }
+    started: list[tuple[str, str]] = []
+    monkeypatch.setattr(jobs, "start_sample", lambda s: started.append(("sample", s)) or "run-1")
+    monkeypatch.setattr(
+        jobs,
+        "start_correction",
+        lambda r, text="", audio_bytes=None: started.append((r, text)) or r,
+    )
+    assert c.post("/api/runs", json={"sample": "pens"}).json() == {"run_id": "run-1"}
+    make_run("r-fix")
+    assert c.post("/api/runs/r-fix/correct", json={"text": "left of the mug"}).status_code == 202
+    assert started == [("sample", "pens"), ("r-fix", "left of the mug")]
+    monkeypatch.setattr(settings, "demobot_mode", "replay")
+    assert c.post("/api/runs", json={"sample": "pens"}).status_code == 405
+    assert c.get("/assets/print/markers.pdf").headers["content-type"] == "application/pdf"
+    assert "markdown" in c.get("/api/eval").json()

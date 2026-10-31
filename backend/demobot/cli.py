@@ -110,3 +110,24 @@ def fixtures(run_id: str) -> None:
             n += 1
     typer.echo(f"copied {n} of {len(keys)} responses to {dest}")
     _ = gateway
+
+
+@app.command()
+def correct(run_id: str, text: str = typer.Option("", help="a typed correction"),
+            audio: Path = typer.Option(None, help="a spoken correction (any audio file)")) -> None:  # fmt: skip
+    """Apply a correction to a finished run (a new program version, verified on every layout)."""
+    import asyncio
+
+    from demobot import correct as correct_mod
+    from demobot import pipeline
+    from demobot.logging import configure_logging
+
+    configure_logging(settings.log_level)
+    run = pipeline.open_run(run_id)
+    rec = asyncio.run(correct_mod.correct(run, text=text, audio=audio))
+    typer.echo(f"heard ({rec['transcript']['language']}): {rec['transcript']['text']}")
+    typer.echo(f"gloss: {rec['gloss']}")
+    typer.echo(f"goal: {rec['goal_before']} -> {rec['goal_after']}")
+    typer.echo(
+        f"program v{rec['program_before']} -> v{rec['program_after']}; red-team {rec['stress_passed']}"
+    )

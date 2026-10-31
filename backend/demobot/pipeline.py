@@ -216,6 +216,10 @@ async def stage_twin_build(run: Run) -> str:
              "table_texture": "artifacts/rectified_first.png",
              "rectify": {"origin_cm": list(cal.rectify_origin_cm), "px_per_cm": cal.rectify_px_per_cm},
              "reach": reach_map(cal.work_area, cal.robot_base_cm)}  # fmt: skip
+    track = run.read("camera_track.json", CameraTrack)
+    f0 = track.frames[0]  # the stabilised display video is in the first frame's view
+    scene["camera_first"] = {"rvec": list(f0.rvec), "tvec": list(f0.tvec), "focal_px": track.focal_px,
+                             "principal_px": list(track.principal_px)}  # fmt: skip
     (run.art / "twin_scene.json").write_text(json.dumps(scene))
     run.artifact("twin_build", run.art / "twin_scene.json", "json", "Digital twin")
     return (
@@ -299,6 +303,10 @@ async def stage_verify(run: Run) -> str:
     ver, masks = await verify.verify(
         run.ctx, run.dir, spec, gd, layout, sim, cal, phrases(run), prog.version
     )
+    fm = run.art / "final_masks.json"
+    real_masks = json.loads(fm.read_text()) if fm.exists() else {}
+    ver.masks = {"real": [{"name": n, "poly_px": m.get("poly")} for n, m in real_masks.items() if m.get("poly")],
+                 "camera": [{"name": n, "poly_px": m.get("poly")} for n, m in masks.items() if m.get("poly")]}  # fmt: skip
     run.write("verify.json", ver)
     (run.art / "verify_masks.json").write_text(json.dumps(masks))
     run.artifact("verify", run.art / "verify.json", "json", "Three checks and a judge")

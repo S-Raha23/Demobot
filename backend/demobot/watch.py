@@ -15,7 +15,7 @@ from demobot.config import settings, token_cost
 from demobot.errors import DemoBotError
 from demobot.events import RunContext
 from demobot.llm import chat_text, jpeg_data_url, output_text, parse_json, prompt, video_data_url
-from demobot.schemas import AgentDecision, IngestInfo, TaskSpec, Transcript
+from demobot.schemas import AgentDecision, GoalClause, IngestInfo, TaskSpec, Transcript
 from demobot.schemas_util import strict_schema
 
 WATCH_MAX_OUT = 16000
@@ -57,7 +57,14 @@ def check_spec(spec: TaskSpec, duration_s: float) -> list[str]:
         last = s.t_start
     if not spec.goal:
         problems.append("the goal is empty")
-    for i, c in enumerate(spec.goal):
+    return problems + check_goal(spec.goal, spec)
+
+
+def check_goal(goal: list[GoalClause], spec: TaskSpec) -> list[str]:
+    """Every goal selector resolves to an object of the spec."""
+    by_name = {o.name for o in spec.objects}
+    problems: list[str] = []
+    for i, c in enumerate(goal):
         sels = [c.select] + ([c.target] if c.target else [])
         for sel in sels:
             if sel.name and sel.name not in by_name:

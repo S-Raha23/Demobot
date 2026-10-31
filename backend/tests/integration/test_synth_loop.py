@@ -114,3 +114,38 @@ def test_api_reference_lists_the_contract() -> None:
         assert needle in ref
     text, _ = synth.system_prompt()
     assert "{api}" not in text and "{examples}" not in text and "place_in" in text
+
+
+async def test_correction_mode_updates_the_goal_first(
+    si: synth.SynthInput, tmp_path: Path, monkeypatch
+) -> None:
+    """A correction changes the goal: pens into the mug becomes "the blue pen right of the mug"."""
+    si.mode, si.start_code = "correct", GOOD
+    new_goal = [
+        {
+            "quant": "the",
+            "select": {"name": "blue pen"},
+            "pred": "right_of",
+            "target": {"name": "white mug"},
+        }
+    ]
+    code = ("def run(scene, robot):\n    mug = scene.get('white mug')\n    robot.pick(scene.get('blue pen'))\n"
+            "    robot.place_next_to(mug, 'right_of', gap=2)\n")  # fmt: skip
+    fake, _ = scripted([
+        [fc("simulate", {"code": GOOD, "layout": "demo", "render": False}, 1)],
+        [fc("update_goal", {"goal": new_goal, "gloss": "the blue pen goes right of the mug"}, 2)],
+        [fc("submit", {"code": GOOD, "explanation": "x"}, 3)],  # refused: not simulated against the new goal
+        [fc("simulate", {"code": code, "layout": "demo", "render": False}, 4)],
+        [fc("submit", {"code": code, "explanation": "moved the blue pen"}, 5)],
+    ])  # fmt: skip
+    monkeypatch.setattr(gateway, "cached_call", fake)
+    si.spec = si.spec.model_copy(update={"objects": [
+        __import__("demobot.schemas", fromlist=["SpecObject"]).SpecObject(name=o.name, kind=o.kind, role=o.role)
+        for o in si.layouts["demo"].objects]})  # fmt: skip
+    out = await synth.synthesize(RunContext("r", "dev", EventLog(tmp_path / "e.jsonl", "r")), si)
+    assert out.submitted and out.program is not None and out.program.code == code
+    assert (
+        out.goal is not None and out.goal[0].pred == "right_of" and "right of the mug" in out.gloss
+    )
+    events = list(read_events(tmp_path / "e.jsonl"))
+    assert any(e.type == "artifact" and e.payload.get("name") == "goal_diff" for e in events)

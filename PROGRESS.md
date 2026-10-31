@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M10 Voice correction, plus the UI's backend endpoints and a baked real run (M9 done Sat 12:05 IST)
+**Now:** M12 Skill cards, library and export (M10 done in English, Sat 12:40 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -21,7 +21,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M7 | Verify (three ways + judge) | done | Sat 12:20 | Fault injection on syn7-01: **5/5 faults caught, 4/5 with the exact class** (the sim-only offset was caught by the judge, not by perceptual, because SAM did not see that stand-in). SAM on simulated stand-ins is unreliable, so an unseen stand-in is *inconclusive* (shown grey), never a silent pass or a false failure. `eval/fault_injection.py`. |
 | M8 | Supervisor agent | done | Sat 13:10 | Spark Open (Baseten → Modal → fixed policy) with rewatch, retrack, revise_spec, reprogram, ask_user, accept, stop; ≤ 4 decisions, each a decision event. **Recovered 4/5 injected failures** (judge dissent → rewatch + accept with caveat; program bug → reprogram; wrong relation and wrong object → rewatch + revise_spec; a lost track was not recovered). `eval/supervisor_injection.py`. `adjust_skill` is not offered (skill parameters are not plumbed in this build). |
 | M9 | Red team + hardening | done | Sat 12:05 | 6 Spark Open personas in parallel (Baseten, Modal fallback), validator with one repair round, 12 layouts simulated in parallel on the local pool, Wonder hardening (≤ 2 rounds, kept only if the demo passes and robustness does not drop). 3 synthetic skills: next-to **92% → 100%** (v1 → v4), swap **92% → 100%** (v1 → v2), pens-in-mug 100% (no hardening needed). Gateway now stops after 2 cut-short answers. |
-| M10 | Voice correction | todo | | |
+| M10 | Voice correction | done in English (Hindi/Bengali waits for the human's voice notes) | Sat 12:40 | `correct.py` + Wonder correction mode with an `update_goal` tool (goal diff + English gloss) → new program → re-checked on demo + red-team. Live: a typed and a **spoken English** correction flipped `left_of`↔`right_of` on syn7-01 (v4 → v6 → v7, red-team 12/12 each). espeak-ng Hindi/Bengali speech is too robotic for STT, so that check needs `correction_bn.m4a` from the human. Voice Transcribe returns `turns: []` even with speech (one segment is used). |
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
 | M12 | Skill cards, library and export | todo | | |
 | M13 | Deploy judge mode | todo | | |
@@ -55,7 +55,7 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M10 voice correction (`docs/04-pipeline.md` §12); M12 card/library/export; UI endpoints (samples, POST /runs, /correct, /eval, markers.pdf).
+1. M12 card (Muse Image), library, export (`docs/04-pipeline.md` §13–14), then M13 deploy.
 3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
 4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
 5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.

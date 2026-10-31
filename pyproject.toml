@@ -63,6 +63,9 @@ ignore = ["RUF001", "RUF002", "RUF003"]  # en dashes and × in prose are intende
 [tool.ruff.lint.pycodestyle]
 max-line-length = 130  # the formatter wraps at 100; hand-formatted request blocks may run longer
 
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Option", "typer.Argument"]
+
 [tool.ruff.lint.isort]
 known-first-party = ["demobot"]
 

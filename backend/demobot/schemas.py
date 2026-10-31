@@ -350,6 +350,9 @@ class Verification(BaseModel):
         Literal["spec_mismatch", "program_bug", "perception_gap", "judge_dissent"] | None
     ) = None
     accepted_caveat: str | None = None  # the supervisor accepted the run despite a failed check
+    masks: dict[str, list[dict[str, object]]] = Field(
+        default_factory=dict
+    )  # SAM outlines: real, camera
     renders: dict[str, str] = Field(default_factory=dict)  # real, camera, top (artifact paths)
 
 

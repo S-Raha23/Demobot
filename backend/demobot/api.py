@@ -131,8 +131,8 @@ async def _event_stream(
         for line in chunk.splitlines():
             if line.strip():
                 yield {"event": "event", "data": line}
-        state = _read_json(d / "state.json") or {}
-        if not chunk and state.get("cursor") in ("done", "failed", "card") and idle > 2:
+        status = (_read_json(d / "run.json") or {}).get("status")
+        if not chunk and status not in ("running", "queued") and idle > 2:
             yield {"event": "end", "data": "{}"}
             return
         idle = 0.0 if chunk else idle + 0.5
@@ -227,6 +227,95 @@ def costs() -> dict[str, Any]:
         if c:
             runs.append({"run_id": r["run_id"], "title": r.get("title"), **c})
     return {"ledger": budget.summary(), "runs": runs}
+
+
+# ---------- live work: runs, samples, corrections ----------
+def _live_allowed() -> None:
+    if settings.demobot_mode == "replay":
+        raise HTTPException(405, "live runs are off in replay mode")
+
+
+@app.get("/api/samples")
+def list_samples() -> list[dict[str, Any]]:
+    from demobot import jobs
+
+    return jobs.samples()
+
+
+@app.get("/api/samples/{sample_id}/thumb")
+def sample_thumb(sample_id: str) -> FileResponse:
+    from demobot import jobs
+
+    p = jobs.sample_dir(sample_id) / "thumb.jpg"
+    if not p.exists():
+        raise HTTPException(404, "no thumbnail")
+    return FileResponse(p)
+
+
+@app.post("/api/runs", status_code=202)
+async def create_run(request: Request) -> dict[str, str]:
+    """Multipart `clip` (+ optional `task_hint`), or JSON {"sample": id}."""
+    from demobot import jobs, media
+
+    _live_allowed()
+    if request.headers.get("content-type", "").startswith("application/json"):
+        body = await request.json()
+        return {"run_id": jobs.start_sample(str(body.get("sample", "")))}
+    form = await request.form()
+    clip = form.get("clip")
+    if clip is None or isinstance(clip, str):
+        raise HTTPException(422, "send a video in the `clip` field")
+    up = settings.data_path / "uploads"
+    up.mkdir(parents=True, exist_ok=True)
+    import secrets as _s
+
+    suffix = Path(clip.filename or "clip.mp4").suffix.lower() or ".mp4"
+    dest = up / f"{_s.token_hex(6)}{suffix}"
+
+    async def chunks() -> AsyncIterator[bytes]:
+        while chunk := await clip.read(1 << 20):
+            yield chunk
+
+    await media.save_upload(chunks(), dest)
+    media.video_info(dest)  # reject non-videos and long or tiny clips before queuing
+    hint = form.get("task_hint")
+    return {
+        "run_id": jobs.start_run(
+            dest, Path(clip.filename or "upload").stem, hint if isinstance(hint, str) else ""
+        )
+    }
+
+
+@app.post("/api/runs/{run_id}/correct", status_code=202)
+async def correct_run(run_id: str, request: Request) -> dict[str, str]:
+    """Multipart `audio` (a WAV from hold-to-talk) or JSON {"text": ...}."""
+    from demobot import jobs
+
+    _live_allowed()
+    jobs.copy_baked(run_id)
+    if request.headers.get("content-type", "").startswith("application/json"):
+        body = await request.json()
+        return {"run_id": jobs.start_correction(run_id, text=str(body.get("text", "")))}
+    form = await request.form()
+    audio = form.get("audio")
+    text = form.get("text")
+    data = await audio.read() if audio is not None and not isinstance(audio, str) else None
+    return {
+        "run_id": jobs.start_correction(
+            run_id, text=text if isinstance(text, str) else "", audio_bytes=data
+        )
+    }
+
+
+@app.get("/api/eval")
+def get_eval() -> dict[str, str | None]:
+    p = ROOT / "eval" / "results.md"
+    return {"markdown": p.read_text() if p.exists() else None}
+
+
+@app.get("/assets/print/markers.pdf")
+def markers_pdf() -> FileResponse:
+    return FileResponse(ROOT / "assets" / "print" / "markers.pdf", media_type="application/pdf")
 
 
 # the built frontend (Docker / HF Space); in dev, Vite serves it on :5173
