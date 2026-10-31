@@ -193,6 +193,9 @@ class GoalClause(BaseModel):
     order_by: Literal["x", "y"] | None = None
     order: list[str] | None = None
     yaw_deg: float | None = None  # "turned": the object's yaw (degrees, table frame), within 15°
+    filled_from_measurement: bool = (
+        False  # point/yaw were filled from the measured final state (ground.fill_goal)
+    )
 
 
 class ClauseResult(BaseModel):

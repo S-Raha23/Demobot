@@ -157,6 +157,28 @@ def test_colour_selects_by_word_in_name_or_kind_case_insensitively() -> None:
     assert not g.evaluate_clause(c, one_out, one_out).holds
 
 
+def test_colour_whitespace_is_stripped_and_empty_matches_nothing() -> None:
+    state = st(
+        o("teal pen", 10, 10, kind="pen"),
+        o("red pen", 30, 10, kind="pen"),
+        MUG,
+    )
+    # surrounding whitespace/case are stripped before matching
+    assert [x.name for x in g.select(Selector(colour="  Teal "), state)] == ["teal pen"]
+    assert [x.name for x in g.select(Selector(kind="pen", colour=" teal"), state)] == ["teal pen"]
+    # empty / whitespace-only colour is an explicit filter that matches nothing
+    assert g.select(Selector(colour=""), state) == []
+    assert g.select(Selector(colour="   "), state) == []
+    assert g.select(Selector(kind="pen", colour="  "), state) == []
+    # names branch honours the same rule
+    assert g.select(Selector(names=["teal pen"], colour=" "), state) == []
+    assert [x.name for x in g.select(Selector(names=["teal pen"], colour=" teal "), state)] == [
+        "teal pen"
+    ]
+    # None still means no colour filter
+    assert len(g.select(Selector(kind="pen"), state)) == 2
+
+
 def test_colour_describe_mentions_it() -> None:
     assert g.describe(Selector(colour="teal")) == "every teal thing"
     assert g.describe(Selector(kind="pen", colour="teal")) == "every teal pen"

@@ -75,7 +75,7 @@ export function CorrectionDock({ runId, enabled, onNotice }: { runId: string; en
         className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition ${
           rec ? "bg-voice text-ink-950 shadow-[0_0_24px_rgba(244,114,182,0.6)]" : "bg-voice/15 text-voice ring-1 ring-inset ring-voice/40 hover:bg-voice/25"
         } disabled:opacity-40`}
-        title="Hold to talk: correct it in English, Hindi or Bengali"
+        title="Hold to talk: correct it in English or Hindi (verified live), or Bengali (supported by the transcription model; live clip pending)"
         aria-label="Hold to talk"
       >
         {rec && <span className="absolute inset-0 animate-ping rounded-full bg-voice/40" />}

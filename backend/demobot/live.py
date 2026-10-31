@@ -30,6 +30,7 @@ class Track:
     y: float
     seen: int = 0
     confirmed: bool = False
+    misses: int = 0
 
 
 @dataclass
@@ -39,6 +40,7 @@ class LiveTracker:
     confirm_frames: int = 3
     alpha: float = 0.5  # smoothing: new = alpha*det + (1-alpha)*old
     tracks: dict[str, Track] = field(default_factory=dict)
+    expire_frames: int = 10  # confirmed tracks are removed after this many consecutive misses
 
     def seed(self, objects: list[tuple[str, str, float, float]]) -> None:
         """(name, label, x, y) of the objects the twin starts from."""
@@ -63,21 +65,39 @@ class LiveTracker:
             used_t.add(name)
             used_d.add(i)
             t, d = self.tracks[name], dets[i]
+            t.misses = 0
             t.seen += 1
             if t.seen >= self.confirm_frames:
                 t.confirmed = True
             if t.confirmed:
                 t.x = round(self.alpha * d.x + (1 - self.alpha) * t.x, 2)
                 t.y = round(self.alpha * d.y + (1 - self.alpha) * t.y, 2)
+        missed_confirmed_labels: set[str] = set()
         for name, t in self.tracks.items():
             if name not in used_t:
+                t.misses += 1
                 t.seen = 0  # must re-confirm after a miss; position holds meanwhile
+                if t.confirmed:
+                    missed_confirmed_labels.add(t.label)
+        # Expire confirmed tracks after `expire_frames` consecutive misses so a
+        # removed object does not ghost in the twin forever.
+        for name in [
+            n for n, t in self.tracks.items() if t.confirmed and t.misses >= self.expire_frames
+        ]:
+            del self.tracks[name]
         # Unseeded detections ("Add object"): start a provisional track for each
         # one no existing track claimed. It joins `tracks` unconfirmed, so the
         # greedy match above associates later frames with it; it is returned
         # only after `confirm_frames` sightings (a miss resets the count).
         for i, d in enumerate(dets):
             if i in used_d:
+                continue
+            # Teleport case: a far detection with the same label as a confirmed
+            # track that missed this frame is that track teleported, not a new
+            # object — do not spawn a duplicate unseeded track for it. (A far
+            # detection alongside a matched confirmed track is a genuine
+            # second object and still gets its own track below.)
+            if d.label in missed_confirmed_labels:
                 continue
             name = d.label
             if name in self.tracks:

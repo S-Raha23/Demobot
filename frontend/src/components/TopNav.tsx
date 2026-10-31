@@ -43,9 +43,14 @@ export function TopNav({ children, center }: { children?: ReactNode; center?: Re
       </nav>
       <div className="hidden min-w-0 flex-1 lg:block">{center}</div>
       <div className="flex-1 lg:hidden" />
-      <NavLink to="/try" className={(a) => `${link(a)} md:hidden`}>
-        Try it
-      </NavLink>
+      <span className="flex items-center gap-1 md:hidden">
+        <NavLink to="/try" className={(a) => `${link(a)} !px-2 !text-[12px]`}>
+          Try it
+        </NavLink>
+        <NavLink to="/costs" className={(a) => `${link(a)} !px-2 !text-[12px]`}>
+          Costs
+        </NavLink>
+      </span>
       <div className="flex items-center gap-2">{children}</div>
     </header>
   );

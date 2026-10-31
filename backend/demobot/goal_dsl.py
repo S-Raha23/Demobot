@@ -40,11 +40,15 @@ _EPS = 1e-9
 # ---------- selection ----------
 def _colour_matches(sel: Selector, o: SceneObject) -> bool:
     """`colour` is a word ("teal") matched case-insensitively in the object's name/kind,
-    so "teal things" can select a teal pen and a teal cutter alike."""
-    if not sel.colour:
+    so "teal things" can select a teal pen and a teal cutter alike. Surrounding
+    whitespace is stripped; a colour that is empty after stripping (or only
+    whitespace) matches nothing, while `None` means no colour filter."""
+    if sel.colour is None:
         return True
     word = sel.colour.strip().lower()
-    return bool(word) and word in f"{o.name} {o.kind}".lower()
+    if not word:
+        return False
+    return word in f"{o.name} {o.kind}".lower()
 
 
 def select(sel: Selector, state: State) -> list[SceneObject]:
@@ -63,19 +67,20 @@ def select(sel: Selector, state: State) -> list[SceneObject]:
 
 
 def describe(sel: Selector) -> str:
+    colour = sel.colour.strip() if sel.colour is not None else None
     if sel.names:
         base = " and ".join(sel.names)
-        return f"{base} ({sel.colour})" if sel.colour else base
+        return f"{base} ({colour})" if colour else base
     if sel.name:
-        if not sel.colour or sel.colour.lower() in sel.name.lower():
+        if not colour or colour.lower() in sel.name.lower():
             return sel.name
-        return f"{sel.colour} {sel.name}"
+        return f"{colour} {sel.name}"
     if sel.kind:
-        if not sel.colour or sel.colour.lower() in sel.kind.lower():
+        if not colour or colour.lower() in sel.kind.lower():
             return f"every {sel.kind}"
-        return f"every {sel.colour} {sel.kind}"
-    if sel.colour:
-        return f"every {sel.colour} thing"
+        return f"every {colour} {sel.kind}"
+    if colour:
+        return f"every {colour} thing"
     return f"every {sel.role} object"
 
 

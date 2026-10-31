@@ -9,15 +9,15 @@ const About = lazy(() => import("./pages/About"));
 
 function Loading() {
   return (
-    <div className="flex h-full items-center justify-center text-ink-300">
+    <main id="main-content" className="flex h-full items-center justify-center text-ink-300">
       <Spinner size={22} />
-    </div>
+    </main>
   );
 }
 
 function NotFound() {
   return (
-    <div className="flex h-full items-center justify-center p-6">
+    <main id="main-content" className="flex h-full items-center justify-center p-6">
       <div className="panel max-w-sm p-6 text-center">
         <div className="text-[16px] font-semibold text-ink-50">Page not found</div>
         <p className="mt-1 text-[12.5px] text-ink-400">That page does not exist.</p>
@@ -25,7 +25,7 @@ function NotFound() {
           Back to Library
         </Link>
       </div>
-    </div>
+    </main>
   );
 }
 

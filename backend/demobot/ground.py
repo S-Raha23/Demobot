@@ -254,10 +254,12 @@ def fill_goal(
     for c in goal:
         name = c.select.name
         if c.pred == "near" and c.target is None and c.point_cm is None and name in end:
-            c = c.model_copy(update={"point_cm": (round(end[name].x, 1), round(end[name].y, 1))})
+            c = c.model_copy(update={"point_cm": (round(end[name].x, 1), round(end[name].y, 1)),
+                                     "filled_from_measurement": True})  # fmt: skip
         elif c.pred == "turned" and c.yaw_deg is None and name in end:
             c = c.model_copy(update={"yaw_deg": round(end[name].yaw, 1),
-                                     "point_cm": (round(start[name].x, 1), round(start[name].y, 1))})  # fmt: skip
+                                     "point_cm": (round(start[name].x, 1), round(start[name].y, 1)),
+                                     "filled_from_measurement": True})  # fmt: skip
         out.append(c)
     return out
 
@@ -265,7 +267,11 @@ def fill_goal(
 def _filled_from_measurement(orig: GoalClause, filled: GoalClause) -> bool:
     """Whether fill_goal took this clause's numbers from the measured final state itself
     (a `near` point or a `turned` yaw Watch could not know). Such a clause is self-scored
-    on the real final state, so its result is marked, not silently trusted."""
+    on the real final state, so its result is marked, not silently trusted. The persisted
+    `filled_from_measurement` flag on either clause also counts, so re-grounding an
+    already-filled goal keeps the marker."""
+    if orig.filled_from_measurement or filled.filled_from_measurement:
+        return True
     return (orig.pred == "near" and orig.point_cm is None and filled.point_cm is not None) or (
         orig.pred == "turned" and orig.yaw_deg is None and filled.yaw_deg is not None
     )
@@ -394,10 +400,13 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
     spec_state = {o.name: o for o in spec.objects}
     for r in real:  # an untracked object must not make a clause hold vacuously
         sel = r.clause.select
+        # Colour matches goal_dsl.select exactly: None = no filter, stripped
+        # empty/whitespace = matches nothing, otherwise stripped word match.
+        colour_word = sel.colour.strip().lower() if sel.colour is not None else None
         wanted = [o for o in spec_state.values()
                   if (sel.name in (None, o.name)) and (sel.kind in (None, o.kind)) and (sel.role in (None, o.role))
                   and (not sel.names or o.name in sel.names)
-                  and (not sel.colour or sel.colour.strip().lower() in f"{o.name} {o.kind}".lower())]  # fmt: skip
+                  and (colour_word is None or (bool(colour_word) and colour_word in f"{o.name} {o.kind}".lower()))]  # fmt: skip
         missing = [o.name for o in wanted if o.name not in grounded]
         if missing:
             r.holds, r.code = False, "NOT_TRACKED"
@@ -413,6 +422,8 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
     for r, orig, filled in zip(real, spec.goal, goal, strict=True):
         if _filled_from_measurement(orig, filled):
             r.measured["filled_from_measurement"] = True
+            if not r.clause.filled_from_measurement:
+                r.clause = r.clause.model_copy(update={"filled_from_measurement": True})
             if "filled_from_measurement" not in r.detail:
                 r.detail += (
                     "; filled_from_measurement (self-scored: filled from the measured final state)"

@@ -174,14 +174,14 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
     return (
       <div className="flex h-full flex-col">
         <TopNav />
-        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-ink-300">
+        <main id="main-content" className="flex flex-1 flex-col items-center justify-center gap-3 text-ink-300">
           <Icon name="alert" size={28} className="text-bad" />
           <div className="text-[15px] font-semibold text-ink-100">This run could not be loaded</div>
           <div className="text-[13px]">{pb.error}</div>
           <Link to="/" className="btn mt-2">
             <Icon name="back" size={14} /> Back to the library
           </Link>
-        </div>
+        </main>
       </div>
     );
 
@@ -191,6 +191,7 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
         <ReplayControls pb={pb} />
       </TopNav>
       <main id="main-content" className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-rows-[auto_minmax(0,1.12fr)_auto_minmax(0,1fr)]">
+        <h1 className="sr-only">{run?.title ?? spec?.summary ?? `Run ${runId}`}</h1>
         <div className="flex min-w-0 items-stretch gap-3">
           <div className="min-w-0 flex-1">
             <StageStepper stages={view.stages} finalStatus={pb.finished ? detail?.state?.stages : null} />
@@ -295,6 +296,11 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
           </div>
         </div>
       </main>
+      <footer className="flex items-center justify-center gap-4 px-3 pb-3 text-[12px] text-ink-400 lg:hidden">
+        <Link to="/costs" className="font-medium text-ink-200 underline-offset-2 hover:underline">
+          Costs &amp; About
+        </Link>
+      </footer>
       {notice && (
         <div className="animate-slide-in fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-ink-700 px-4 py-2.5 text-[13px] text-ink-50 shadow-2xl ring-1 ring-ink-500">
           {notice}

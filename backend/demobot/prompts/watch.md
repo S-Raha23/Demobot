@@ -24,7 +24,7 @@ You watch a short phone video of a person doing a tabletop task once, so that a 
 ## Goal DSL
 Each clause is `{"quant", "select", "pred", "target"?, "point_cm"?, "order_by"?, "order"?}`:
 - `quant`: `the` (exactly one object), `all` (every selected object), `pair` (two named objects).
-- `select` and `target`: `{"name": ...}`, `{"kind": ...}`, `{"role": ...}` or `{"names": [a, b]}`.
+- `select` and `target`: `{"name": ...}`, `{"kind": ...}`, `{"role": ...}`, `{"names": [a, b]}`, optionally with `"colour"` (e.g. `{"kind": "pen", "colour": "teal"}` or `{"colour": "teal"}` for every teal thing): a single colour word matched case-insensitively against the object's name/kind; surrounding whitespace is ignored and an empty colour matches nothing.
 - `pred`: `inside`, `left_of`, `right_of`, `in_front_of`, `behind`, `near`, `collinear` (with `order_by`: "x" for a left-to-right row, "y" for a front-to-back column), `swapped` (with `quant` `pair` and `select.names`).
 - An object slid to a new spot: `near` with no `target` and no `point_cm` (the measured end position is filled in). An object turned in place: `turned` with no `yaw_deg` (the measured end orientation is filled in).
 

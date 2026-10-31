@@ -77,6 +77,48 @@ def test_template_card_and_export_zip(tmp_path: Path) -> None:
     assert export.forged_skills_used("def run(scene, robot):\n    pass\n") == []
 
 
+def test_forged_skills_used_is_transitive_and_bundles_dependencies(
+    tmp_path: Path, monkeypatch
+) -> None:  # type: ignore[no-untyped-def]
+    import demobot.program.forge as forge_mod
+
+    sources = {
+        "skill_a": "def skill_a(robot, scene):\n    skill_b(robot, scene)\n",
+        "skill_b": "def skill_b(robot, scene):\n    skill_c(robot, scene)\n",
+        "skill_c": "def skill_c(robot, scene):\n    pass\n",
+        "skill_unused": "def skill_unused(robot, scene):\n    pass\n",
+    }
+    monkeypatch.setattr(forge_mod, "load_forged", lambda: sources)
+    code = "def run(scene, robot):\n    skill_a(robot, scene)\n"
+    assert export.forged_skills_used(code) == ["skill_a", "skill_b", "skill_c"]
+    # cycles do not loop forever
+    cyclic = {
+        "skill_a": "def skill_a(robot, scene):\n    skill_b(robot, scene)\n",
+        "skill_b": "def skill_b(robot, scene):\n    skill_a(robot, scene)\n",
+    }
+    monkeypatch.setattr(forge_mod, "load_forged", lambda: cyclic)
+    assert export.forged_skills_used(code) == ["skill_a", "skill_b"]
+    monkeypatch.setattr(forge_mod, "load_forged", lambda: sources)
+
+    run = tmp_path / "run_transitive"
+    art = run / "artifacts"
+    art.mkdir(parents=True)
+    s = spec([INSIDE])
+    (art / "taskspec.json").write_text(s.model_dump_json())
+    (art / "programs.json").write_text(
+        json.dumps([Program(version=1, code=code, author="wonder").model_dump()])
+    )
+    (art / "card.json").write_text(SkillCard(skill_id="run_transitive", title="t", description="d", goal_text="g",
+                                             program_version=1, robustness=None, cost_to_learn_usd=0.1,
+                                             run_id="run_transitive").model_dump_json())  # fmt: skip
+    z = zipfile.ZipFile(io.BytesIO(export.build_zip(run)))
+    assert "forged/skill_a.py" in z.namelist()
+    assert "forged/skill_b.py" in z.namelist()
+    assert "forged/skill_c.py" in z.namelist()
+    assert "forged/skill_unused.py" not in z.namelist()
+    assert "def skill_c(" in z.read("forged/skill_c.py").decode()
+
+
 def test_export_bundles_forged_skill_source_and_notes_it(tmp_path: Path) -> None:
     run = tmp_path / "run2"
     art = run / "artifacts"

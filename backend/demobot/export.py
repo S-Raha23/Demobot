@@ -52,24 +52,43 @@ def skill_api_md() -> str:
     return SKILL_API_MD.replace("{api}", api_reference())
 
 
-def forged_skills_used(code: str) -> list[str]:
-    """Promoted forged skills the program actually calls (bare-name calls, as the
-    sandbox injects them), sorted for determinism."""
-    from demobot.program.forge import load_forged
-
-    known = load_forged()
+def _direct_forged_calls(code: str, known: dict[str, str]) -> set[str]:
+    """Forged skills directly called (bare-name calls) in `code`."""
     if not known:
-        return []
+        return set()
     try:
         tree = ast.parse(code)
     except SyntaxError:
-        return sorted(n for n in known if f"{n}(" in code)
+        return {n for n in known if f"{n}(" in code}
     called = {
         node.func.id
         for node in ast.walk(tree)
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
     }
-    return sorted(called & known.keys())
+    return called & known.keys()
+
+
+def forged_skills_used(code: str) -> list[str]:
+    """Promoted forged skills the program actually calls (bare-name calls, as the
+    sandbox injects them), including transitive dependencies: a forged skill
+    that calls another forged skill pulls that skill in too, recursively.
+    Sorted for determinism."""
+    from demobot.program.forge import load_forged
+
+    known = load_forged()
+    if not known:
+        return []
+    seen: set[str] = set()
+    queue = list(_direct_forged_calls(code, known))
+    while queue:
+        name = queue.pop()
+        if name in seen:
+            continue
+        seen.add(name)
+        for dep in _direct_forged_calls(known.get(name, ""), known):
+            if dep not in seen:
+                queue.append(dep)
+    return sorted(seen)
 
 
 def build_zip(run_dir: Path) -> bytes:

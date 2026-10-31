@@ -21,14 +21,25 @@ const ROLES: { model: string; provider?: string; job: string; why: string }[] = 
 
 export default function About() {
   const [costs, setCosts] = useState<CostsResponse | null>(null);
+  const [costsError, setCostsError] = useState<string | null>(null);
+  const [costsRetry, setCostsRetry] = useState(0);
   const [evalMd, setEvalMd] = useState<string | null | undefined>(undefined);
   useEffect(() => {
-    api.costs().then(setCosts).catch(() => setCosts({ ledger: null, runs: [] }));
+    api
+      .costs()
+      .then((v) => {
+        setCosts(v);
+        setCostsError(null);
+      })
+      .catch((e) => {
+        setCosts(null);
+        setCostsError(e instanceof Error ? e.message : "Failed to load costs");
+      });
     api
       .evalResults()
       .then((r) => setEvalMd(r.markdown))
       .catch(() => setEvalMd(null));
-  }, []);
+  }, [costsRetry]);
 
   const agg = useMemo(() => {
     const byModel: Record<string, number> = {};
@@ -59,7 +70,26 @@ export default function About() {
           <p className="mt-2 max-w-3xl text-[14px] text-ink-300">Every model call goes through one gateway that caches, prices, caps and ledgers it. Every number on this page comes from those files.</p>
         </div>
 
-        <section className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
+        {costsError ? (
+          <section className="panel p-8 text-center" role="alert">
+            <div className="text-[15px] font-semibold text-ink-50">Could not load costs</div>
+            <p className="mt-1 text-[12.5px] text-ink-400">{costsError}</p>
+            <button
+              type="button"
+              className="btn btn-primary mt-4"
+              onClick={() => {
+                setCosts(null);
+                setCostsError(null);
+                setCostsRetry((n) => n + 1);
+              }}
+            >
+              Retry
+            </button>
+          </section>
+        ) : !costs ? (
+          <section className="panel shimmer h-48" aria-label="Loading costs" />
+        ) : (
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
           <div className="panel p-5">
             <div className="flex flex-wrap gap-10">
               <Stat label="Cost per learned skill" value={usd(agg.perSkill, 3)} sub={`mean over ${agg.n} run${agg.n === 1 ? "" : "s"}${agg.fixtures ? `, incl. ${agg.fixtures} fixture run${agg.fixtures === 1 ? "" : "s"} whose model calls are simulated (they cost $0)` : ""}`} />
@@ -120,7 +150,8 @@ export default function About() {
               </div>
             )}
           </div>
-        </section>
+          </section>
+        )}
 
         <section className="panel p-5">
           <div className="mb-3 flex items-center gap-2">

@@ -94,7 +94,7 @@ export default function TryIt() {
           ) : null
         }
       />
-      {id ? <Playground key={`${id}@${version}`} runId={id} version={version} /> : <div className="flex flex-1 items-center justify-center">{skills && !skills.length ? <Empty icon="cube" title="No skills to try yet" /> : <Spinner />}</div>}
+      {id ? <Playground key={`${id}@${version}`} runId={id} version={version} /> : <main id="main-content" className="flex flex-1 items-center justify-center">{skills && !skills.length ? <Empty icon="cube" title="No skills to try yet" /> : <Spinner />}</main>}
     </div>
   );
 }
@@ -206,13 +206,15 @@ function Playground({ runId, version }: { runId: string; version: number }) {
 
   if (!scene || !layout)
     return (
-      <div className="flex flex-1 items-center justify-center text-ink-300">
+      <main id="main-content" className="flex flex-1 items-center justify-center text-ink-300">
+        <h1 className="sr-only">Try it</h1>
         <Spinner size={20} />
-      </div>
+      </main>
     );
 
   return (
     <main id="main-content" className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <h1 className="sr-only">{skill?.title ?? spec?.summary ?? "Try it"}</h1>
       <div className="panel relative flex min-h-[460px] flex-col overflow-hidden">
         <div className="flex h-11 shrink-0 items-center gap-2 border-b border-ink-700/60 px-3">
           <Icon name="hand" size={15} className="text-ink-300" />
@@ -437,6 +439,9 @@ function Playground({ runId, version }: { runId: string; version: number }) {
         )}
         <Link to={`/run/${runId}`} className="btn btn-ghost justify-center">
           <Icon name="play" size={12} /> See how it learned this
+        </Link>
+        <Link to="/costs" className="btn btn-ghost justify-center !text-[12px] lg:hidden">
+          Costs &amp; About
         </Link>
       </aside>
     </main>

@@ -151,6 +151,78 @@ def test_filled_near_clause_is_marked_filled_from_measurement() -> None:
     assert not ground._filled_from_measurement(filled_t, filled_t)
 
 
+def test_fill_goal_persists_filled_flag_and_reground_keeps_marker() -> None:
+    spec, tracks = scenario()
+    spec.goal = [GoalClause(quant="the", select=Selector(name="eraser"), pred="near")]
+    cam = identity_track(len(tracks[0].frames))
+    gd = ground.ground(spec, tracks, {}, _calib(cam), cam, 10.0)
+    assert gd.goal is not None and gd.goal[0].filled_from_measurement is True
+    assert gd.goal[0].point_cm is not None
+    r = gd.real_world[0]
+    assert r.holds  # baked semantics: holds unchanged (self-scored by construction)
+    assert r.clause.filled_from_measurement is True
+    assert r.measured.get("filled_from_measurement") is True
+    # persisted flag survives a model round-trip (as grounded.json / taskspec.json do)
+    assert GoalClause.model_validate(gd.goal[0].model_dump()).filled_from_measurement is True
+    # re-grounding the already-filled goal keeps the marker even though fill_goal
+    # has nothing new to fill (point_cm is already present)
+    spec2, tracks2 = scenario()
+    spec2.goal = gd.goal
+    cam2 = identity_track(len(tracks2[0].frames))
+    gd2 = ground.ground(spec2, tracks2, {}, _calib(cam2), cam2, 10.0)
+    r2 = gd2.real_world[0]
+    assert r2.holds
+    assert r2.clause.filled_from_measurement is True
+    assert r2.measured.get("filled_from_measurement") is True
+    assert "filled_from_measurement" in r2.detail
+    assert gd2.goal is not None and gd2.goal[0].filled_from_measurement is True
+    # ordinary clauses are not marked
+    plain = GoalClause(
+        quant="the", select=Selector(name="eraser"), pred="near", point_cm=(1.0, 1.0)
+    )
+    assert plain.filled_from_measurement is False
+    init = [SceneObject(name="eraser", kind="eraser", x=10, y=10, w=4, d=4, h=2)]
+    filled = ground.fill_goal([plain], init, init)
+    assert filled[0].filled_from_measurement is False
+
+
+def test_ground_not_tracked_colour_matches_goal_dsl_select() -> None:
+    # whitespace colour: goal_dsl selects nothing, so ground must not claim
+    # NOT_TRACKED for a spec object (consistent EMPTY_SELECTION path)
+    spec, tracks = scenario()
+    spec.goal = [
+        GoalClause(
+            quant="all",
+            select=Selector(kind="eraser", colour="   "),
+            pred="inside",
+            target=Selector(name="box"),
+        )
+    ]
+    cam = identity_track(len(tracks[0].frames))
+    gd = ground.ground(spec, tracks, {}, _calib(cam), cam, 10.0)
+    assert gd.real_world[0].code != "NOT_TRACKED"
+    # stripped colour that matches an untracked object: NOT_TRACKED, same as select would find it
+    spec2, tracks2 = scenario()
+    spec2.objects[0] = spec2.objects[0].model_copy(update={"name": "teal eraser"})
+    spec2.goal = [
+        GoalClause(
+            quant="all",
+            select=Selector(kind="eraser", colour=" Teal "),
+            pred="inside",
+            target=Selector(name="box"),
+        )
+    ]
+    tracks2[0] = Track(
+        name="teal eraser", phrase="teal eraser", quality=0, flags=["not_found"], frames=[]
+    )
+    # spec object renamed, but track for box/hand still present; eraser untracked
+    cam2 = identity_track(len(tracks2[1].frames))
+    gd2 = ground.ground(spec2, tracks2, {}, _calib(cam2), cam2, 10.0)
+    # wanted is computed from spec objects: teal eraser matches colour, box does not
+    # if colour handling diverged, wanted would be empty and code would not be NOT_TRACKED
+    assert gd2.real_world[0].code == "NOT_TRACKED"
+
+
 def test_untracked_objects_never_pass_vacuously() -> None:
     spec, tracks = scenario()
     spec.goal = [

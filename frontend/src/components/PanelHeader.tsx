@@ -16,6 +16,7 @@ export function Toggle({ on, onClick, children, title }: { on: boolean; onClick:
     <button
       type="button"
       title={title}
+      aria-pressed={on}
       onClick={onClick}
       className={`rounded-md px-2 py-[3px] text-[11px] font-semibold transition-colors ring-1 ring-inset ${
         on ? "bg-sparkopen/12 text-sparkopen ring-sparkopen/35" : "text-ink-400 ring-ink-600/70 hover:text-ink-200 hover:ring-ink-500"
@@ -34,6 +35,7 @@ export function Segmented<T extends string | number>({ value, options, onChange 
           type="button"
           key={String(o.value)}
           title={o.title}
+          aria-pressed={o.value === value}
           onClick={() => onChange(o.value)}
           className={`rounded-md px-2.5 py-[3px] text-[11.5px] font-semibold transition-colors ${
             o.value === value ? "bg-ink-600 text-ink-50 shadow-sm" : "text-ink-400 hover:text-ink-200"

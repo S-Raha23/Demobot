@@ -32,9 +32,19 @@ export default function Home() {
   const [health, setHealth] = useState<Health | null>(null);
   const [upload, setUpload] = useState(false);
   const [skillsError, setSkillsError] = useState<string | null>(null);
+  const [runsError, setRunsError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
   useEffect(() => {
-    api.runs().then(setRuns).catch(() => setRuns([]));
+    api
+      .runs()
+      .then((v) => {
+        setRuns(v);
+        setRunsError(null);
+      })
+      .catch((e) => {
+        setRuns([]);
+        setRunsError(e instanceof Error ? e.message : "Failed to load runs");
+      });
     api
       .skills()
       .then((v) => {
@@ -100,7 +110,15 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <Hero run={best} />
+          <Hero
+            run={best}
+            error={runsError}
+            onRetry={() => {
+              setRuns(null);
+              setRunsError(null);
+              setRetry((n) => n + 1);
+            }}
+          />
         </div>
       </section>
 
@@ -204,16 +222,19 @@ function SkeletonRow() {
 /** The best run, side by side: your video and the 3D twin where the Panda does the same task
  *  (the program verified against that video; for a corrected run, the one before the
  *  correction). The robot's timeline is stretched to the clip, so both move together and loop. */
-function Hero({ run }: { run: RunMeta | null }) {
+function Hero({ run, error, onRetry }: { run: RunMeta | null; error?: string | null; onRetry?: () => void }) {
   const vid = useRef<HTMLVideoElement>(null);
   const [scene, setScene] = useState<TwinSceneData | null>(null);
   const [traj, setTraj] = useState<TwinTrajectory | null>(null);
+  const [heroError, setHeroError] = useState<string | null>(null);
+  const [heroRetry, setHeroRetry] = useState(0);
   const [muted, setMuted] = useState(true); // browsers only autoplay muted; the button turns sound on
   const [reducedMotion] = useState(() => typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [paused, setPaused] = useState(reducedMotion);
   useEffect(() => {
     if (!run) return;
     let alive = true;
+    setHeroError(null);
     const id = run.run_id;
     (async () => {
       const d = await api.run(id);
@@ -232,11 +253,13 @@ function Hero({ run }: { run: RunMeta | null }) {
         setScene(sc);
         setTraj(tr);
       }
-    })().catch(() => undefined);
+    })().catch((e) => {
+      if (alive) setHeroError(e instanceof Error ? e.message : "Failed to load the hero run");
+    });
     return () => {
       alive = false;
     };
-  }, [run]);
+  }, [run, heroRetry]);
   // the robot follows the video's clock, scaled so its whole run spans the clip
   const timeSource = useCallback(() => {
     const v = vid.current;
@@ -244,6 +267,34 @@ function Hero({ run }: { run: RunMeta | null }) {
     return (v.currentTime / v.duration) * traj.duration_s;
   }, [traj]);
 
+  if (error)
+    return (
+      <div className="panel flex aspect-video flex-col items-center justify-center gap-2 p-6 text-center" role="alert">
+        <div className="text-[14px] font-semibold text-ink-50">Could not load runs</div>
+        <p className="text-[12.5px] text-ink-400">{error}</p>
+        <button type="button" className="btn btn-primary mt-2" onClick={onRetry}>
+          Retry
+        </button>
+      </div>
+    );
+  if (heroError)
+    return (
+      <div className="panel flex aspect-video flex-col items-center justify-center gap-2 p-6 text-center" role="alert">
+        <div className="text-[14px] font-semibold text-ink-50">Could not load the hero run</div>
+        <p className="text-[12.5px] text-ink-400">{heroError}</p>
+        <button
+          type="button"
+          className="btn btn-primary mt-2"
+          onClick={() => {
+            setScene(null);
+            setTraj(null);
+            setHeroRetry((n) => n + 1);
+          }}
+        >
+          Retry
+        </button>
+      </div>
+    );
   if (!run)
     return (
       <div className="panel flex aspect-video items-center justify-center">
@@ -443,7 +494,10 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
   const [err, setErr] = useState<string | null>(null);
   const [noMarkers, setNoMarkers] = useState(false);
   const nav = useNavigate();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
+    dialogRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -474,7 +528,7 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div role="dialog" aria-modal="true" aria-label="Teach a new skill" className="panel animate-slide-in w-full max-w-lg !bg-ink-800 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Teach a new skill" className="panel animate-slide-in w-full max-w-lg !bg-ink-800 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="text-[18px] font-semibold text-ink-50">Teach a new skill</h3>
           <button type="button" className="btn btn-ghost !p-1.5" onClick={onClose} aria-label="Close">
@@ -489,10 +543,21 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
         <p className="mt-2 text-[12.5px] text-ink-300">
           No markers yet? <MarkersLink /> and print it at 100% scale.
         </p>
-        <label className="mt-4 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-500 bg-ink-850 px-4 py-7 text-center transition hover:border-sparkopen/60">
+        <label
+          htmlFor="upload-file"
+          tabIndex={0}
+          className="mt-4 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-500 bg-ink-850 px-4 py-7 text-center transition hover:border-sparkopen/60 focus-within:border-sparkopen/60 focus-within:ring-2 focus-within:ring-sparkopen/50 focus:outline-none focus:ring-2 focus:ring-sparkopen/50"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
+        >
           <Icon name="upload" size={22} className="text-ink-300" />
           <span className="text-[13px] font-medium text-ink-100">{file ? file.name : "Choose a video (mp4, mov)"}</span>
-          <input type="file" accept="video/*" className="hidden" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+          <span className="text-[11.5px] text-ink-400">Press Enter to browse</span>
+          <input ref={fileInputRef} id="upload-file" type="file" accept="video/*" className="sr-only" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
         </label>
         <input
           value={hint}

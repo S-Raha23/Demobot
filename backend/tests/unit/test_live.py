@@ -67,6 +67,33 @@ def test_second_unseeded_same_label_gets_its_own_track() -> None:
     assert out["pen"] == (10.0, 10.0) and out["pen 2"] == (40.0, 10.0)
 
 
+def test_confirmed_track_expires_after_10_consecutive_misses() -> None:
+    t = _tracker()
+    for _ in range(9):
+        assert t.update([]) == {"pen": (10.0, 10.0), "box": (30.0, 20.0)}
+    assert t.update([]) == {}  # 10th consecutive miss: removed, no ghost
+    assert "pen" not in t.tracks and "box" not in t.tracks
+
+
+def test_confirmed_track_miss_counter_resets_on_match() -> None:
+    t = _tracker()
+    for _ in range(9):
+        t.update([])
+    t.update([Detection("pen", 10.0, 10.0), Detection("box", 30.0, 20.0)])  # resets misses
+    for _ in range(9):
+        assert "pen" in t.update([])
+    assert t.update([]) == {}
+
+
+def test_teleport_does_not_spawn_duplicate_unseeded_track() -> None:
+    t = LiveTracker(confirm_frames=3, alpha=0.5)
+    t.seed([("pen", "pen", 10.0, 10.0)])
+    for _ in range(5):
+        out = t.update([Detection("pen", 50.0, 40.0)])  # teleported far beyond the gate
+        assert out == {"pen": (10.0, 10.0)}
+        assert list(t.tracks) == ["pen"]  # no "pen 2" duplicate
+
+
 def test_rate_ok() -> None:
     t = _tracker()
     assert t.rate_ok([0.0, 0.4, 0.8, 1.2])  # 2.5 Hz
