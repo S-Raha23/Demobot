@@ -270,6 +270,7 @@ class TrackFrame(BaseModel):
     centroid_px: Vec2 | None = None
     poly_px: list[Vec2] | None = None  # mask outline in stabilised display pixels
     score: float | None = None
+    area_px: float | None = None
 
 
 class Track(BaseModel):

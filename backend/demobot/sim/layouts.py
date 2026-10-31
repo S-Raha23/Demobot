@@ -125,3 +125,42 @@ def apply_user_edit(layout: Layout, moves: dict[str, Vec2], layout_id: str = "us
         for o in layout.objects
     ]
     return layout.model_copy(update={"id": layout_id, "source": "user", "objects": objs})
+
+
+def repair(layout: Layout, max_iter: int = 60) -> tuple[Layout, list[str]]:
+    """Measurement noise can make a grounded layout overlap or poke past the work area: nudge the
+    movable objects apart and inside (open containers stay put). Returns the layout and notes."""
+    objs = [o.model_copy() for o in layout.objects]
+    wa = layout.work_area
+    notes: list[str] = []
+    for _ in range(max_iter):
+        moved = False
+        for i, a in enumerate(objs):
+            for b in objs[i + 1 :]:
+                gap = footprint_gap(a, b)
+                if gap >= MIN_GAP_CM:
+                    continue
+                mover = b if not b.is_open else a
+                other = a if mover is b else b
+                if mover.is_open:
+                    continue
+                dx, dy = mover.x - other.x, mover.y - other.y
+                n = math.hypot(dx, dy) or 1.0
+                push = MIN_GAP_CM - gap + 0.2
+                mover.x, mover.y = (
+                    round(mover.x + dx / n * push, 2),
+                    round(mover.y + dy / n * push, 2),
+                )
+                moved = True
+                notes.append(f"nudged {mover.name} {push:.1f} cm away from {other.name}")
+        for o in objs:
+            ex, ey = o.extents()
+            x = min(wa.x1 - ex, max(wa.x0 + ex, o.x))
+            y = min(wa.y1 - ey, max(wa.y0 + ey, o.y))
+            if (x, y) != (o.x, o.y) and not o.is_open:
+                notes.append(f"moved {o.name} inside the work area")
+                o.x, o.y = round(x, 2), round(y, 2)
+                moved = True
+        if not moved:
+            break
+    return layout.model_copy(update={"objects": objs}), sorted(set(notes))

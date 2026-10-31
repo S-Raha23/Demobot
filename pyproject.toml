@@ -78,5 +78,6 @@ plugins = ["pydantic.mypy"]
 [tool.ruff.lint.per-file-ignores]
 "scripts/probe_models.py" = ["E501"]
 "scripts/make_fixture_run.py" = ["E501"]
+"backend/demobot/program/synth.py" = ["E501"]  # tool schemas and prompt text
 "backend/tests/**" = ["E501"]
 "synth/**" = ["E501"]

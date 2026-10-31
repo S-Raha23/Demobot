@@ -14,11 +14,22 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from demobot import calibrate, listen, media, watch
+from demobot import calibrate, ground, listen, media, perceive, watch
 from demobot.config import settings
 from demobot.errors import DemoBotError
 from demobot.events import EventLog, RunContext
-from demobot.schemas import Calibration, IngestInfo, TaskSpec, Transcript
+from demobot.program import synth
+from demobot.schemas import (
+    Calibration,
+    CameraTrack,
+    GroundedDemo,
+    IngestInfo,
+    Layout,
+    TaskSpec,
+    Track,
+    Transcript,
+)
+from demobot.sim.layouts import reach_map, repair, validate
 
 STAGES = [
     "ingest", "calibrate", "listen", "watch", "perceive", "ground", "twin_build", "program",
@@ -156,12 +167,109 @@ async def stage_watch(run: Run) -> str:
     return spec.summary + (f" (cross-watch agreement {agree:.0%})" if agree is not None else "")
 
 
+async def stage_perceive(run: Run) -> str:
+    info = run.read("ingest.json", IngestInfo)
+    spec = run.read("taskspec.json", TaskSpec)
+    tracks, final = await perceive.perceive(run.ctx, run.art, info, spec)
+    (run.art / "tracks.json").write_text(json.dumps({
+        "fps": info.analysis_fps, "size": [info.width, info.height],
+        "tracks": [json.loads(t.model_dump_json()) for t in tracks]}))  # fmt: skip
+    (run.art / "final_masks.json").write_text(json.dumps(final))
+    run.artifact("perceive", run.art / "tracks.json", "json", "SAM 3.1 tracks")
+    good = [t for t in tracks if t.quality >= 0.5 and t.name != "hand"]
+    return f"{len(good)}/{len(tracks) - 1} objects tracked well, plus the hand"
+
+
+async def stage_ground(run: Run) -> str:
+    info = run.read("ingest.json", IngestInfo)
+    spec = run.read("taskspec.json", TaskSpec)
+    cal = run.read("calibration.json", Calibration)
+    cam = run.read("camera_track.json", CameraTrack)
+    raw = json.loads((run.art / "tracks.json").read_text())
+    tracks = [Track.model_validate(t) for t in raw["tracks"]]
+    final = json.loads((run.art / "final_masks.json").read_text())
+    gd = ground.ground(spec, tracks, final, cal, cam, info.analysis_fps, run.art)
+    run.write("grounded.json", gd)
+    run.artifact("ground", run.art / "grounded.json", "json", "Measured in centimetres")
+    ok = all(r.holds for r in gd.real_world)
+    run.ctx.emit("metric", "ground", payload={"name": "real_world_goal", "value": ok})
+    for f in gd.flags:
+        run.ctx.emit("log", "ground", payload={"message": f})
+    verdict = (
+        "the goal holds on your real final table"
+        if ok
+        else "the goal does NOT hold on the real final table"
+    )
+    return f"{len(gd.segments)} moves measured; {verdict}"
+
+
+async def stage_twin_build(run: Run) -> str:
+    cal = run.read("calibration.json", Calibration)
+    gd = run.read("grounded.json", GroundedDemo)
+    layout = Layout(objects=gd.initial, work_area=cal.work_area, robot_base_cm=cal.robot_base_cm)
+    scene = {"layout": json.loads(layout.model_dump_json()), "markers": [json.loads(m.model_dump_json()) for m in cal.markers],
+             "camera": json.loads(cal.camera.model_dump_json()), "image_size": list(cal.image_size),
+             "table_texture": "artifacts/rectified_first.png",
+             "rectify": {"origin_cm": list(cal.rectify_origin_cm), "px_per_cm": cal.rectify_px_per_cm},
+             "reach": reach_map(cal.work_area, cal.robot_base_cm)}  # fmt: skip
+    (run.art / "twin_scene.json").write_text(json.dumps(scene))
+    run.artifact("twin_build", run.art / "twin_scene.json", "json", "Digital twin")
+    return (
+        f"{len(gd.initial)} stand-ins on a {cal.work_area.w:.0f} × {cal.work_area.h:.0f} cm table"
+    )
+
+
+def demo_layout(run: Run) -> Layout:
+    scene = json.loads((run.art / "twin_scene.json").read_text())
+    return Layout.model_validate(scene["layout"])
+
+
+async def stage_program(run: Run) -> str:
+    spec = run.read("taskspec.json", TaskSpec)
+    gd = run.read("grounded.json", GroundedDemo)
+    info = run.read("ingest.json", IngestInfo)
+    tr = run.read("transcript.json", Transcript)
+    cal = run.read("calibration.json", Calibration)
+    layout, notes = repair(demo_layout(run))
+    for n in notes:
+        run.ctx.emit("log", "program", payload={"message": f"layout repair: {n}"})
+    problems = validate(layout)
+    if problems:
+        run.ctx.emit(
+            "log", "program", payload={"message": "demo layout problems: " + "; ".join(problems)}
+        )
+    kf = list(zip(info.keyframe_times, [run.art / k for k in info.keyframes], strict=True))
+    picks = [kf[0], kf[len(kf) // 3], kf[2 * len(kf) // 3], kf[-1]] if len(kf) >= 4 else kf
+    si = synth.SynthInput(spec=spec, grounded=gd, layouts={"demo": layout}, transcript=tr, keyframes=picks,
+                          calibration_json=cal.model_dump_json(), art=run.art)  # fmt: skip
+    out = await synth.synthesize(run.ctx, si)
+    (run.art / "programs.json").write_text(
+        json.dumps([json.loads(p.model_dump_json()) for p in out.versions], indent=1)
+    )
+    (run.art / "synthesis_trace.json").write_text(json.dumps({
+        "submitted": out.submitted, "turns": out.turns, "winner": out.winner, "drafts": out.drafts,
+        "trace": out.trace, "results": {k: {kk: vv for kk, vv in v.items() if kk != "result"} for k, v in out.results.items()},
+    }, indent=1))  # fmt: skip
+    run.artifact("program", run.art / "programs.json", "json", "Programs")
+    if out.program is None:
+        raise DemoBotError(
+            "PROGRAM_FAILED", f"no program passed the demo after {out.turns} turns", stage="program"
+        )
+    run.update_meta(program_version=out.program.version)
+    how = "submitted" if out.submitted else "best passing version"
+    return f"v{out.program.version} passes the demo ({how}, {out.turns} turns, {len(out.versions)} versions)"
+
+
 StageFn = Callable[[Run], Awaitable[str]]
 STAGE_FNS: dict[str, StageFn] = {
     "ingest": stage_ingest,
     "calibrate": stage_calibrate,
     "listen": stage_listen,
     "watch": stage_watch,
+    "perceive": stage_perceive,
+    "ground": stage_ground,
+    "twin_build": stage_twin_build,
+    "program": stage_program,
 }
 
 
