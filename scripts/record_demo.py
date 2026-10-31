@@ -106,7 +106,9 @@ def plan(run: str, corr: str | None, speed: float) -> dict[str, Any]:
         "width": W,
         "height": H,
         "takes": [
-            {"name": "hook", "url": f"/run/{run}?skip=1", "marks": [], "actions": [{"wait": 2000}],
+            {"name": "hook", "url": f"/run/{run}?skip=1",
+             "marks": [{"name": "ready", "selector": '[data-testid="replay-again"]'}],
+             "actions": [{"waitMark": "ready"}, {"wait": 3000}],
              "end": {"after_s": 12}, "rects": {"real": '[data-testid="real-panel"]', "twin": '[data-testid="twin-panel"]'}},
             {"name": "main", "url": f"/run/{run}?speed={speed:g}", "marks": marks,
              "end": {"mark": "finished", "after_s": 2}, "max_s": 1500},
@@ -118,10 +120,13 @@ def plan(run: str, corr: str | None, speed: float) -> dict[str, Any]:
     }  # fmt: skip
 
 
-def record(run: str, corr: str | None, speed: float) -> None:
+def record(run: str, corr: str | None, speed: float, only: list[str] | None = None) -> None:
     TAKES.mkdir(parents=True, exist_ok=True)
     plan_path = TAKES / "plan.json"
-    plan_path.write_text(json.dumps(plan(run, corr, speed), indent=1))
+    pl = plan(run, corr, speed)
+    if only:
+        pl["takes"] = [t for t in pl["takes"] if t["name"] in only]
+    plan_path.write_text(json.dumps(pl, indent=1))
     with server():
         subprocess.run(
             ["node", str(ROOT / "scripts" / "record_demo.cjs"), str(plan_path), str(TAKES)],
@@ -318,15 +323,17 @@ def build(run: str, url: str, short: bool) -> Path:
         None,
     )
 
+    hook_start = float(hook.get("ready", 0.0)) + 2.5  # the finished replay, the twin loaded
+
     def hook_shot(total: float) -> None:
         if footage is not None:
             s.video(footage, 0.5, total / 2, "I showed it once.")
             s.sound(footage, 0.5, total / 2)
-            s.take("hook", 1.5, hook["_length"], total / 2, "It learned the task.", hook_crop)
+            s.take("hook", hook_start, hook["_length"], total / 2, "It learned the task.", hook_crop)
         else:
             s.take(
                 "hook",
-                1.5,
+                hook_start,
                 hook["_length"],
                 total,
                 "I showed it once. It learned the task.",
@@ -409,12 +416,13 @@ def main() -> None:
         "--speed", type=float, default=1.0, help="replay speed while recording (lower = smoother)"
     )
     ap.add_argument("--skip-record", action="store_true", help="reuse the takes in data/demo_takes")
+    ap.add_argument("--takes", default="", help="re-record only these takes (comma-separated: hook,main,try)")
     a = ap.parse_args()
     if not shutil.which("ffmpeg"):
         sys.exit("ffmpeg is required")
     corr = correction_text(run_dir(a.run))
     if not a.skip_record:
-        record(a.run, corr, a.speed)
+        record(a.run, corr, a.speed, [t for t in a.takes.split(",") if t] or None)
     for short in (False, True):
         out = build(a.run, a.url, short)
         dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)],
