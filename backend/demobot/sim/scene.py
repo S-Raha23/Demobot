@@ -222,6 +222,11 @@ def _shapes(o: SceneObject, cid: int) -> tuple[int, int]:
         )
         return col, vis
     w, d, h = o.w / 100.0, o.d / 100.0, o.h / 100.0
+    if o.shape == "sphere":
+        r = max(w, d, h) / 2
+        col = p.createCollisionShape(p.GEOM_SPHERE, radius=r, physicsClientId=cid)
+        vis = p.createVisualShape(p.GEOM_SPHERE, radius=r, rgbaColor=rgba, physicsClientId=cid)
+        return col, vis
     if o.shape == "cylinder":
         r = max(w, d) / 2
         col = p.createCollisionShape(p.GEOM_CYLINDER, radius=r, height=h, physicsClientId=cid)
@@ -239,6 +244,8 @@ def mass_kg(o: SceneObject) -> float:
     vol = (o.w / 100) * (o.d / 100) * (o.h / 100)
     if o.shape == "cylinder":
         vol *= math.pi / 4
+    elif o.shape == "sphere":
+        vol *= math.pi / 6
     return min(C.OBJECT_MASS_MAX_KG, max(C.OBJECT_MASS_MIN_KG, vol * C.OBJECT_DENSITY_KG_M3))
 
 
@@ -255,6 +262,9 @@ def _add_object(o: SceneObject, cid: int) -> int:
     )
     p.changeDynamics(body, -1, lateralFriction=C.LATERAL_FRICTION, restitution=C.RESTITUTION,
                      physicsClientId=cid)  # fmt: skip
+    if o.shape == "sphere":  # a ball on a desk settles instead of rolling away
+        p.changeDynamics(body, -1, rollingFriction=C.BALL_ROLLING_FRICTION,
+                         spinningFriction=C.BALL_ROLLING_FRICTION, physicsClientId=cid)  # fmt: skip
     return body
 
 

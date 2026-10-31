@@ -46,7 +46,7 @@ def test_ingest_writes_all_outputs(tmp_path: Path) -> None:
     src = make_clip(tmp_path / "in.mp4", 3, "1280x720", audio=True)
     info = media.ingest(src, tmp_path / "out")
     out = tmp_path / "out"
-    assert (out / "display.mp4").exists() and (out / "analysis.mp4").exists()
+    assert (out / "display_raw.mp4").exists() and (out / "analysis.mp4").exists()
     assert (info.width, info.height) == (1280, 720)
     assert info.analysis_frames == pytest.approx(info.duration_s * 10, abs=1)
     assert info.has_audio and (out / "audio.wav").exists()

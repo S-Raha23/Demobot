@@ -14,10 +14,10 @@ Everything else is Claude Code's job. Claude adds items under **Waiting on you**
 ### 2. Film 5 short clips with things already on your desk (20 min)
 
 **Phone setup:**
-- Rest the phone on a stack of books or a box on the near (robot) side of the table, looking forward and down at the markers. Any angle from straight down to about 45° is fine.
+- Hold the phone in one hand from the near (robot) side of the table, looking forward and down at the markers, and do the task with the other hand. Any angle from straight down to about 45° is fine.
 - **All 4 markers must be in view** for the whole clip.
 - **Same camera mode as your checkerboard video:** 1080p, 30 fps, normal 1× lens, no zoom, good light. Portrait like the checkerboard video is best; landscape also works.
-- **Don't move the phone between or during clips.** Tap record, wait 2 s, do the task with natural movements, wait 2 s, then stop.
+- **Keep the phone as steady as you comfortably can** (small handheld motion is fine; DemoBot tracks it). Tap record, wait 2 s, do the task with natural movements, wait 2 s, then stop.
 
 **Objects:** anything you have. One mug or bowl as the container, plus 2–4 small items such as pens, an eraser, a glue stick, a sticky-note pad, or a phone charger head. Nothing shiny or transparent if you can avoid it. No buying or hunting needed.
 

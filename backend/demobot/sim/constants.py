@@ -67,6 +67,7 @@ LATERAL_FRICTION = 0.9
 RESTITUTION = 0.0
 CONTAINER_WALL_M = 0.004  # floor and wall thickness
 CYLINDER_WALLS = 8
+BALL_ROLLING_FRICTION = 0.02
 
 # the twin recording
 TWIN_FPS = 30

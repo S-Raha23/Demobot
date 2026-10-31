@@ -331,19 +331,24 @@ class Skills:
         self.attach(name)
         self.move_ee(_above((x, y), max(C.Z_SAFE, top + 0.08)), 180)
 
-    def place(self, target_xy_cm: XY, surface_z_m: float, container: str | None = None) -> None:
+    def place(
+        self,
+        target_xy_cm: XY,
+        surface_z_m: float,
+        container: str | None = None,
+        slot: dict[str, float | str | None] | None = None,
+    ) -> None:
         """Carry the held object over the target, lower it onto the surface and let go.
-        Into a container it does not fit lying flat (pens into a mug), it is let go just above
-        the rim and slides in upright, long axis vertical, as a person would stand it."""
+        Into a container it does not fit lying flat, it is let go just above the rim and slides
+        in the way a person would put it: diagonally across a square box (a spoon, a cutter),
+        or standing upright (pens into a mug)."""
         assert self.held is not None
         name = self.held
         obj = self.scene.objects[name]
         self.check_reach(target_xy_cm)
-        upright = container is not None and not fits_flat(
-            obj.spec, self.scene.objects[container].spec
-        )
+        mode = str(slot["mode"]) if slot else "flat"
         self.move_ee(_above(target_xy_cm, C.Z_SAFE), 300)
-        if upright:
+        if mode != "flat":
             assert container is not None
             rim = self.scene.objects[container].height_m
             self.move_ee(_above(target_xy_cm, rim + obj.height_m + C.GRASP_OFFSET + 0.015), 180)
@@ -353,31 +358,51 @@ class Skills:
             )
         self.detach()
         self.set_fingers(C.FINGER_OPEN)
-        if upright:
-            assert container is not None
-            self._slide_in_upright(name, container)
+        if mode != "flat":
+            assert container is not None and slot is not None
+            self._slide_in(name, container, slot)
         self.scene.step(C.SETTLE_STEPS)
         self.move_ee(_above(target_xy_cm, C.Z_SAFE), 120)
         self.release()
 
-    def _slide_in_upright(self, name: str, container: str, steps: int = 24) -> None:
-        """Kinematically turn the object upright and lower it to the container floor."""
+    def _slide_in(self, name: str, container: str, slot: dict[str, float | str | None],
+                  steps: int = 24) -> None:  # fmt: skip
+        """Kinematically lay the object diagonally in the container (resting on whatever is under
+        that diagonal) or stand it upright on the floor, as `slot` says."""
         body = self.scene.objects[name].body
         spec = self.scene.objects[name].spec
-        cpos, _ = p.getBasePositionAndOrientation(
-            self.scene.objects[container].body, physicsClientId=self.cid
-        )
-        c_floor = cpos[2] - self.scene.objects[container].height_m / 2 + C.CONTAINER_WALL_M
+        cbox = self.scene.objects[container]
+        cpos, _ = p.getBasePositionAndOrientation(cbox.body, physicsClientId=self.cid)
+        c_bottom = cpos[2] - cbox.height_m / 2
         pos0, orn0 = p.getBasePositionAndOrientation(body, physicsClientId=self.cid)
-        # stand the longest axis up
-        long_axis = max(("w", spec.w), ("d", spec.d), ("h", spec.h), key=lambda a: a[1])[0]
-        tilt = {"w": [0, math.pi / 2, 0], "d": [math.pi / 2, 0, 0], "h": [0, 0, 0]}[long_axis]
-        orn1 = p.getQuaternionFromEuler(tilt)
-        pos1 = (cpos[0], cpos[1], c_floor + max(spec.w, spec.d, spec.h) / 200 + 0.002)
+        x, y = to_sim((float(slot["x"] or 0), float(slot["y"] or 0)))
+        base = c_bottom + float(slot["base_cm"] or 0) / 100
+        if slot["mode"] == "upright":
+            long_axis = max(("w", spec.w), ("d", spec.d), ("h", spec.h), key=lambda a: a[1])[0]
+            tilt = {"w": [0, math.pi / 2, 0], "d": [math.pi / 2, 0, 0], "h": [0, 0, 0]}[long_axis]
+            orn1 = p.getQuaternionFromEuler(tilt)
+            pos1 = (x, y, base + max(spec.w, spec.d, spec.h) / 200 + 0.002)
+        else:
+            orn1 = p.getQuaternionFromEuler([0, 0, -math.radians(float(slot["yaw"] or 0))])
+            pos1 = (x, y, base + spec.h / 200 + 0.002)
+        # turn above everything inside first, then lower straight down
+        clear = max(pos0[2], c_bottom + cbox.height_m + max(spec.w, spec.d, spec.h) / 200 + 0.01)
+        for other in self.scene.objects.values():
+            if other.name not in (name, container):
+                opos, _ = p.getBasePositionAndOrientation(other.body, physicsClientId=self.cid)
+                if math.dist(opos[:2], cpos[:2]) < max(cbox.spec.w, cbox.spec.d) / 200:
+                    clear = max(clear, opos[2] + other.height_m / 2 + spec.h / 200 + 0.01)
+        mid = (pos1[0], pos1[1], clear)
+        half = steps // 2
         for s in range(1, steps + 1):
-            f = s / steps
-            pos = [a + (b - a) * f for a, b in zip(pos0, pos1, strict=True)]
-            orn = p.getQuaternionSlerp(orn0, orn1, f)
+            if s <= half:
+                f = s / half
+                pos = [a + (b - a) * f for a, b in zip(pos0, mid, strict=True)]
+                orn = p.getQuaternionSlerp(orn0, orn1, f)
+            else:
+                f = (s - half) / (steps - half)
+                pos = [a + (b - a) * f for a, b in zip(mid, pos1, strict=True)]
+                orn = orn1
             p.resetBasePositionAndOrientation(body, pos, orn, physicsClientId=self.cid)
             p.resetBaseVelocity(body, [0, 0, 0], [0, 0, 0], physicsClientId=self.cid)
             self.scene.step()
@@ -391,10 +416,90 @@ class Skills:
             self.scene.step()
 
 
+def _inner(container: SceneObject) -> float:
+    return min(container.w, container.d) - 2 * C.CONTAINER_WALL_M * 100 - 1.0
+
+
 def fits_flat(obj: SceneObject, container: SceneObject) -> bool:
     """True if the object's footprint fits inside the container's opening with 1 cm to spare."""
-    inner = min(container.w, container.d) - 2 * C.CONTAINER_WALL_M * 100 - 1.0
+    inner = _inner(container)
     hx, hy = obj.extents()
+    if obj.shape == "sphere":
+        return bool(2 * hx <= inner)
     if container.shape == "cylinder":
         return bool(math.hypot(hx, hy) * 2 <= inner)
     return bool(2 * hx <= inner and 2 * hy <= inner)
+
+
+def insert_mode(obj: SceneObject, container: SceneObject) -> str:
+    """How a person would put obj in container: "flat", "diagonal" (across a square box) or
+    "upright"."""
+    if fits_flat(obj, container):
+        return "flat"
+    if container.shape == "box" and obj.shape == "box":
+        long, short = max(obj.w, obj.d), min(obj.w, obj.d)
+        if long + short <= _inner(container) * math.sqrt(2):
+            return "diagonal"
+    return "upright"
+
+
+def container_slot(
+    obj: SceneObject, container: SceneObject, contents: list[SceneObject]
+) -> dict[str, float | str | None]:
+    """Where and how obj goes into the container, given what is already inside:
+    mode (flat | diagonal | upright), centre x, y (table cm), yaw (degrees, or None to keep),
+    and base_cm (the height it rests on). Flat items take the freest spot; diagonal items the
+    diagonal farther from what is inside, resting on what is under that diagonal."""
+    mode = insert_mode(obj, container)
+    floor = C.CONTAINER_WALL_M * 100
+    c = container
+    ih = _inner(c) / 2
+    hx, hy = obj.extents()
+    small = mode == "flat" and c.shape == "box" and max(hx, hy) <= 0.6 * ih
+    if mode == "upright" or (not contents and not small):
+        yaw = None if mode != "diagonal" else c.yaw + 45 + (0 if obj.w >= obj.d else 90)
+        return {"mode": mode, "x": c.x, "y": c.y, "yaw": yaw, "base_cm": floor}
+
+    def radius(o: SceneObject) -> float:
+        hx, hy = o.extents()
+        return min(hx, hy) if o.shape == "box" and max(hx, hy) > 2 * min(hx, hy) else max(hx, hy)
+
+    if mode == "flat":
+        # small items go to the corners on one diagonal (rotated with the box), keeping the
+        # other diagonal clear for long items
+        a = math.radians(c.yaw)
+        ca, sa = math.cos(a), math.sin(a)
+        corners = [(-1, -1), (1, 1), (1, -1), (-1, 1)]
+        cands = [] if small else [(c.x, c.y)]
+        if c.shape != "box":  # round: points on the inner circle, on the same diagonals
+            r_obj = max(hx, hy)
+            for sx, sy in corners:
+                if ih > r_obj:
+                    k = (ih - r_obj) / math.sqrt(2)
+                    cands.append((c.x + sx * k, c.y + sy * k))
+        elif ih > hx and ih > hy:
+            for sx, sy in corners:
+                du, dv = sx * (ih - hx), sy * (ih - hy)
+                cands.append((c.x + du * ca - dv * sa, c.y + du * sa + dv * ca))
+
+        def room(xy: tuple[float, float]) -> float:
+            if not contents:
+                return 0.0
+            return min(math.dist(xy, (o.x, o.y)) - radius(o) - max(hx, hy) for o in contents)
+
+        x, y = max(cands, key=room) if cands else (c.x, c.y)  # ties keep the first corner
+        return {"mode": mode, "x": x, "y": y, "yaw": None, "base_cm": floor}
+    best: tuple[float, float, float] | None = None
+    for turn in (45.0, -45.0):
+        a = math.radians(c.yaw + turn)
+        ux, uy = math.cos(a), math.sin(a)
+        dists = [abs(-(o.x - c.x) * uy + (o.y - c.y) * ux) - radius(o) for o in contents]
+        score = min(dists)
+        under = [o for o, d in zip(contents, dists, strict=True) if d < min(obj.w, obj.d) / 2]
+        base = max([o.z + o.h / 2 for o in under] or [floor])
+        if best is None or score > best[0]:
+            best = (score, turn, base)
+    assert best is not None
+    _, turn, base = best
+    yaw = c.yaw + turn + (0 if obj.w >= obj.d else 90)
+    return {"mode": mode, "x": c.x, "y": c.y, "yaw": yaw, "base_cm": base}

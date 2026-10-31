@@ -23,7 +23,7 @@ def scene(seed: int, tilt: float | None = None):
 def test_markers_within_tolerance_on_synthetic_tables(seed: int, tilt: float | None) -> None:
     """M1 acceptance: marker positions err < 0.8 cm, plane reprojection < 1.5 px."""
     truth, cam, img = scene(seed, tilt)
-    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height, 1)
+    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height)
     for m in cal.markers:
         x, y, _ = truth.markers[m.id]
         assert np.hypot(m.center_cm[0] - x, m.center_cm[1] - y) < 0.8
@@ -34,7 +34,7 @@ def test_markers_within_tolerance_on_synthetic_tables(seed: int, tilt: float | N
 
 def test_homography_maps_table_points_exactly() -> None:
     _, cam, img = scene(6, 25.0)
-    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height, 1)
+    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height)
     pts = np.array([[10.0, 10.0], [40.0, 30.0], [55.0, 5.0]])
     px = apply_h(cam.table_to_image(), pts)
     back = apply_h(np.array(cal.H_img_to_table), px)
@@ -43,7 +43,7 @@ def test_homography_maps_table_points_exactly() -> None:
 
 def test_camera_pose_recovered_for_oblique_view() -> None:
     _, cam, img = scene(7, 30.0)
-    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height, 1)
+    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height)
     C = cam.center
     assert cal.camera.focal_source == "homography"
     assert abs(cal.camera.focal_px - cam.K[0, 0]) / cam.K[0, 0] < 0.03
@@ -54,7 +54,7 @@ def test_camera_pose_recovered_for_oblique_view() -> None:
 
 def test_top_down_view_uses_default_focal_with_a_warning() -> None:
     _, cam, img = scene(8, 0.0)
-    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height, 1)
+    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), cam.width, cam.height)
     assert cal.camera.focal_source == "default_fov" and cal.warnings
 
 
@@ -76,7 +76,7 @@ def test_missing_marker_names_it() -> None:
     x, y = det[2].mean(axis=0).astype(int)
     img[y - 60 : y + 60, x - 60 : x + 60] = 90  # cover marker 2
     with pytest.raises(DemoBotError) as err:
-        calibrate.median_corners([img])
+        calibrate.build_track([calibrate.observe(img)], img.shape[1], img.shape[0], 10.0)
     assert err.value.code == "NO_MARKERS" and "2" in err.value.message
 
 

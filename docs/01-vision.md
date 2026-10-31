@@ -56,7 +56,7 @@ Bonus prizes targeted: Best Agentic Use-Case, Best Build on Open Weight Models, 
 
 ## Scope
 
-**In scope:** rigid tabletop pick-and-place rearrangement with 2–6 everyday objects, using one fixed phone camera (top-down or angled up to about 50° from vertical). The four ArUco markers must be visible. Task families:
+**In scope:** rigid tabletop pick-and-place rearrangement with 2–6 everyday objects, using one handheld phone camera (held steady, with mild motion; top-down or angled up to about 50° from vertical). The four ArUco markers must be visible. Task families:
 - put into a container
 - place next to an object (left, right, in front, behind)
 - line up
@@ -67,7 +67,7 @@ Bonus prizes targeted: Best Agentic Use-Case, Best Build on Open Weight Models, 
 **Out of scope:**
 - stacking
 - deformables, liquids, tools that need force
-- a moving camera
+- a camera that moves a lot or loses the markers for long stretches
 - real robot hardware (we export a robot-agnostic program instead)
 - any people or face identification (we track hands only)
 

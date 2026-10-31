@@ -46,19 +46,27 @@ def top_frame(layout: Layout) -> Rect:
     return Rect(x0=wa.x0 - m, y0=wa.y0 - m, x1=wa.x1 + m, y1=wa.y1 + m)
 
 
-def camera_view(scene: Scene, cal: Calibration) -> np.ndarray:
-    """The view from the calibrated phone camera (W = (x, y, z_down) -> sim (x, −y, −z)/100)."""
-    R = np.asarray(cv2.Rodrigues(np.array(cal.camera.rvec))[0], float)
-    t = np.asarray(cal.camera.tvec, float)
+def view_proj(
+    R: np.ndarray, t: np.ndarray, f: float, w: int, h: int
+) -> tuple[list[float], list[float]]:
+    """PyBullet view and projection matrices for a pinhole camera given in the (x, y, z_down)
+    table-cm frame (W -> sim: (x, −y, −z)/100). Assumes a centred principal point."""
     C = -R.T @ t
     to_sim = np.array([1.0, -1.0, -1.0])
     eye = C * to_sim / 100
     fwd = R[2] * to_sim
     up = -R[1] * to_sim
-    w, h = cal.image_size
     view = p.computeViewMatrix(eye.tolist(), (eye + fwd).tolist(), up.tolist())
-    fov = math.degrees(2 * math.atan(h / 2 / cal.camera.focal_px))
+    fov = math.degrees(2 * math.atan(h / 2 / f))
     proj = p.computeProjectionMatrixFOV(fov, w / h, 0.02, 10)
+    return list(view), list(proj)
+
+
+def camera_view(scene: Scene, cal: Calibration) -> np.ndarray:
+    """The view from the calibrated phone camera."""
+    R = np.asarray(cv2.Rodrigues(np.array(cal.camera.rvec))[0], float)
+    w, h = cal.image_size
+    view, proj = view_proj(R, np.asarray(cal.camera.tvec, float), cal.camera.focal_px, w, h)
     # the human's real frame has no robot in it: move the arm out of view for this render
     cid = scene.client
     pos, orn = p.getBasePositionAndOrientation(scene.robot, physicsClientId=cid)

@@ -15,7 +15,7 @@ from demobot import goal_dsl
 from demobot.schemas import SkillCall
 from demobot.sim import constants as C
 from demobot.sim.scene import Scene as SimScene
-from demobot.sim.skills import SkillError, Skills
+from demobot.sim.skills import SkillError, Skills, container_slot
 
 
 # ---------- errors (a program should let these surface; the simulator reports them) ----------
@@ -195,6 +195,7 @@ class Robot:
         self._scene = scene
         self._skills = Skills(sim)
         self._calls = calls
+        self._was_contained: set[str] = set()
 
     # ---------- bookkeeping ----------
     def _begin(self, skill: str, **args: Any) -> SkillCall:
@@ -208,15 +209,27 @@ class Robot:
         call.ok, call.error = False, f"{type(err).__name__}: {err}"
         return err
 
+    def _contained(self) -> set[str]:
+        """Objects inside some container right now."""
+        state = self._sim.state()
+        boxes = [o for o in state if o.is_container]
+        return {
+            o.name for o in state
+            if any(goal_dsl.inside(o, c, sim=True)[0] for c in boxes if c.name != o.name)
+        }  # fmt: skip
+
     def _snapshot_xy(self) -> dict[str, tuple[float, float]]:
+        self._was_contained = self._contained()
         return {n: self._sim.pose_cm(n)[:2] for n in self._sim.objects}
 
     def _check_disturbed(
         self, call: SkillCall, before: dict[str, tuple[float, float]], ignore: set[str]
     ) -> None:
+        settled_in = self._contained() & self._was_contained  # jostled inside a box is fine
         moved = [
             n for n, xy in before.items()
-            if n not in ignore and math.dist(xy, self._sim.pose_cm(n)[:2]) > C.DISPLACED_CM
+            if n not in ignore and n not in settled_in
+            and math.dist(xy, self._sim.pose_cm(n)[:2]) > C.DISPLACED_CM
         ]  # fmt: skip
         if moved:
             raise self._fail(call, Collision(f"knocked {', '.join(sorted(moved))} out of place"))
@@ -257,6 +270,7 @@ class Robot:
         surface_z_m: float,
         ignore: set[str],
         container: str | None = None,
+        slot: dict[str, float | str | None] | None = None,
     ) -> None:
         held = self._scene._held
         if held is None:
@@ -265,7 +279,7 @@ class Robot:
             raise self._fail(call, NotReachable(f"({x:.0f}, {y:.0f}) is out of reach"))
         before = self._snapshot_xy()
         try:
-            self._skills.place((x, y), surface_z_m, container)
+            self._skills.place((x, y), surface_z_m, container, slot)
         except SkillError as e:
             raise self._fail(
                 call, NotReachable(f"cannot place at ({x:.0f}, {y:.0f}): {e.reason}")
@@ -298,7 +312,16 @@ class Robot:
         if container.name not in self._sim.objects:
             raise self._fail(call, NoSuchObject(f"no object named {container.name!r}"))
         c = self._sim.snapshot(container.name)
-        self._place(call, c.x, c.y, C.CONTAINER_WALL_M, {c.name}, container=c.name)
+        held = self._scene._held
+        if held is None:
+            raise self._fail(call, NothingHeld("nothing is held; call pick() first"))
+        contents = [
+            o for o in self._sim.state()
+            if o.name not in (held, c.name) and goal_dsl.inside(o, c, sim=True)[0]
+        ]  # fmt: skip
+        slot = container_slot(self._sim.objects[held].spec, c, contents)
+        x, y = float(slot["x"] or c.x), float(slot["y"] or c.y)
+        self._place(call, x, y, C.CONTAINER_WALL_M, {c.name}, container=c.name, slot=slot)
 
     def place_next_to(self, ref: Obj, side: str, gap: float = 2.0) -> None:
         """Put the held object `gap` cm beside `ref`: side is "left_of" (−x), "right_of" (+x),

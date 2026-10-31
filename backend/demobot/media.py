@@ -1,5 +1,6 @@
-"""Stage 1: ingest. Validate the upload, trim idle head and tail, and write display.mp4,
-analysis.mp4 (10 fps), audio.wav and keyframes (docs/04 §1)."""
+"""Stage 1: ingest. Validate the upload, trim idle head and tail, and write display_raw.mp4
+(Calibrate stabilises it into display.mp4), analysis.mp4 (10 fps), audio.wav and keyframes
+(docs/04 §1)."""
 
 import json
 import subprocess
@@ -157,7 +158,7 @@ def extract_frame(video: Path, t: float, dst: Path) -> Path:
 
 
 def ingest(src: Path, out_dir: Path) -> IngestInfo:
-    """Writes display.mp4, analysis.mp4, audio.wav (if any narration) and keyframes/."""
+    """Writes display_raw.mp4, analysis.mp4, audio.wav (if any narration) and keyframes/."""
     info = video_info(src)
     start, end = active_span(motion_energy(src), info["duration"])
     if end - start > MAX_ACTIVE_S:
@@ -166,7 +167,7 @@ def ingest(src: Path, out_dir: Path) -> IngestInfo:
         )
     out_dir.mkdir(parents=True, exist_ok=True)
     span = ["-ss", f"{start:.3f}", "-to", f"{end:.3f}"]
-    display, analysis = out_dir / "display.mp4", out_dir / "analysis.mp4"
+    display, analysis = out_dir / "display_raw.mp4", out_dir / "analysis.mp4"
     audio = ["-c:a", "aac", "-b:a", "96k"] if info["has_audio"] else ["-an"]
     _run(["ffmpeg", "-v", "error", "-y", *span, "-i", str(src), "-vf",
           f"{_scale_filter()},fps={DISPLAY_FPS}", "-c:v", "libx264", "-preset", "veryfast",

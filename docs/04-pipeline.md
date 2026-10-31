@@ -19,35 +19,42 @@ Reject anything else with a clear error code: `CLIP_TOO_LONG`, `CLIP_TOO_SMALL`,
 
 **Trim** idle head and tail by frame-difference motion energy, keeping 1 s of padding each side.
 
+**The camera is handheld** (one hand holds the phone, the other does the task), so it moves slightly during every clip. Every stage that maps pixels to the table uses the per-frame camera track from Calibrate.
+
 **Outputs:**
-- `display.mp4`: H.264, original aspect ratio, short side 720 px, 30 fps, audio kept, `-preset veryfast`.
+- `display_raw.mp4`: H.264, original aspect ratio, short side 720 px, 30 fps, audio kept, `-preset veryfast`. Calibrate turns it into the stabilised `display.mp4`.
 - `analysis.mp4`: 10 fps, short side 720 px, no audio. This feeds SAM and Spark.
 - `audio.wav`: mono, 16-bit, 16 kHz. Only if the clip has an audio track with RMS above the silence threshold.
 - `keyframes/`: 8 evenly spaced frames, plus the first and last clean frames (frames where no hand overlaps an object, if known later).
 
-## 2. Calibrate (`calibrate.py`): metric table plane, no ruler needed
+## 2. Calibrate (`calibrate.py`): metric table plane and a per-frame camera track, no ruler needed
 
-The human glued the 4 ArUco markers (`DICT_4X4_50`, IDs 0–3, black square **6.0 cm** edge to edge) roughly at the corners of a ~60 × 40 cm rectangle. **Their exact positions are unknown, and we never ask for measurements.**
+The human glued the 4 ArUco markers (`DICT_4X4_50`, IDs 0–3, black square **6.0 cm** edge to edge) roughly at the corners of a ~60 × 40 cm rectangle. **Their exact positions are unknown, and we never ask for measurements.** The phone is **handheld**, so the camera moves slightly during the clip: the markers are fixed to the table, the camera is not.
 
-1. **Detect markers** with OpenCV ArUco on up to 30 frames where all 4 are visible; use sub-pixel corner refinement. The camera is fixed: take the per-corner median. If a marker is missing in all frames, raise `NO_MARKERS` and say which ID.
-2. **Metric plane by bundle fit.**
-   - Unknowns: a homography `H` (image → table, 8 DOF) plus, for markers 1–3, an in-plane pose `(x, y, θ)`. Marker 0 defines the origin, and its +x edge defines the axis.
-   - Each marker's four corners in the table frame are its pose applied to a 6 × 6 cm square.
-   - Minimise reprojection error of all 16 corners with `scipy.optimize.least_squares`.
-   - Initialise `H` from marker 0's own four corners alone (exactly metric), and each marker pose from mapping its corners through that `H`.
-
-   The result is metric marker positions and `H`, typically < 1.5 px RMS. The table frame's +y may be flipped relative to the human's intent. Enforce the convention: marker 3 has y > 0 and marker 1 has x > 0.
-3. **Camera.**
-   - If `data/calibration/intrinsics.json` exists and its aspect ratio matches, scale its focal length and principal point to this clip's resolution. That file is produced by `scripts/calibrate_camera.py` from `data/calibration/checkerboard.mp4`: 9 × 6 inner corners, 25 mm squares, recorded portrait at 1080 × 1920 (HEVC, 30 fps, 60 s) on the human's phone. Corners were confirmed detectable on sampled frames. For landscape clips, swap the axes of the intrinsics.
-   - Otherwise estimate focal length from `H`, assuming square pixels, a centred principal point and zero skew (Zhang's single-view constraints).
-   - Then decompose to get the camera pose: position in table cm, height above the table `H_cam`, and the nadir point.
-4. **Work area** = the bounding rectangle of the marker centres, shrunk by 4 cm. The robot base sits **28 cm in front of the work area's front edge** (the +y side), centred in x (`docs/06-simulation.md`).
-5. **Outputs:**
-   - `calibration.json`;
-   - `rectified_first.png` and `rectified_last.png` at 10 px/cm, used by the judge and the UI;
+1. **Detect markers** with OpenCV ArUco on **every frame** of `analysis.mp4` (10 fps), with sub-pixel corner refinement. If a marker is missing in all frames, raise `NO_MARKERS` and say which ID.
+2. **Blur flag.** For each frame, the variance of the Laplacian inside the marker regions (or the whole frame if none are seen). Frames below 0.45 × the clip median are flagged `blurred`; their detections are not used for fitting, and they are never chosen as "clean" frames.
+3. **Marker layout by joint bundle fit** (the table is rigid, the camera is not).
+   - Use up to 30 sharp frames where all 4 markers are visible, spread over the clip.
+   - Unknowns: one homography per frame (image → table, 8 DOF each) plus, shared by all frames, an in-plane pose `(x, y, θ)` for markers 1–3. Marker 0 defines the origin, and its +x edge defines the axis.
+   - Each marker's four corners in the table frame are its pose applied to a 6 × 6 cm square. Minimise the reprojection error of all corners in all frames with `scipy.optimize.least_squares` (sparse Jacobian).
+   - Initialise from the first frame's single-frame fit (marker 0's corners give an exactly metric `H`).
+   - Enforce the convention: marker 1 has x > 0 and marker 3 has y > 0.
+4. **Per-frame homography.** With the marker layout known, every frame with **≥ 3 markers** gets its own `H_t` from all visible corners (RMS reprojection recorded).
+5. **Camera.**
+   - Focal length: `data/calibration/intrinsics.json` if it exists and its aspect ratio matches (scaled to this clip; axes swapped for landscape). It comes from `scripts/calibrate_camera.py` on `data/calibration/checkerboard.mp4` (9 × 6 inner corners, 25 mm squares, the human's phone). Otherwise the median of the per-frame Zhang single-view estimates over frames tilted ≥ 12° (the handheld motion makes this better conditioned than one view); otherwise a 64° phone field of view, with a warning.
+   - **Temporal smoothing:** a Gaussian over time (σ = 0.5 frame at 10 fps) on the normalised entries of `H_t`, skipping outlier frames (reprojection > 3 px). A frame whose smoothed `H_t` fits its own markers more than 0.75 px worse than its raw fit keeps the raw one, so smoothing removes jitter without lagging real hand motion. Frames with fewer than 3 markers, and blurred frames, get `H_t` **interpolated** from the nearest good neighbours (linear in the entries, which is exact enough for small handheld motion; held constant at the ends). Smoothing the homography rather than the pose keeps the metric mapping exactly consistent even when the focal length is only a default.
+   - Per-frame pose `(R_t, t_t)` from the smoothed `H_t` and `K` (for parallax correction and rendering).
+   - The **reference camera** is the pose of the **last clean frame** (sharp, ≥ 3 markers, no hand over the work area if known; otherwise the last sharp frame). Verify and the twin's "real camera view" use it.
+6. **Work area** = the bounding rectangle of the marker centres, shrunk by 4 cm. The robot base sits **28 cm in front of the work area's front edge** (the +y side), centred in x (`docs/06-simulation.md`).
+7. **Stabilised display video.** Every 30 fps frame of `display_raw.mp4` is warped into the **first frame's view** with `M_t = G_0 · H_t` (image t → table → image 0), using the camera track interpolated to 30 fps, and written as `display.mp4` (audio kept). Everything drawn over the video in the UI (masks, trails, axes) is stored in these stabilised coordinates, so overlays and the side-by-side with the twin look steady.
+8. **Outputs:**
+   - `calibration.json`: marker layout, work area, robot base, the reference camera, focal source, reprojection, frame counts and warnings;
+   - `camera_track.json`: per analysis frame `{t, H_img_to_table, rvec, tvec, markers_seen, reproj_px, sharpness, blurred, interpolated}`;
+   - `display.mp4` (stabilised) and `stabilise.json` (the per-frame `M_t` at 30 fps);
+   - `rectified_first.png` and `rectified_last.png` at 10 px/cm, each through its own frame's `H_t`, used by the judge and the UI;
    - a debug overlay with marker IDs and axes, drawn as a UI layer.
 
-**Parallax correction** for a point at height `h` above the table is `p = c + (p_plane − c) · (H_cam − h) / H_cam`, where `c` is the nadir. Use the object's estimated half-height for its centroid.
+**Parallax correction** for a point at height `h` above the table, in frame t, is `p = c_t + (p_plane − c_t) · (H_cam,t − h) / H_cam,t`, where `c_t` is that frame's nadir and `H_cam,t` its camera height. Use the object's estimated half-height for its centroid.
 
 ## 3. Listen (`listen.py`): Voice Transcribe
 
@@ -101,11 +108,11 @@ For each TaskSpec object, and then `"hand"`:
 - If still low, fall back to image mode on keyframes plus linear interpolation, and flag it.
 - Never fail silently.
 
-Store masks as RLE (one-bit) for the overlay renderer, and the per-frame centroid of the mask's bottom contact region.
+Store masks as RLE (one-bit) for the overlay renderer, and the per-frame centroid of the mask's bottom contact region. SAM runs on the unstabilised `analysis.mp4` (the real pixels); for the overlay, masks are warped into stabilised display coordinates with that frame's `M_t`.
 
 **Real final state:** run SAM image mode on the last clean frame for each phrase; this is more precise than the video's last frame.
 
-**Object appearance:** for each object, crop its mask on a clean early frame and rectify it to a top-down patch using H. Save it to `artifacts/crops/<name>.png`. It becomes the texture of the object's stand-in in the twin.
+**Object appearance:** for each object, crop its mask on a clean early frame and rectify it to a top-down patch using that frame's `H_t`. Save it to `artifacts/crops/<name>.png`. It becomes the texture of the object's stand-in in the twin.
 
 ## 6. Ground (`ground.py`): pixels to centimetres to events
 
@@ -115,7 +122,7 @@ Implement the algorithm specified in `reference/old_demobot/docs/spec/07-pipelin
 - `median=3`, `area_jump=0.4`, `occl_iou=0.3`
 - `match_window_s=3.0`
 
-1. **Convert to cm:** map centroids to the table plane through H, then apply the parallax correction.
+1. **Convert to cm:** map each frame's centroids to the table plane through **that frame's own** `H_t`, then apply the parallax correction with that frame's camera pose (nadir `c_t`, height `H_cam,t`). Points in frames whose pose was interpolated are kept but down-weighted in the medians; points in blurred frames are dropped.
 2. **Clean:**
    - drop points whose mask area jumps by more than 40%;
    - drop points occluded by the hand (box IoU > 0.3);
@@ -148,7 +155,7 @@ Write `twin_scene.json` for the frontend:
 - objects with sizes, textures and colours;
 - the table rectangle;
 - marker positions;
-- the camera pose (so the browser can show the real camera's viewpoint);
+- the reference camera pose, i.e. the last clean frame's (so the browser can show the real camera's viewpoint);
 - the robot base pose.
 
 ## 8. Program (`program/synth.py`): Muse Wonder writes and debugs the robot program
@@ -161,13 +168,13 @@ Run the final program on the demo layout, then check four things:
 1. **Symbolic:** the goal on the simulated final state (exact poses).
 2. **Real-world:** the goal on the human's real final state, already computed in Ground. It must also pass, otherwise the spec does not match what the human did.
 3. **Perceptual:**
-   - render the sim final state **from the real camera's pose**, at the same resolution and with stand-ins textured by the real crops;
+   - render the sim final state **from the reference camera pose (the last clean frame)**, at the same resolution and with stand-ins textured by the real crops;
    - run SAM 3.1 image mode on that render with the same phrases;
-   - map the masks through the same H and parallax pipeline;
+   - map the masks through that frame's `H_t` and parallax pipeline;
    - evaluate the goal on this perceived state.
 
    This proves the result looks right to the same eyes that watched the human.
-4. **Judge:** Muse Spark Open receives the human's real final frame and the camera-pose sim render, plus the goal in words and the clause table. It returns `{same_goal_achieved: bool, confidence, differences[], suspected_error}`.
+4. **Judge:** Muse Spark Open receives the human's real last clean frame and the camera-pose sim render (same pose), plus the goal in words and the clause table. It returns `{same_goal_achieved: bool, confidence, differences[], suspected_error}`.
 
 **The run passes** when 1–3 all hold and the judge agrees. Any disagreement is classified into a `failure_class`:
 - `spec_mismatch`: real-world fails;

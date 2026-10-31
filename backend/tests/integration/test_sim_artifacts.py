@@ -24,7 +24,7 @@ def default_calibration() -> str:
     truth = draw_texture({0: (0, 0, 0), 1: (60, 0, 0), 2: (60, 40, 0), 3: (0, 40, 0)}, rng)
     cam = look_at((30, 75, 62), (30, 20), 1000.0, 1280, 720)
     img = render_table(truth, cam)
-    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), 1280, 720, 1)
+    cal = calibrate.calibrate_corners(calibrate.detect_markers(img), 1280, 720)
     return cal.model_dump_json()
 
 

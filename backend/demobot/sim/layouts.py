@@ -67,7 +67,11 @@ def _place_one(o: SceneObject, placed: list[SceneObject], layout: Layout,
                rng: np.random.Generator) -> SceneObject | None:  # fmt: skip
     wa = layout.work_area
     for _ in range(400):
-        yaw = 0.0 if o.shape == "cylinder" else float(rng.choice([0.0, 90.0, rng.uniform(0, 180)]))
+        yaw = (
+            0.0
+            if o.shape in ("cylinder", "sphere")
+            else float(rng.choice([0.0, 90.0, rng.uniform(0, 180)]))
+        )
         cand = o.model_copy(update={"yaw": round(yaw, 1)})
         ex, ey = cand.extents()
         if wa.x1 - wa.x0 < 2 * ex or wa.y1 - wa.y0 < 2 * ey:

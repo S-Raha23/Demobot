@@ -4,6 +4,7 @@ Table frame: origin at the centre of marker 0, +x towards marker 1, +y towards m
 robot and camera side). Seen from above with the robot at the bottom, +x is right and +y is down.
 """
 
+import math
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -75,12 +76,40 @@ class Calibration(BaseModel):
     rectify_px_per_cm: float = 10.0
     rectify_origin_cm: Vec2 = (0.0, 0.0)  # table point at rectified pixel (0, 0)
     rectify_size: tuple[int, int] = (0, 0)
+    reference_t: float = 0.0  # time of the last clean frame, whose pose `camera` and H are
+    frames_total: int = 0
+    frames_blurred: int = 0
+    frames_interpolated: int = 0
+    max_motion_px: float = 0.0  # handheld drift of the work-area centre over the clip
     warnings: list[str] = Field(default_factory=list)
+
+
+class FrameCam(BaseModel):
+    """The camera in one analysis frame (the phone is handheld, so it moves)."""
+
+    t: float
+    H_img_to_table: list[list[float]]
+    rvec: Vec3
+    tvec: Vec3
+    nadir_cm: Vec2
+    height_cm: float
+    markers_seen: int
+    reproj_px: float | None  # None when interpolated
+    sharpness: float
+    blurred: bool
+    interpolated: bool
+
+
+class CameraTrack(BaseModel):
+    fps: float
+    focal_px: float
+    principal_px: Vec2
+    frames: list[FrameCam]
 
 
 # ---------- scene objects, layouts and the goal DSL ----------
 Role = Literal["moved", "container", "reference", "distractor"]
-Shape = Literal["box", "cylinder"]
+Shape = Literal["box", "cylinder", "sphere"]
 
 
 class SceneObject(BaseModel):
@@ -107,11 +136,9 @@ class SceneObject(BaseModel):
 
     def extents(self) -> tuple[float, float]:
         """Half-extents of the axis-aligned footprint at this yaw (cylinders ignore yaw)."""
-        if self.shape == "cylinder":
+        if self.shape in ("cylinder", "sphere"):
             r = max(self.w, self.d) / 2
             return r, r
-        import math
-
         c, s = abs(math.cos(math.radians(self.yaw))), abs(math.sin(math.radians(self.yaw)))
         return (self.w * c + self.d * s) / 2, (self.w * s + self.d * c) / 2
 

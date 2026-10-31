@@ -36,7 +36,7 @@ def calibrate(clip: Path, out: Path = Path("data/calibrate_out")) -> None:
     from demobot import media
 
     info = media.ingest(clip, out)
-    cal = cal_stage.run(out / "analysis.mp4", out)
+    cal = cal_stage.run(out / "analysis.mp4", out, out / "display_raw.mp4")
     typer.echo(f"{info.width}x{info.height}, {info.duration_s:.1f} s after trimming")
     for m in cal.markers:
         typer.echo(f"marker {m.id}: ({m.center_cm[0]:6.1f}, {m.center_cm[1]:6.1f}) cm")
@@ -44,6 +44,11 @@ def calibrate(clip: Path, out: Path = Path("data/calibrate_out")) -> None:
     typer.echo(
         f"reprojection {cal.reprojection_px:.2f} px; camera {c.position_cm[2]:.0f} cm high, "
         f"tilt {c.tilt_deg:.0f}°, focal {c.focal_px:.0f} px ({c.focal_source})"
+    )
+    typer.echo(
+        f"{cal.frames_total} frames: {cal.frames_blurred} blurred, {cal.frames_interpolated} "
+        f"interpolated; handheld drift {cal.max_motion_px:.0f} px; "
+        f"reference t = {cal.reference_t} s"
     )
     for w in cal.warnings:
         typer.echo(f"warning: {w}")

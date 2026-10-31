@@ -29,7 +29,7 @@ Purpose: build and test the whole pipeline before, or without, the human's clips
   - Textures come from **Muse Image** top-down product shots: generated once and saved in `assets/textures/` (committed; they were created during the event).
   - Offline fallback: flat colours.
 - The hand: a skin-toned capsule plus a box "palm" that moves along a scripted pick-and-place arc (approach, descend, attach the object, lift, carry, place, release, retreat), with realistic timing of 2–4 s per move.
-- The camera: random phone-like pose, 0–45° from vertical, from the robot side, 1280 × 720 at 30 fps, with mild noise and JPEG artefacts.
+- The camera: random phone-like pose, 0–45° from vertical, from the robot side, 1280 × 720 at 30 fps, with mild noise and JPEG artefacts, and **mild handheld shake** (smooth rotation of about ±0.8° and translation of about ±0.8 cm at 0.3–2 Hz). `truth.json` stores the camera pose per frame.
 - Task families: `place_in`, `place_next_to`, `line_up`, `sort_by_kind`, `swap`.
 - Output: `clip.mp4` plus `truth.json` (object poses per frame, step times, the goal).
 - `synth/make_set.py --n 10 --seed 7` builds the eval set.
