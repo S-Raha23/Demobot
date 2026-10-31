@@ -18,7 +18,7 @@ export function StageStepper({ stages, finalStatus }: { stages: Record<string, S
         const running = status === "running";
         const done = status === "done";
         return (
-          <div key={s} className="flex min-w-[112px] flex-1 items-stretch" title={st?.summary ? `${STAGE_LABEL[s]}: ${st.summary}${st.durationS != null ? ` (${st.durationS.toFixed(1)} s)` : ""}` : STAGE_LABEL[s]}>
+          <div key={s} data-stage={s} data-status={status} className="flex min-w-[112px] flex-1 items-stretch" title={st?.summary ? `${STAGE_LABEL[s]}: ${st.summary}${st.durationS != null ? ` (${st.durationS.toFixed(1)} s)` : ""}` : STAGE_LABEL[s]}>
             <div
               className={`relative flex w-full flex-col gap-1.5 rounded-xl px-2.5 py-2 transition-all duration-500 ${
                 running ? "bg-ink-700/70" : done ? "bg-ink-800/40" : ""

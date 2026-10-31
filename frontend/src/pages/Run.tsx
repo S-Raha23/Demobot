@@ -390,7 +390,7 @@ function ReplayControls({ pb }: { pb: RunPlayback }) {
           </button>
         </>
       ) : (
-        <button type="button" className="btn !py-1.5" onClick={pb.restart}>
+        <button type="button" className="btn !py-1.5" onClick={pb.restart} data-testid="replay-again">
           <Icon name="reset" size={13} /> Replay
         </button>
       )}

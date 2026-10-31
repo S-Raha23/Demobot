@@ -319,6 +319,13 @@ async def stage_verify(run: Run) -> str:
         "verify",
         payload={"name": "verified", "value": ver.agree, "failure_class": ver.failure_class},
     )
+    meta = run.meta()
+    if (not ver.agree and meta.get("caveat") and meta.get("caveat_program") == prog.version
+            and ver.symbolic.ok and ver.real_world.ok):  # fmt: skip
+        # the supervisor already verified this program and accepted this dissent with a caveat
+        ver.accepted_caveat = meta["caveat"]
+        run.write("verify.json", ver)
+        return f"{summary}; accepted by the supervisor: {meta['caveat']}"
     if not ver.agree:
         raise DemoBotError("VERIFY_FAILED", f"{ver.failure_class}: {summary}", stage="verify")
     return summary
@@ -369,7 +376,7 @@ async def _supervise(run: Run, stage: str, error: DemoBotError) -> str | None:
         ver = run.read("verify.json", Verification)
         ver.accepted_caveat = out.caveat
         run.write("verify.json", ver)
-    run.update_meta(caveat=out.caveat or None)
+    run.update_meta(caveat=out.caveat or None, caveat_program=latest_program(run).version)
     if stage == "program":  # the program now exists and has been verified by the supervisor
         run.set_stage("program", "done")
         return "recovered by the supervisor"

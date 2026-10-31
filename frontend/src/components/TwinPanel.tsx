@@ -23,7 +23,7 @@ export function TwinPanel(p: Props) {
   const [cam, setCam] = useState<"orbit" | "real">(p.defaultCamera ?? "orbit");
   const [reach, setReach] = useState(false);
   return (
-    <div className="panel flex h-full min-h-0 flex-col overflow-hidden">
+    <div className="panel flex h-full min-h-0 flex-col overflow-hidden" data-testid="twin-panel">
       <PanelHeader icon={<Icon name="cube" size={15} />} title="Twin" sub={p.trajectoryLabel ?? (p.scene ? "digital twin, PyBullet" : undefined)}>
         {p.result && (
           <Pill tone={p.result.goal_ok ? "ok" : "bad"}>

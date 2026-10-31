@@ -228,6 +228,24 @@ def section(title: str, rows: list[dict[str, Any]], extra: dict[str, Any]) -> li
     return [*L, ""]
 
 
+def headline(rows: list[dict[str, Any]], source: str) -> dict[str, Any]:
+    """The few numbers the video's close card shows (scripts/record_demo.py reads them)."""
+    done = [r for r in rows if r.get("done")]
+    rb = [r["robust_before"] for r in rows if r.get("robust_before") is not None]
+    ra = [r["robust_after"] for r in rows if r.get("robust_after") is not None]
+    calls = sum(r["calls"] for r in done)
+    costs = [r["cost"] for r in done if r.get("cost") is not None]
+    return {
+        "source": source,
+        "clips": len(rows),
+        "finished": len(done),
+        "robust_before": mean(rb),
+        "robust_after": mean(ra),
+        "cost_per_skill": st.mean(costs) if costs else None,
+        "open_weight_share": sum(r["open_calls"] for r in done) / calls if calls else None,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", default="data/synth/set7")
@@ -279,9 +297,9 @@ def main() -> None:
           "Costs include re-runs made while developing, except where cached (cache hits are $0).", ""]  # fmt: skip
     out = ROOT / "eval" / "results.md"
     out.write_text("\n".join(L))
-    (ROOT / "eval" / "results.json").write_text(
-        json.dumps({"sha": sha, "synthetic": rows, "real": real_rows}, indent=1, default=str)
-    )
+    head = headline(real_rows, "real") if real_rows else headline(rows, "synthetic")
+    data = {"sha": sha, "headline": head, "synthetic": rows, "real": real_rows}
+    (ROOT / "eval" / "results.json").write_text(json.dumps(data, indent=1, default=str))
     print(out.read_text())
 
 

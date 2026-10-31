@@ -209,7 +209,7 @@ export function RealPanel(props: Props) {
   }, [clock, tracks, overlay, transcript, grounded, masks, trails, showMarkers, size]);
 
   return (
-    <div className="panel flex h-full min-h-0 flex-col overflow-hidden">
+    <div className="panel flex h-full min-h-0 flex-col overflow-hidden" data-testid="real-panel">
       <PanelHeader icon={<Icon name="video" size={15} />} title="Real" sub="your demo, stabilised">
         {tracks && (
           <>
