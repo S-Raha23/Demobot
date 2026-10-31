@@ -4,20 +4,20 @@
  "winner": "wonder",
  "drafts": [
   {
-   "code": "def run(scene, robot):\n    a = scene.get(\"light blue box cutter\")\n    b = scene.get(\"white glue bottle\")\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    temp = scene.free_spot(size=(a.w, a.d), clearance=3)\n    robot.move(a, *temp)\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)",
-   "explanation": "Swaps the cutter and glue bottle by moving the cutter to a temporary free spot, then moving the glue bottle to the cutter's start position and the cutter to the glue bottle's start position.",
+   "code": "def run(scene, robot):\n    moved = scene.with_role(\"moved\")\n    if len(moved) == 2:\n        a, b = moved[0], moved[1]\n    else:\n        a = scene.of_kind(\"box cutter\")[0]\n        b = scene.of_kind(\"glue bottle\")[0]\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    side = max(a.w, a.d, b.w, b.d) + 2\n    buf_x, buf_y = scene.free_spot(size=(side, side), clearance=3)\n    robot.move(a, buf_x, buf_y)\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)\n",
+   "explanation": "Swap the box cutter and glue bottle by moving one to a free buffer spot, then moving the other to the first's start, then moving the buffered object to the second's start.",
    "i": 0,
    "passed": 0,
    "goal_ok": false,
-   "error": "line 6, in run\nNoFreeSpot: no clear spot for a 8\u00d713 cm object"
+   "error": "line 11, in run\nNoFreeSpot: no clear spot for a 15\u00d715 cm object"
   },
   {
-   "code": "def run(scene, robot):\n    a = scene.get(\"light blue box cutter\")\n    b = scene.get(\"white glue bottle\")\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    side = max(a.w, a.d, b.w, b.d) + 2\n    tmp = scene.free_spot(size=(side, side), clearance=3, avoid=[(ax, ay, a.w+4, a.d+4), (bx, by, b.w+4, b.d+4)])\n    robot.move(a, *tmp)\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)\n",
-   "explanation": "Swaps the cutter and glue bottle by parking the cutter in a temporary free spot, moving the glue bottle to the cutter's start pose, then moving the cutter to the glue bottle's start pose.",
+   "code": "def run(scene, robot):\n    cutter = scene.get(\"teal box cutter\")\n    glue = scene.get(\"glue bottle\")\n    ax, ay = cutter.x, cutter.y\n    bx, by = glue.x, glue.y\n    avoid = [(ax, ay, cutter.w + 4, cutter.d + 4), (bx, by, glue.w + 4, glue.d + 4)]\n    fx, fy = scene.free_spot(size=(cutter.w, cutter.d), clearance=3, avoid=avoid)\n    log(f\"swap {cutter.name} {ax:.1f},{ay:.1f} <-> {glue.name} {bx:.1f},{by:.1f} via {fx:.1f},{fy:.1f}\")\n    robot.move(cutter, fx, fy)\n    robot.move(scene.get(glue.name), ax, ay)\n    robot.move(scene.get(cutter.name), bx, by)\n",
+   "explanation": "Swaps the cutter and glue bottle by moving the cutter to a free buffer spot avoiding both start positions, then moving glue to cutter's start and cutter to glue's start.",
    "i": 1,
    "passed": 0,
    "goal_ok": false,
-   "error": "line 7, in run\nNoFreeSpot: no clear spot for a 15\u00d715 cm object"
+   "error": "line 7, in run\nNoFreeSpot: no clear spot for a 8\u00d713 cm object"
   }
  ],
  "trace": [
@@ -36,10 +36,7 @@
   {
    "turn": 3,
    "calls": [
-    "check_reach",
-    "check_reach",
-    "check_reach",
-    "check_reach"
+    "simulate"
    ]
   },
   {
@@ -66,59 +63,108 @@
    "ok": false,
    "goal_passed": false,
    "clauses_passed": "0/1",
-   "error": "line 6, in run\nNoFreeSpot: no clear spot for a 8\u00d713 cm object",
+   "error": "line 11, in run\nNoFreeSpot: no clear spot for a 15\u00d715 cm object",
    "clauses": [
     {
-     "clause": "pair light blue box cutter, white glue bottle swapped",
+     "clause": "pair teal box cutter, glue bottle swapped",
      "holds": false,
-     "detail": "light blue box cutter is 34.0 cm and white glue bottle 34.0 cm from each other's start"
+     "detail": "teal box cutter is 33.8 cm and glue bottle 33.8 cm from each other's start"
     }
    ],
    "robot_calls": [],
    "final_positions": [
     {
-     "name": "light blue box cutter",
-     "x": 25.18,
-     "y": 23.85,
-     "z": 0.5
+     "name": "teal box cutter",
+     "x": 25.21,
+     "y": 23.81,
+     "z": 0.6
     },
     {
-     "name": "white glue bottle",
-     "x": 58.51,
-     "y": 17.02,
-     "z": 4.0
+     "name": "glue bottle",
+     "x": 58.4,
+     "y": 17.44,
+     "z": 4.25
     },
     {
-     "name": "light blue pen",
-     "x": 31.16,
-     "y": 14.2,
-     "z": 0.5
+     "name": "teal pen",
+     "x": 30.92,
+     "y": 15.02,
+     "z": 0.6
     },
     {
-     "name": "white plastic box",
-     "x": 43.06,
-     "y": 17.02,
-     "z": 4.05
+     "name": "white tub",
+     "x": 43.01,
+     "y": 17.85,
+     "z": 4.5
     },
     {
-     "name": "yellow tennis ball",
-     "x": 7.94,
-     "y": 19.88,
+     "name": "tennis ball",
+     "x": 7.97,
+     "y": 19.96,
      "z": 3.3
     }
    ],
    "logs": []
   },
   "v2:demo": {
+   "ok": false,
+   "goal_passed": false,
+   "clauses_passed": "0/1",
+   "error": "line 7, in run\nNoFreeSpot: no clear spot for a 8\u00d713 cm object",
+   "clauses": [
+    {
+     "clause": "pair teal box cutter, glue bottle swapped",
+     "holds": false,
+     "detail": "teal box cutter is 33.8 cm and glue bottle 33.8 cm from each other's start"
+    }
+   ],
+   "robot_calls": [],
+   "final_positions": [
+    {
+     "name": "teal box cutter",
+     "x": 25.21,
+     "y": 23.81,
+     "z": 0.6
+    },
+    {
+     "name": "glue bottle",
+     "x": 58.4,
+     "y": 17.44,
+     "z": 4.25
+    },
+    {
+     "name": "teal pen",
+     "x": 30.92,
+     "y": 15.02,
+     "z": 0.6
+    },
+    {
+     "name": "white tub",
+     "x": 43.01,
+     "y": 17.85,
+     "z": 4.5
+    },
+    {
+     "name": "tennis ball",
+     "x": 7.97,
+     "y": 19.96,
+     "z": 3.3
+    }
+   ],
+   "logs": [
+    "swap teal box cutter (25.21,23.81) with glue bottle (58.4,17.44)"
+   ]
+  },
+  "v3:demo": {
    "ok": true,
    "goal_passed": false,
    "clauses_passed": "0/1",
    "error": null,
    "clauses": [
     {
-     "clause": "pair light blue box cutter, white glue bottle swapped",
+     "clause": "pair teal box cutter, glue bottle swapped",
      "holds": false,
-     "detail": "light blue box cutter is 34.0 cm and white glue bottle 34.0 cm from each other's start"
+     "detail": "teal box cutter is 33.8 cm and glue bottle 33.8 cm from each other's start"
     }
    ],
    "robot_calls": [
@@ -126,157 +172,151 @@
    ],
    "final_positions": [
     {
-     "name": "light blue box cutter",
-     "x": 25.17,
-     "y": 23.85,
-     "z": 0.5
+     "name": "teal box cutter",
+     "x": 25.2,
+     "y": 23.81,
+     "z": 0.6
     },
     {
-     "name": "white glue bottle",
-     "x": 58.51,
-     "y": 17.02,
-     "z": 4.0
+     "name": "glue bottle",
+     "x": 58.4,
+     "y": 17.44,
+     "z": 4.25
     },
     {
-     "name": "light blue pen",
-     "x": 31.16,
-     "y": 14.2,
-     "z": 0.5
+     "name": "teal pen",
+     "x": 30.92,
+     "y": 15.02,
+     "z": 0.6
     },
     {
-     "name": "white plastic box",
-     "x": 43.06,
-     "y": 17.02,
-     "z": 4.05
+     "name": "white tub",
+     "x": 43.01,
+     "y": 17.85,
+     "z": 4.5
     },
     {
-     "name": "yellow tennis ball",
-     "x": 7.94,
-     "y": 19.88,
+     "name": "tennis ball",
+     "x": 7.97,
+     "y": 19.96,
      "z": 3.3
     }
    ],
    "logs": [
-    "(4.0, 4.0, 65.426352527355, 30.109735030098342)",
-    "light blue box cutter x=25.18 y=23.85 w=7.609176615582743 d=12.519523254589325 h=1.0 yaw=63.4",
-    "white glue bottle x=58.51 y=17.02 w=3.0 d=3.0 h=8.0 yaw=0.0",
-    "light blue pen x=31.16 y=14.2 w=2.3171078886643337 d=14.041771197663339 h=1.0 yaw=91.3",
-    "white plastic box x=43.06 y=17.02 w=16.21272397024231 d=26.644918711042607 h=8.0 yaw=89.1",
-    "yellow tennis ball x=7.94 y=19.88 w=6.6 d=6.6 h=6.5 yaw=-0.0"
-   ]
-  },
-  "v3:demo": {
-   "ok": true,
-   "goal_passed": true,
-   "clauses_passed": "1/1",
-   "error": null,
-   "clauses": [
-    {
-     "clause": "pair light blue box cutter, white glue bottle swapped",
-     "holds": true,
-     "detail": "light blue box cutter is 0.0 cm and white glue bottle 0.1 cm from each other's start"
-    }
-   ],
-   "robot_calls": [
-    "pick(object=white glue bottle)",
-    "place_at(x=61.0, y=27.0)",
-    "pick(object=light blue box cutter)",
-    "place_at(x=58.5, y=17.0)",
-    "pick(object=white glue bottle)",
-    "place_at(x=25.2, y=23.9)",
-    "home()"
-   ],
-   "final_positions": [
-    {
-     "name": "light blue box cutter",
-     "x": 58.48,
-     "y": 17.02,
-     "z": 0.5
-    },
-    {
-     "name": "white glue bottle",
-     "x": 25.15,
-     "y": 23.91,
-     "z": 4.0
-    },
-    {
-     "name": "light blue pen",
-     "x": 31.14,
-     "y": 14.2,
-     "z": 0.5
-    },
-    {
-     "name": "white plastic box",
-     "x": 43.06,
-     "y": 17.02,
-     "z": 4.05
-    },
-    {
-     "name": "yellow tennis ball",
-     "x": 7.94,
-     "y": 19.88,
-     "z": 3.3
-    }
-   ],
-   "logs": [
-    "temp for glue: (61.0, 27.0)"
+    "bounds=(4.0, 4.0, 65.426352527355, 30.109735030098342)",
+    "teal box cutter kind=box cutter role=moved x=25.21 y=23.81 w=7.788007462950617 d=12.60907507215708 h=1.2 yaw=63.4 reach=True",
+    "glue bottle kind=glue bottle role=moved x=58.4 y=17.44 w=3.2 d=3.2 h=8.5 yaw=0.0 reach=True",
+    "teal pen kind=pen role=distractor x=30.92 y=15.02 w=1.517313801206175 d=14.023621330805113 h=1.2 yaw=91.3 reach=True",
+    "white tub kind=tub role=distractor x=43.01 y=17.85 w=14.218175297108742 d=14.218175297108742 h=9.0 yaw=89.1 reach=True",
+    "tennis ball kind=tennis ball role=distractor x=7.97 y=19.96 w=6.6 d=6.6 h=6.6 yaw=-0.0 reach=True"
    ]
   },
   "v4:demo": {
+   "ok": false,
+   "goal_passed": false,
+   "clauses_passed": "0/1",
+   "error": "line 8, in run\nCollision: knocked glue bottle out of place",
+   "clauses": [
+    {
+     "clause": "pair teal box cutter, glue bottle swapped",
+     "holds": false,
+     "detail": "teal box cutter is 33.8 cm and glue bottle 18.5 cm from each other's start"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=glue bottle)",
+    "place_at(x=25.6, y=13.6, yaw=None)",
+    "pick(object=teal box cutter) FAILED: Collision: knocked glue bottle out of place"
+   ],
+   "final_positions": [
+    {
+     "name": "teal box cutter",
+     "x": 25.21,
+     "y": 23.88,
+     "z": 18.37
+    },
+    {
+     "name": "glue bottle",
+     "x": 27.71,
+     "y": 5.47,
+     "z": 1.6
+    },
+    {
+     "name": "teal pen",
+     "x": 30.91,
+     "y": 15.02,
+     "z": 0.6
+    },
+    {
+     "name": "white tub",
+     "x": 43.03,
+     "y": 17.86,
+     "z": 4.5
+    },
+    {
+     "name": "tennis ball",
+     "x": 7.97,
+     "y": 19.96,
+     "z": 3.3
+    }
+   ],
+   "logs": []
+  },
+  "v5:demo": {
    "ok": true,
    "goal_passed": true,
    "clauses_passed": "1/1",
    "error": null,
    "clauses": [
     {
-     "clause": "pair light blue box cutter, white glue bottle swapped",
+     "clause": "pair teal box cutter, glue bottle swapped",
      "holds": true,
-     "detail": "light blue box cutter is 0.0 cm and white glue bottle 0.0 cm from each other's start"
+     "detail": "teal box cutter is 0.0 cm and glue bottle 0.0 cm from each other's start"
     }
    ],
    "robot_calls": [
-    "pick(object=white glue bottle)",
-    "place_at(x=23.5, y=12.5)",
-    "pick(object=light blue box cutter)",
-    "place_at(x=58.5, y=17.0)",
-    "pick(object=white glue bottle)",
-    "place_at(x=25.2, y=23.9)",
+    "pick(object=glue bottle)",
+    "place_at(x=24.6, y=6.6, yaw=None)",
+    "pick(object=teal box cutter)",
+    "place_at(x=58.4, y=17.4, yaw=63.4)",
+    "pick(object=glue bottle)",
+    "place_at(x=25.2, y=23.8, yaw=0.0)",
     "home()"
    ],
    "final_positions": [
     {
-     "name": "light blue box cutter",
-     "x": 58.47,
-     "y": 17.02,
-     "z": 0.5
+     "name": "teal box cutter",
+     "x": 58.35,
+     "y": 17.44,
+     "z": 0.6
     },
     {
-     "name": "white glue bottle",
-     "x": 25.17,
-     "y": 23.84,
-     "z": 4.0
+     "name": "glue bottle",
+     "x": 25.21,
+     "y": 23.81,
+     "z": 4.25
     },
     {
-     "name": "light blue pen",
-     "x": 31.14,
-     "y": 14.2,
-     "z": 0.5
+     "name": "teal pen",
+     "x": 30.91,
+     "y": 15.02,
+     "z": 0.6
     },
     {
-     "name": "white plastic box",
-     "x": 43.06,
-     "y": 17.02,
-     "z": 4.05
+     "name": "white tub",
+     "x": 43.04,
+     "y": 17.86,
+     "z": 4.5
     },
     {
-     "name": "yellow tennis ball",
-     "x": 7.94,
-     "y": 19.88,
+     "name": "tennis ball",
+     "x": 7.97,
+     "y": 19.96,
      "z": 3.3
     }
    ],
    "logs": [
-    "Parking white glue bottle temporarily at (23.5, 12.5)"
+    "buffer 24.6,6.6"
    ]
   }
  }

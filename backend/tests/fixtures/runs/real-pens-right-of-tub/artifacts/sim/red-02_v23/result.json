@@ -1,0 +1,159 @@
+{
+ "ok": false,
+ "error": "line 11, in run\nTooWide: white tub is 14.0 cm wide; the gripper opens 8 cm, so it cannot be picked (request a new skill to move it)",
+ "error_type": "TooWide",
+ "layout_id": "red-02",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white tub"
+   },
+   "ok": false,
+   "error": "TooWide: white tub is 14.0 cm wide; the gripper opens 8 cm, so it cannot be picked (request a new skill to move it)",
+   "t": 0.5
+  }
+ ],
+ "logs": [
+  "bounds (4.0, 4.0, 65.426352527355, 30.109735030098342) centre 34.7131762636775 17.05486751504917"
+ ],
+ "final_state": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 11.0,
+   "y": 27.5,
+   "z": 0.6,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#438da6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 11.0,
+   "y": 18.0,
+   "z": 0.6,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#598d97",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "role": "reference",
+   "shape": "box",
+   "x": 32.0,
+   "y": 11.0,
+   "z": 4.5,
+   "yaw": 0.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#8f8c82",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_tub.png",
+   "hollow": false
+  },
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 58.0,
+   "y": 26.5,
+   "z": 3.3,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "distractor",
+   "shape": "box",
+   "x": 57.0,
+   "y": 15.0,
+   "z": 0.6,
+   "yaw": -0.0,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#60bec9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 58.0,
+   "y": 8.0,
+   "z": 4.25,
+   "yaw": 0.1,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8b8684",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "tennis ball",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null,
+    "yaw_deg": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "tennis ball"
+   ],
+   "measured": {
+    "margin_cm": -20.0,
+    "z_cm": 3.3,
+    "below_rim": true
+   },
+   "detail": "not inside white tub: tennis ball"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [],
+ "renders": {},
+ "twin_trajectory": "artifacts/sim/red-02_v23/twin_red-02.json",
+ "duration_s": 1.0,
+ "wall_s": 0.08
+}

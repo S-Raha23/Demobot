@@ -72,6 +72,16 @@ Follow `PROMPT.md`.
 
 (Claude adds items here, newest first, with the date and why it is blocking.)
 
+- **Finish-remaining pass — your detailed checklist (do in this order, ~40 min total):**
+  1. **Confirm the table (1 min, free):** are the 4 markers still glued flat? Tick Status 1 above. Clips 01–05 are already in the repo (Status 2 can be ticked) — only 06/07 below are missing.
+  2. **Film 06/07 (10 min, free):** same setup as before (landscape, handheld, all 4 markers visible, 2 s still at start/end). `06_push_box.mp4`: slide the white box ~15 cm right with fingertips, do not lift. `07_rotate_cutter.mp4`: turn the teal cutter 90° in place. Copy both into `data/clips/raw/` (USB, original quality), then say "06 and 07 are in data/clips/raw/".
+  3. **Re-run the push forge on your machine (paid, ~$1–3, 10 min):** the sandbox CPU is too slow (tests hit the 20 s limit, 10% is not a real result). In the VS Code terminal: `uv run python -m eval.forge_synth push`. Tell Claude the printed pass rate. Only if it says `promoted: True` will Claude flip `JUDGE_ACCEPTED`.
+  4. **Browser checks on your machine (free, 10 min):** `make api` in one terminal; in another: `cd frontend && npm run e2e` (look at `frontend/test-results/*.png`; the stepper must not scroll sideways at 1366 px) and `npm run lighthouse` (desktop scores should be ≥ 70). Paste any failure text to Claude.
+  5. **SAM licence (1 min, only if asked):** if Claude names a Hugging Face model page, open it logged in and click **Agree / Request access** (needed for F2 live weights).
+  6. **Phone test (5 min, when Claude asks):** open `/live`, scan the QR with your phone, allow camera, move one object, check the twin follows within ~1 s, tap "do it". Report what happened.
+  7. **Ship it (20 min):** watch `media/demo/demo_final.mp4` + `demo_30s.mp4`; upload the 3:00 cut to YouTube (unlisted); run `uv run python scripts/deploy_modal.py`; fill `docs/submission-form.md`, submit on Cerebral Valley, post on X with the 30 s cut.
+  8. **Voice note (2 min, free):** record `correction_bn.m4a` ("put the eraser to the left instead", Bengali/Hindi) into `data/clips/raw/` — the last M10 gap.
+
 - **Sat Oct 31 23:10 IST: frontier phase, 3 small tasks (not blocking; Claude builds with synthetic clips meanwhile).**
   1. **Film 2 more clips (about 10 min, same setup as before):** landscape, handheld from the near edge, all 4 markers visible, only your arm in frame, wait 2 s before and after.
      - `06_push_box.mp4`: **slide** the white box about 15 cm to the right with your fingertips. Don't lift it.

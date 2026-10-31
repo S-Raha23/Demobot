@@ -7,7 +7,7 @@
   {
    "skill": "pick",
    "args": {
-    "object": "left blue pen"
+    "object": "teal pen"
    },
    "ok": true,
    "error": null,
@@ -16,7 +16,7 @@
   {
    "skill": "place_in",
    "args": {
-    "container": "white plastic tub"
+    "container": "white tub"
    },
    "ok": true,
    "error": null,
@@ -25,93 +25,95 @@
   {
    "skill": "pick",
    "args": {
-    "object": "right blue pen"
+    "object": "teal box cutter"
    },
    "ok": true,
    "error": null,
-   "t": 6.633
+   "t": 6.654
   },
   {
    "skill": "place_in",
    "args": {
-    "container": "white plastic tub"
+    "container": "white tub"
    },
    "ok": true,
    "error": null,
-   "t": 9.396
+   "t": 9.417
   },
   {
    "skill": "home",
    "args": {},
    "ok": true,
    "error": null,
-   "t": 12.696
+   "t": 12.733
   }
  ],
- "logs": [],
+ "logs": [
+  "targets: ['teal pen', 'teal box cutter']"
+ ],
  "final_state": [
   {
-   "name": "left blue pen",
+   "name": "teal pen",
    "kind": "pen",
    "role": "moved",
    "shape": "box",
-   "x": 43.62,
-   "y": 16.07,
-   "z": 0.95,
-   "yaw": 86.7,
+   "x": 42.99,
+   "y": 16.84,
+   "z": 1.05,
+   "yaw": -135.8,
    "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#5bb7bf",
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#2e5c66",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "right blue pen",
-   "kind": "pen",
+   "name": "teal box cutter",
+   "kind": "box cutter",
    "role": "moved",
    "shape": "box",
-   "x": 50.1,
-   "y": 16.55,
-   "z": 0.95,
-   "yaw": 88.8,
-   "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#366c7a",
+   "x": 42.96,
+   "y": 16.87,
+   "z": 2.25,
+   "yaw": -135.8,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#458296",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "white plastic tub",
+   "name": "white tub",
    "kind": "tub",
    "role": "container",
    "shape": "box",
-   "x": 43.64,
-   "y": 16.08,
-   "z": 3.05,
+   "x": 42.93,
+   "y": 16.9,
+   "z": 4.55,
    "yaw": 179.2,
-   "w": 17.4,
-   "d": 17.0,
-   "h": 6.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
    "color": "#eeeeea",
    "texture": null,
    "hollow": true
   },
   {
-   "name": "yellow tennis ball",
+   "name": "tennis ball",
    "kind": "tennis ball",
    "role": "distractor",
    "shape": "sphere",
-   "x": 8.95,
-   "y": 17.04,
+   "x": 8.94,
+   "y": 17.06,
    "z": 3.3,
    "yaw": -0.0,
    "w": 6.6,
    "d": 6.6,
-   "h": 6.5,
-   "color": "#838b3b",
-   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+   "h": 6.6,
+   "color": "#848b3d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/tennis_ball.png",
    "hollow": false
   },
   {
@@ -119,10 +121,10 @@
    "kind": "pen cap",
    "role": "distractor",
    "shape": "box",
-   "x": 62.27,
-   "y": 11.36,
+   "x": 62.33,
+   "y": 11.45,
    "z": 0.75,
-   "yaw": 149.0,
+   "yaw": 149.5,
    "w": 6.0,
    "d": 2.0,
    "h": 1.5,
@@ -135,31 +137,31 @@
    "kind": "spoon",
    "role": "distractor",
    "shape": "box",
-   "x": 56.61,
-   "y": 22.41,
+   "x": 55.77,
+   "y": 18.6,
    "z": 0.5,
    "yaw": 82.3,
-   "w": 14.2,
-   "d": 4.1,
+   "w": 14.0,
+   "d": 3.0,
    "h": 1.0,
-   "color": "#9c9c93",
+   "color": "#96968d",
    "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
    "hollow": false
   },
   {
-   "name": "small glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "role": "distractor",
    "shape": "cylinder",
-   "x": 62.18,
-   "y": 17.15,
-   "z": 1.0,
-   "yaw": -0.0,
-   "w": 6.5,
-   "d": 6.5,
-   "h": 2.0,
-   "color": "#9f9f9c",
-   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+   "x": 61.78,
+   "y": 16.61,
+   "z": 4.25,
+   "yaw": 0.9,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8d8a88",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/glue_bottle.png",
    "hollow": false
   }
  ],
@@ -175,7 +177,7 @@
     },
     "pred": "inside",
     "target": {
-     "name": "white plastic tub",
+     "name": "white tub",
      "kind": null,
      "role": null,
      "names": null
@@ -187,18 +189,14 @@
    "holds": true,
    "code": null,
    "objects": [
-    "left blue pen",
-    "right blue pen"
+    "teal pen"
    ],
    "measured": {
-    "left blue pen.margin_cm": 7.61,
-    "left blue pen.z_cm": 0.95,
-    "left blue pen.below_rim": true,
-    "right blue pen.margin_cm": 1.36,
-    "right blue pen.z_cm": 0.95,
-    "right blue pen.below_rim": true
+    "margin_cm": 6.04,
+    "z_cm": 1.05,
+    "below_rim": true
    },
-   "detail": "every pen inside white plastic tub"
+   "detail": "every pen inside white tub"
   }
  ],
  "goal_ok": true,
@@ -209,6 +207,6 @@
   "camera_mask": "artifacts/sim/verify_v1/camera_mask_demo.png"
  },
  "twin_trajectory": "artifacts/sim/verify_v1/twin_demo.json",
- "duration_s": 14.2,
- "wall_s": 0.71
+ "duration_s": 14.23,
+ "wall_s": 0.74
 }

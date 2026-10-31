@@ -2,16 +2,16 @@
  {
   "version": 1,
   "label": "from your demo",
-  "title": "Put the silver spoon in the white plastic tub",
+  "title": "Put the steel spoon in the white tub",
   "taskspec": "taskspec.json",
-  "program_version": 2
+  "program_version": 1
  },
  {
   "version": 2,
   "label": "corrected by voice",
-  "title": "Put the green (yellow tennis) ball inside the tub",
+  "title": "Put the green ball (tennis ball) inside the white tub",
   "taskspec": "taskspec_v2.json",
-  "program_version": 3,
+  "program_version": 2,
   "said": "green ball को tub के अंदर रखो.",
   "language": "Hindi",
   "from_version": 1

@@ -1,15 +1,16 @@
 {
- "summary": "The person picked up the green ball and placed it inside the white box.",
+ "summary": "The person picked up the tennis ball and placed it inside the white tub.",
  "objects": [
   {
-   "name": "green ball",
-   "kind": "ball",
+   "name": "tennis ball",
+   "kind": "tennis ball",
    "alt_names": [
+    "green ball",
     "lime green tennis ball",
     "yellow-green ball"
    ],
    "role": "moved",
-   "color": "green",
+   "color": "yellow-green",
    "est_height_cm": 6.5,
    "est_size_cm": [
     6.5,
@@ -17,11 +18,12 @@
    ]
   },
   {
-   "name": "white box",
-   "kind": "box",
+   "name": "white tub",
+   "kind": "tub",
    "alt_names": [
-    "white plastic container",
-    "white cup"
+    "white box",
+    "white cup",
+    "white plastic container"
    ],
    "role": "container",
    "color": "white",
@@ -32,14 +34,15 @@
    ]
   },
   {
-   "name": "light blue pen",
+   "name": "left teal pen",
    "kind": "pen",
    "alt_names": [
-    "pale blue pen",
-    "cyan pen cap"
+    "cyan pen cap",
+    "light blue pen",
+    "pale blue pen"
    ],
    "role": "distractor",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -47,14 +50,15 @@
    ]
   },
   {
-   "name": "dark blue pen",
+   "name": "right teal pen",
    "kind": "pen",
    "alt_names": [
+    "blue click pen",
     "blue mechanical pencil",
-    "blue click pen"
+    "dark blue pen"
    ],
    "role": "distractor",
-   "color": "dark blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -62,10 +66,11 @@
    ]
   },
   {
-   "name": "silver spoon",
+   "name": "steel spoon",
    "kind": "spoon",
    "alt_names": [
     "metal teaspoon",
+    "silver spoon",
     "steel tea spoon"
    ],
    "role": "distractor",
@@ -77,11 +82,12 @@
    ]
   },
   {
-   "name": "white glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "alt_names": [
     "small white correction fluid bottle",
-    "white feviquick tube"
+    "white feviquick tube",
+    "white glue bottle"
    ],
    "role": "distractor",
    "color": "white",
@@ -95,8 +101,8 @@
  "steps": [
   {
    "action": "place_in",
-   "object": "green ball",
-   "target": "white box",
+   "object": "tennis ball",
+   "target": "white tub",
    "relation": null,
    "t_start": 0.0,
    "t_end": 6.6,
@@ -107,14 +113,14 @@
   {
    "quant": "the",
    "select": {
-    "name": "green ball",
+    "name": "tennis ball",
     "kind": null,
     "role": null,
     "names": null
    },
    "pred": "inside",
    "target": {
-    "name": "white box",
+    "name": "white tub",
     "kind": null,
     "role": null,
     "names": null

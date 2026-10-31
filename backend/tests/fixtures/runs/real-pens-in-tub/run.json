@@ -1,13 +1,14 @@
 {
  "run_id": "real-pens-in-tub",
- "title": "Put every pen in the white plastic tub",
- "created_at": "2026-10-31T12:44:21Z",
+ "title": "Put every pen in the white tub",
+ "created_at": "2026-10-31T17:51:22Z",
  "source": "clip_02.mp4",
  "mode": "dev",
  "status": "done",
  "fixture": false,
+ "source_kind": "real",
  "program_version": 1,
- "cost_usd": 1.6733,
+ "cost_usd": 0.3169,
  "baked_from": "real-02",
- "note": "real model calls on a real handheld phone clip"
+ "note": "real model calls on a real clip"
 }

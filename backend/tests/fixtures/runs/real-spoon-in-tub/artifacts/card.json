@@ -1,11 +1,11 @@
 {
  "skill_id": "real-spoon-in-tub",
- "title": "Put the silver spoon in the white plastic tub",
+ "title": "Put the steel spoon in the white tub",
  "description": "Put the silver spoon inside the white plastic tub wherever they start.",
  "image": "artifacts/card.png",
- "goal_text": "silver spoon is inside the white plastic tub",
- "program_version": 2,
+ "goal_text": "steel spoon is inside the white tub",
+ "program_version": 1,
  "robustness": 1.0,
- "cost_to_learn_usd": 1.2162,
+ "cost_to_learn_usd": 0.2626,
  "run_id": "real-spoon-in-tub"
 }

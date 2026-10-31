@@ -73,6 +73,7 @@ TOOLS: list[dict[str, Any]] = [
      "parameters": {"type": "object", "properties": {
          "name": {"type": "string", "description": "a short snake_case verb, e.g. push or rotate_in_place"},
          "signature": {"type": "string", "description": "e.g. push(robot, scene, obj, dx_cm, dy_cm)"},
+         "target": {"type": "string", "description": "the exact name of the object the skill is mainly about, e.g. white tub"},
          "purpose": {"type": "string"}, "evidence": {"type": "string"}},
          "required": ["name", "signature", "purpose", "evidence"], "additionalProperties": False}},
     {"type": "function", "name": "submit",
@@ -358,7 +359,7 @@ class Loop:
             }
         self.forged_once = True
         req = forge.ForgeRequest(name=name, signature=str(args.get("signature", "")), purpose=str(args.get("purpose", "")),
-                                 evidence=str(args.get("evidence", "")))  # fmt: skip
+                                 evidence=str(args.get("evidence", "")), target=str(args.get("target", "")))  # fmt: skip
         self.ctx.emit("tool_call", payload={"agent": "coder", "iteration": self.out.turns, "tool": "request_new_skill",
                                             "args": {"name": name, "signature": req.signature}, "result": {"ok": True}})  # fmt: skip
         out = await forge.forge(self.ctx, req, self.si.layouts["demo"], self.si.art)

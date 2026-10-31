@@ -2,10 +2,10 @@
  "summary": "The person put the spoon inside the tub.",
  "objects": [
   {
-   "name": "silver spoon",
+   "name": "steel spoon",
    "kind": "spoon",
    "alt_names": [
-    "steel spoon",
+    "silver spoon",
     "small metal spoon"
    ],
    "role": "moved",
@@ -17,11 +17,11 @@
    ]
   },
   {
-   "name": "white plastic tub",
+   "name": "white tub",
    "kind": "tub",
    "alt_names": [
-    "white tub",
-    "white plastic container"
+    "white plastic container",
+    "white plastic tub"
    ],
    "role": "container",
    "color": "white",
@@ -32,14 +32,14 @@
    ]
   },
   {
-   "name": "yellow tennis ball",
+   "name": "tennis ball",
    "kind": "tennis ball",
    "alt_names": [
-    "tennis ball",
-    "green ball"
+    "green ball",
+    "yellow tennis ball"
    ],
    "role": "distractor",
-   "color": "yellow",
+   "color": "yellow-green",
    "est_height_cm": 6.5,
    "est_size_cm": [
     6.5,
@@ -47,11 +47,12 @@
    ]
   },
   {
-   "name": "white glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "alt_names": [
     "fevicol bottle",
-    "small glue bottle"
+    "small glue bottle",
+    "white glue bottle"
    ],
    "role": "distractor",
    "color": "white",
@@ -62,14 +63,15 @@
    ]
   },
   {
-   "name": "left light blue pen",
-   "kind": "pen",
+   "name": "teal box cutter",
+   "kind": "box cutter",
    "alt_names": [
-    "light blue pen",
-    "cyan pen"
+    "cyan pen",
+    "left light blue pen",
+    "light blue pen"
    ],
    "role": "distractor",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -77,14 +79,15 @@
    ]
   },
   {
-   "name": "middle light blue pen",
+   "name": "left teal pen",
    "kind": "pen",
    "alt_names": [
+    "cyan pen",
     "light blue pen",
-    "cyan pen"
+    "middle light blue pen"
    ],
    "role": "distractor",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -92,14 +95,15 @@
    ]
   },
   {
-   "name": "right light blue pen",
+   "name": "right teal pen",
    "kind": "pen",
    "alt_names": [
+    "cyan pen",
     "light blue pen",
-    "cyan pen"
+    "right light blue pen"
    ],
    "role": "distractor",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -110,8 +114,8 @@
  "steps": [
   {
    "action": "place_in",
-   "object": "silver spoon",
-   "target": "white plastic tub",
+   "object": "steel spoon",
+   "target": "white tub",
    "relation": null,
    "t_start": 1.0,
    "t_end": 4.2,
@@ -122,14 +126,14 @@
   {
    "quant": "the",
    "select": {
-    "name": "silver spoon",
+    "name": "steel spoon",
     "kind": null,
     "role": null,
     "names": null
    },
    "pred": "inside",
    "target": {
-    "name": "white plastic tub",
+    "name": "white tub",
     "kind": null,
     "role": null,
     "names": null

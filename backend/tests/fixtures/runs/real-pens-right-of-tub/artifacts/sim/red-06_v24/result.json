@@ -1,0 +1,257 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-06",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "tennis ball"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white tub"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.283
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.575
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white tub",
+    "side": "right_of",
+    "gap": 2.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.488
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "right teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.933
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white tub",
+    "side": "right_of",
+    "gap": 2.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.879
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 19.325
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 20.325
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 34.3,
+   "y": 17.33,
+   "z": 0.6,
+   "yaw": -4.9,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#438da6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 35.51,
+   "y": 19.78,
+   "z": 0.6,
+   "yaw": -8.5,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#598d97",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "role": "reference",
+   "shape": "box",
+   "x": 18.0,
+   "y": 16.0,
+   "z": 4.55,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#8f8c82",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 15.01,
+   "y": 13.19,
+   "z": 3.75,
+   "yaw": -2.1,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "distractor",
+   "shape": "box",
+   "x": 53.99,
+   "y": 22.04,
+   "z": 0.6,
+   "yaw": -0.4,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#60bec9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 60.53,
+   "y": 14.98,
+   "z": 4.25,
+   "yaw": 1.4,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8b8684",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null,
+    "yaw_deg": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "left teal pen",
+    "right teal pen"
+   ],
+   "measured": {
+    "left teal pen.gap_cm": 2.27,
+    "left teal pen.lateral_cm": 1.33,
+    "left teal pen.lateral_limit_cm": 10.0,
+    "right teal pen.gap_cm": 3.5,
+    "right teal pen.lateral_cm": 3.78,
+    "right teal pen.lateral_limit_cm": 10.0
+   },
+   "detail": "every pen right of white tub"
+  },
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "tennis ball",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null,
+    "yaw_deg": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "tennis ball"
+   ],
+   "measured": {
+    "margin_cm": 3.01,
+    "z_cm": 3.75,
+    "below_rim": true
+   },
+   "detail": "every tennis ball inside white tub"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {},
+ "twin_trajectory": "artifacts/sim/red-06_v24/twin_red-06.json",
+ "duration_s": 21.82,
+ "wall_s": 0.5
+}

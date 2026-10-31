@@ -1,0 +1,147 @@
+{
+ "ok": false,
+ "error": "line 7, in run\nNoFreeSpot: no clear spot for a 3×3 cm object",
+ "error_type": "NoFreeSpot",
+ "layout_id": "red-03",
+ "skill_calls": [],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 50.0,
+   "y": 20.0,
+   "z": 0.6,
+   "yaw": 90.0,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 15.0,
+   "y": 12.0,
+   "z": 4.25,
+   "yaw": 0.0,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#979695",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "glue bottle 2",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 15.0,
+   "y": 20.0,
+   "z": 4.25,
+   "yaw": 0.0,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#979695",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 35.0,
+   "y": 25.0,
+   "z": 0.6,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#95aaad",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "role": "distractor",
+   "shape": "box",
+   "x": 35.0,
+   "y": 12.0,
+   "z": 4.5,
+   "yaw": 0.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#8e8b84",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/white_tub.png",
+   "hollow": false
+  },
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 60.0,
+   "y": 12.0,
+   "z": 3.3,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
+   "color": "#7d7d50",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "teal box cutter",
+      "glue bottle"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null,
+    "yaw_deg": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "teal box cutter",
+    "glue bottle"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 35.9,
+    "b_to_a_start_cm": 35.9
+   },
+   "detail": "teal box cutter is 35.9 cm and glue bottle 35.9 cm from each other's start"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-03_v5/top_red-03.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-03_v5/twin_red-03.json",
+ "duration_s": 1.0,
+ "wall_s": 0.38
+}

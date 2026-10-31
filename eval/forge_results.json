@@ -13,10 +13,10 @@
  },
  "push": {
   "promoted": false,
-  "pass_rate": 0.5,
+  "pass_rate": 0.1,
   "regression": {},
   "turns": 10,
-  "reason": "not promoted after 10 turns (best pass rate 50%)",
+  "reason": "not promoted after 10 turns (best pass rate 10%)",
   "skill_api_version": "1.1"
  }
 }

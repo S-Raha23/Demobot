@@ -1,13 +1,14 @@
 {
  "run_id": "real-swap-cutter-glue",
- "title": "Swap the light blue box cutter and the white glue bottle",
- "created_at": "2026-10-31T13:43:22Z",
+ "title": "Swap the teal box cutter and the glue bottle",
+ "created_at": "2026-10-31T18:05:59Z",
  "source": "clip_05.mp4",
  "mode": "dev",
  "status": "done",
  "fixture": false,
- "program_version": 11,
- "cost_usd": 1.4761,
+ "source_kind": "real",
+ "program_version": 13,
+ "cost_usd": 1.3696,
  "baked_from": "real-05",
- "note": "real model calls on a real handheld phone clip"
+ "note": "real model calls on a real clip"
 }

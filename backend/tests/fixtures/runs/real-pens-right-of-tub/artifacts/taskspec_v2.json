@@ -1,15 +1,16 @@
 {
- "summary": "Put the green ball in the tub",
+ "summary": "Put the green (tennis) ball in the white tub, in addition to moving every pen to the right of the white tub.",
  "objects": [
   {
-   "name": "left light blue pen",
+   "name": "left teal pen",
    "kind": "pen",
    "alt_names": [
     "left blue ballpoint pen",
-    "left cyan pen"
+    "left cyan pen",
+    "left light blue pen"
    ],
    "role": "moved",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     14.0,
@@ -17,14 +18,15 @@
    ]
   },
   {
-   "name": "right light blue pen",
+   "name": "right teal pen",
    "kind": "pen",
    "alt_names": [
     "right blue ballpoint pen",
-    "right cyan pen"
+    "right cyan pen",
+    "right light blue pen"
    ],
    "role": "moved",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     12.0,
@@ -32,11 +34,12 @@
    ]
   },
   {
-   "name": "white box",
-   "kind": "box",
+   "name": "white tub",
+   "kind": "tub",
    "alt_names": [
-    "white plastic tub",
-    "white Amul container"
+    "white Amul container",
+    "white box",
+    "white plastic tub"
    ],
    "role": "reference",
    "color": "white",
@@ -47,14 +50,15 @@
    ]
   },
   {
-   "name": "yellow tennis ball",
+   "name": "tennis ball",
    "kind": "tennis ball",
    "alt_names": [
-    "yellow-green tennis ball",
-    "neon tennis ball"
+    "neon tennis ball",
+    "yellow tennis ball",
+    "yellow-green tennis ball"
    ],
    "role": "distractor",
-   "color": "yellow",
+   "color": "yellow-green",
    "est_height_cm": 6.5,
    "est_size_cm": [
     6.5,
@@ -62,14 +66,15 @@
    ]
   },
   {
-   "name": "light blue spoon",
-   "kind": "spoon",
+   "name": "teal box cutter",
+   "kind": "box cutter",
    "alt_names": [
     "cyan plastic spoon",
-    "light blue plastic utensil"
+    "light blue plastic utensil",
+    "light blue spoon"
    ],
    "role": "distractor",
-   "color": "light blue",
+   "color": "teal",
    "est_height_cm": 1.0,
    "est_size_cm": [
     12.0,
@@ -77,11 +82,12 @@
    ]
   },
   {
-   "name": "white glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "alt_names": [
+    "Fevicol bottle",
     "small white adhesive bottle",
-    "Fevicol bottle"
+    "white glue bottle"
    ],
    "role": "distractor",
    "color": "white",
@@ -95,8 +101,9 @@
  "steps": [
   {
    "action": "place_next_to",
-   "object": "left light blue pen",
-   "target": "white box",
+   "motion": "",
+   "object": "left teal pen",
+   "target": "white tub",
    "relation": "right_of",
    "t_start": 1.0,
    "t_end": 8.4,
@@ -104,8 +111,9 @@
   },
   {
    "action": "place_next_to",
-   "object": "right light blue pen",
-   "target": "white box",
+   "motion": "",
+   "object": "right teal pen",
+   "target": "white tub",
    "relation": "right_of",
    "t_start": 1.2,
    "t_end": 8.6,
@@ -117,23 +125,44 @@
    "quant": "all",
    "select": {
     "name": null,
-    "kind": "tennis ball",
+    "kind": "pen",
     "role": null,
     "names": null
    },
-   "pred": "inside",
+   "pred": "right_of",
    "target": {
-    "name": "white box",
+    "name": "white tub",
     "kind": null,
     "role": null,
     "names": null
    },
    "point_cm": null,
    "order_by": null,
-   "order": null
+   "order": null,
+   "yaw_deg": null
+  },
+  {
+   "quant": "all",
+   "select": {
+    "name": null,
+    "kind": "tennis ball",
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white tub",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null,
+   "yaw_deg": null
   }
  ],
- "generalization": "put the green ball in the tub, wherever things start.",
+ "generalization": "Put the green (tennis) ball in the white tub, in addition to moving every pen to the right of the white tub, wherever things start.",
  "uncertainties": [
   "Identity of the untouched light blue object left of the pens is uncertain; described as spoon but could be pen cap or plastic knife.",
   "The two pens were moved together in one hand motion, so splitting into two steps with overlapping times is approximate.",

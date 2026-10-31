@@ -2,20 +2,10 @@
  {
   "version": 1,
   "parent_version": null,
-  "code": "def run(scene, robot):\n    ball = scene.get(\"green ball\")\n    box = scene.get(\"white box\")\n    if scene.is_inside(ball, box):\n        return\n    robot.pick(ball)\n    robot.place_in(box)\n",
-  "explanation": "",
+  "code": "def run(scene, robot):\n    balls = scene.of_kind(\"tennis ball\")\n    if balls:\n        ball = balls[0]\n    else:\n        ball = scene.with_role(\"moved\")[0]\n    tub = scene.containers()[0]\n    for c in scene.containers():\n        if \"tub\" in c.kind.lower() or \"white tub\" in c.name.lower():\n            tub = c\n            break\n    if scene.is_inside(ball, tub):\n        return\n    robot.pick(ball)\n    robot.place_in(tub)\n",
+  "explanation": "Pick the tennis ball (falling back to the moved object) and place it into the white tub container, skipping if already inside.",
   "author": "wonder",
-  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,7 @@\n+def run(scene, robot):\n+    ball = scene.get(\"green ball\")\n+    box = scene.get(\"white box\")\n+    if scene.is_inside(ball, box):\n+        return\n+    robot.pick(ball)\n+    robot.place_in(box)\n",
-  "synthesis_trace_id": null,
-  "passed_demo": true
- },
- {
-  "version": 2,
-  "parent_version": 1,
-  "code": "def run(scene, robot):\n    ball = scene.with_role(\"moved\")[0]\n    box = scene.containers()[0]\n    if scene.is_inside(ball, box):\n        return\n    robot.pick(scene.get(ball.name))\n    robot.place_in(scene.get(box.name))\n",
-  "explanation": "Pick the moved green ball and place it into the white box container, unless it is already inside.",
-  "author": "wonder",
-  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -1,7 +1,7 @@\n def run(scene, robot):\n-    ball = scene.get(\"green ball\")\n-    box = scene.get(\"white box\")\n+    ball = scene.with_role(\"moved\")[0]\n+    box = scene.containers()[0]\n     if scene.is_inside(ball, box):\n         return\n-    robot.pick(ball)\n-    robot.place_in(box)\n+    robot.pick(scene.get(ball.name))\n+    robot.place_in(scene.get(box.name))\n",
+  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,15 @@\n+def run(scene, robot):\n+    balls = scene.of_kind(\"tennis ball\")\n+    if balls:\n+        ball = balls[0]\n+    else:\n+        ball = scene.with_role(\"moved\")[0]\n+    tub = scene.containers()[0]\n+    for c in scene.containers():\n+        if \"tub\" in c.kind.lower() or \"white tub\" in c.name.lower():\n+            tub = c\n+            break\n+    if scene.is_inside(ball, tub):\n+        return\n+    robot.pick(ball)\n+    robot.place_in(tub)\n",
   "synthesis_trace_id": null,
   "passed_demo": true
  }

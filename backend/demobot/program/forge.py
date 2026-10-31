@@ -10,6 +10,7 @@ every program may call them from then on, and the skill API document lists them.
 import ast
 import asyncio
 import json
+import math
 import random
 import time
 from dataclasses import dataclass, field
@@ -122,6 +123,47 @@ def sparse(base: Layout, target: str, keep_others: int = 2) -> Layout:
     return base.model_copy(
         update={"objects": [o for o in base.objects if o.name == target] + others}
     )
+
+
+def push_corridor_clear(layout: Layout, target_name: str, direction: tuple[float, float],
+                        distance_cm: float, *, margin_cm: float = 1.0) -> bool:  # fmt: skip
+    """Whether `target_name` can be pushed `distance_cm` along `direction`: the destination stays
+    inside the work area and reachable, and the swept footprint (start through destination) keeps
+    `margin_cm` clear of every other footprint. The gripper approach (a few cm behind the centre)
+    must also fit inside the work area."""
+    from demobot.goal_dsl import footprint_gap
+    from demobot.sim.layouts import reachable
+
+    objs = {o.name: o for o in layout.objects}
+    t = objs.get(target_name)
+    if t is None:
+        return False
+    dx, dy = direction
+    if abs(math.hypot(dx, dy) - 1.0) > 1e-6:
+        return False
+    wa = layout.work_area
+    ex, ey = t.extents()
+    half = ex * abs(dx) + ey * abs(dy)
+    ax, ay = t.x - dx * (half + 3.0), t.y - dy * (half + 3.0)
+    if not (wa.x0 <= ax <= wa.x1 and wa.y0 <= ay <= wa.y1):
+        return False
+    steps = max(2, int(distance_cm / 2.0) + 1)
+    for k in range(steps + 1):
+        s = distance_cm * k / steps
+        c = t.model_copy(update={"x": t.x + dx * s, "y": t.y + dy * s})
+        if c.x - ex < wa.x0 or c.x + ex > wa.x1 or c.y - ey < wa.y0 or c.y + ey > wa.y1:
+            return False
+        if not reachable(layout.robot_base_cm, c.x, c.y):
+            return False
+        if any(footprint_gap(c, o) < margin_cm for o in layout.objects if o.name != target_name):
+            return False
+    return True
+
+
+def layout_has_push_corridor(layout: Layout, target_name: str) -> bool:
+    """Whether any axis push of 6/10/14 cm is feasible — a layout without one cannot test `push`."""
+    return any(push_corridor_clear(layout, target_name, d, dist)
+               for d in ((1.0, 0.0), (-1.0, 0.0), (0.0, 1.0), (0.0, -1.0)) for dist in (6.0, 10.0, 14.0))  # fmt: skip
 
 
 def test_layouts(base: Layout, seeds: list[int]) -> list[Layout]:
@@ -271,7 +313,10 @@ PHYSICS_NOTES = """Physics notes (PyBullet, Franka Panda):
   in general yaw = the push direction's angle in degrees): two contacts 8 cm apart keep the object from turning. Approach
   from behind the object (the side opposite the push direction), a few cm clear of it, at z = 0.5 x its height; move in a
   straight line at low speed (0.3) through its centre; finish with a small retreat, then lift. The approach path must not
-  cross other objects. Allow +-2 cm and +-10 degrees in tests.
+  cross other objects. Before pushing, pick a direction and distance whose swept corridor (approach a few cm behind the
+  centre, through the destination, plus retreat; width max(object footprint, 8 cm gripper span) plus margin) stays inside
+  the work area and clear of other footprints — push the other way or a shorter distance if it is blocked, and return
+  "skip" only when no axis direction has a clear corridor. Allow +-2 cm and +-10 degrees in tests.
 - Rotate in place: open, move above the centre, lower to grasp height, grip("close"), lift 1 cm, move_ee with the new yaw, lower,
   grip("open"), lift. The object turns with the gripper.
 - Stack: place_at with z = the top of the base object, then wait(1) and check it is still upright and on top."""
@@ -367,6 +412,13 @@ class ForgeLoop:
         pool = test_layouts(
             sparse(self.base, self.req.target), [self.seed + k for k in range(n * 4)]
         )[: n * 2]
+        if self.req.name.startswith("push") and self.req.target:
+            # only layouts with a feasible push corridor can test `push`; impossible ones are
+            # replaced, not counted as failures (widen the seed pool to find enough of them)
+            wide = test_layouts(
+                sparse(self.base, self.req.target), [self.seed + 1000 + k for k in range(n * 16)]
+            )
+            pool = [lay for lay in wide if layout_has_push_corridor(lay, self.req.target)][: n * 2]
         res = await run_tests(self.req.name, self.out.code, self.out.tests, pool, self.art)
         if "error" in res:
             return res, []

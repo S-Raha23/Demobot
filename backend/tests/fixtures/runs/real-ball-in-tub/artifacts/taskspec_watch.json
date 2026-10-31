@@ -1,0 +1,133 @@
+{
+ "summary": "The person picked up the green ball and placed it inside the white box.",
+ "objects": [
+  {
+   "name": "green ball",
+   "kind": "ball",
+   "alt_names": [
+    "lime green tennis ball",
+    "yellow-green ball"
+   ],
+   "role": "moved",
+   "color": "green",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "alt_names": [
+    "white plastic container",
+    "white cup"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 6.0,
+   "est_size_cm": [
+    12.0,
+    12.0
+   ]
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "pale blue pen",
+    "cyan pen cap"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.5
+   ]
+  },
+  {
+   "name": "dark blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "blue mechanical pencil",
+    "blue click pen"
+   ],
+   "role": "distractor",
+   "color": "dark blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.5
+   ]
+  },
+  {
+   "name": "silver spoon",
+   "kind": "spoon",
+   "alt_names": [
+    "metal teaspoon",
+    "steel tea spoon"
+   ],
+   "role": "distractor",
+   "color": "silver",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    3.0
+   ]
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "alt_names": [
+    "small white correction fluid bottle",
+    "white feviquick tube"
+   ],
+   "role": "distractor",
+   "color": "white",
+   "est_height_cm": 2.0,
+   "est_size_cm": [
+    6.0,
+    2.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "green ball",
+   "target": "white box",
+   "relation": null,
+   "t_start": 0.0,
+   "t_end": 6.6,
+   "evidence": "hand picked ball from left side and released it inside box"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "green ball",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white box",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Put the green ball into the white box wherever the ball starts.",
+ "uncertainties": [
+  "The narration calls the container a cup but it looks like a square white plastic box",
+  "Small white bottle with blue cap identified as glue bottle could be correction fluid or another small vial",
+  "Size and height estimates are approximate"
+ ]
+}

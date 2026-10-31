@@ -1,20 +1,20 @@
 {
  "primary": "Muse Spark 1.3 (video)",
  "spec": {
-  "summary": "The person swapped the positions of the light blue box cutter and the white glue bottle on the table.",
+  "summary": "The person swapped the positions of the small glue bottle and the teal box cutter on the table.",
   "objects": [
    {
-    "name": "light blue box cutter",
+    "name": "teal box cutter",
     "kind": "box cutter",
     "alt_names": [
-     "teal utility knife",
+     "teal cutter",
      "light blue cutter"
     ],
     "role": "moved",
-    "color": "light blue",
+    "color": "teal",
     "est_height_cm": 1.0,
     "est_size_cm": [
-     13.0,
+     12.0,
      2.0
     ]
    },
@@ -22,53 +22,38 @@
     "name": "white glue bottle",
     "kind": "glue bottle",
     "alt_names": [
-     "white Fevicol bottle",
-     "blue cap glue"
+     "glue bottle with blue cap",
+     "white fevicol bottle"
     ],
     "role": "moved",
     "color": "white",
-    "est_height_cm": 9.0,
+    "est_height_cm": 10.0,
     "est_size_cm": [
      3.0,
      3.0
     ]
    },
    {
-    "name": "light blue box cutter B",
-    "kind": "box cutter",
+    "name": "white Amul container",
+    "kind": "container",
     "alt_names": [
-     "teal cutter second",
-     "light blue pen middle"
+     "white plastic tub",
+     "Amul box"
     ],
-    "role": "distractor",
-    "color": "light blue",
-    "est_height_cm": 1.0,
+    "role": "container",
+    "color": "white",
+    "est_height_cm": 7.0,
     "est_size_cm": [
-     13.0,
-     2.0
-    ]
-   },
-   {
-    "name": "light blue box cutter C",
-    "kind": "box cutter",
-    "alt_names": [
-     "teal cutter third",
-     "light blue pen middle 2"
-    ],
-    "role": "distractor",
-    "color": "light blue",
-    "est_height_cm": 1.0,
-    "est_size_cm": [
-     13.0,
-     2.0
+     14.0,
+     10.0
     ]
    },
    {
     "name": "yellow tennis ball",
     "kind": "tennis ball",
     "alt_names": [
-     "yellow ball",
-     "fluorescent tennis ball"
+     "green tennis ball",
+     "yellow ball"
     ],
     "role": "distractor",
     "color": "yellow",
@@ -79,50 +64,77 @@
     ]
    },
    {
-    "name": "white Amul container",
-    "kind": "container",
+    "name": "left light blue pen",
+    "kind": "pen",
     "alt_names": [
-     "white plastic tub",
-     "Amul box"
+     "light blue pen left",
+     "blue pen 1"
     ],
     "role": "distractor",
-    "color": "white",
-    "est_height_cm": 8.0,
+    "color": "light blue",
+    "est_height_cm": 1.0,
     "est_size_cm": [
-     14.0,
-     10.0
+     13.0,
+     1.0
+    ]
+   },
+   {
+    "name": "right light blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "light blue pen right",
+     "blue pen 2"
+    ],
+    "role": "distractor",
+    "color": "light blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     13.0,
+     1.0
     ]
    }
   ],
   "steps": [
    {
     "action": "place_at",
-    "object": "light blue box cutter",
+    "motion": "slide",
+    "object": "teal box cutter",
     "target": null,
     "relation": null,
-    "t_start": 0.3,
-    "t_end": 3.2,
-    "evidence": "Hand drags light blue cutter from center-front to right-front open area near bottom marker and releases."
+    "t_start": 0.2,
+    "t_end": 3.0,
+    "evidence": "hand pushes cutter forward to open front area"
    },
    {
-    "action": "place_next_to",
+    "action": "place_at",
+    "motion": "slide",
     "object": "white glue bottle",
-    "target": "yellow tennis ball",
-    "relation": "right_of",
+    "target": null,
+    "relation": null,
     "t_start": 3.8,
     "t_end": 9.8,
-    "evidence": "Hand picks glue bottle from far-right corner and places it on left side between tennis ball and middle cutters."
+    "evidence": "hand picks glue from back-right and sets it down left of pens near tennis ball"
+   },
+   {
+    "action": "place_at",
+    "motion": "slide",
+    "object": "teal box cutter",
+    "target": null,
+    "relation": null,
+    "t_start": 10.8,
+    "t_end": 13.8,
+    "evidence": "hand picks cutter from front and places it upright on right side of container where glue was"
    }
   ],
   "goal": [
    {
     "quant": "pair",
     "select": {
-     "name": "light blue box cutter",
-     "kind": "box cutter",
-     "role": "moved",
+     "name": "pair_0",
+     "kind": "names",
+     "role": null,
      "names": [
-      "light blue box cutter",
+      "teal box cutter",
       "white glue bottle"
      ]
     },
@@ -130,27 +142,21 @@
     "target": null,
     "point_cm": null,
     "order_by": null,
-    "order": null
+    "order": null,
+    "yaw_deg": null
    }
   ],
-  "generalization": "Swap the positions of the glue bottle and the box cutter, wherever they start on the table.",
+  "generalization": "The glue bottle and the box cutter should exchange their starting positions on the table, wherever they start.",
   "uncertainties": [
-   "Narration says 'cutter or glue ki position swap' - unclear if generic kind swap or specific instance; treated as the specific moved cutter and glue bottle swapping.",
-   "Light blue objects could be box cutters / utility knives / pens - appearance very similar, labeled as box cutter by narration.",
-   "Exact start/end times are approximate due to handheld camera motion and occlusion.",
-   "Other two light blue cutters and container and tennis ball remained stationary - treated as distractors."
+   "Initial cutter nudge at front is a temporary staging move; final swapped position is on the right of the container",
+   "Exact footprints and heights are estimated from phone perspective",
+   "Two light blue pens are nearly identical; left/right labeling based on initial pairing"
   ]
  },
- "agreement": 0.25,
- "agree": false,
+ "agreement": 1.0,
+ "agree": true,
  "differences": [
-  "only A: place_at white glue bottle",
-  "only B: place_next_to white glue bottle \u2192 yellow tennis ball (right_of)",
-  "objects only in B: light blue box cutter B, white Amul container",
-  "named differently (A / B): light blue cutter / light blue box cutter, left light blue pen / light blue box cutter C"
- ],
- "arbitration": {
-  "reason": "A correctly included the third move while B stopped after two steps, and the final keyframes show the light-blue cutter carried from its front temporary spot to the glue bottle's right-side spot while the glue stays left of the single stationary light-blue pen, confirming a three-step swap.",
-  "used": true
- }
+  "objects only in B: white Amul container, right light blue pen",
+  "named differently (A / B): light blue box cutter / teal box cutter, light blue pen / left light blue pen"
+ ]
 }

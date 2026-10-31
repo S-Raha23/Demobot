@@ -1,8 +1,9 @@
 def run(scene, robot):
-    box = scene.get("white box")
     for ball in scene.of_kind("tennis ball"):
-        if scene.is_inside(scene.get(ball.name), box):
+        tub = scene.get("white tub")
+        if scene.is_inside(ball, tub):
             continue
         robot.pick(scene.get(ball.name))
-        robot.place_in(scene.get("white box"))
+        tub = scene.get("white tub")
+        robot.place_at(tub.x, tub.y)
     robot.home()

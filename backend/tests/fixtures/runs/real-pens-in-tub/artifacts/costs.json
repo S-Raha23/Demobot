@@ -1,21 +1,21 @@
 {
  "by_model": {
-  "muse-voice-transcribe-1.0": 0.000686,
-  "meta-models/Muse-Spark-Open-816B-A42B": 0.228847,
-  "muse-spark-1.3": 0.037598,
-  "sam-3.1": 0.2508,
-  "meta-models/muse-spark-open-1026": 0.859734,
-  "muse-wonder-1.0": 0.285651,
+  "muse-voice-transcribe-1.0": 0.0,
+  "muse-spark-1.3": 0.0,
+  "meta-models/Muse-Spark-Open-816B-A42B": 0.0,
+  "sam-3.1": 0.015,
+  "meta-models/muse-spark-open-1026": 0.203693,
+  "muse-wonder-1.0": 0.088192,
   "muse-image-1.0": 0.01
  },
  "by_provider": {
-  "meta": 0.584735,
-  "modal": 0.228847,
-  "baseten": 0.859734
+  "meta": 0.113192,
+  "modal": 0.0,
+  "baseten": 0.203693
  },
- "total_usd": 1.6733,
- "calls": 58,
- "cache_hits": 0,
- "open_weight_share": 0.651,
- "open_weight_call_share": 0.483
+ "total_usd": 0.3169,
+ "calls": 43,
+ "cache_hits": 17,
+ "open_weight_share": 0.643,
+ "open_weight_call_share": 0.419
 }

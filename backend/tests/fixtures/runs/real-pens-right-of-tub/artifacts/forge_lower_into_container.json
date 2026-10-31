@@ -1,0 +1,63 @@
+{
+ "request": {
+  "name": "lower_into_container",
+  "signature": "lower_into_container(robot, scene, obj, container)",
+  "purpose": "Pick up a round/spherical object and slowly lower it into a container, releasing it near the container bottom so it does not bounce, roll, or perch on the rim, ending up inside the container.",
+  "evidence": "simulate demo with pick+place_in: ball final (47.9,12.62,z=12.3) vs tub (42.73,18.01) - perched/offset outside, clause 'all tennis ball inside white tub' failed. simulate with pick+place_at(tub.x,tub.y): PlaceFailed 'tennis ball landed 11.1 cm from (43,18)', final ball (42.38,6.45) - rolled out. No standard place keeps the sphere inside.",
+  "target": ""
+ },
+ "promoted": false,
+ "code": "import math\n\ndef lower_into_container(robot, scene, obj, container):\n    for attempt in range(2):\n        cont = scene.get(container.name)\n        target = scene.get(obj.name)\n        robot.pick(target)\n\n        ex, ey, ez, eyaw = robot.ee_pose()\n        ox, oy, oz, oyaw = scene.pose(target)\n        dz = ez - oz\n\n        cont = scene.get(container.name)\n        cpos = scene.pose(cont)\n        cx = cpos[0]\n        cy = cpos[1]\n        cz = cpos[2]\n        cont_top = cz + cont.h / 2.0\n        floor_z = cz - cont.h / 2.0\n\n        obj_half_h = target.h / 2.0\n        safe_ee_z = cont_top + dz + obj_half_h + 4.0\n        safe_ee_z = max(safe_ee_z, ez, 18.0)\n\n        robot.move_ee(ex, ey, safe_ee_z, speed=0.5)\n        robot.move_ee(cx, cy, safe_ee_z, speed=0.5)\n\n        release_obj_z = floor_z + obj_half_h + 0.4\n        target_ee_z = release_obj_z + dz\n\n        cur_z = safe_ee_z\n        while cur_z > target_ee_z + 0.01:\n            nxt = max(target_ee_z, cur_z - 4.0)\n            robot.move_ee(cx, cy, nxt, speed=0.25)\n            cur_z = nxt\n        robot.wait(0.5)\n\n        robot.grip(\"open\")\n        robot.wait(0.8)\n\n        robot.move_ee(cx, cy, min(safe_ee_z, target_ee_z + 5.0), speed=0.25)\n        robot.move_ee(cx, cy, safe_ee_z, speed=0.5)\n        robot.wait(1.0)\n\n        fresh_obj = scene.get(obj.name)\n        fresh_cont = scene.get(container.name)\n        inside = scene.is_inside(fresh_obj, fresh_cont)\n        log(f\"lower_into_container attempt {attempt}: obj {scene.pose(fresh_obj)} cont {scene.pose(fresh_cont)} inside={inside}\")\n        if inside:\n            break\n    robot.home()\n",
+ "tests": "def find_ball(scene):\n    for o in scene.objects():\n        if \"ball\" in o.name:\n            return o\n    return None\n\ndef find_cont(scene):\n    for o in scene.objects():\n        if \"tub\" in o.name or o.kind == \"tub\" or \"container\" in o.name:\n            return o\n    return None\n\ndef test_ball_into_tub(robot, scene, skill):\n    obj = find_ball(scene)\n    cont = find_cont(scene)\n    if obj is None or cont is None:\n        return \"skip\"\n    if not robot.can_reach(obj.x, obj.y) or not robot.can_reach(cont.x, cont.y):\n        return \"skip\"\n    if obj.w > 7.5 or obj.w >= cont.w:\n        return \"skip\"\n    before = {}\n    for o in scene.objects():\n        before[o.name] = (o.x, o.y, o.z)\n    skill(robot, scene, obj, cont)\n    fo = scene.get(obj.name)\n    fc = scene.get(cont.name)\n    assert scene.is_inside(fo, fc), f\"ball not inside: obj {(fo.x, fo.y, fo.z)} cont {(fc.x, fc.y, fc.z)}\"\n    assert abs(fo.x - fc.x) < 4.0 and abs(fo.y - fc.y) < 4.0, f\"ball offset: {(fo.x, fo.y)} vs {(fc.x, fc.y)}\"\n    for o in scene.objects():\n        if o.name in (obj.name, cont.name):\n            continue\n        b = before[o.name]\n        assert abs(o.x-b[0]) < 1.0 and abs(o.y-b[1]) < 1.0, f\"distractor {o.name} displaced {b} -> {(o.x, o.y)}\"\n\ndef test_stays_after_settle(robot, scene, skill):\n    obj = find_ball(scene)\n    cont = find_cont(scene)\n    if obj is None or cont is None:\n        return \"skip\"\n    if not robot.can_reach(obj.x, obj.y) or not robot.can_reach(cont.x, cont.y):\n        return \"skip\"\n    skill(robot, scene, obj, cont)\n    fo = scene.get(obj.name)\n    fc = scene.get(cont.name)\n    assert scene.is_inside(fo, fc), f\"not inside after settle: {(fo.x, fo.y, fo.z)} vs {(fc.x, fc.y, fc.z)}\"\n    assert fo.z < fc.z + fc.h / 2.0, f\"ball perched above rim: z={fo.z} cont z={fc.z} h={fc.h}\"\n\ndef test_centred_and_low(robot, scene, skill):\n    obj = find_ball(scene)\n    cont = find_cont(scene)\n    if obj is None or cont is None:\n        return \"skip\"\n    if not robot.can_reach(obj.x, obj.y) or not robot.can_reach(cont.x, cont.y):\n        return \"skip\"\n    before = {}\n    for o in scene.objects():\n        before[o.name] = (o.x, o.y, o.z)\n    skill(robot, scene, scene.get(obj.name), scene.get(cont.name))\n    fo = scene.get(obj.name)\n    fc = scene.get(cont.name)\n    assert scene.is_inside(fo, fc), f\"not inside: {(fo.x, fo.y, fo.z)} vs {(fc.x, fc.y, fc.z)}\"\n    b = before[cont.name]\n    assert abs(fc.x-b[0]) < 1.0 and abs(fc.y-b[1]) < 1.0, f\"container moved {b} -> {(fc.x, fc.y)}\"\n    for o in scene.objects():\n        if o.name in (obj.name, cont.name):\n            continue\n        bb = before[o.name]\n        assert abs(o.x-bb[0]) < 1.0 and abs(o.y-bb[1]) < 1.0, f\"distractor {o.name} displaced\"\n",
+ "pass_rate": 0.0,
+ "regression": {},
+ "explanation": "",
+ "turns": 10,
+ "versions": [
+  {
+   "kind": "skill",
+   "version": 1,
+   "code": "import math\n\ndef lower_into_container(robot, scene, obj, container):\n    for attempt in range(2):\n        cont = scene.get(container.name)\n        target = scene.get(obj.name)\n        robot.pick(target)\n\n        ex, ey, ez, eyaw = robot.ee_pose()\n        ox, oy, oz, oyaw = scene.pose(target)\n        dz = ez - oz\n\n        cont = scene.get(container.name)\n        cpos = scene.pose(cont)\n        cx = cpos[0]\n        cy = cpos[1]\n        cz = cpos[2]\n        cont_top = cz + cont.h / 2.0\n        floor_z = cz - cont.h / 2.0\n\n        obj_half_h = target.h / 2.0\n        safe_ee_z = cont_top + dz + obj_half_h + 4.0\n        safe_ee_z = max(safe_ee_z, ez, 18.0)\n\n        robot.move_ee(ex, ey, safe_ee_z, speed=0.5)\n        robot.move_ee(cx, cy, safe_ee_z, speed=0.5)\n\n        release_obj_z = floor_z + obj_half_h + 0.4\n        target_ee_z = release_obj_z + dz\n\n        cur_z = safe_ee_z\n        while cur_z > target_ee_z + 0.01:\n            nxt = max(target_ee_z, cur_z - 4.0)\n            robot.move_ee(cx, cy, nxt, speed=0.25)\n            cur_z = nxt\n        robot.wait(0.5)\n\n        robot.grip(\"open\")\n        robot.wait(0.8)\n\n        robot.move_ee(cx, cy, min(safe_ee_z, target_ee_z + 5.0), speed=0.25)\n        robot.move_ee(cx, cy, safe_ee_z, speed=0.5)\n        robot.wait(1.0)\n\n        fresh_obj = scene.get(obj.name)\n        fresh_cont = scene.get(container.name)\n        inside = scene.is_inside(fresh_obj, fresh_cont)\n        log(f\"lower_into_container attempt {attempt}: obj {scene.pose(fresh_obj)} cont {scene.pose(fresh_cont)} inside={inside}\")\n        if inside:\n            break\n    robot.home()\n"
+  }
+ ],
+ "grid": [
+  {
+   "layout": "forge-7978",
+   "passed": false,
+   "skipped": false,
+   "twin": "artifacts/forge/lower_into_container/forge-7978/twin_forge-7978.json",
+   "top": "artifacts/forge/lower_into_container/forge-7978/top_forge-7978.png"
+  },
+  {
+   "layout": "forge-7979",
+   "passed": false,
+   "skipped": false,
+   "twin": "artifacts/forge/lower_into_container/forge-7979/twin_forge-7979.json",
+   "top": "artifacts/forge/lower_into_container/forge-7979/top_forge-7979.png"
+  },
+  {
+   "layout": "forge-7980",
+   "passed": false,
+   "skipped": false,
+   "twin": "artifacts/forge/lower_into_container/forge-7980/twin_forge-7980.json",
+   "top": "artifacts/forge/lower_into_container/forge-7980/top_forge-7980.png"
+  },
+  {
+   "layout": "forge-7981",
+   "passed": false,
+   "skipped": false
+  },
+  {
+   "layout": "forge-7982",
+   "passed": false,
+   "skipped": false
+  },
+  {
+   "layout": "forge-7983",
+   "passed": false,
+   "skipped": false
+  }
+ ],
+ "reason": "not promoted after 10 turns (best pass rate 0%)",
+ "skill_api_version": "1.1"
+}

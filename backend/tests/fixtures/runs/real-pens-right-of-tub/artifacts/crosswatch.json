@@ -137,7 +137,8 @@
     },
     "point_cm": null,
     "order_by": null,
-    "order": null
+    "order": null,
+    "yaw_deg": null
    }
   ],
   "generalization": "Every light blue pen on the table should be placed to the right of the white Amul container, wherever it starts.",

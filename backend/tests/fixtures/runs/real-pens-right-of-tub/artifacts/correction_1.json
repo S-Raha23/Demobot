@@ -15,9 +15,9 @@
   ],
   "source": "correction"
  },
- "gloss": "put the green ball in the tub",
- "program_before": 13,
- "program_after": 15,
+ "gloss": "Put the green (tennis) ball in the white tub, in addition to moving every pen to the right of the white tub.",
+ "program_before": 22,
+ "program_after": 26,
  "goal_before": [
   {
    "quant": "all",
@@ -26,7 +26,7 @@
    },
    "pred": "right_of",
    "target": {
-    "name": "white box"
+    "name": "white tub"
    }
   }
  ],
@@ -34,16 +34,26 @@
   {
    "quant": "all",
    "select": {
+    "kind": "pen"
+   },
+   "pred": "right_of",
+   "target": {
+    "name": "white tub"
+   }
+  },
+  {
+   "quant": "all",
+   "select": {
     "kind": "tennis ball"
    },
    "pred": "inside",
    "target": {
-    "name": "white box"
+    "name": "white tub"
    }
   }
  ],
  "demo_passes": true,
- "stress_passed": "10/10",
+ "stress_passed": "7/7",
  "real_world": "superseded: the correction changes the goal the demo showed",
  "version": 2,
  "taskspec": "taskspec_v2.json"

@@ -7,14 +7,14 @@
     "clause": {
      "quant": "the",
      "select": {
-      "name": "silver spoon",
+      "name": "steel spoon",
       "kind": null,
       "role": null,
       "names": null
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -26,14 +26,14 @@
     "holds": true,
     "code": null,
     "objects": [
-     "silver spoon"
+     "steel spoon"
     ],
     "measured": {
-     "margin_cm": 6.7,
-     "z_cm": 1.2,
+     "margin_cm": 5.99,
+     "z_cm": 0.95,
      "below_rim": true
     },
-    "detail": "silver spoon inside white plastic tub"
+    "detail": "steel spoon inside white tub"
    }
   ],
   "detail": "the goal on the simulated final state",
@@ -46,14 +46,14 @@
     "clause": {
      "quant": "the",
      "select": {
-      "name": "silver spoon",
+      "name": "steel spoon",
       "kind": null,
       "role": null,
       "names": null
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -65,12 +65,12 @@
     "holds": true,
     "code": null,
     "objects": [
-     "silver spoon"
+     "steel spoon"
     ],
     "measured": {
-     "margin_cm": 1.84
+     "margin_cm": 1.14
     },
-    "detail": "silver spoon inside white plastic tub"
+    "detail": "steel spoon inside white tub"
    }
   ],
   "detail": "the goal on your real final table, measured by SAM",
@@ -83,14 +83,14 @@
     "clause": {
      "quant": "the",
      "select": {
-      "name": "silver spoon",
+      "name": "steel spoon",
       "kind": null,
       "role": null,
       "names": null
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -102,12 +102,12 @@
     "holds": true,
     "code": null,
     "objects": [
-     "silver spoon"
+     "steel spoon"
     ],
     "measured": {
-     "margin_cm": 6.7
+     "margin_cm": 5.99
     },
-    "detail": "silver spoon inside white plastic tub (silver spoon hidden from view)"
+    "detail": "steel spoon inside white tub (steel spoon hidden from view)"
    }
   ],
   "detail": "SAM saw 0/7 stand-ins in the render",
@@ -115,13 +115,9 @@
  },
  "judge": {
   "same_goal_achieved": true,
-  "confidence": 0.84,
-  "differences": [
-   "silver spoon not clearly visible in Image 1 due to resolution/glare but not visible elsewhere on table, implying inside tub vs clearly visible as grey cylinder inside tub in Image 2",
-   "white plastic tub with label/texture in real vs plain white box in sim",
-   "distractors (yellow tennis ball, white glue bottle, three light blue pens) rendered as simplified grey proxies with different colours/textures"
-  ],
-  "suspected_error": "none - simulator correctly reports inside and Image 2 visually shows spoon inside tub matching inferred goal state of Image 1"
+  "confidence": 0.62,
+  "differences": [],
+  "suspected_error": "none: spoon not clearly visible in Image 1 due to viewpoint/resolution but no spoon is visible outside the tub and simulator's inside check is consistent with the simulated tub interior in Image 2"
  },
  "agree": true,
  "failure_class": null,
@@ -129,7 +125,7 @@
  "masks": {
   "real": [
    {
-    "name": "white plastic tub",
+    "name": "white tub",
     "poly_px": [
      [
       822.0,
@@ -218,7 +214,7 @@
     ]
    },
    {
-    "name": "yellow tennis ball",
+    "name": "tennis ball",
     "poly_px": [
      [
       327.0,
@@ -283,7 +279,7 @@
     ]
    },
    {
-    "name": "white glue bottle",
+    "name": "glue bottle",
     "poly_px": [
      [
       990.0,
@@ -348,7 +344,7 @@
     ]
    },
    {
-    "name": "left light blue pen",
+    "name": "teal box cutter",
     "poly_px": [
      [
       486.0,
@@ -393,7 +389,7 @@
     ]
    },
    {
-    "name": "middle light blue pen",
+    "name": "left teal pen",
     "poly_px": [
      [
       571.0,
@@ -454,7 +450,7 @@
     ]
    },
    {
-    "name": "right light blue pen",
+    "name": "right teal pen",
     "poly_px": [
      [
       580.0,

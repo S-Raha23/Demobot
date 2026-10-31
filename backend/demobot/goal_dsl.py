@@ -191,6 +191,8 @@ def evaluate_clause(
         targets = [t for t in select(clause.target, state) if t.name not in names]
         if not targets:
             return _fail(clause, "TARGET_MISSING", f"{describe(clause.target)} is not here")
+    elif clause.pred == "turned":
+        pass  # turned is checked against yaw_deg/point_cm, not a target (see _check_one)
     elif clause.pred != "near" or clause.point_cm is None:
         return _fail(clause, "INVALID_CLAUSE", f"{clause.pred} needs a target")
 

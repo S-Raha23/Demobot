@@ -1,67 +1,67 @@
 {
  "initial": [
   {
-   "name": "left blue pen",
+   "name": "teal pen",
    "kind": "pen",
    "role": "moved",
    "shape": "box",
-   "x": 20.01,
-   "y": 17.32,
-   "z": 0.0,
-   "yaw": 86.7,
-   "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#5bb7bf",
-   "texture": null,
-   "hollow": false
-  },
-  {
-   "name": "right blue pen",
-   "kind": "pen",
-   "role": "moved",
-   "shape": "box",
-   "x": 27.0,
-   "y": 17.19,
+   "x": 26.97,
+   "y": 17.24,
    "z": 0.0,
    "yaw": 88.9,
    "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#366c7a",
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#2e5c66",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "white plastic tub",
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 28.06,
+   "y": 17.88,
+   "z": 0.0,
+   "yaw": 89.6,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#458296",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
    "kind": "tub",
    "role": "container",
    "shape": "box",
-   "x": 43.64,
-   "y": 16.08,
+   "x": 42.93,
+   "y": 16.9,
    "z": 0.0,
    "yaw": 179.2,
-   "w": 17.4,
-   "d": 17.0,
-   "h": 6.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
    "color": "#eeeeea",
    "texture": null,
    "hollow": true
   },
   {
-   "name": "yellow tennis ball",
+   "name": "tennis ball",
    "kind": "tennis ball",
    "role": "distractor",
    "shape": "sphere",
-   "x": 8.95,
-   "y": 17.04,
+   "x": 8.94,
+   "y": 17.06,
    "z": 0.0,
    "yaw": 0.0,
    "w": 6.6,
    "d": 6.6,
-   "h": 6.5,
-   "color": "#838b3b",
-   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "h": 6.6,
+   "color": "#848b3d",
+   "texture": "artifacts/crops/tennis_ball.png",
    "hollow": false
   },
   {
@@ -89,93 +89,93 @@
    "y": 18.6,
    "z": 0.0,
    "yaw": 82.3,
-   "w": 14.2,
-   "d": 4.1,
+   "w": 14.0,
+   "d": 3.0,
    "h": 1.0,
-   "color": "#9c9c93",
+   "color": "#96968d",
    "texture": "artifacts/crops/steel_spoon.png",
    "hollow": false
   },
   {
-   "name": "small glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "role": "distractor",
    "shape": "cylinder",
-   "x": 64.17,
-   "y": 13.86,
+   "x": 61.86,
+   "y": 15.71,
    "z": 0.0,
    "yaw": 0.0,
-   "w": 6.5,
-   "d": 6.5,
-   "h": 2.0,
-   "color": "#9f9f9c",
-   "texture": "artifacts/crops/small_glue_bottle.png",
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8d8a88",
+   "texture": "artifacts/crops/glue_bottle.png",
    "hollow": false
   }
  ],
  "final": [
   {
-   "name": "left blue pen",
+   "name": "teal pen",
    "kind": "pen",
    "role": "moved",
    "shape": "box",
-   "x": 43.89,
-   "y": 15.85,
-   "z": 0.0,
-   "yaw": 86.7,
-   "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#5bb7bf",
-   "texture": null,
-   "hollow": false
-  },
-  {
-   "name": "right blue pen",
-   "kind": "pen",
-   "role": "moved",
-   "shape": "box",
-   "x": 41.11,
-   "y": 16.97,
+   "x": 41.06,
+   "y": 17.03,
    "z": 0.0,
    "yaw": 88.9,
    "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#366c7a",
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#2e5c66",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "white plastic tub",
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 44.24,
+   "y": 15.05,
+   "z": 0.0,
+   "yaw": 89.6,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#458296",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
    "kind": "tub",
    "role": "container",
    "shape": "box",
-   "x": 43.89,
-   "y": 15.85,
+   "x": 43.1,
+   "y": 16.67,
    "z": 0.0,
    "yaw": 179.2,
-   "w": 17.4,
-   "d": 17.0,
-   "h": 6.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
    "color": "#eeeeea",
    "texture": null,
    "hollow": true
   },
   {
-   "name": "yellow tennis ball",
+   "name": "tennis ball",
    "kind": "tennis ball",
    "role": "distractor",
    "shape": "sphere",
    "x": 8.93,
-   "y": 17.06,
+   "y": 17.08,
    "z": 0.0,
    "yaw": 0.0,
    "w": 6.6,
    "d": 6.6,
-   "h": 6.5,
-   "color": "#838b3b",
-   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "h": 6.6,
+   "color": "#848b3d",
+   "texture": "artifacts/crops/tennis_ball.png",
    "hollow": false
   },
   {
@@ -203,137 +203,137 @@
    "y": 18.62,
    "z": 0.0,
    "yaw": 82.3,
-   "w": 14.2,
-   "d": 4.1,
+   "w": 14.0,
+   "d": 3.0,
    "h": 1.0,
-   "color": "#9c9c93",
+   "color": "#96968d",
    "texture": "artifacts/crops/steel_spoon.png",
    "hollow": false
   },
   {
-   "name": "small glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "role": "distractor",
    "shape": "cylinder",
-   "x": 64.44,
-   "y": 13.76,
+   "x": 61.95,
+   "y": 15.57,
    "z": 0.0,
    "yaw": 0.0,
-   "w": 6.5,
-   "d": 6.5,
-   "h": 2.0,
-   "color": "#9f9f9c",
-   "texture": "artifacts/crops/small_glue_bottle.png",
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8d8a88",
+   "texture": "artifacts/crops/glue_bottle.png",
    "hollow": false
   }
  ],
  "segments": [
   {
-   "object": "left blue pen",
-   "t0": 1.7,
-   "t1": 2.2,
-   "from_cm": [
-    19.92,
-    17.35
-   ],
-   "to_cm": [
-    19.73,
-    12.78
-   ]
-  },
-  {
-   "object": "left blue pen",
-   "t0": 8.4,
-   "t1": 9.9,
-   "from_cm": [
-    19.72,
-    12.1
-   ],
-   "to_cm": [
-    19.86,
-    17.13
-   ]
-  },
-  {
-   "object": "right blue pen",
+   "object": "teal pen",
    "t0": 2.3,
    "t1": 4.7,
    "from_cm": [
-    27.0,
-    17.2
+    26.97,
+    17.25
    ],
    "to_cm": [
-    24.8,
-    12.73
+    24.77,
+    12.79
    ]
   },
   {
-   "object": "right blue pen",
+   "object": "teal pen",
    "t0": 5.7,
    "t1": 9.4,
    "from_cm": [
-    24.52,
-    13.32
+    24.49,
+    13.38
    ],
    "to_cm": [
-    41.63,
+    41.57,
+    16.99
+   ]
+  },
+  {
+   "object": "teal box cutter",
+   "t0": 3.0,
+   "t1": 4.4,
+   "from_cm": [
+    28.1,
+    17.98
+   ],
+   "to_cm": [
+    26.15,
+    14.32
+   ]
+  },
+  {
+   "object": "teal box cutter",
+   "t0": 5.7,
+   "t1": 9.1,
+   "from_cm": [
+    26.03,
+    13.95
+   ],
+   "to_cm": [
+    46.59,
     16.94
    ]
   }
  ],
  "contacts": [
   {
-   "t": 1.6,
-   "type": "grasp",
-   "object": "left blue pen"
-  },
-  {
    "t": 2.0,
    "type": "grasp",
-   "object": "right blue pen"
+   "object": "teal pen"
   },
   {
-   "t": 3.2,
-   "type": "release",
-   "object": "left blue pen"
+   "t": 2.2,
+   "type": "grasp",
+   "object": "teal box cutter"
   },
   {
    "t": 4.7,
    "type": "grasp",
-   "object": "right blue pen"
+   "object": "teal pen"
+  },
+  {
+   "t": 4.7,
+   "type": "grasp",
+   "object": "teal box cutter"
+  },
+  {
+   "t": 5.4,
+   "type": "release",
+   "object": "teal box cutter"
   },
   {
    "t": 5.7,
    "type": "release",
-   "object": "right blue pen"
-  },
-  {
-   "t": 8.7,
-   "type": "grasp",
-   "object": "left blue pen"
+   "object": "teal pen"
   },
   {
    "t": 9.7,
    "type": "release",
-   "object": "right blue pen"
+   "object": "teal pen"
   },
   {
-   "t": 10.0,
+   "t": 9.7,
    "type": "release",
-   "object": "left blue pen"
+   "object": "teal box cutter"
   }
  ],
  "matches": [
   {
    "step": 0,
    "segment": 1,
-   "confidence": 0.0,
-   "timing_delta_s": 6.2
+   "confidence": 0.208,
+   "timing_delta_s": 3.5
   },
   {
    "step": 1,
    "segment": 3,
-   "confidence": 0.453,
+   "confidence": 0.431,
    "timing_delta_s": 2.7
   }
  ],
@@ -349,7 +349,7 @@
     },
     "pred": "inside",
     "target": {
-     "name": "white plastic tub",
+     "name": "white tub",
      "kind": null,
      "role": null,
      "names": null
@@ -361,14 +361,12 @@
    "holds": true,
    "code": null,
    "objects": [
-    "left blue pen",
-    "right blue pen"
+    "teal pen"
    ],
    "measured": {
-    "left blue pen.margin_cm": 7.62,
-    "right blue pen.margin_cm": 5.04
+    "margin_cm": 4.06
    },
-   "detail": "every pen inside white plastic tub"
+   "detail": "every pen inside white tub"
   }
  ],
  "flags": []

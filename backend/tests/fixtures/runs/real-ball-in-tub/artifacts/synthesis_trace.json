@@ -1,19 +1,19 @@
 {
  "submitted": true,
- "turns": 3,
- "winner": "wonder",
+ "turns": 2,
+ "winner": "spark-open-draft",
  "drafts": [
   {
-   "code": "def run(scene, robot):\n    ball = scene.get(\"green ball\")\n    box = scene.get(\"white box\")\n    if scene.is_inside(ball, box):\n        return\n    robot.pick(ball)\n    robot.place_in(box)",
-   "explanation": "Picks the green ball and places it inside the white box if not already inside.",
+   "code": "def run(scene, robot):\n    balls = scene.of_kind(\"tennis ball\")\n    if balls:\n        ball = balls[0]\n    else:\n        ball = scene.with_role(\"moved\")[0]\n    tub = scene.containers()[0]\n    for c in scene.containers():\n        if \"tub\" in c.kind.lower() or \"white tub\" in c.name.lower():\n            tub = c\n            break\n    if scene.is_inside(ball, tub):\n        return\n    robot.pick(ball)\n    robot.place_in(tub)\n",
+   "explanation": "Picks the tennis ball (moved object) and places it inside the white tub container wherever it starts.",
    "i": 0,
    "passed": 1,
    "goal_ok": true,
    "error": null
   },
   {
-   "code": "def run(scene, robot):\n    ball = scene.get(\"green ball\")\n    box = scene.get(\"white box\")\n    if scene.is_inside(ball, box):\n        return\n    robot.pick(ball)\n    robot.place_in(box)",
-   "explanation": "Pick the green ball and place it inside the white box, skipping if already inside.",
+   "code": "def run(scene, robot):\n    moved = scene.with_role(\"moved\")\n    if moved:\n        ball = moved[0]\n    else:\n        ball = scene.of_kind(\"tennis ball\")[0]\n    tubs = scene.containers()\n    tub = tubs[0] if tubs else scene.get(\"white tub\")\n    if scene.is_inside(ball, tub):\n        return\n    robot.pick(ball)\n    robot.place_in(tub)\n",
+   "explanation": "Picks the moved tennis ball and places it inside the white tub container, checking first if it is already inside.",
    "i": 1,
    "passed": 1,
    "goal_ok": true,
@@ -30,12 +30,6 @@
   {
    "turn": 2,
    "calls": [
-    "simulate"
-   ]
-  },
-  {
-   "turn": 3,
-   "calls": [
     "submit"
    ]
   }
@@ -48,109 +42,52 @@
    "error": null,
    "clauses": [
     {
-     "clause": "the green ball inside white box",
+     "clause": "the tennis ball inside white tub",
      "holds": true,
-     "detail": "green ball inside white box"
+     "detail": "tennis ball inside white tub"
     }
    ],
    "robot_calls": [
-    "pick(object=green ball)",
-    "place_in(container=white box)",
+    "pick(object=tennis ball)",
+    "place_in(container=white tub)",
     "home()"
    ],
    "final_positions": [
     {
-     "name": "green ball",
-     "x": 46.9,
-     "y": 12.48,
-     "z": 4.3
+     "name": "tennis ball",
+     "x": 45.64,
+     "y": 13.58,
+     "z": 3.75
     },
     {
-     "name": "white box",
-     "x": 43.51,
-     "y": 15.92,
-     "z": 3.05
+     "name": "white tub",
+     "x": 42.94,
+     "y": 16.56,
+     "z": 4.55
     },
     {
-     "name": "light blue pen",
-     "x": 27.05,
-     "y": 17.05,
-     "z": 0.5
+     "name": "left teal pen",
+     "x": 27.03,
+     "y": 17.09,
+     "z": 0.6
     },
     {
-     "name": "dark blue pen",
-     "x": 30.69,
-     "y": 19.17,
-     "z": 0.5
+     "name": "right teal pen",
+     "x": 29.88,
+     "y": 18.75,
+     "z": 0.6
     },
     {
-     "name": "silver spoon",
-     "x": 55.93,
+     "name": "steel spoon",
+     "x": 55.94,
      "y": 18.57,
      "z": 0.5
     },
     {
-     "name": "white glue bottle",
-     "x": 62.53,
-     "y": 7.73,
-     "z": 1.0
-    }
-   ],
-   "logs": []
-  },
-  "v2:demo": {
-   "ok": true,
-   "goal_passed": true,
-   "clauses_passed": "1/1",
-   "error": null,
-   "clauses": [
-    {
-     "clause": "the green ball inside white box",
-     "holds": true,
-     "detail": "green ball inside white box"
-    }
-   ],
-   "robot_calls": [
-    "pick(object=green ball)",
-    "place_in(container=white box)",
-    "home()"
-   ],
-   "final_positions": [
-    {
-     "name": "green ball",
-     "x": 46.9,
-     "y": 12.48,
-     "z": 4.3
-    },
-    {
-     "name": "white box",
-     "x": 43.51,
-     "y": 15.92,
-     "z": 3.05
-    },
-    {
-     "name": "light blue pen",
-     "x": 27.05,
-     "y": 17.05,
-     "z": 0.5
-    },
-    {
-     "name": "dark blue pen",
-     "x": 30.69,
-     "y": 19.17,
-     "z": 0.5
-    },
-    {
-     "name": "silver spoon",
-     "x": 55.93,
-     "y": 18.57,
-     "z": 0.5
-    },
-    {
-     "name": "white glue bottle",
-     "x": 62.53,
-     "y": 7.73,
-     "z": 1.0
+     "name": "glue bottle",
+     "x": 62.03,
+     "y": 15.6,
+     "z": 4.25
     }
    ],
    "logs": []

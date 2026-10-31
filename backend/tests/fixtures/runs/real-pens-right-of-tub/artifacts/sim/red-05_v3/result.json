@@ -1,0 +1,176 @@
+{
+ "ok": false,
+ "error": "line 32, in run\nCollision: knocked white tub out of place",
+ "error_type": "Collision",
+ "layout_id": "red-05",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 29.6,
+    "y": 17.5,
+    "yaw": 90.0
+   },
+   "ok": false,
+   "error": "Collision: knocked white tub out of place",
+   "t": 3.483
+  }
+ ],
+ "logs": [
+  "moving left teal pen to 29.6, 17.5 yaw=90.0"
+ ],
+ "final_state": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 30.45,
+   "y": 18.36,
+   "z": 0.6,
+   "yaw": 90.0,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#438da6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 38.0,
+   "y": 28.5,
+   "z": 0.6,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#598d97",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "role": "reference",
+   "shape": "box",
+   "x": 8.37,
+   "y": 16.26,
+   "z": 4.5,
+   "yaw": -28.5,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#8f8c82",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_tub.png",
+   "hollow": false
+  },
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 44.0,
+   "y": 10.0,
+   "z": 3.3,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "distractor",
+   "shape": "box",
+   "x": 55.0,
+   "y": 20.0,
+   "z": 0.6,
+   "yaw": 90.0,
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#60bec9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 60.01,
+   "y": 7.99,
+   "z": 4.25,
+   "yaw": 0.4,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8b8684",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null,
+    "yaw_deg": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "left teal pen",
+    "right teal pen"
+   ],
+   "measured": {
+    "left teal pen.gap_cm": 11.99,
+    "left teal pen.lateral_cm": 2.1,
+    "left teal pen.lateral_limit_cm": 12.49,
+    "right teal pen.gap_cm": 13.14,
+    "right teal pen.lateral_cm": 12.24,
+    "right teal pen.lateral_limit_cm": 12.49
+   },
+   "detail": "not right of white tub: left teal pen, right teal pen"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [
+  "Collision: knocked white tub out of place"
+ ],
+ "renders": {},
+ "twin_trajectory": "artifacts/sim/red-05_v3/twin_red-05.json",
+ "duration_s": 7.43,
+ "wall_s": 0.21
+}

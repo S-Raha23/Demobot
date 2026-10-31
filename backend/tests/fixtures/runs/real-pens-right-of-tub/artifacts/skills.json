@@ -2,16 +2,16 @@
  {
   "version": 1,
   "label": "from your demo",
-  "title": "Put every pen right of the white box",
+  "title": "Put every pen right of the white tub",
   "taskspec": "taskspec.json",
-  "program_version": 13
+  "program_version": 22
  },
  {
   "version": 2,
   "label": "corrected by voice",
-  "title": "put the green ball in the tub",
+  "title": "Put the green (tennis) ball in the white tub, in addition to moving every pen to the right of the white tub",
   "taskspec": "taskspec_v2.json",
-  "program_version": 15,
+  "program_version": 26,
   "said": "put the green ball in the tub.",
   "language": "English",
   "from_version": 1

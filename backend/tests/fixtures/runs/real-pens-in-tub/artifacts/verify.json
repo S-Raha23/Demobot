@@ -14,7 +14,7 @@
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -26,18 +26,14 @@
     "holds": true,
     "code": null,
     "objects": [
-     "left blue pen",
-     "right blue pen"
+     "teal pen"
     ],
     "measured": {
-     "left blue pen.margin_cm": 7.61,
-     "left blue pen.z_cm": 0.95,
-     "left blue pen.below_rim": true,
-     "right blue pen.margin_cm": 1.36,
-     "right blue pen.z_cm": 0.95,
-     "right blue pen.below_rim": true
+     "margin_cm": 6.04,
+     "z_cm": 1.05,
+     "below_rim": true
     },
-    "detail": "every pen inside white plastic tub"
+    "detail": "every pen inside white tub"
    }
   ],
   "detail": "the goal on the simulated final state",
@@ -57,7 +53,7 @@
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -69,14 +65,12 @@
     "holds": true,
     "code": null,
     "objects": [
-     "left blue pen",
-     "right blue pen"
+     "teal pen"
     ],
     "measured": {
-     "left blue pen.margin_cm": 7.62,
-     "right blue pen.margin_cm": 5.04
+     "margin_cm": 4.06
     },
-    "detail": "every pen inside white plastic tub"
+    "detail": "every pen inside white tub"
    }
   ],
   "detail": "the goal on your real final table, measured by SAM",
@@ -96,7 +90,7 @@
      },
      "pred": "inside",
      "target": {
-      "name": "white plastic tub",
+      "name": "white tub",
       "kind": null,
       "role": null,
       "names": null
@@ -108,14 +102,12 @@
     "holds": true,
     "code": null,
     "objects": [
-     "left blue pen",
-     "right blue pen"
+     "teal pen"
     ],
     "measured": {
-     "left blue pen.margin_cm": 7.61,
-     "right blue pen.margin_cm": 1.36
+     "margin_cm": 6.04
     },
-    "detail": "every pen inside white plastic tub (left blue pen, right blue pen not seen by SAM in the render: inconclusive)"
+    "detail": "every pen inside white tub (teal pen not seen by SAM in the render: inconclusive)"
    }
   ],
   "detail": "SAM saw 1/7 stand-ins in the render; not every goal object was visible, so this check is inconclusive",
@@ -123,14 +115,9 @@
  },
  "judge": {
   "same_goal_achieved": true,
-  "confidence": 0.97,
-  "differences": [
-   "Image 1 shows both blue pens inside the white plastic tub with photorealistic texture; Image 2 shows both pens as simplified cyan bars inside the tub",
-   "Light blue pen cap distractor is clearly visible left of tub in Image 1 but not distinctly rendered/visible in Image 2",
-   "Steel spoon and small glue bottle distractors to the right of tub are photorealistic in Image 1 vs primitive grey cylinder/sphere stand-ins in Image 2",
-   "Simulation has flatter lighting and uniform table texture"
-  ],
-  "suspected_error": "none - simulator reports 'every pen inside white plastic tub: holds' and visual check confirms both pens are inside tub in both images"
+  "confidence": 0.96,
+  "differences": [],
+  "suspected_error": "none"
  },
  "agree": true,
  "failure_class": null,
@@ -138,60 +125,7 @@
  "masks": {
   "real": [
    {
-    "name": "left blue pen",
-    "poly_px": [
-     [
-      414.0,
-      365.0
-     ],
-     [
-      411.0,
-      370.0
-     ],
-     [
-      411.0,
-      386.0
-     ],
-     [
-      414.0,
-      399.0
-     ],
-     [
-      419.0,
-      408.0
-     ],
-     [
-      432.0,
-      491.0
-     ],
-     [
-      437.0,
-      500.0
-     ],
-     [
-      443.0,
-      500.0
-     ],
-     [
-      450.0,
-      494.0
-     ],
-     [
-      450.0,
-      485.0
-     ],
-     [
-      430.0,
-      375.0
-     ],
-     [
-      424.0,
-      365.0
-     ]
-    ]
-   },
-   {
-    "name": "right blue pen",
+    "name": "teal pen",
     "poly_px": [
      [
       645.0,
@@ -224,7 +158,60 @@
     ]
    },
    {
-    "name": "white plastic tub",
+    "name": "teal box cutter",
+    "poly_px": [
+     [
+      626.0,
+      361.0
+     ],
+     [
+      625.0,
+      363.0
+     ],
+     [
+      631.0,
+      371.0
+     ],
+     [
+      662.0,
+      394.0
+     ],
+     [
+      708.0,
+      434.0
+     ],
+     [
+      721.0,
+      443.0
+     ],
+     [
+      731.0,
+      444.0
+     ],
+     [
+      731.0,
+      441.0
+     ],
+     [
+      716.0,
+      426.0
+     ],
+     [
+      659.0,
+      380.0
+     ],
+     [
+      646.0,
+      363.0
+     ],
+     [
+      634.0,
+      357.0
+     ]
+    ]
+   },
+   {
+    "name": "white tub",
     "poly_px": [
      [
       610.0,
@@ -325,7 +312,7 @@
     ]
    },
    {
-    "name": "yellow tennis ball",
+    "name": "tennis ball",
     "poly_px": [
      [
       313.0,
@@ -496,7 +483,7 @@
     ]
    },
    {
-    "name": "small glue bottle",
+    "name": "glue bottle",
     "poly_px": [
      [
       876.0,
@@ -543,47 +530,39 @@
   ],
   "camera": [
    {
-    "name": "yellow tennis ball",
+    "name": "tennis ball",
     "poly_px": [
-     [
-      292.0,
-      361.0
-     ],
      [
       271.0,
       362.0
      ],
      [
-      264.0,
-      365.0
-     ],
-     [
-      250.0,
-      375.0
+      252.0,
+      373.0
      ],
      [
       241.0,
       391.0
      ],
      [
-      243.0,
-      415.0
+      242.0,
+      413.0
      ],
      [
-      257.0,
-      431.0
+      255.0,
+      430.0
      ],
      [
-      272.0,
+      274.0,
+      439.0
+     ],
+     [
+      293.0,
       438.0
      ],
      [
-      292.0,
-      438.0
-     ],
-     [
-      312.0,
-      426.0
+      310.0,
+      428.0
      ],
      [
       322.0,
@@ -594,12 +573,16 @@
       389.0
      ],
      [
-      319.0,
-      382.0
+      314.0,
+      374.0
      ],
      [
-      310.0,
-      370.0
+      305.0,
+      367.0
+     ],
+     [
+      295.0,
+      362.0
      ]
     ]
    }

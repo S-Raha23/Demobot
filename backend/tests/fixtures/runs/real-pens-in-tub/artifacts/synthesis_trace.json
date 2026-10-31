@@ -1,19 +1,19 @@
 {
  "submitted": true,
  "turns": 2,
- "winner": "spark-open-draft",
+ "winner": "wonder",
  "drafts": [
   {
-   "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(scene.get(tub.name))",
-   "explanation": "Picks every pen by kind and places it inside the white plastic tub, skipping any already inside.",
+   "code": "def run(scene, robot):\n    tub = scene.containers()[0]\n    items = scene.with_role(\"moved\")\n    if not items:\n        items = scene.of_kind(\"pen\")\n    for obj in items:\n        cur = scene.get(obj.name)\n        dst = scene.get(tub.name)\n        if scene.is_inside(cur, dst):\n            continue\n        robot.pick(cur)\n        robot.place_in(scene.get(tub.name))",
+   "explanation": "Moves every object with role moved (the pens, handling the mislabeled box-cutter pen) into the white tub, falling back to all pens if no moved role is present.",
    "i": 0,
    "passed": 1,
    "goal_ok": true,
    "error": null
   },
   {
-   "code": "def run(scene, robot):\n    tub = scene.containers()[0]\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(tub)\n",
-   "explanation": "Move every pen into the white plastic tub, skipping any already inside.",
+   "code": "def run(scene, robot):\n    tub = scene.get(\"white tub\")\n    candidates = {}\n    for o in scene.with_role(\"moved\"):\n        candidates[o.name] = o\n    for o in scene.of_kind(\"pen\"):\n        candidates[o.name] = o\n    for name in list(candidates.keys()):\n        obj = scene.get(name)\n        if scene.is_inside(obj, scene.get(tub.name)):\n            continue\n        robot.pick(obj)\n        robot.place_in(scene.get(tub.name))",
+   "explanation": "Moves every pen (and any object marked as moved to handle the mislabeled pen) into the white tub if not already inside.",
    "i": 1,
    "passed": 1,
    "goal_ok": true,
@@ -42,63 +42,65 @@
    "error": null,
    "clauses": [
     {
-     "clause": "all pen inside white plastic tub",
+     "clause": "all pen inside white tub",
      "holds": true,
-     "detail": "every pen inside white plastic tub"
+     "detail": "every pen inside white tub"
     }
    ],
    "robot_calls": [
-    "pick(object=left blue pen)",
-    "place_in(container=white plastic tub)",
-    "pick(object=right blue pen)",
-    "place_in(container=white plastic tub)",
+    "pick(object=teal pen)",
+    "place_in(container=white tub)",
+    "pick(object=teal box cutter)",
+    "place_in(container=white tub)",
     "home()"
    ],
    "final_positions": [
     {
-     "name": "left blue pen",
-     "x": 43.62,
-     "y": 16.07,
-     "z": 0.95
+     "name": "teal pen",
+     "x": 42.99,
+     "y": 16.84,
+     "z": 1.05
     },
     {
-     "name": "right blue pen",
-     "x": 50.1,
-     "y": 16.55,
-     "z": 0.95
+     "name": "teal box cutter",
+     "x": 42.96,
+     "y": 16.87,
+     "z": 2.25
     },
     {
-     "name": "white plastic tub",
-     "x": 43.64,
-     "y": 16.08,
-     "z": 3.05
+     "name": "white tub",
+     "x": 42.93,
+     "y": 16.9,
+     "z": 4.55
     },
     {
-     "name": "yellow tennis ball",
-     "x": 8.95,
-     "y": 17.04,
+     "name": "tennis ball",
+     "x": 8.94,
+     "y": 17.06,
      "z": 3.3
     },
     {
      "name": "light blue pen cap",
-     "x": 62.27,
-     "y": 11.36,
+     "x": 62.33,
+     "y": 11.45,
      "z": 0.75
     },
     {
      "name": "steel spoon",
-     "x": 56.61,
-     "y": 22.41,
+     "x": 55.77,
+     "y": 18.6,
      "z": 0.5
     },
     {
-     "name": "small glue bottle",
-     "x": 62.18,
-     "y": 17.15,
-     "z": 1.0
+     "name": "glue bottle",
+     "x": 61.78,
+     "y": 16.61,
+     "z": 4.25
     }
    ],
-   "logs": []
+   "logs": [
+    "targets: ['teal pen', 'teal box cutter']"
+   ]
   }
  }
 }

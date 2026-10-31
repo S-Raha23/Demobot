@@ -1,13 +1,13 @@
 {
  "ok": false,
- "error": "line 31, in run\nNoFreeSpot: no clear spot for a 7×7 cm object",
- "error_type": "NoFreeSpot",
+ "error": "line 32, in run\nCollision: knocked right teal pen, white tub out of place",
+ "error_type": "Collision",
  "layout_id": "red-02",
  "skill_calls": [
   {
    "skill": "pick",
    "args": {
-    "object": "left light blue pen"
+    "object": "left teal pen"
    },
    "ok": true,
    "error": null,
@@ -16,127 +16,113 @@
   {
    "skill": "place_at",
    "args": {
-    "x": 47.6,
-    "y": 15.0,
+    "x": 41.6,
+    "y": 11.0,
     "yaw": 90.0
    },
-   "ok": true,
-   "error": null,
-   "t": 3.312
+   "ok": false,
+   "error": "Collision: knocked right teal pen, white tub out of place",
+   "t": 3.408
   }
  ],
- "logs": [],
+ "logs": [
+  "moving left teal pen to 41.6, 11.0 yaw=90.0"
+ ],
  "final_state": [
   {
-   "name": "white box",
-   "kind": "box",
-   "role": "reference",
-   "shape": "box",
-   "x": 32.0,
-   "y": 15.0,
-   "z": 3.55,
-   "yaw": -0.0,
-   "w": 25.2,
-   "d": 15.9,
-   "h": 7.0,
-   "color": "#eeeeea",
-   "texture": null,
-   "hollow": true
-  },
-  {
-   "name": "left light blue pen",
+   "name": "left teal pen",
    "kind": "pen",
    "role": "moved",
    "shape": "box",
-   "x": 47.59,
-   "y": 14.98,
-   "z": 0.5,
+   "x": 41.8,
+   "y": 10.68,
+   "z": 0.6,
    "yaw": 90.0,
    "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#4189a0",
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#438da6",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "right light blue pen",
+   "name": "right teal pen",
    "kind": "pen",
    "role": "moved",
    "shape": "box",
-   "x": 13.49,
-   "y": 12.0,
-   "z": 0.5,
-   "yaw": 89.9,
-   "w": 12.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#5c909a",
-   "texture": null,
-   "hollow": false
-  },
-  {
-   "name": "extra light blue pen",
-   "kind": "pen",
-   "role": "moved",
-   "shape": "box",
-   "x": 11.0,
-   "y": 26.51,
-   "z": 0.5,
-   "yaw": -0.1,
+   "x": 4.97,
+   "y": 19.2,
+   "z": 0.6,
+   "yaw": 3.9,
    "w": 14.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#4189a0",
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#598d97",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "yellow tennis ball",
+   "name": "white tub",
+   "kind": "tub",
+   "role": "reference",
+   "shape": "box",
+   "x": 14.55,
+   "y": 9.91,
+   "z": 4.5,
+   "yaw": -32.3,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#8f8c82",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_tub.png",
+   "hollow": false
+  },
+  {
+   "name": "tennis ball",
    "kind": "tennis ball",
    "role": "distractor",
    "shape": "sphere",
-   "x": 55.0,
-   "y": 26.0,
-   "z": 3.35,
-   "yaw": 0.0,
-   "w": 6.7,
-   "d": 6.7,
-   "h": 6.5,
+   "x": 58.0,
+   "y": 26.5,
+   "z": 3.3,
+   "yaw": -0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
    "color": "#797a45",
-   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/yellow_tennis_ball.png",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/tennis_ball.png",
    "hollow": false
   },
   {
-   "name": "light blue spoon",
-   "kind": "spoon",
+   "name": "teal box cutter",
+   "kind": "box cutter",
    "role": "distractor",
    "shape": "box",
    "x": 57.0,
-   "y": 10.01,
-   "z": 0.5,
+   "y": 15.01,
+   "z": 0.6,
    "yaw": -0.1,
-   "w": 12.0,
-   "d": 2.0,
-   "h": 1.0,
-   "color": "#5fbcc9",
+   "w": 13.0,
+   "d": 2.2,
+   "h": 1.2,
+   "color": "#60bec9",
    "texture": null,
    "hollow": false
   },
   {
-   "name": "white glue bottle",
+   "name": "glue bottle",
    "kind": "glue bottle",
    "role": "distractor",
    "shape": "cylinder",
-   "x": 30.0,
-   "y": 27.0,
-   "z": 4.5,
-   "yaw": -0.3,
-   "w": 3.0,
-   "d": 3.0,
-   "h": 9.0,
-   "color": "#96918c",
-   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_glue_bottle.png",
+   "x": 58.01,
+   "y": 7.99,
+   "z": 4.25,
+   "yaw": 0.4,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#8b8684",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/glue_bottle.png",
    "hollow": false
   }
  ],
@@ -152,42 +138,41 @@
     },
     "pred": "right_of",
     "target": {
-     "name": "white box",
+     "name": "white tub",
      "kind": null,
      "role": null,
      "names": null
     },
     "point_cm": null,
     "order_by": null,
-    "order": null
+    "order": null,
+    "yaw_deg": null
    },
    "holds": false,
    "code": null,
    "objects": [
-    "extra light blue pen",
-    "left light blue pen",
-    "right light blue pen"
+    "left teal pen",
+    "right teal pen"
    ],
    "measured": {
-    "extra light blue pen.gap_cm": -40.6,
-    "extra light blue pen.lateral_cm": 11.51,
-    "extra light blue pen.lateral_limit_cm": 10.95,
-    "left light blue pen.gap_cm": 1.99,
-    "left light blue pen.lateral_cm": 0.02,
-    "left light blue pen.lateral_limit_cm": 10.95,
-    "right light blue pen.gap_cm": -32.12,
-    "right light blue pen.lateral_cm": 3.0,
-    "right light blue pen.lateral_limit_cm": 10.95
+    "left teal pen.gap_cm": 16.99,
+    "left teal pen.lateral_cm": 0.77,
+    "left teal pen.lateral_limit_cm": 12.66,
+    "right teal pen.gap_cm": -26.26,
+    "right teal pen.lateral_cm": 9.29,
+    "right teal pen.lateral_limit_cm": 12.66
    },
-   "detail": "not right of white box: extra light blue pen, right light blue pen"
+   "detail": "not right of white tub: left teal pen, right teal pen"
   }
  ],
  "goal_ok": false,
- "collisions": [],
+ "collisions": [
+  "Collision: knocked right teal pen, white tub out of place"
+ ],
  "renders": {
   "top": "artifacts/sim/red-02_v2/top_red-02.png"
  },
  "twin_trajectory": "artifacts/sim/red-02_v2/twin_red-02.json",
- "duration_s": 7.13,
- "wall_s": 0.52
+ "duration_s": 7.36,
+ "wall_s": 1.08
 }

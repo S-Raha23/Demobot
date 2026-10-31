@@ -1,13 +1,14 @@
 {
  "run_id": "real-ball-in-tub",
- "title": "Put the green ball in the white box",
- "created_at": "2026-10-31T12:35:53Z",
+ "title": "Put the tennis ball in the white tub",
+ "created_at": "2026-10-31T17:48:43Z",
  "source": "clip_01.mp4",
  "mode": "dev",
  "status": "done",
  "fixture": false,
- "program_version": 2,
- "cost_usd": 1.3486,
+ "source_kind": "real",
+ "program_version": 1,
+ "cost_usd": 0.2285,
  "baked_from": "real-01",
- "note": "real model calls on a real handheld phone clip"
+ "note": "real model calls on a real clip"
 }

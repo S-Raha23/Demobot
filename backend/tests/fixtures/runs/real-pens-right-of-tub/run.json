@@ -1,16 +1,14 @@
 {
  "run_id": "real-pens-right-of-tub",
- "title": "Put every pen right of the white box",
- "created_at": "2026-10-31T14:02:05Z",
+ "title": "Put every pen right of the white tub",
+ "created_at": "2026-10-31T17:57:38Z",
  "source": "clip_04.mp4",
  "mode": "dev",
  "status": "done",
  "fixture": false,
- "program_version": 13,
- "supervised": true,
- "caveat": "Perceptual check inconclusive due to render detection failure (SAM saw 2/6, both light blue pens not tracked with ambiguous phrase), but real-world SAM measurement and judge (0.92) confirm both pens are right of white box.",
- "caveat_program": 2,
- "cost_usd": 2.6603,
+ "source_kind": "real",
+ "program_version": 2,
+ "cost_usd": 1.1392,
  "baked_from": "real-04",
- "note": "real model calls on a real handheld phone clip"
+ "note": "real model calls on a real clip"
 }

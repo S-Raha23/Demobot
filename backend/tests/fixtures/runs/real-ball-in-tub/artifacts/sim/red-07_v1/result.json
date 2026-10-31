@@ -1,0 +1,174 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-07",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "tennis ball"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white tub"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.292
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 6.733
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "tennis ball",
+   "kind": "tennis ball",
+   "role": "moved",
+   "shape": "sphere",
+   "x": 47.13,
+   "y": 9.1,
+   "z": 3.75,
+   "yaw": 0.1,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.6,
+   "color": "#96a09c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "white tub",
+   "kind": "tub",
+   "role": "container",
+   "shape": "box",
+   "x": 50.0,
+   "y": 12.0,
+   "z": 4.55,
+   "yaw": -0.0,
+   "w": 14.0,
+   "d": 14.0,
+   "h": 9.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 30.0,
+   "y": 10.01,
+   "z": 0.6,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#386771",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 30.0,
+   "y": 18.51,
+   "z": 0.6,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#4d8494",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 50.0,
+   "y": 24.01,
+   "z": 0.5,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 3.0,
+   "h": 1.0,
+   "color": "#93938b",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/steel_spoon.png",
+   "hollow": false
+  },
+  {
+   "name": "glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 61.51,
+   "y": 11.99,
+   "z": 4.25,
+   "yaw": 0.5,
+   "w": 3.2,
+   "d": 3.2,
+   "h": 8.5,
+   "color": "#888683",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "tennis ball",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "tennis ball"
+   ],
+   "measured": {
+    "margin_cm": 3.1,
+    "z_cm": 3.75,
+    "below_rim": true
+   },
+   "detail": "tennis ball inside white tub"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-07_v1/top_red-07.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-07_v1/twin_red-07.json",
+ "duration_s": 8.23,
+ "wall_s": 0.46
+}

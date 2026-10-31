@@ -1,12 +1,9 @@
 def run(scene, robot):
-    items = scene.with_role("moved")
-    a, b = items[0], items[1]
-    # Park the smaller item first: a small footprint leaves more usable free spots.
-    parked, other = (a, b) if a.w * a.d <= b.w * b.d else (b, a)
-    px, py = parked.x, parked.y
-    ox, oy = other.x, other.y
-    temp = scene.free_spot(size=(parked.w, parked.d), clearance=3)
-    log("Parking " + parked.name + " temporarily at " + str(temp))
-    robot.move(scene.get(parked.name), temp[0], temp[1])
-    robot.move(scene.get(other.name), px, py)
-    robot.move(scene.get(parked.name), ox, oy)
+    a = scene.of_kind("box cutter")[0]
+    b = scene.of_kind("glue bottle")[0]
+    ax, ay, ayaw = a.x, a.y, a.yaw
+    bx, by, byaw = b.x, b.y, b.yaw
+    buf_x, buf_y = scene.free_spot(size=(b.w, b.d), clearance=2)
+    robot.move(scene.get(b.name), buf_x, buf_y)
+    robot.move(scene.get(a.name), bx, by, yaw=ayaw)
+    robot.move(scene.get(b.name), ax, ay, yaw=byaw)

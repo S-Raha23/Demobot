@@ -1,80 +1,37 @@
-def find_spot(scene, robot, obj, avoids, req):
-    x0, y0, x1, y1 = scene.bounds()
-    obs = [(o.x, o.y, o.w, o.d, o.h) for o in scene.objects() if o.name != obj.name]
-    best = None
-    bestd = 1e9
-    gx = x0 + obj.w / 2 + 0.5
-    while gx <= x1 - obj.w / 2 - 0.5:
-        gy = y0 + obj.d / 2 + 0.5
-        while gy <= y1 - obj.d / 2 - 0.5:
-            if robot.can_reach(gx, gy) and (gx - obj.x) ** 2 + (gy - obj.y) ** 2 >= 4.0:
-                ok = True
-                for ox, oy, ow, od, oh in obs:
-                    need = req + (2.0 if oh > 5 or obj.h > 5 else 0.0)
-                    if abs(gx - ox) < (obj.w + ow) / 2 + need and abs(gy - oy) < (obj.d + od) / 2 + need:
-                        ok = False
-                        break
-                if ok:
-                    for ax, ay, aw, ad in avoids:
-                        if abs(gx - ax) < (obj.w + aw) / 2 + 1.0 and abs(gy - ay) < (obj.d + ad) / 2 + 1.0:
-                            ok = False
-                            break
-                if ok and (gx - obj.x) ** 2 + (gy - obj.y) ** 2 < bestd:
-                    bestd = (gx - obj.x) ** 2 + (gy - obj.y) ** 2
-                    best = (gx, gy)
-            gy += 2.0
-        gx += 2.0
-    return best
-def move_away(scene, robot, o, avoids):
-    spot = find_spot(scene, robot, o, avoids, 2.0)
-    if spot is None:
-        spot = find_spot(scene, robot, o, avoids, 0.5)
-    if spot is not None:
-        robot.move(scene.get(o.name), spot[0], spot[1])
-def clear_area(scene, robot, cx, cy, w, d, skip, avoids):
-    for tallpass in [True, False]:
-        for name in [o.name for o in scene.objects()]:
-            if name in skip:
-                continue
-            o = scene.get(name)
-            if (o.h > 5) != tallpass:
-                continue
-            extra = 9.0 if o.h > 5 else 4.0
-            if abs(o.x - cx) < (o.w + w) / 2 + extra and abs(o.y - cy) < (o.d + d) / 2 + extra:
-                move_away(scene, robot, o, avoids + [(cx, cy, w + 18, d + 18)])
 def run(scene, robot):
-    box = scene.get("white box")
+    tub = scene.get("white tub")
     pens = scene.of_kind("pen")
-    if not pens:
-        return
     x0, y0, x1, y1 = scene.bounds()
-    gap = 1.5
-    spacing = 1.0
-    totalw = sum(min(p.w, p.d) for p in pens)
-    avail = (x1 - 0.5) - (box.x + box.w / 2)
-    if len(pens) > 1 and gap + totalw + spacing * (len(pens) - 1) > avail:
-        spacing = max(0.5, (avail - gap - totalw) / (len(pens) - 1))
-    if gap + totalw + spacing * (len(pens) - 1) > avail:
-        gap = 0.8
-    infos = []
-    cursor = box.x + box.w / 2 + gap
-    for pen in pens:
-        ew = min(pen.w, pen.d)
-        ed = max(pen.w, pen.d)
-        yaw = pen.yaw if pen.d >= pen.w else pen.yaw + 90
-        tx = cursor + ew / 2
-        ty = min(max(box.y, y0 + ed / 2 + 0.5), y1 - ed / 2 - 0.5)
-        infos.append([pen.name, tx, ty, ew, ed, yaw])
-        cursor += ew + spacing
-    slots = [(i[1], i[2], i[3] + 2, i[4] + 2) for i in infos]
+    maxw = max(p.w for p in pens)
+    horiz = tub.x + tub.w / 2 + 2.5 + maxw <= x1 - 0.5 and robot.can_reach(tub.x + tub.w / 2 + 2.5 + maxw / 2, tub.y)
+    slots = []
+    if horiz:
+        cx = tub.x + tub.w / 2 + 2.5 + maxw / 2
+        total = sum(p.d for p in pens) + 1.8 * (len(pens) - 1)
+        cy = tub.y - total / 2
+        for pen in pens:
+            slots.append((pen.name, cx, cy + pen.d / 2, pen.w, pen.d))
+            cy += pen.d + 1.8
+        row = (cx, tub.y, maxw + 6, total + 6)
+    else:
+        cursor = tub.x + tub.w / 2 + 3.5
+        maxd = max(max(p.w, p.d) for p in pens)
+        for pen in pens:
+            ew, ed = min(pen.w, pen.d), max(pen.w, pen.d)
+            slots.append((pen.name, cursor + ew / 2, tub.y, ew, ed))
+            cursor += ew + 1.8
+        row = ((tub.x + tub.w / 2 + cursor) / 2, tub.y, cursor - tub.x + 8, maxd + 8)
     placed = []
-    pennames = [p.name for p in pens]
-    for name, tx, ty, ew, ed, yaw in infos:
-        skip = [box.name] + placed + pennames
-        clear_area(scene, robot, tx, ty, ew, ed, skip, slots)
+    for name, cx, cy, ew, ed in slots:
         pen = scene.get(name)
-        clear_area(scene, robot, pen.x, pen.y, pen.w, pen.d, [box.name] + pennames, slots)
-        clear_area(scene, robot, tx, ty, ew, ed, skip, slots)
-        robot.move(scene.get(name), tx, ty, yaw)
+        if not horiz and pen.w > pen.d:
+            sx, sy = scene.free_spot(size=(pen.w, pen.w), clearance=2, avoid=[row])
+            robot.move(pen, sx, sy, pen.yaw + 90)
+        for o in scene.objects():
+            if o.name == name or o.name == tub.name or o.name in placed:
+                continue
+            if abs(o.x - cx) < (o.w + ew) / 2 + 3 and abs(o.y - cy) < (o.d + ed) / 2 + 3:
+                robot.move(o, *scene.free_spot(size=(o.w, o.d), clearance=3, avoid=[row]))
+        robot.move(scene.get(name), cx, cy)
         placed.append(name)
     robot.home()

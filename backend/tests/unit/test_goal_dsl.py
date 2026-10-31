@@ -108,6 +108,17 @@ def test_kind_target_means_any_container_of_that_kind() -> None:
     assert g.evaluate_clause(c, state, state).holds
 
 
+def test_turned_needs_no_target() -> None:
+    # ground.fill_goal emits turned with yaw_deg + point_cm and no target ("turned in place")
+    c = clause(quant="the", select=Selector(name="cutter"), pred="turned", yaw_deg=90.0,
+               point_cm=(20.0, 20.0))  # fmt: skip
+    turned = o("cutter", 20, 20)
+    turned = turned.model_copy(update={"yaw": 90.0})
+    assert g.evaluate_clause(c, st(turned), st(turned)).holds
+    unturned = o("cutter", 20, 20)
+    assert not g.evaluate_clause(c, st(unturned), st(unturned)).holds
+
+
 def test_rotated_footprint_extents() -> None:
     pen = o("pen", 0, 0, w=14, d=1.2)
     assert pen.extents() == (7, 0.6)

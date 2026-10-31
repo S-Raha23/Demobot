@@ -19,7 +19,10 @@ export default defineConfig({
     // to a Chrome / Chrome-for-Testing binary to see the video.
     launchOptions: { executablePath: process.env.PW_CHROME || undefined, args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] },
   },
-  projects: [{ name: "chromium", use: { viewport: { width: 1920, height: 1080 } } }],
+  projects: [
+    { name: "chromium", use: { viewport: { width: 1920, height: 1080 } } },
+    { name: "chromium-1366", use: { viewport: { width: 1366, height: 768 } } },
+  ],
   webServer: {
     command: `npx vite --port ${PORT} --strictPort`,
     url: `http://127.0.0.1:${PORT}`,
