@@ -143,6 +143,9 @@ class Shots:
     def __init__(self, work: Path, label: str):
         self.work, self.label = work, label
         self.files: list[Path] = []
+        self.t = 0.0  # where the next shot starts in the final video (s)
+        self.last_start = 0.0
+        self.sounds: list[tuple[float, Path, float, float]] = []  # (at, source, offset, duration)
 
     def _text(self, text: str) -> str:
         f = self.work / f"t{len(list(self.work.glob('t*.txt')))}.txt"
@@ -161,10 +164,16 @@ class Shots:
                          "x=28:y=24:box=1:boxcolor=black@0.5:boxborderw=10")  # fmt: skip
         return ",".join(parts)
 
-    def _out(self) -> Path:
+    def _out(self, dur: float) -> Path:
         f = self.work / f"s{len(self.files):02d}.mp4"
         self.files.append(f)
+        self.last_start, self.t = self.t, self.t + dur
         return f
+
+    def sound(self, src: Path, offset: float, dur: float) -> None:
+        """Play `dur` s of `src` (from `offset`) under the shot just added."""
+        if src.exists():
+            self.sounds.append((self.last_start, src, offset, dur))
 
     def take(self, take: str, a: float, b: float, dur: float, caption: str,
              crop: tuple[int, int, int, int] | None = None) -> None:  # fmt: skip
@@ -181,7 +190,7 @@ class Shots:
             vf.append(cap)
         src = TAKES / take / "frames.ffconcat"
         ff("-f", "concat", "-safe", "0", "-i", str(src), "-vf", ",".join(vf), "-t", f"{dur:.2f}",
-           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out()))  # fmt: skip
+           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out(dur)))  # fmt: skip
 
     def card(self, lines: list[tuple[str, int, bool]], dur: float, image: Path | None = None,
              caption: str = "") -> None:  # fmt: skip
@@ -205,33 +214,55 @@ class Shots:
             vf.append(cap)
         vf += [f"fps={FPS}", "fade=t=in:st=0:d=0.4", f"fade=t=out:st={dur - 0.4:.2f}:d=0.4"]
         ff(*inputs, "-vf", ",".join(vf), "-t", f"{dur:.2f}", "-c:v", "libx264", "-preset", "veryfast",
-           "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out()))  # fmt: skip
+           "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out(dur)))  # fmt: skip
 
     def video(self, path: Path, start: float, dur: float, caption: str) -> None:
         """A stretch of a real video file (the phone footage), letterboxed, with a caption."""
         vf = [f"scale={W}:{H}:force_original_aspect_ratio=decrease", f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color={BG}",
               f"fps={FPS}", self._caption(caption, "Your demo: real phone footage")]  # fmt: skip
         ff("-ss", f"{start:.2f}", "-i", str(path), "-vf", ",".join(vf), "-t", f"{dur:.2f}", "-an",
-           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(self._out()))  # fmt: skip
+           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(self._out(dur)))  # fmt: skip
 
     def still(self, image: Path, dur: float, caption: str) -> None:
         vf = [f"scale={W - 240}:{H - 300}:force_original_aspect_ratio=decrease", f"pad={W}:{H}:(ow-iw)/2:90:color={BG}",
               f"fps={FPS}", self._caption(caption, None)]  # fmt: skip
         ff("-loop", "1", "-t", f"{dur:.2f}", "-i", str(image), "-vf", ",".join(vf), "-t", f"{dur:.2f}",
-           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out()))  # fmt: skip
+           "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(self._out(dur)))  # fmt: skip
 
     def join(self, out: Path, voiceover: Path | None) -> None:
         lst = self.work / "list.txt"
         lst.write_text("".join(f"file '{f}'\n" for f in self.files))
         silent = self.work / "joined.mp4"
         ff("-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(silent))
-        audio = (
-            ["-i", str(voiceover)]
-            if voiceover
-            else ["-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo"]
+        # the soundtrack: silence, the shots' own sounds (your clip, your voice note) at their times,
+        # and the voiceover if there is one
+        inputs = [
+            "-i",
+            str(silent),
+            "-f",
+            "lavfi",
+            "-t",
+            f"{self.t:.2f}",
+            "-i",
+            "anullsrc=r=48000:cl=stereo",
+        ]
+        chains, labels = [], ["[1:a]"]
+        for k, (at, src, off, dur) in enumerate(self.sounds):
+            inputs += ["-ss", f"{off:.2f}", "-t", f"{dur:.2f}", "-i", str(src)]
+            ms = int(at * 1000)
+            fade = f"afade=t=out:st={max(0.0, dur - 0.4):.2f}:d=0.4"
+            chains.append(
+                f"[{k + 2}:a]aresample=48000,aformat=channel_layouts=stereo,{fade},adelay={ms}|{ms}[s{k}]"
+            )
+            labels.append(f"[s{k}]")
+        if voiceover:
+            inputs += ["-i", str(voiceover)]
+            labels.append(f"[{len(self.sounds) + 2}:a]")
+        mix = ";".join(
+            [*chains, f"{''.join(labels)}amix=inputs={len(labels)}:normalize=0:duration=first[a]"]
         )
-        ff("-i", str(silent), *audio, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac",
-           "-b:a", "160k", "-shortest", "-movflags", "+faststart", str(out))  # fmt: skip
+        ff(*inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac",
+           "-b:a", "160k", "-t", f"{self.t:.2f}", "-movflags", "+faststart", str(out))  # fmt: skip
 
 
 def crop_of(rects: dict[str, Any]) -> tuple[int, int, int, int] | None:
@@ -290,6 +321,7 @@ def build(run: str, url: str, short: bool) -> Path:
     def hook_shot(total: float) -> None:
         if footage is not None:
             s.video(footage, 0.5, total / 2, "I showed it once.")
+            s.sound(footage, 0.5, total / 2)
             s.take("hook", 1.5, hook["_length"], total / 2, "It learned the task.", hook_crop)
         else:
             s.take(
@@ -343,6 +375,11 @@ def build(run: str, url: str, short: bool) -> Path:
                 s.take(
                     "main", corr - 1, voice_end, 20, "Correct it by voice, in your own language."
                 )
+                voice = next(
+                    iter(sorted(d.glob("*/correction_*.wav"))), None
+                )  # your spoken correction
+                if voice is not None:
+                    s.sound(voice, 0.0, 6.0)
             s.take(
                 "try",
                 2.5,

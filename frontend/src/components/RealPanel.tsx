@@ -45,6 +45,7 @@ export function RealPanel(props: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const [masks, setMasks] = useState(true);
+  const [sound, setSound] = useState(true); // your narration plays with the replay (muted if the browser blocks it)
   const [trails, setTrails] = useState(true);
   const [markers, setMarkers] = useState(false);
   const [caption, setCaption] = useState<string | null>(null);
@@ -208,6 +209,12 @@ export function RealPanel(props: Props) {
     };
   }, [clock, tracks, overlay, transcript, grounded, masks, trails, showMarkers, size]);
 
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (v) v.muted = sound; // a click is the gesture browsers need before playing sound
+    setSound(!sound);
+  };
+
   return (
     <div className="panel flex h-full min-h-0 flex-col overflow-hidden" data-testid="real-panel">
       <PanelHeader icon={<Icon name="video" size={15} />} title="Real" sub="your demo, stabilised">
@@ -226,6 +233,11 @@ export function RealPanel(props: Props) {
             Markers
           </Toggle>
         )}
+        {videoPath && (
+          <Toggle on={sound} onClick={toggleSound} title={sound ? "Mute your narration" : "Play with sound (your narration)"}>
+            <Icon name={sound ? "sound" : "mute"} size={13} />
+          </Toggle>
+        )}
         <span className="num ml-1 rounded-md bg-ink-850 px-1.5 py-[2px] text-[11px] text-ink-300 ring-1 ring-ink-700">{tLabel}</span>
       </PanelHeader>
       <div ref={boxRef} className="relative min-h-0 flex-1 bg-black/60">
@@ -234,7 +246,8 @@ export function RealPanel(props: Props) {
             ref={videoRef}
             key={videoPath}
             src={artifactUrl(runId, videoPath)}
-            muted
+            muted={!sound}
+            onVolumeChange={(e) => setSound(!e.currentTarget.muted)}
             playsInline
             preload="auto"
             className="absolute inset-0 h-full w-full object-contain"

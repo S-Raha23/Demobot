@@ -55,7 +55,14 @@ export class MediaClock {
     const v = this.video;
     if (!v || v.readyState < 1) return;
     if (this.playing && this.t < this.duration) {
-      if (v.paused) v.play().catch(() => undefined);
+      if (v.paused)
+        v.play().catch(() => {
+          // the browser blocks sound before the first click on the page: play muted instead
+          if (!v.muted) {
+            v.muted = true;
+            v.play().catch(() => undefined);
+          }
+        });
       if (Math.abs(v.currentTime - this.t) > 0.3) v.currentTime = this.t;
     } else {
       if (!v.paused) v.pause();

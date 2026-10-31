@@ -57,7 +57,7 @@ export default function Home() {
 
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_75%_10%,rgba(45,212,191,0.10),transparent_60%),radial-gradient(50%_60%_at_10%_0%,rgba(96,165,250,0.10),transparent_60%)]" />
-        <div className="relative mx-auto grid max-w-[1560px] grid-cols-1 items-center gap-10 px-5 pb-10 pt-12 md:px-8 lg:grid-cols-[1fr_1.15fr] lg:pt-16">
+        <div className="relative mx-auto grid max-w-[1560px] grid-cols-1 items-center gap-10 px-5 pb-10 pt-12 md:px-8 lg:grid-cols-[0.8fr_1.6fr] lg:pt-16">
           <div>
             <div className="mb-5 flex flex-wrap items-center gap-2">
               <Pill tone="info">Meta Global AI Developer Hackathon · Push the Frontier</Pill>
@@ -169,16 +169,14 @@ function SkeletonRow() {
   );
 }
 
-/** A loop of the best run: the end of the real video, then the 3D twin where the Panda does the
- *  same task (the program verified against that video; for a corrected run, the one before the
- *  correction). */
+/** The best run, side by side: your video and the 3D twin where the Panda does the same task
+ *  (the program verified against that video; for a corrected run, the one before the
+ *  correction). The robot's timeline is stretched to the clip, so both move together and loop. */
 function Hero({ run }: { run: RunMeta | null }) {
   const vid = useRef<HTMLVideoElement>(null);
-  const [phase, setPhase] = useState<"real" | "twin">("real");
-  const phaseRef = useRef<"real" | "twin">("real");
-  const twinT0 = useRef(0);
   const [scene, setScene] = useState<TwinSceneData | null>(null);
   const [traj, setTraj] = useState<TwinTrajectory | null>(null);
+  const [muted, setMuted] = useState(true); // browsers only autoplay muted; the button turns sound on
   useEffect(() => {
     if (!run) return;
     let alive = true;
@@ -205,47 +203,12 @@ function Hero({ run }: { run: RunMeta | null }) {
       alive = false;
     };
   }, [run]);
-  const go = (ph: "real" | "twin") => {
-    phaseRef.current = ph;
-    setPhase(ph);
-  };
+  // the robot follows the video's clock, scaled so its whole run spans the clip
   const timeSource = useCallback(() => {
-    if (phaseRef.current !== "twin" || !traj) return 0;
-    return Math.min(traj.duration_s, (performance.now() - twinT0.current) / 1000);
-  }, [traj]);
-  useEffect(() => {
     const v = vid.current;
-    if (!v || !run) return;
-    let timer = 0;
-    const start = () => Math.max(0, (v.duration || 13) - 6.2);
-    const onTime = () => {
-      const d = v.duration || 13;
-      if (phaseRef.current === "twin") return;
-      if (v.currentTime < start() - 0.5) v.currentTime = start();
-      if (v.currentTime >= d - 0.15 || v.ended) {
-        if (!traj) {
-          v.currentTime = start();
-          return;
-        }
-        // the robot's turn: play its whole run, hold the result a moment, then back to the video
-        v.pause();
-        twinT0.current = performance.now();
-        go("twin");
-        timer = window.setTimeout(() => {
-          go("real");
-          v.currentTime = start();
-          v.play().catch(() => undefined);
-        }, traj.duration_s * 1000 + 1800);
-      }
-    };
-    v.addEventListener("timeupdate", onTime);
-    v.addEventListener("ended", onTime);
-    return () => {
-      v.removeEventListener("timeupdate", onTime);
-      v.removeEventListener("ended", onTime);
-      window.clearTimeout(timer);
-    };
-  }, [run, traj]);
+    if (!v || !traj || !v.duration) return 0;
+    return (v.currentTime / v.duration) * traj.duration_s;
+  }, [traj]);
 
   if (!run)
     return (
@@ -253,50 +216,64 @@ function Hero({ run }: { run: RunMeta | null }) {
         <Spinner />
       </div>
     );
+  const pill = "rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white ring-1 ring-white/15 backdrop-blur";
   return (
-    <Link to={`/run/${run.run_id}`} className="group relative block" aria-label="Open the best run">
+    <div className="group relative">
       <div className="absolute -inset-3 rounded-[26px] bg-gradient-to-br from-sparkopen/20 via-transparent to-spark/20 opacity-70 blur-2xl" />
       <div className="panel relative overflow-hidden !rounded-[20px] p-0">
-        <div className="relative aspect-video bg-black">
-          <video
-            ref={vid}
-            src={artifactUrl(run.run_id, "artifacts/display.mp4")}
-            muted
-            autoPlay
-            playsInline
-            preload="auto"
-            onLoadedMetadata={(e) => {
-              e.currentTarget.currentTime = Math.max(0, e.currentTarget.duration - 6.2);
-            }}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          {scene && traj && (
-            // mounted from the start so the Panda's meshes are loaded when its turn comes
-            <div className="pointer-events-none absolute inset-0 bg-ink-900 transition-opacity duration-700" style={{ opacity: phase === "twin" ? 1 : 0 }}>
-              <Suspense fallback={null}>
+        <div className="grid grid-cols-1 gap-px bg-ink-700 sm:grid-cols-2">
+          <div className="relative aspect-video bg-black">
+            <video
+              ref={vid}
+              src={artifactUrl(run.run_id, "artifacts/display.mp4")}
+              muted={muted}
+              autoPlay
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <span className={`absolute left-3 top-3 ${pill}`}>You, once</span>
+            <button
+              type="button"
+              onClick={() => {
+                const v = vid.current;
+                if (v) {
+                  v.muted = !muted;
+                  v.play().catch(() => undefined);
+                }
+                setMuted(!muted);
+              }}
+              className={`absolute right-3 top-3 flex items-center gap-1.5 ${pill} transition hover:bg-black/75`}
+              aria-label={muted ? "Play with sound" : "Mute"}
+            >
+              <Icon name={muted ? "mute" : "sound"} size={13} /> {muted ? "Sound" : "On"}
+            </button>
+          </div>
+          <div className="pointer-events-none relative aspect-video bg-ink-900">
+            {scene && traj ? (
+              <Suspense fallback={<div className="flex h-full items-center justify-center"><Spinner /></div>}>
                 <TwinView runId={run.run_id} scene={scene} trajectory={traj} timeSource={timeSource} cameraMode="orbit" labels className="h-full w-full" />
               </Suspense>
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
-          <div className="absolute left-4 top-4 flex gap-1.5">
-            <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 transition ${phase === "real" ? "bg-white text-ink-900 ring-white" : "bg-black/40 text-white/70 ring-white/20"}`}>Real</span>
-            <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 transition ${phase === "twin" ? "bg-sparkopen text-ink-950 ring-sparkopen" : "bg-black/40 text-white/70 ring-white/20"}`}>Twin</span>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-            <div>
-              <div className="text-[16px] font-semibold text-white">{run.card?.title ?? run.title}</div>
-              <div className="mt-0.5 text-[12px] text-white/70">
-                {run.fixture ? "Synthetic fixture run (model calls simulated)" : `Replay of a recorded run (${istDate(run.created_at)})`}
-              </div>
-            </div>
-            <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[12px] font-semibold text-white ring-1 ring-white/20 backdrop-blur transition group-hover:bg-white/20">
-              <Icon name="play" size={11} /> Open mission control
-            </span>
+            ) : (
+              <div className="flex h-full items-center justify-center"><Spinner /></div>
+            )}
+            <span className={`absolute left-3 top-3 ${pill} !bg-sparkopen/90 !text-ink-950`}>The robot, learned</span>
           </div>
         </div>
+        <Link to={`/run/${run.run_id}`} className="flex items-center justify-between gap-3 px-4 py-3" aria-label="Open the best run">
+          <div className="min-w-0">
+            <div className="truncate text-[15px] font-semibold text-ink-50">{run.card?.title ?? run.title}</div>
+            <div className="mt-0.5 text-[12px] text-ink-400">
+              {run.fixture ? "Synthetic fixture run (model calls simulated)" : `Replay of a recorded run (${istDate(run.created_at)}) · simulated Franka Panda`}
+            </div>
+          </div>
+          <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[12px] font-semibold text-white ring-1 ring-white/20 transition group-hover:bg-white/20">
+            <Icon name="play" size={11} /> Open mission control
+          </span>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
 

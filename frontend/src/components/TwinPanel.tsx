@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, type ReactNode } from "react";
 import { artifactUrl } from "../lib/api";
 import type { CameraTrack, SimResult, TwinScene as TwinSceneData, TwinTrajectory } from "../lib/types";
 import { Icon } from "./Icon";
@@ -17,6 +17,7 @@ interface Props {
   rectified: string | null;
   timeSource: () => number | null;
   defaultCamera?: "orbit" | "real";
+  extra?: ReactNode; // more header controls (e.g. as-shown / corrected program)
 }
 
 export function TwinPanel(p: Props) {
@@ -25,6 +26,7 @@ export function TwinPanel(p: Props) {
   return (
     <div className="panel flex h-full min-h-0 flex-col overflow-hidden" data-testid="twin-panel">
       <PanelHeader icon={<Icon name="cube" size={15} />} title="Twin" sub={p.trajectoryLabel ?? (p.scene ? "digital twin, PyBullet" : undefined)}>
+        {p.extra}
         {p.result && (
           <Pill tone={p.result.goal_ok ? "ok" : "bad"}>
             <Icon name={p.result.goal_ok ? "check" : "x"} size={11} />

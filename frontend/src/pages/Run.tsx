@@ -86,7 +86,13 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
   const verify = useArtifact<Verification>(runId, announced("verify.json"));
   const stress = useArtifact<StressReport>(runId, announced("stress.json"));
   const card = useArtifact<SkillCard>(runId, announced("card.json"));
-  const trajArt = latestArtifact(view, "trajectory");
+  // after a spoken correction the newest program does the corrected task; next to the video the
+  // twin shows by default the program that does what the video shows (the one before the correction)
+  const correction = useArtifact<{ program_before: number; program_after: number }>(runId, announced("correction_1.json"));
+  const [corrected, setCorrected] = useState(false);
+  const latestTraj = latestArtifact(view, "trajectory");
+  const asShown = correction ? [...view.artifactList].reverse().find((a) => a.kind === "trajectory" && a.path.includes(`/demo_v${correction.program_before}/`)) : undefined;
+  const trajArt = correction && !corrected && asShown ? asShown : latestTraj;
   const traj = useArtifact<TwinTrajectory>(runId, trajArt?.path);
   const resultPath = trajArt ? trajArt.path.replace(/[^/]+$/, "result.json") : null;
   const simResult = useArtifact<SimResult>(runId, resultPath && index.has(resultPath) ? resultPath : null);
@@ -206,7 +212,19 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
               scene={scene}
               cameraTrack={cameraTrack}
               trajectory={traj}
-              trajectoryLabel={trajArt?.label ?? null}
+              trajectoryLabel={trajArt ? `${trajArt.label}${correction ? (trajArt === asShown ? " · as in your video" : " · after your correction") : ""}` : null}
+              extra={
+                correction && asShown ? (
+                  <Segmented
+                    value={corrected ? "after" : "shown"}
+                    onChange={(v) => setCorrected(v === "after")}
+                    options={[
+                      { value: "shown", label: "As shown", title: "The program that does what your video shows" },
+                      { value: "after", label: "Corrected", title: "The program after your spoken correction" },
+                    ]}
+                  />
+                ) : null
+              }
               result={simResult}
               rectified={rectified}
               timeSource={timeSource}
