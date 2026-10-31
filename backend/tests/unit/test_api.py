@@ -30,7 +30,9 @@ def test_runs_listing_detail_and_artifacts() -> None:
     detail = c.get("/api/runs/r-test").json()
     assert detail["artifacts"] == ["artifacts/taskspec.json"]
     assert c.get("/api/runs/r-test/artifacts/artifacts/taskspec.json").json() == {"summary": "x"}
-    assert c.get("/api/runs/r-test/artifacts/../../../../etc/passwd").status_code == 404
+    sneaky = c.get("/api/runs/r-test/artifacts/..%2F..%2F..%2F..%2Fetc%2Fpasswd")
+    assert sneaky.status_code == 404 and "root:" not in sneaky.text
+    assert "root:" not in c.get("/api/runs/r-test/artifacts/../../../../etc/passwd").text
     assert c.get("/api/runs/nope").status_code == 404
     assert len(c.get("/api/runs/r-test/events.json").json()) == 2
 

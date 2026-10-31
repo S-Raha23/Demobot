@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M5 Perceive + Ground (M4 done on synthetic, Sat Oct 31, 08:40 IST); frontend subagent building M11 in parallel
+**Now:** M7 Verify (fault-injection acceptance), then M8 supervisor. Frontend M11 core done (Sat 11:30 IST); its backend requests are listed below.
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -16,13 +16,13 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M2 | Simulation core and skill API | done | Sat 07:20 | 20 hand-written programs (4 × 5 families) pass on 3 random layouts each (60/60, 34 s). The guard rejects 20 malicious snippets. Twin trajectory validates against `TwinTrajectory`. Renders: top-down and camera-pose. 117 tests. |
 | M3 | Synthetic demo generator | done | Sat 07:30 | `synth/`: the human's real objects (white box, mug, teal pens, teal box cutter, glue bottle, tennis ball, steel spoon), Muse Image textures, a skin-toned hand with fingers, handheld shake, landscape 1280×720. 10 clips × 5 families with exact truth in `data/synth/set7` (`python -m synth.make_set --n 10 --seed 7`). 3 fixture runs baked for the UI. |
 | M4 | Listen + Watch + cross-watch | done on synthetic (live check waits for real clips) | Sat 08:40 | Spark 1.3 watch + Spark Open @ Modal cross-watch (video) + Wonder arbitration (decision events). Synthetic set: **goal correct on 9/10** (misses: a line-up with 3–7 cm nudges); cross-watch agreement mostly 1.0 once objects are aligned through step timing. `eval/understanding_synth.py`. Live: run on the 5 real clips, label them in `eval/labels/`. Listen: parser + language detection tested; `turns[]` timestamps still unconfirmed (no speech yet). |
-| M5 | Perceive + Ground | todo | | |
-| M6 | Coder (Wonder) + MVP gate | todo | | |
-| M7 | Verify (three ways + judge) | todo | | |
+| M5 | Perceive + Ground | done on synthetic (live check waits for real clips) | Sat 10:40 | Synthetic set: **median start error 0.60 cm, end error 0.47 cm** (< 2 cm). Weakness: SAM misses some featureless synthetic teal bars (real goal holds on 5/10); kind and "<colour> object" fallback phrases added. `eval/grounding_synth.py`. |
+| M6 | Coder (Wonder) + MVP gate | doing | | Stateless Wonder tool loop + 2 Spark Open drafts works live (syn7-00: submitted v2 in 3 turns, ~$0.10). Restart of the program stage = $0 new spend (verified). Live ≥ 4/5 needs real clips; run on more synthetic clips next. |
+| M7 | Verify (three ways + judge) | doing | | symbolic + real-world + perceptual (SAM on the sim render composited onto an inpainted clean plate of the real table) + Spark Open judge. syn7-00: three checks pass; the judge dissents over an untracked distractor (goes to the supervisor). |
 | M8 | Supervisor agent | todo | | |
 | M9 | Red team + hardening | todo | | |
 | M10 | Voice correction | todo | | |
-| M11 | Frontend | doing (subagent) | | Started Sat 07:40 on fixture runs + `docs/run-artifacts.md`. |
+| M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
 | M12 | Skill cards, library and export | todo | | |
 | M13 | Deploy judge mode | todo | | |
 | M14 | Eval, README, demo video | todo | | |
@@ -54,7 +54,8 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M5 Perceive + Ground: `perceive.py` (SAM 3.1 video per phrase, sequential, `meta_sam_parser`, alt-name retries, image mode on the reference frame, crops) and `ground.py` (per-frame H_t + parallax from `camera_track.json`, cleaning, motion segments, contacts, step matching, real-world check). Acceptance on synthetic: median start/end error < 2 cm (truth in `data/synth/set7/*/truth.json`; runs `data/runs/syn7-*` already have ingest→watch done; `demobot run <clip> --run-id syn7-<name>` resumes).
-2. Frontend subagent is building `frontend/` (M11). When it reports: review screenshots, integrate, make `make check` green including web-check, commit.
-3. When real clips arrive: calibrate (M1 live), run up to watch (M4 live), label them in `eval/labels/*.json`.
-4. The GitHub repo still needs creating by the human (HUMAN_TASKS.md); keep committing locally.
+1. M7: fault-injection acceptance (wrong target, wrong relation, missing step, wrong object, sim-only offset → correct failure class on ≥ 4/5), then mark done.
+2. M8 supervisor (Spark Open on Baseten, bounded tool loop; handles judge_dissent, perception_gap, spec_mismatch, program_bug).
+3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
+4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
+5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.

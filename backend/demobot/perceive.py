@@ -2,6 +2,7 @@
 (one phrase per request, sequentially), and segments the reference frame for the real final state
 (docs/04 §5)."""
 
+import base64
 import json
 import re
 from dataclasses import dataclass
@@ -124,7 +125,13 @@ async def sam_video(
 
 
 async def sam_image(ctx: RunContext, image: Path, phrase: str) -> list[Instance]:
-    url = "data:image/jpeg;base64," + __import__("base64").b64encode(image.read_bytes()).decode()
+    img = cv2.imread(str(image))
+    if img is None:
+        raise DemoBotError("MEDIA_ERROR", f"cannot read {image.name}", stage="perceive")
+    _, buf = cv2.imencode(
+        ".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 92]
+    )  # full size: pixel coords stay
+    url = "data:image/jpeg;base64," + base64.b64encode(buf.tobytes()).decode()
 
     async def call(timeout: float) -> tuple[Any, float, dict[str, Any]]:
         inp: Any = [{"role": "user", "content": [{"type": "input_text", "text": phrase},
@@ -138,7 +145,7 @@ async def sam_image(ctx: RunContext, image: Path, phrase: str) -> list[Instance]
 
     raw = await gateway.cached_call(
         ctx=ctx, purpose=f"segment_image:{phrase}", provider="meta", model=settings.model_sam,
-        request={"stage": "segment_image", "image": gateway.sha256_file(image), "phrase": phrase},
+        request={"stage": "segment_image", "image": gateway.sha256_file(image), "phrase": phrase, "enc": "jpeg92"},
         estimate_usd=0.01, call=call, validate=gateway.passthrough,
     )  # fmt: skip
     return parse_sam(raw["text"], "image").get(0, [])
@@ -211,6 +218,7 @@ async def perceive(
     for o in spec.objects:
         groups.setdefault(base_phrase(o.name), []).append(o.name)
     alts = {o.name: o.alt_names for o in spec.objects}
+    specs = {o.name: o for o in spec.objects}
     tracks: list[Track] = []
     for phrase, names in groups.items():
         tried = [phrase]
@@ -230,7 +238,13 @@ async def perceive(
                     bp = base_phrase(alt)
                     if bp not in tried and bp not in alt_phrases:
                         alt_phrases.append(bp)
-            for alt in alt_phrases[:3]:
+            # last resorts: the bare kind, then "<colour> object"
+            for nm in names:
+                so = specs[nm]
+                for bp in (so.kind.lower(), f"{so.color.lower()} object" if so.color else ""):
+                    if bp and bp not in tried and bp not in alt_phrases:
+                        alt_phrases.append(bp)
+            for alt in alt_phrases[:5]:
                 tried.append(alt)
                 ctx.emit(
                     "log",

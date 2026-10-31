@@ -7,6 +7,7 @@ frame is left-handed with z up; see docs/decisions.md). Yaw flips sign for the s
 import math
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Self
 
 import pybullet as p
@@ -251,6 +252,16 @@ def mass_kg(o: SceneObject) -> float:
 
 def _add_object(o: SceneObject, cid: int) -> int:
     col, vis = _shapes(o, cid)
+    body = _make_body(o, col, vis, cid)
+    if o.texture and Path(o.texture).is_file():  # the real object's top-down crop
+        tex = p.loadTexture(o.texture, physicsClientId=cid)
+        p.changeVisualShape(
+            body, -1, textureUniqueId=tex, rgbaColor=[1, 1, 1, 1], physicsClientId=cid
+        )
+    return body
+
+
+def _make_body(o: SceneObject, col: int, vis: int, cid: int) -> int:
     x, y = to_sim((o.x, o.y))
     body = p.createMultiBody(
         baseMass=0.0 if o.is_open else mass_kg(o),

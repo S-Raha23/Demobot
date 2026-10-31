@@ -14,7 +14,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from demobot import calibrate, ground, listen, media, perceive, watch
+from demobot import calibrate, ground, listen, media, perceive, verify, watch
 from demobot.config import settings
 from demobot.errors import DemoBotError
 from demobot.events import EventLog, RunContext
@@ -25,6 +25,7 @@ from demobot.schemas import (
     GroundedDemo,
     IngestInfo,
     Layout,
+    Program,
     TaskSpec,
     Track,
     Transcript,
@@ -260,6 +261,76 @@ async def stage_program(run: Run) -> str:
     return f"v{out.program.version} passes the demo ({how}, {out.turns} turns, {len(out.versions)} versions)"
 
 
+def latest_program(run: Run) -> Program:
+    programs = [
+        Program.model_validate(p) for p in json.loads((run.art / "programs.json").read_text())
+    ]
+    v = run.meta().get("program_version")
+    return next(p for p in programs if p.version == v) if v else programs[-1]
+
+
+def phrases(run: Run) -> dict[str, str]:
+    raw = json.loads((run.art / "tracks.json").read_text())
+    return {t["name"]: t["phrase"] for t in raw["tracks"]}
+
+
+async def stage_verify(run: Run) -> str:
+    spec = run.read("taskspec.json", TaskSpec)
+    gd = run.read("grounded.json", GroundedDemo)
+    cal = run.read("calibration.json", Calibration)
+    prog = latest_program(run)
+    layout = textured(run, repair(demo_layout(run))[0])
+    from demobot.program import sandbox
+
+    sim = await sandbox.simulate(
+        prog.code, layout, spec.goal, render=True, calibration_json=cal.model_dump_json()
+    )
+    sim = keep_sim(run, sim, "verify", prog.version)
+    ver, masks = await verify.verify(
+        run.ctx, run.dir, spec, gd, layout, sim, cal, phrases(run), prog.version
+    )
+    run.write("verify.json", ver)
+    (run.art / "verify_masks.json").write_text(json.dumps(masks))
+    run.artifact("verify", run.art / "verify.json", "json", "Three checks and a judge")
+    marks = {True: "✓", False: "✗"}
+    j = "–" if ver.judge is None else marks[ver.judge.same_goal_achieved]
+    summary = (f"symbolic {marks[ver.symbolic.ok]} real-world {marks[ver.real_world.ok]} "
+               f"perceptual {marks[ver.perceptual.ok]} judge {j}")  # fmt: skip
+    run.ctx.emit(
+        "metric",
+        "verify",
+        payload={"name": "verified", "value": ver.agree, "failure_class": ver.failure_class},
+    )
+    if not ver.agree:
+        raise DemoBotError("VERIFY_FAILED", f"{ver.failure_class}: {summary}", stage="verify")
+    return summary
+
+
+def textured(run: Run, layout: Layout) -> Layout:
+    """Absolute texture paths, so the sandbox can load the real crops."""
+    objs = [
+        o.model_copy(update={"texture": str(run.dir / o.texture)}) if o.texture else o
+        for o in layout.objects
+    ]
+    return layout.model_copy(update={"objects": objs})
+
+
+def keep_sim(run: Run, res: Any, tag: str, version: int) -> Any:
+    dest = run.art / "sim" / f"{tag}_v{version}"
+    dest.mkdir(parents=True, exist_ok=True)
+    renders = {}
+    for k, src in res.renders.items():
+        shutil.copy(src, dest / Path(src).name)
+        renders[k] = f"artifacts/sim/{dest.name}/{Path(src).name}"
+    twin = None
+    if res.twin_trajectory:
+        shutil.copy(res.twin_trajectory, dest / Path(res.twin_trajectory).name)
+        twin = f"artifacts/sim/{dest.name}/{Path(res.twin_trajectory).name}"
+    res = res.model_copy(update={"renders": renders, "twin_trajectory": twin})
+    (dest / "result.json").write_text(res.model_dump_json(indent=1))
+    return res
+
+
 StageFn = Callable[[Run], Awaitable[str]]
 STAGE_FNS: dict[str, StageFn] = {
     "ingest": stage_ingest,
@@ -270,6 +341,7 @@ STAGE_FNS: dict[str, StageFn] = {
     "ground": stage_ground,
     "twin_build": stage_twin_build,
     "program": stage_program,
+    "verify": stage_verify,
 }
 
 

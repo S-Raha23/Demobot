@@ -21,13 +21,22 @@ TOP_EYE_M = 8.0
 
 
 def _image(cid: int, w: int, h: int, view: list[float], proj: list[float]) -> np.ndarray:
-    _, _, rgb, _, _ = p.getCameraImage(
+    return _image_seg(cid, w, h, view, proj)[0]
+
+
+def _image_seg(
+    cid: int, w: int, h: int, view: list[float], proj: list[float]
+) -> tuple[np.ndarray, np.ndarray]:
+    """BGR image and the per-pixel body id (−1 = background)."""
+    _, _, rgb, _, seg = p.getCameraImage(
         w, h, view, proj, renderer=p.ER_TINY_RENDERER, shadow=1,
         lightDirection=[0.3, -0.4, 1.0], lightAmbientCoeff=0.55, lightDiffuseCoeff=0.5,
         lightSpecularCoeff=0.05, physicsClientId=cid,
     )  # fmt: skip
     arr = np.asarray(rgb, np.uint8).reshape(h, w, 4)[:, :, :3]
-    return cv2.cvtColor(arr, cv2.COLOR_RGB2BGR)
+    ids = np.asarray(seg).reshape(h, w)
+    ids = np.where(ids >= 0, ids & ((1 << 24) - 1), -1)
+    return cv2.cvtColor(arr, cv2.COLOR_RGB2BGR), ids
 
 
 def top_down(scene: Scene, frame: Rect, px_per_cm: float = TOP_PX_PER_CM) -> np.ndarray:
@@ -72,9 +81,12 @@ def camera_view(scene: Scene, cal: Calibration) -> np.ndarray:
     pos, orn = p.getBasePositionAndOrientation(scene.robot, physicsClientId=cid)
     p.resetBasePositionAndOrientation(scene.robot, [pos[0], pos[1], -50], orn, physicsClientId=cid)
     try:
-        return _image(cid, w, h, view, proj)
+        img, ids = _image_seg(cid, w, h, view, proj)
     finally:
         p.resetBasePositionAndOrientation(scene.robot, pos, orn, physicsClientId=cid)
+    bodies = [o.body for o in scene.objects.values()]
+    scene.last_object_mask = np.isin(ids, bodies)  # type: ignore[attr-defined]
+    return img
 
 
 def render_all(
@@ -88,4 +100,7 @@ def render_all(
         cam = out_dir / f"camera_{tag}.png"
         cv2.imwrite(str(cam), camera_view(scene, Calibration.model_validate_json(calibration_json)))
         out["camera"] = str(cam)
+        mask = out_dir / f"camera_mask_{tag}.png"
+        cv2.imwrite(str(mask), scene.last_object_mask.astype(np.uint8) * 255)  # type: ignore[attr-defined]
+        out["camera_mask"] = str(mask)
     return out

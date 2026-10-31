@@ -392,6 +392,17 @@ def _crops(gd: GroundedDemo, art: Path, cal: Calibration, cam: CameraTrack) -> N
         crop = rect[y0:y1, x0:x1]
         name = o.name.replace(" ", "_") + ".png"
         cv2.imwrite(str(art / "crops" / name), crop)
+        if o.is_open:  # a container's top-down crop is mostly its dark inside: keep a plain colour
+            continue
+        if min(o.w, o.d) < 3.0:  # a thin object's crop is mostly table: use its centre colour
+            ch, cw = crop.shape[:2]
+            centre = (
+                crop[ch // 2 - 1 : ch // 2 + 2, cw // 2 - 1 : cw // 2 + 2]
+                .reshape(-1, 3)
+                .mean(axis=0)
+            )
+            o.color = f"#{int(centre[2]):02x}{int(centre[1]):02x}{int(centre[0]):02x}"
+            continue
         mean = crop.reshape(-1, 3).mean(axis=0)
         o.texture = f"artifacts/crops/{name}"
         o.color = f"#{int(mean[2]):02x}{int(mean[1]):02x}{int(mean[0]):02x}"

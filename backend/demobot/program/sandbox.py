@@ -28,7 +28,7 @@ from demobot.schemas import GoalClause, Layout, SimResult
 from demobot.sim import constants as C
 from demobot.sim.scene import build_scene
 
-SIM_VERSION = "sim1"
+SIM_VERSION = "sim2"  # renders now include the object mask
 CPU_LIMIT_S = 20
 MEMORY_LIMIT_BYTES = 2 * 1024**3  # PyBullet + NumPy need more address space than 1 GB
 WALL_TIMEOUT_S = 90

@@ -39,7 +39,14 @@ def score(clip_dir: Path, run_dir: Path) -> dict[str, Any]:
         ee = math.dist((gf.x, gf.y), (t["final"]["x"], t["final"]["y"]))
         starts.append(es)
         ends.append(ee)
-        rows.append({"object": gi.name, "truth": tn, "start_err_cm": round(es, 2), "end_err_cm": round(ee, 2)})
+        rows.append(
+            {
+                "object": gi.name,
+                "truth": tn,
+                "start_err_cm": round(es, 2),
+                "end_err_cm": round(ee, 2),
+            }
+        )
     return {
         "clip": clip_dir.name,
         "start_err_median": round(float(np.median(starts)), 2) if starts else None,
@@ -59,7 +66,11 @@ async def main() -> None:
     ap.add_argument("--only", default="")
     ap.add_argument("--run", action="store_true", help="run the pipeline up to twin_build first")
     a = ap.parse_args()
-    dirs = [d for d in sorted(Path(a.set_dir).iterdir()) if (d / "truth.json").exists() and a.only in d.name]
+    dirs = [
+        d
+        for d in sorted(Path(a.set_dir).iterdir())
+        if (d / "truth.json").exists() and a.only in d.name
+    ]
     rows = []
     for d in dirs:  # sequential: SAM video jobs must not run in parallel
         rid = f"syn7-{d.name}"
