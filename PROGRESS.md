@@ -1,10 +1,10 @@
-PROJECT_STATUS: BLOCKED_ON_HUMAN
+PROJECT_STATUS: IN_PROGRESS
 
 # PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** everything Claude can do is done; waiting on the human for the deploy command, the new GitHub repo, and submission
+**Now:** frontier phase (docs/11): Gate 0, then Fix 0 → F1 → F2 → F3 → video/README v2
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -27,6 +27,21 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M13 | Deploy judge mode | done (https://soubhagyaraha24--demobot.modal.run; checked health, replays, Try-it) | | Hugging Face needs PRO ($9/mo) for Docker Spaces, so the target is a Modal ASGI endpoint (`deploy/modal_app.py`, ledger on a Modal Volume so caps survive restarts; `scripts/deploy_modal.py`). Dockerfile kept for portability. Judge mode: 429 when a provider's judge-daily headroom < $1; 2 uploads per visitor per day; 3 synthetic sample clips + 3 baked real runs. The auto-mode classifier refuses production deploys by Claude. |
 | M14 | Eval, README, demo video | done (video re-recorded on real-03) | | Synthetic eval in `eval/results.md`; README with numbers copied by `scripts/update_readme.py`; `scripts/record_demo.py` makes a 3:00 and a 30 s cut from the replay UI; `docs/submission-form.md`; history secret scan clean. |
 | S1–S3 | Stretch goals | — | | |
+
+### Frontier phase (docs/11-frontier.md, added Sat Oct 31 23:00 IST)
+
+| # | Milestone | Status | Latest (IST) | Done at | Acceptance test |
+| --- | --- | --- | --- | --- | --- |
+| G0 | Gate 0: baseline Definition of Done holds, tag `v1-submittable` | doing | before any feature | | Deployed site, README, `eval/results.md`, demo video v1, repo public, no secrets; tag pushed. |
+| F0 | Fix 0: the 17 live-site bugs | todo | before F1 | | Playwright over Home, one run page, Try-it for every skill, Costs; screenshots reviewed; all 17 items checked off below; affected runs rebaked; redeployed. |
+| F1 | Skill Forge (`FRONTIER_FORGE`) | todo | Sun Nov 1, 20:00 | | Synthetic: forges `push` and `rotate`, each ≥ 9/10 on fresh seeds, regression gate green. Real (when 06_push_box arrives): final program uses a forged skill, all checks pass, Toolkit shows it. |
+| F2 | Live Twin on open-weight SAM 3.1, Modal GPU (`FRONTIER_LIVE`) | todo | Mon Nov 2, 16:00 | | Live replay of clip_01: twin ≥ 2 Hz, median position error < 2.5 cm vs offline, "Run it now" completes. Human 5-min phone test. GPU spend ≤ $30. |
+| F3 | "Did you mean…?" (`FRONTIER_ASK`) | todo | Mon Nov 2, 23:00 | | On clip_02 or synthetic pens: ≥ 2 consistent hypotheses, a separating probe layout, cards render; "teal things" vs "pens" give different verified goals and programs; replay baked for judge mode. |
+| V2 | Video + README v2 | todo | Tue Nov 3, 18:00 | | Video ≤ 3:00 with Forge, Live, Did-you-mean moments; 30 s cut; README "Frontier features" with measured numbers and limitations. |
+
+**Fix 0 checklist** (docs/11, in order): 1 cutter tracked as pen · 2 Try-it wrong skill · 3 run header · 4 object registry names · 5 synthetic labels + real sample · 6 "Your turn" badge · 7 robot framing hero/top-down · 8 stand-in shapes + textures · 9 overlapping layouts · 10 label clutter · 11 red-team token cost · 12 judge latency · 13 build ledger box · 14 eval SHA · 15 open-weight labels · 16 "simulated prices" · 17 card aria-labels.
+
+**Frontier Definition of Done:** G0 tag pushed; F0 all 17 checked; F1–F3 acceptance tests pass (or their cut rules applied and recorded); each feature behind its flag and on in judge mode only after its acceptance test; GPU spend ≤ $30; video v2 and README v2 done; `make check` green; deployed; `v1-submittable` still intact.
 
 Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 

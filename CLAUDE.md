@@ -21,6 +21,7 @@ You are the sole engineer building **DemoBot ("Show it once")** for the Meta Glo
 | `docs/08-build-plan.md` | milestones, acceptance tests, schedule, cut list |
 | `docs/09-quality.md` | tests, fixtures, synthetic clips, evaluation, security |
 | `docs/10-submission.md` | README, demo video script, X post, submission checklist |
+| `docs/11-frontier.md` | frontier phase: Fix 0, Skill Forge, Live Twin, "Did you mean…?", gates, flags, cut rules |
 
 ## Deadlines (do not miss)
 
@@ -108,3 +109,9 @@ All milestones M0–M14 in `docs/08-build-plan.md` are done (stretch goals optio
 - the demo video is assembled (`media/demo/demo_final.mp4`);
 - the repo is public with no secrets;
 - `HUMAN_TASKS.md` lists only the final human steps (voiceover if wanted, submit form, X post).
+
+Frontier phase (`docs/11-frontier.md`), on top of the above:
+- tag `v1-submittable` pushed before any frontier work, and it stays a complete submission;
+- Fix 0 (17 items) done; F1 Skill Forge, F2 Live Twin, F3 "Did you mean…?" pass their acceptance tests (or their cut rules are applied and recorded), each behind its flag (`FRONTIER_FORGE`, `FRONTIER_LIVE`, `FRONTIER_ASK`);
+- Modal GPU spend ≤ $30;
+- video v2 and README v2 (frontier section with measured numbers) done; deployed.

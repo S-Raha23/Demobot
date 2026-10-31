@@ -72,6 +72,17 @@ Follow `PROMPT.md`.
 
 (Claude adds items here, newest first, with the date and why it is blocking.)
 
+- **Sat Oct 31 23:10 IST: frontier phase, 3 small tasks (not blocking; Claude builds with synthetic clips meanwhile).**
+  1. **Film 2 more clips (about 10 min, same setup as before):** landscape, handheld from the near edge, all 4 markers visible, only your arm in frame, wait 2 s before and after.
+     - `06_push_box.mp4`: **slide** the white box about 15 cm to the right with your fingertips. Don't lift it.
+     - `07_rotate_cutter.mp4`: **turn** the teal cutter 90° where it lies (pick it up, rotate, put it back in the same spot).
+     - Copy them by USB into `Downloads\demobot-print`, then in the VS Code terminal (change the source names):
+       `cp "/mnt/c/Users/soubh/Downloads/demobot-print/VID_XXXX.mp4" ~/The_Demobot/data/clips/raw/06_push_box.mp4`
+       `cp "/mnt/c/Users/soubh/Downloads/demobot-print/VID_YYYY.mp4" ~/The_Demobot/data/clips/raw/07_rotate_cutter.mp4`
+     - Then tell Claude: "06 and 07 are in data/clips/raw/."
+  2. **Accept the SAM 3.1 licence on Hugging Face (1 min, only if Claude asks):** open the model page Claude gives you while logged in and click **Agree / Request access**.
+  3. **Live phone test (5 min, when Claude asks):** open `/live` on the laptop, scan the QR code with your phone, allow the camera, point it at the table, move one object and watch the twin follow, then say or click "do it". Tell Claude what happened.
+
 - **Sat Oct 31 21:30 IST: the last steps (about 20 minutes).** Everything else is built and checked.
   1. Watch `media/demo/demo_final.mp4` (3:00) and `media/demo/demo_30s.mp4` (for X). Upload the 3:00 one to YouTube (unlisted).
   2. Redeploy once (`uv run python scripts/deploy_modal.py`) to pick up the last fix.

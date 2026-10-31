@@ -28,6 +28,19 @@ Each acceptance test runs offline unless marked **(live)**. Live tests use the h
 | — | **Freeze** | bug fixes only | | | **Wed 14:00** |
 | — | Submit buffer | the human submits; Claude prepares the form text | | | by Wed 22:00 |
 
+## Frontier phase (docs/11-frontier.md)
+
+| # | Milestone | Latest (IST) | Acceptance |
+| --- | --- | --- | --- |
+| G0 | Gate 0 | before features | baseline DoD holds; tag `v1-submittable` pushed |
+| F0 | Fix 0 (17 live-site bugs) | before F1 | Playwright over Home, a run page, Try-it for every skill, Costs; all 17 checked; rebake; redeploy |
+| F1 | Skill Forge | Sun Nov 1, 20:00 | `push` and `rotate` forged ≥ 9/10 on fresh seeds, regression gate green; real 06_push_box when it arrives |
+| F2 | Live Twin (open SAM 3.1 on Modal GPU) | Mon Nov 2, 16:00 | live replay of clip_01 ≥ 2 Hz, median error < 2.5 cm, "Run it now" completes; GPU ≤ $30 |
+| F3 | "Did you mean…?" | Mon Nov 2, 23:00 | ≥ 2 consistent hypotheses, separating probe, cards; two answers → two verified programs; baked replay |
+| V2 | Video + README v2 | Tue Nov 3, 18:00 | ≤ 3:00 with the three new moments; 30 s cut; README frontier section |
+
+Cut rules: docs/11 (F1 late → push only; F2 late → live replay only / API mode; F3 late → drop Muse Image cards).
+
 ## Stretch goals (start them as soon as M0–M14 are done, if there are at least 12 hours left before the freeze)
 
 - **S1 Imagined result:** Muse Image edits the start render into the predicted end state before the robot runs. It is shown beside the sim result, labelled "imagined".
