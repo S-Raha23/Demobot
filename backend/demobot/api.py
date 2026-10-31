@@ -34,6 +34,23 @@ app.add_middleware(
     CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_methods=["*"], allow_headers=["*"],
 )  # fmt: skip
+
+
+@app.middleware("http")
+async def cache_headers(request: Request, call_next: Any) -> Any:
+    """Files in the deployed image have a 1970 mtime, so without this browsers keep a stale page
+    for years: the page, the API and run artifacts are revalidated every time; Vite's hashed
+    bundles and the Panda meshes never change and are cached for a year."""
+    response = await call_next(request)
+    if "cache-control" not in response.headers:
+        path = request.url.path
+        hashed = path.startswith("/assets/") and not path.startswith("/assets/print/")
+        response.headers["cache-control"] = (
+            "public, max-age=31536000, immutable" if hashed else "no-cache"
+        )
+    return response
+
+
 BAKED = ROOT / "backend" / "tests" / "fixtures" / "runs"
 PANDA = Path(pybullet_data.getDataPath()) / "franka_panda"
 app.mount("/assets/franka_panda", StaticFiles(directory=PANDA), name="panda")

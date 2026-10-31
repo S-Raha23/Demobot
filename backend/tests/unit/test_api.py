@@ -97,3 +97,13 @@ def test_judge_mode_limits(monkeypatch) -> None:
     r = c.post("/api/runs", json={"sample": "x"})
     assert r.status_code == 429 and "Try-it" in r.text
     _ = api
+
+
+def test_page_is_revalidated_and_hashed_bundles_are_cached() -> None:
+    from fastapi.testclient import TestClient
+
+    from demobot.api import app
+
+    c = TestClient(app)
+    assert c.get("/api/health").headers["cache-control"] == "no-cache"
+    assert "immutable" in c.get("/assets/franka_panda/panda.urdf").headers["cache-control"]
