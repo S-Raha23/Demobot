@@ -1,0 +1,562 @@
+{
+ "program_version": 4,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "light blue box cutter",
+       "white glue bottle"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "light blue box cutter",
+     "white glue bottle"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 0.04,
+     "b_to_a_start_cm": 0.01
+    },
+    "detail": "light blue box cutter is 0.0 cm and white glue bottle 0.0 cm from each other's start"
+   }
+  ],
+  "detail": "the goal on the simulated final state",
+  "inconclusive": false
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "light blue box cutter",
+       "white glue bottle"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": false,
+    "code": "START_UNSEEN",
+    "objects": [
+     "light blue box cutter",
+     "white glue bottle"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 1.44,
+     "b_to_a_start_cm": 15.18
+    },
+    "detail": "light blue box cutter is 1.4 cm and white glue bottle 15.2 cm from each other's start; light blue box cutter was hidden at the start, so this is inconclusive"
+   }
+  ],
+  "detail": "the goal on your real final table, measured by SAM; an object's start was hidden, so this check is inconclusive",
+  "inconclusive": true
+ },
+ "perceptual": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "light blue box cutter",
+       "white glue bottle"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "light blue box cutter",
+     "white glue bottle"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 2.98,
+     "b_to_a_start_cm": 0.01
+    },
+    "detail": "light blue box cutter is 3.0 cm and white glue bottle 0.0 cm from each other's start (white glue bottle not seen by SAM in the render: inconclusive)"
+   }
+  ],
+  "detail": "SAM saw 2/5 stand-ins in the render; not every goal object was visible, so this check is inconclusive",
+  "inconclusive": true
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.93,
+  "differences": [],
+  "suspected_error": "none"
+ },
+ "agree": true,
+ "failure_class": null,
+ "accepted_caveat": null,
+ "masks": {
+  "real": [
+   {
+    "name": "light blue box cutter",
+    "poly_px": [
+     [
+      866.0,
+      342.0
+     ],
+     [
+      858.0,
+      353.0
+     ],
+     [
+      860.0,
+      362.0
+     ],
+     [
+      870.0,
+      374.0
+     ],
+     [
+      888.0,
+      425.0
+     ],
+     [
+      895.0,
+      431.0
+     ],
+     [
+      902.0,
+      431.0
+     ],
+     [
+      907.0,
+      427.0
+     ],
+     [
+      907.0,
+      418.0
+     ],
+     [
+      878.0,
+      343.0
+     ]
+    ]
+   },
+   {
+    "name": "white glue bottle",
+    "poly_px": [
+     [
+      402.0,
+      357.0
+     ],
+     [
+      399.0,
+      373.0
+     ],
+     [
+      400.0,
+      386.0
+     ],
+     [
+      403.0,
+      391.0
+     ],
+     [
+      402.0,
+      399.0
+     ],
+     [
+      408.0,
+      421.0
+     ],
+     [
+      414.0,
+      460.0
+     ],
+     [
+      421.0,
+      467.0
+     ],
+     [
+      435.0,
+      469.0
+     ],
+     [
+      443.0,
+      465.0
+     ],
+     [
+      444.0,
+      454.0
+     ],
+     [
+      431.0,
+      402.0
+     ],
+     [
+      417.0,
+      372.0
+     ],
+     [
+      406.0,
+      357.0
+     ]
+    ]
+   },
+   {
+    "name": "light blue pen",
+    "poly_px": [
+     [
+      539.0,
+      377.0
+     ],
+     [
+      536.0,
+      377.0
+     ],
+     [
+      534.0,
+      380.0
+     ],
+     [
+      529.0,
+      407.0
+     ],
+     [
+      521.0,
+      432.0
+     ],
+     [
+      518.0,
+      456.0
+     ],
+     [
+      515.0,
+      461.0
+     ],
+     [
+      515.0,
+      470.0
+     ],
+     [
+      517.0,
+      472.0
+     ],
+     [
+      524.0,
+      471.0
+     ],
+     [
+      530.0,
+      461.0
+     ],
+     [
+      541.0,
+      396.0
+     ],
+     [
+      541.0,
+      381.0
+     ]
+    ]
+   },
+   {
+    "name": "white plastic box",
+    "poly_px": [
+     [
+      780.0,
+      281.0
+     ],
+     [
+      765.0,
+      276.0
+     ],
+     [
+      746.0,
+      276.0
+     ],
+     [
+      641.0,
+      286.0
+     ],
+     [
+      629.0,
+      289.0
+     ],
+     [
+      618.0,
+      297.0
+     ],
+     [
+      612.0,
+      366.0
+     ],
+     [
+      615.0,
+      375.0
+     ],
+     [
+      625.0,
+      386.0
+     ],
+     [
+      627.0,
+      404.0
+     ],
+     [
+      638.0,
+      441.0
+     ],
+     [
+      646.0,
+      444.0
+     ],
+     [
+      688.0,
+      443.0
+     ],
+     [
+      717.0,
+      438.0
+     ],
+     [
+      746.0,
+      438.0
+     ],
+     [
+      779.0,
+      434.0
+     ],
+     [
+      789.0,
+      428.0
+     ],
+     [
+      794.0,
+      409.0
+     ],
+     [
+      791.0,
+      389.0
+     ],
+     [
+      794.0,
+      369.0
+     ],
+     [
+      801.0,
+      353.0
+     ],
+     [
+      801.0,
+      344.0
+     ],
+     [
+      789.0,
+      301.0
+     ]
+    ]
+   },
+   {
+    "name": "yellow tennis ball",
+    "poly_px": [
+     [
+      297.0,
+      379.0
+     ],
+     [
+      271.0,
+      380.0
+     ],
+     [
+      256.0,
+      389.0
+     ],
+     [
+      246.0,
+      402.0
+     ],
+     [
+      242.0,
+      416.0
+     ],
+     [
+      244.0,
+      430.0
+     ],
+     [
+      253.0,
+      445.0
+     ],
+     [
+      269.0,
+      456.0
+     ],
+     [
+      286.0,
+      459.0
+     ],
+     [
+      310.0,
+      453.0
+     ],
+     [
+      319.0,
+      446.0
+     ],
+     [
+      326.0,
+      433.0
+     ],
+     [
+      329.0,
+      412.0
+     ],
+     [
+      322.0,
+      394.0
+     ],
+     [
+      313.0,
+      385.0
+     ]
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "name": "light blue box cutter",
+    "poly_px": [
+     [
+      822.0,
+      329.0
+     ],
+     [
+      821.0,
+      337.0
+     ],
+     [
+      826.0,
+      343.0
+     ],
+     [
+      917.0,
+      405.0
+     ],
+     [
+      934.0,
+      399.0
+     ],
+     [
+      937.0,
+      396.0
+     ],
+     [
+      938.0,
+      388.0
+     ],
+     [
+      935.0,
+      384.0
+     ],
+     [
+      843.0,
+      324.0
+     ],
+     [
+      836.0,
+      323.0
+     ]
+    ]
+   },
+   {
+    "name": "white plastic box",
+    "poly_px": [
+     [
+      762.0,
+      226.0
+     ],
+     [
+      730.0,
+      227.0
+     ],
+     [
+      605.0,
+      240.0
+     ],
+     [
+      593.0,
+      243.0
+     ],
+     [
+      589.0,
+      270.0
+     ],
+     [
+      580.0,
+      398.0
+     ],
+     [
+      587.0,
+      445.0
+     ],
+     [
+      594.0,
+      479.0
+     ],
+     [
+      597.0,
+      484.0
+     ],
+     [
+      619.0,
+      484.0
+     ],
+     [
+      796.0,
+      468.0
+     ],
+     [
+      807.0,
+      465.0
+     ],
+     [
+      805.0,
+      372.0
+     ]
+    ]
+   }
+  ]
+ },
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/verify_v4/camera_demo.png",
+  "top": "artifacts/sim/verify_v4/top_demo.png",
+  "perceptual_input": "artifacts/sim/verify_v4/perceptual_input.jpg"
+ }
+}

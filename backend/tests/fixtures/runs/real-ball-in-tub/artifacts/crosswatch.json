@@ -1,0 +1,141 @@
+{
+ "primary": "Muse Spark 1.3 (video)",
+ "spec": {
+  "summary": "The person picked up the green ball from the left side of the table and placed it inside the white container in the center.",
+  "objects": [
+   {
+    "name": "lime green ball",
+    "kind": "ball",
+    "alt_names": [
+     "green tennis ball",
+     "yellow-green ball"
+    ],
+    "role": "moved",
+    "color": "lime green",
+    "est_height_cm": 6.5,
+    "est_size_cm": [
+     6.5,
+     6.5
+    ]
+   },
+   {
+    "name": "white container",
+    "kind": "container",
+    "alt_names": [
+     "white plastic box",
+     "white square tub"
+    ],
+    "role": "container",
+    "color": "white",
+    "est_height_cm": 7.0,
+    "est_size_cm": [
+     12.0,
+     12.0
+    ]
+   },
+   {
+    "name": "light blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "cyan pen",
+     "light turquoise pen"
+    ],
+    "role": "distractor",
+    "color": "light blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     14.0,
+     1.5
+    ]
+   },
+   {
+    "name": "blue mechanical pen",
+    "kind": "pen",
+    "alt_names": [
+     "darker blue pen",
+     "blue ballpoint pen"
+    ],
+    "role": "distractor",
+    "color": "blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     14.0,
+     1.5
+    ]
+   },
+   {
+    "name": "metal spoon",
+    "kind": "spoon",
+    "alt_names": [
+     "silver teaspoon",
+     "small steel spoon"
+    ],
+    "role": "distractor",
+    "color": "silver",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     13.0,
+     3.0
+    ]
+   },
+   {
+    "name": "small glue bottle",
+    "kind": "glue bottle",
+    "alt_names": [
+     "white correction bottle",
+     "small adhesive bottle"
+    ],
+    "role": "distractor",
+    "color": "white and blue",
+    "est_height_cm": 6.0,
+    "est_size_cm": [
+     2.0,
+     4.0
+    ]
+   }
+  ],
+  "steps": [
+   {
+    "action": "place_in",
+    "object": "lime green ball",
+    "target": "white container",
+    "relation": null,
+    "t_start": 0.1,
+    "t_end": 6.8,
+    "evidence": "hand grasps green ball on left and releases it inside white container in center"
+   }
+  ],
+  "goal": [
+   {
+    "quant": "the",
+    "select": {
+     "name": "lime green ball",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white container",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   }
+  ],
+  "generalization": "The green ball should be placed inside the white container wherever it starts on the table.",
+  "uncertainties": [
+   "Small white bottle on right could be glue, correction fluid or similar adhesive - labeled as glue bottle",
+   "Exact ball shade is lime/yellow-green described as green in narration",
+   "Container is a white translucent plastic tub, referred to as cup/container/box"
+  ]
+ },
+ "agreement": 1.0,
+ "agree": true,
+ "differences": [
+  "named differently (A / B): green ball / lime green ball, white box / white container, white glue bottle / small glue bottle, silver spoon / metal spoon, dark blue pen / blue mechanical pen"
+ ]
+}

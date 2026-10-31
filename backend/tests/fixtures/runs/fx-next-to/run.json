@@ -1,0 +1,9 @@
+{
+ "run_id": "fx-next-to",
+ "title": "Put the teal box cutter left of the white box.",
+ "created_at": "2026-10-31T09:02:13.085Z",
+ "source": "synthetic:01_next_to",
+ "mode": "replay",
+ "status": "done",
+ "fixture": true
+}

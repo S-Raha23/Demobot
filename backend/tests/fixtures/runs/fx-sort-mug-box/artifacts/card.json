@@ -1,0 +1,11 @@
+{
+ "skill_id": "fx-sort-mug-box",
+ "title": "Pens into the white mug, everything else into the white box",
+ "description": "Pens go in the mug; every other moved item goes in the box.",
+ "image": null,
+ "goal_text": "Pens into the white mug, everything else into the white box.",
+ "program_version": 2,
+ "robustness": 0.9166666666666666,
+ "cost_to_learn_usd": 0.6459,
+ "run_id": "fx-sort-mug-box"
+}

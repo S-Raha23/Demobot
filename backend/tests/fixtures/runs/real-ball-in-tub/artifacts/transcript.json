@@ -1,0 +1,15 @@
+{
+ "text": "green ball को cup के अंदर रख दिया",
+ "language": "Hindi",
+ "languages": [
+  "Hindi"
+ ],
+ "segments": [
+  {
+   "t0": 0.0,
+   "t1": 13.18,
+   "text": "green ball को cup के अंदर रख दिया"
+  }
+ ],
+ "source": "narration"
+}

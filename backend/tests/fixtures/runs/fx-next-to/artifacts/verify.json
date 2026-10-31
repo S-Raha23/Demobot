@@ -1,0 +1,132 @@
+{
+ "program_version": 2,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "teal box cutter",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "gap_cm": 2.39,
+     "lateral_cm": 1.01,
+     "lateral_limit_cm": 9.5
+    },
+    "detail": "teal box cutter left of white box"
+   }
+  ],
+  "detail": "goal on the simulated final state"
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "teal box cutter",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "gap_cm": 3.0,
+     "lateral_cm": 0.0,
+     "lateral_limit_cm": 9.5
+    },
+    "detail": "teal box cutter left of white box"
+   }
+  ],
+  "detail": "goal on your real final state"
+ },
+ "perceptual": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "teal box cutter",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "gap_cm": 2.39,
+     "lateral_cm": 1.01,
+     "lateral_limit_cm": 9.5
+    },
+    "detail": "teal box cutter left of white box"
+   }
+  ],
+  "detail": "SAM on the camera-view render (fixture: copied from symbolic)"
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.86,
+  "differences": [
+   "the stand-ins are simpler shapes"
+  ],
+  "suspected_error": ""
+ },
+ "agree": true,
+ "failure_class": null,
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/demo_v2/camera_demo.png",
+  "top": "artifacts/sim/demo_v2/top_demo.png"
+ }
+}

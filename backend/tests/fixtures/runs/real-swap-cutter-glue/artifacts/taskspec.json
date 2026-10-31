@@ -1,0 +1,134 @@
+{
+ "summary": "The person swapped the positions of the light blue box cutter and the white glue bottle using a free spot in front.",
+ "objects": [
+  {
+   "name": "light blue box cutter",
+   "kind": "box cutter",
+   "alt_names": [
+    "teal box cutter",
+    "light blue cutter"
+   ],
+   "role": "moved",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    13.0,
+    2.0
+   ]
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "alt_names": [
+    "white Fevicol bottle",
+    "small white glue"
+   ],
+   "role": "moved",
+   "color": "white",
+   "est_height_cm": 8.0,
+   "est_size_cm": [
+    3.0,
+    3.0
+   ]
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "blue ballpoint pen",
+    "cyan pen"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.5
+   ]
+  },
+  {
+   "name": "white plastic box",
+   "kind": "box",
+   "alt_names": [
+    "white Amul tub",
+    "white printed tub"
+   ],
+   "role": "distractor",
+   "color": "white",
+   "est_height_cm": 8.0,
+   "est_size_cm": [
+    16.0,
+    12.0
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "chartreuse ball",
+    "yellow-green tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_at",
+   "object": "light blue box cutter",
+   "target": null,
+   "relation": null,
+   "t_start": 0.0,
+   "t_end": 2.8,
+   "evidence": "dragged box cutter from center to front-center free spot"
+  },
+  {
+   "action": "place_at",
+   "object": "white glue bottle",
+   "target": null,
+   "relation": null,
+   "t_start": 3.5,
+   "t_end": 10.0,
+   "evidence": "carried glue bottle from right side to left side between tennis ball and pen, where cutter started"
+  },
+  {
+   "action": "place_at",
+   "object": "light blue box cutter",
+   "target": null,
+   "relation": null,
+   "t_start": 10.8,
+   "t_end": 14.5,
+   "evidence": "carried box cutter from front-center temp spot to right side where glue bottle started"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "pair",
+   "select": {
+    "name": null,
+    "kind": null,
+    "role": null,
+    "names": [
+     "light blue box cutter",
+     "white glue bottle"
+    ]
+   },
+   "pred": "swapped",
+   "target": null,
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Swap the positions of the light blue box cutter and the white glue bottle wherever they start, using a free spot as temporary holding.",
+ "uncertainties": [
+  "Only one stationary light-blue pen is visible in the keyframes, not two pens or two extra cutters; the moved cutter and stationary pen look similar and identity is supported by narration and handling.",
+  "Exact initial footprint of the box cutter was partly occluded by the hand at the start.",
+  "Size and height estimates are rough."
+ ]
+}

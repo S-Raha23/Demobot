@@ -1,0 +1,22 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    ref = scene.with_role(\"reference\")[0]\n    item = scene.with_role(\"moved\")[0]\n    robot.pick(item)\n    robot.place_next_to(ref, \"right_of\", gap=2)\n",
+  "explanation": "First draft from the TaskSpec.",
+  "author": "wonder",
+  "diff_from_parent": "",
+  "synthesis_trace_id": null,
+  "passed_demo": false
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def run(scene, robot):\n    ref = scene.with_role(\"reference\")[0]\n    item = scene.with_role(\"moved\")[0]\n    robot.pick(item)\n    robot.place_next_to(scene.get(ref.name), \"left_of\", gap=2.5)\n",
+  "explanation": "The draft placed it on the wrong side; the goal says left_of.",
+  "author": "wonder",
+  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -2,4 +2,4 @@\n     ref = scene.with_role(\"reference\")[0]\n     item = scene.with_role(\"moved\")[0]\n     robot.pick(item)\n-    robot.place_next_to(ref, \"right_of\", gap=2)\n+    robot.place_next_to(scene.get(ref.name), \"left_of\", gap=2.5)\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ }
+]

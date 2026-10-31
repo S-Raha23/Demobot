@@ -1,0 +1,645 @@
+{
+ "program_version": 2,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "right_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "left light blue pen",
+     "right light blue pen"
+    ],
+    "measured": {
+     "left light blue pen.gap_cm": 1.95,
+     "left light blue pen.lateral_cm": 0.02,
+     "left light blue pen.lateral_limit_cm": 15.63,
+     "right light blue pen.gap_cm": 6.62,
+     "right light blue pen.lateral_cm": 0.02,
+     "right light blue pen.lateral_limit_cm": 15.63
+    },
+    "detail": "every pen right of white box"
+   }
+  ],
+  "detail": "the goal on the simulated final state",
+  "inconclusive": false
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "right_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "left light blue pen",
+     "right light blue pen"
+    ],
+    "measured": {
+     "left light blue pen.gap_cm": 1.45,
+     "left light blue pen.lateral_cm": 1.75,
+     "left light blue pen.lateral_limit_cm": 15.63,
+     "right light blue pen.gap_cm": 3.31,
+     "right light blue pen.lateral_cm": 3.37,
+     "right light blue pen.lateral_limit_cm": 15.63
+    },
+    "detail": "every pen right of white box"
+   }
+  ],
+  "detail": "the goal on your real final table, measured by SAM",
+  "inconclusive": false
+ },
+ "perceptual": {
+  "ok": false,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "right_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": false,
+    "code": null,
+    "objects": [
+     "left light blue pen",
+     "right light blue pen"
+    ],
+    "measured": {
+     "left light blue pen.gap_cm": 3.59,
+     "left light blue pen.lateral_cm": 0.2,
+     "left light blue pen.lateral_limit_cm": 15.63,
+     "right light blue pen.gap_cm": 8.26,
+     "right light blue pen.lateral_cm": 0.2,
+     "right light blue pen.lateral_limit_cm": 15.63
+    },
+    "detail": "not right of white box: right light blue pen (left light blue pen, right light blue pen not seen by SAM in the render: inconclusive)"
+   }
+  ],
+  "detail": "SAM saw 2/6 stand-ins in the render",
+  "inconclusive": false
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.92,
+  "differences": [
+   "The two light blue pens are both to the right of the white box in both images, satisfying the goal; exact pen positions/rotations differ slightly",
+   "White glue bottle distractor is to the right of the box behind the pens in image 1 but to the left of the box in image 2",
+   "Yellow tennis ball and light blue spoon distractors are slightly offset in simulation but remain on the left side in both"
+  ],
+  "suspected_error": "none - both images show every pen to the right (viewer right / positive X) of the white box reference, simulator check is correct"
+ },
+ "agree": false,
+ "failure_class": "perception_gap",
+ "accepted_caveat": "Perceptual check inconclusive due to render detection failure (SAM saw 2/6, both light blue pens not tracked with ambiguous phrase), but real-world SAM measurement and judge (0.92) confirm both pens are right of white box.",
+ "masks": {
+  "real": [
+   {
+    "name": "left light blue pen",
+    "poly_px": [
+     [
+      792.0,
+      318.0
+     ],
+     [
+      788.0,
+      322.0
+     ],
+     [
+      786.0,
+      331.0
+     ],
+     [
+      788.0,
+      344.0
+     ],
+     [
+      799.0,
+      358.0
+     ],
+     [
+      802.0,
+      371.0
+     ],
+     [
+      828.0,
+      436.0
+     ],
+     [
+      832.0,
+      440.0
+     ],
+     [
+      838.0,
+      440.0
+     ],
+     [
+      842.0,
+      437.0
+     ],
+     [
+      838.0,
+      420.0
+     ],
+     [
+      820.0,
+      378.0
+     ],
+     [
+      800.0,
+      321.0
+     ],
+     [
+      797.0,
+      318.0
+     ]
+    ]
+   },
+   {
+    "name": "right light blue pen",
+    "poly_px": [
+     [
+      823.0,
+      335.0
+     ],
+     [
+      820.0,
+      340.0
+     ],
+     [
+      820.0,
+      349.0
+     ],
+     [
+      826.0,
+      361.0
+     ],
+     [
+      837.0,
+      396.0
+     ],
+     [
+      844.0,
+      409.0
+     ],
+     [
+      850.0,
+      432.0
+     ],
+     [
+      855.0,
+      439.0
+     ],
+     [
+      862.0,
+      440.0
+     ],
+     [
+      866.0,
+      436.0
+     ],
+     [
+      866.0,
+      431.0
+     ],
+     [
+      849.0,
+      382.0
+     ],
+     [
+      833.0,
+      343.0
+     ]
+    ]
+   },
+   {
+    "name": "white box",
+    "poly_px": [
+     [
+      749.0,
+      261.0
+     ],
+     [
+      737.0,
+      256.0
+     ],
+     [
+      721.0,
+      255.0
+     ],
+     [
+      606.0,
+      262.0
+     ],
+     [
+      588.0,
+      269.0
+     ],
+     [
+      583.0,
+      279.0
+     ],
+     [
+      579.0,
+      356.0
+     ],
+     [
+      582.0,
+      363.0
+     ],
+     [
+      592.0,
+      373.0
+     ],
+     [
+      595.0,
+      402.0
+     ],
+     [
+      601.0,
+      423.0
+     ],
+     [
+      604.0,
+      426.0
+     ],
+     [
+      618.0,
+      430.0
+     ],
+     [
+      745.0,
+      423.0
+     ],
+     [
+      753.0,
+      419.0
+     ],
+     [
+      758.0,
+      410.0
+     ],
+     [
+      760.0,
+      400.0
+     ],
+     [
+      758.0,
+      381.0
+     ],
+     [
+      762.0,
+      371.0
+     ],
+     [
+      763.0,
+      360.0
+     ],
+     [
+      770.0,
+      347.0
+     ],
+     [
+      770.0,
+      333.0
+     ],
+     [
+      757.0,
+      273.0
+     ]
+    ]
+   },
+   {
+    "name": "yellow tennis ball",
+    "poly_px": [
+     [
+      222.0,
+      350.0
+     ],
+     [
+      208.0,
+      358.0
+     ],
+     [
+      195.0,
+      376.0
+     ],
+     [
+      193.0,
+      395.0
+     ],
+     [
+      197.0,
+      406.0
+     ],
+     [
+      206.0,
+      420.0
+     ],
+     [
+      224.0,
+      430.0
+     ],
+     [
+      247.0,
+      431.0
+     ],
+     [
+      264.0,
+      425.0
+     ],
+     [
+      273.0,
+      417.0
+     ],
+     [
+      282.0,
+      400.0
+     ],
+     [
+      282.0,
+      380.0
+     ],
+     [
+      273.0,
+      362.0
+     ],
+     [
+      259.0,
+      352.0
+     ],
+     [
+      241.0,
+      348.0
+     ]
+    ]
+   },
+   {
+    "name": "light blue spoon",
+    "poly_px": [
+     [
+      393.0,
+      356.0
+     ],
+     [
+      382.0,
+      358.0
+     ],
+     [
+      371.0,
+      374.0
+     ],
+     [
+      370.0,
+      391.0
+     ],
+     [
+      352.0,
+      452.0
+     ],
+     [
+      352.0,
+      459.0
+     ],
+     [
+      354.0,
+      461.0
+     ],
+     [
+      366.0,
+      459.0
+     ],
+     [
+      373.0,
+      453.0
+     ],
+     [
+      396.0,
+      369.0
+     ],
+     [
+      396.0,
+      359.0
+     ]
+    ]
+   },
+   {
+    "name": "white glue bottle",
+    "poly_px": [
+     [
+      918.0,
+      259.0
+     ],
+     [
+      912.0,
+      259.0
+     ],
+     [
+      904.0,
+      276.0
+     ],
+     [
+      890.0,
+      360.0
+     ],
+     [
+      899.0,
+      366.0
+     ],
+     [
+      919.0,
+      364.0
+     ],
+     [
+      925.0,
+      356.0
+     ],
+     [
+      929.0,
+      299.0
+     ],
+     [
+      923.0,
+      290.0
+     ],
+     [
+      923.0,
+      273.0
+     ]
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "name": "white box",
+    "poly_px": [
+     [
+      731.0,
+      210.0
+     ],
+     [
+      562.0,
+      219.0
+     ],
+     [
+      558.0,
+      222.0
+     ],
+     [
+      540.0,
+      383.0
+     ],
+     [
+      543.0,
+      419.0
+     ],
+     [
+      553.0,
+      461.0
+     ],
+     [
+      680.0,
+      456.0
+     ],
+     [
+      758.0,
+      451.0
+     ],
+     [
+      763.0,
+      449.0
+     ],
+     [
+      764.0,
+      373.0
+     ],
+     [
+      760.0,
+      362.0
+     ],
+     [
+      756.0,
+      327.0
+     ],
+     [
+      751.0,
+      310.0
+     ],
+     [
+      751.0,
+      298.0
+     ],
+     [
+      745.0,
+      278.0
+     ],
+     [
+      735.0,
+      218.0
+     ]
+    ]
+   },
+   {
+    "name": "light blue spoon",
+    "poly_px": [
+     [
+      372.0,
+      347.0
+     ],
+     [
+      352.0,
+      348.0
+     ],
+     [
+      348.0,
+      352.0
+     ],
+     [
+      326.0,
+      429.0
+     ],
+     [
+      325.0,
+      443.0
+     ],
+     [
+      329.0,
+      447.0
+     ],
+     [
+      350.0,
+      446.0
+     ],
+     [
+      353.0,
+      443.0
+     ],
+     [
+      373.0,
+      363.0
+     ],
+     [
+      374.0,
+      353.0
+     ]
+    ]
+   }
+  ]
+ },
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/verify_v2/camera_demo.png",
+  "top": "artifacts/sim/verify_v2/top_demo.png",
+  "perceptual_input": "artifacts/sim/verify_v2/perceptual_input.jpg"
+ }
+}

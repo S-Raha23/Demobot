@@ -1,0 +1,328 @@
+{
+ "program_version": 2,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white mug",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal pen",
+     "teal pen 2"
+    ],
+    "measured": {
+     "teal pen.margin_cm": 0.66,
+     "teal pen.z_cm": 7.59,
+     "teal pen.below_rim": true,
+     "teal pen 2.margin_cm": 1.05,
+     "teal pen 2.z_cm": 7.36,
+     "teal pen 2.below_rim": true
+    },
+    "detail": "every pen inside white mug"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "box cutter",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "margin_cm": 5.5,
+     "z_cm": 7.95,
+     "below_rim": true
+    },
+    "detail": "every box cutter inside white box"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "glue bottle",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white glue bottle"
+    ],
+    "measured": {
+     "margin_cm": 1.79,
+     "z_cm": 4.95,
+     "below_rim": true
+    },
+    "detail": "every glue bottle inside white box"
+   }
+  ],
+  "detail": "goal on the simulated final state"
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white mug",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal pen",
+     "teal pen 2"
+    ],
+    "measured": {
+     "teal pen.margin_cm": 3.25,
+     "teal pen 2.margin_cm": 3.25
+    },
+    "detail": "every pen inside white mug"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "box cutter",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "margin_cm": 5.5
+    },
+    "detail": "every box cutter inside white box"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "glue bottle",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white glue bottle"
+    ],
+    "measured": {
+     "margin_cm": 5.5
+    },
+    "detail": "every glue bottle inside white box"
+   }
+  ],
+  "detail": "goal on your real final state"
+ },
+ "perceptual": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "pen",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white mug",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal pen",
+     "teal pen 2"
+    ],
+    "measured": {
+     "teal pen.margin_cm": 0.66,
+     "teal pen.z_cm": 7.59,
+     "teal pen.below_rim": true,
+     "teal pen 2.margin_cm": 1.05,
+     "teal pen 2.z_cm": 7.36,
+     "teal pen 2.below_rim": true
+    },
+    "detail": "every pen inside white mug"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "box cutter",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "teal box cutter"
+    ],
+    "measured": {
+     "margin_cm": 5.5,
+     "z_cm": 7.95,
+     "below_rim": true
+    },
+    "detail": "every box cutter inside white box"
+   },
+   {
+    "clause": {
+     "quant": "all",
+     "select": {
+      "name": null,
+      "kind": "glue bottle",
+      "role": null,
+      "names": null
+     },
+     "pred": "inside",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white glue bottle"
+    ],
+    "measured": {
+     "margin_cm": 1.79,
+     "z_cm": 4.95,
+     "below_rim": true
+    },
+    "detail": "every glue bottle inside white box"
+   }
+  ],
+  "detail": "SAM on the camera-view render (fixture: copied from symbolic)"
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.86,
+  "differences": [
+   "the stand-ins are simpler shapes"
+  ],
+  "suspected_error": ""
+ },
+ "agree": true,
+ "failure_class": null,
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/demo_v2/camera_demo.png",
+  "top": "artifacts/sim/demo_v2/top_demo.png"
+ }
+}

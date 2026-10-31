@@ -1,0 +1,229 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "demo",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 6.0,
+    "y": 6.0,
+    "yaw": 0.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.258
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.517
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 53.4,
+    "y": 16.0,
+    "yaw": 85.3
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.304
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "right light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.608
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 57.6,
+    "y": 16.0,
+    "yaw": 82.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.387
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 18.692
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 19.692
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 53.38,
+   "y": 15.97,
+   "z": 0.5,
+   "yaw": 85.2,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#4189a0",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 57.58,
+   "y": 15.97,
+   "z": 0.5,
+   "yaw": 81.9,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5c909a",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 42.63,
+   "y": 15.99,
+   "z": 3.55,
+   "yaw": 89.8,
+   "w": 25.2,
+   "d": 15.9,
+   "h": 7.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 7.72,
+   "y": 19.71,
+   "z": 3.35,
+   "yaw": -0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.5,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 17.88,
+   "y": 19.35,
+   "z": 0.5,
+   "yaw": 86.9,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5fbcc9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 6.01,
+   "y": 5.98,
+   "z": 4.5,
+   "yaw": 0.8,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 9.0,
+   "color": "#96918c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "left light blue pen",
+    "right light blue pen"
+   ],
+   "measured": {
+    "left light blue pen.gap_cm": 1.17,
+    "left light blue pen.lateral_cm": 0.02,
+    "left light blue pen.lateral_limit_cm": 15.63,
+    "right light blue pen.gap_cm": 5.12,
+    "right light blue pen.lateral_cm": 0.02,
+    "right light blue pen.lateral_limit_cm": 15.63
+   },
+   "detail": "every pen right of white box"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/demo_v13/top_demo.png",
+  "camera": "artifacts/sim/demo_v13/camera_demo.png",
+  "camera_mask": "artifacts/sim/demo_v13/camera_mask_demo.png"
+ },
+ "twin_trajectory": "artifacts/sim/demo_v13/twin_demo.json",
+ "duration_s": 21.19,
+ "wall_s": 0.85
+}

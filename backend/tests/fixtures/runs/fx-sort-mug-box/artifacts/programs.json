@@ -1,0 +1,22 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    box = scene.of_kind(\"box\")[0]\n    for item in scene.with_role(\"moved\"):\n        robot.pick(item)\n        robot.place_in(box)\n",
+  "explanation": "First draft from the TaskSpec.",
+  "author": "wonder",
+  "diff_from_parent": "",
+  "synthesis_trace_id": null,
+  "passed_demo": false
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def run(scene, robot):\n    mug = scene.of_kind(\"mug\")[0]\n    box = scene.of_kind(\"box\")[0]\n    for item in scene.with_role(\"moved\"):\n        robot.pick(item)\n        robot.place_in(mug if item.kind == \"pen\" else box)\n",
+  "explanation": "The draft put everything in the box; pens belong in the mug.",
+  "author": "wonder",
+  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -1,5 +1,6 @@\n def run(scene, robot):\n+    mug = scene.of_kind(\"mug\")[0]\n     box = scene.of_kind(\"box\")[0]\n     for item in scene.with_role(\"moved\"):\n         robot.pick(item)\n-        robot.place_in(box)\n+        robot.place_in(mug if item.kind == \"pen\" else box)\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ }
+]

@@ -1,0 +1,11 @@
+{
+ "skill_id": "real-swap-cutter-glue",
+ "title": "Swap the light blue box cutter and the white glue bottle",
+ "description": "Swap the positions of the light blue box cutter and the white glue bottle wherever they start, using a free spot as temporary holding.",
+ "image": "artifacts/card.png",
+ "goal_text": "light blue box cutter and white glue bottle have swapped places",
+ "program_version": 11,
+ "robustness": 0.667,
+ "cost_to_learn_usd": 1.4761,
+ "run_id": "real-swap-cutter-glue"
+}

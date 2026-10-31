@@ -1,0 +1,104 @@
+{
+ "submitted": true,
+ "turns": 2,
+ "winner": "spark-open-draft",
+ "drafts": [
+  {
+   "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(scene.get(tub.name))",
+   "explanation": "Picks every pen by kind and places it inside the white plastic tub, skipping any already inside.",
+   "i": 0,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  },
+  {
+   "code": "def run(scene, robot):\n    tub = scene.containers()[0]\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(tub)\n",
+   "explanation": "Move every pen into the white plastic tub, skipping any already inside.",
+   "i": 1,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  }
+ ],
+ "trace": [
+  {
+   "turn": 1,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 2,
+   "calls": [
+    "submit"
+   ]
+  }
+ ],
+ "results": {
+  "v1:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "all pen inside white plastic tub",
+     "holds": true,
+     "detail": "every pen inside white plastic tub"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=left blue pen)",
+    "place_in(container=white plastic tub)",
+    "pick(object=right blue pen)",
+    "place_in(container=white plastic tub)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "left blue pen",
+     "x": 43.62,
+     "y": 16.07,
+     "z": 0.95
+    },
+    {
+     "name": "right blue pen",
+     "x": 50.1,
+     "y": 16.55,
+     "z": 0.95
+    },
+    {
+     "name": "white plastic tub",
+     "x": 43.64,
+     "y": 16.08,
+     "z": 3.05
+    },
+    {
+     "name": "yellow tennis ball",
+     "x": 8.95,
+     "y": 17.04,
+     "z": 3.3
+    },
+    {
+     "name": "light blue pen cap",
+     "x": 62.27,
+     "y": 11.36,
+     "z": 0.75
+    },
+    {
+     "name": "steel spoon",
+     "x": 56.61,
+     "y": 22.41,
+     "z": 0.5
+    },
+    {
+     "name": "small glue bottle",
+     "x": 62.18,
+     "y": 17.15,
+     "z": 1.0
+    }
+   ],
+   "logs": []
+  }
+ }
+}

@@ -1,0 +1,104 @@
+{
+ "summary": "The person swapped the positions of the gray block and the teal ridged block on the table.",
+ "objects": [
+  {
+   "name": "teal stick",
+   "kind": "stick",
+   "alt_names": [
+    "thin teal bar",
+    "left teal stick"
+   ],
+   "role": "distractor",
+   "color": "teal",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    8.0,
+    1.0
+   ]
+  },
+  {
+   "name": "teal ridged block",
+   "kind": "block",
+   "alt_names": [
+    "textured teal bar",
+    "right teal block"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    9.0,
+    2.0
+   ]
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "alt_names": [
+    "grey rectangular block",
+    "gray bar"
+   ],
+   "role": "moved",
+   "color": "gray",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    8.0,
+    2.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_at",
+   "object": "teal ridged block",
+   "target": null,
+   "relation": null,
+   "t_start": 2.5,
+   "t_end": 6.2,
+   "evidence": "picked up right ridged block to upper free spot"
+  },
+  {
+   "action": "place_at",
+   "object": "gray block",
+   "target": null,
+   "relation": null,
+   "t_start": 6.5,
+   "t_end": 9.7,
+   "evidence": "moved middle gray block to right side"
+  },
+  {
+   "action": "place_at",
+   "object": "teal ridged block",
+   "target": null,
+   "relation": null,
+   "t_start": 10.2,
+   "t_end": 13.9,
+   "evidence": "moved ridged block down to middle spot"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "pair",
+   "select": {
+    "name": null,
+    "kind": null,
+    "role": null,
+    "names": [
+     "teal ridged block",
+     "gray block"
+    ]
+   },
+   "pred": "swapped",
+   "target": null,
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Swap the gray block and the teal ridged block so each ends up where the other started, leaving any other objects untouched.",
+ "uncertainties": [
+  "Exact t_start and t_end times are approximate from sparse frames.",
+  "Estimated footprint and height dimensions are approximate.",
+  "Thin teal stick never moves and is treated as distractor; whether it is same kind as blocks is unclear."
+ ]
+}

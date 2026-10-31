@@ -1,0 +1,11 @@
+{
+ "skill_id": "fx-pens-in-box",
+ "title": "Put both pens into the white mug",
+ "description": "Every pen goes into the container, wherever it starts.",
+ "image": null,
+ "goal_text": "Put both pens into the white mug.",
+ "program_version": 2,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 0.5088,
+ "run_id": "fx-pens-in-box"
+}

@@ -1,0 +1,72 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "Put every pen (by kind, so the pen cap is excluded) into the named white plastic tub, skipping any already inside.",
+  "author": "wonder",
+  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,7 @@\n+def run(scene, robot):\n+    tub = scene.get(\"white plastic tub\")\n+    for pen in scene.of_kind(\"pen\"):\n+        if scene.is_inside(pen, tub):\n+            continue\n+        robot.pick(scene.get(pen.name))\n+        robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, tub):\n            continue\n        robot.pick(scene.get(pen.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "",
+  "author": "wonder-harden",
+  "diff_from_parent": "",
+  "synthesis_trace_id": null,
+  "passed_demo": false
+ },
+ {
+  "version": 3,
+  "parent_version": 2,
+  "code": "def run(scene, robot):\n    for o in scene.objects():\n        log(f\"{o.name} kind={o.kind} role={o.role} x={o.x} y={o.y} w={o.w} d={o.d} h={o.h}\")\n    log(f\"bounds={scene.bounds()}\")\n",
+  "explanation": "",
+  "author": "wonder-harden",
+  "diff_from_parent": "--- v2.py\n+++ v3.py\n@@ -1,7 +1,4 @@\n def run(scene, robot):\n-    tub = scene.get(\"white plastic tub\")\n-    for pen in scene.of_kind(\"pen\"):\n-        if scene.is_inside(pen, tub):\n-            continue\n-        robot.pick(scene.get(pen.name))\n-        robot.place_in(scene.get(tub.name))\n+    for o in scene.objects():\n+        log(f\"{o.name} kind={o.kind} role={o.role} x={o.x} y={o.y} w={o.w} d={o.d} h={o.h}\")\n+    log(f\"bounds={scene.bounds()}\")\n",
+  "synthesis_trace_id": null,
+  "passed_demo": false
+ },
+ {
+  "version": 4,
+  "parent_version": 3,
+  "code": "def blockers_around(scene, cx, cy, skip):\n    out = []\n    for o in scene.objects():\n        if o.name in skip or o.kind == \"pen\" or o.role == \"container\":\n            continue\n        if abs(o.x - cx) < o.w / 2 + 5 and abs(o.y - cy) < o.d / 2 + 5:\n            out.append(o.name)\n    return out\n\n\ndef run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for pen in scene.of_kind(\"pen\"):\n        pen = scene.get(pen.name)\n        tub = scene.get(tub.name)\n        if scene.is_inside(pen, tub):\n            continue\n        skip = [pen.name, tub.name]\n        names = blockers_around(scene, pen.x, pen.y, skip)\n        for n in blockers_around(scene, tub.x, tub.y, skip):\n            if n not in names:\n                names.append(n)\n        for n in names:\n            b = scene.get(n)\n            pen = scene.get(pen.name)\n            tub = scene.get(tub.name)\n            robot.move(b, *scene.free_spot(size=(b.w, b.d), clearance=3, avoid=[(pen.x, pen.y, 18, 18), (tub.x, tub.y, tub.w + 8, tub.d + 8)]))\n        robot.pick(scene.get(pen.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "Puts every pen into the white plastic tub, first relocating any non-pen objects close enough to the pen or tub to collide with the gripper to a clear free spot away from both.",
+  "author": "wonder-harden",
+  "diff_from_parent": "--- v3.py\n+++ v4.py\n@@ -1,4 +1,29 @@\n+def blockers_around(scene, cx, cy, skip):\n+    out = []\n+    for o in scene.objects():\n+        if o.name in skip or o.kind == \"pen\" or o.role == \"container\":\n+            continue\n+        if abs(o.x - cx) < o.w / 2 + 5 and abs(o.y - cy) < o.d / 2 + 5:\n+            out.append(o.name)\n+    return out\n+\n+\n def run(scene, robot):\n-    for o in scene.objects():\n-        log(f\"{o.name} kind={o.kind} role={o.role} x={o.x} y={o.y} w={o.w} d={o.d} h={o.h}\")\n-    log(f\"bounds={scene.bounds()}\")\n+    tub = scene.get(\"white plastic tub\")\n+    for pen in scene.of_kind(\"pen\"):\n+        pen = scene.get(pen.name)\n+        tub = scene.get(tub.name)\n+        if scene.is_inside(pen, tub):\n+            continue\n+        skip = [pen.name, tub.name]\n+        names = blockers_around(scene, pen.x, pen.y, skip)\n+        for n in blockers_around(scene, tub.x, tub.y, skip):\n+            if n not in names:\n+                names.append(n)\n+        for n in names:\n+            b = scene.get(n)\n+            pen = scene.get(pen.name)\n+            tub = scene.get(tub.name)\n+            robot.move(b, *scene.free_spot(size=(b.w, b.d), clearance=3, avoid=[(pen.x, pen.y, 18, 18), (tub.x, tub.y, tub.w + 8, tub.d + 8)]))\n+        robot.pick(scene.get(pen.name))\n+        robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 5,
+  "parent_version": 4,
+  "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    for ball in scene.of_kind(\"tennis ball\"):\n        if scene.is_inside(ball, tub):\n            continue\n        robot.pick(scene.get(ball.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "",
+  "author": "wonder-correction",
+  "diff_from_parent": "--- v4.py\n+++ v5.py\n@@ -1,7 +1,7 @@\n def run(scene, robot):\n     tub = scene.get(\"white plastic tub\")\n-    for pen in scene.of_kind(\"pen\"):\n-        if scene.is_inside(pen, tub):\n+    for ball in scene.of_kind(\"tennis ball\"):\n+        if scene.is_inside(ball, tub):\n             continue\n-        robot.pick(scene.get(pen.name))\n+        robot.pick(scene.get(ball.name))\n         robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 6,
+  "parent_version": 5,
+  "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    balls = [b for b in scene.of_kind(\"tennis ball\") if not scene.is_inside(b, tub)]\n    if balls:\n        x0, y0, x1, y1 = scene.bounds()\n        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2\n        if abs(tub.x - cx) > 15 or abs(tub.y - cy) > 8 or not robot.can_reach(tub.x, tub.y):\n            spot = scene.free_spot(size=(tub.w, tub.d), clearance=2)\n            robot.move(scene.get(tub.name), spot[0], spot[1])\n            tub = scene.get(tub.name)\n    for ball in balls:\n        if scene.is_inside(scene.get(ball.name), scene.get(tub.name)):\n            continue\n        robot.pick(scene.get(ball.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "",
+  "author": "wonder-correction",
+  "diff_from_parent": "--- v5.py\n+++ v6.py\n@@ -1,7 +1,15 @@\n def run(scene, robot):\n     tub = scene.get(\"white plastic tub\")\n-    for ball in scene.of_kind(\"tennis ball\"):\n-        if scene.is_inside(ball, tub):\n+    balls = [b for b in scene.of_kind(\"tennis ball\") if not scene.is_inside(b, tub)]\n+    if balls:\n+        x0, y0, x1, y1 = scene.bounds()\n+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2\n+        if abs(tub.x - cx) > 15 or abs(tub.y - cy) > 8 or not robot.can_reach(tub.x, tub.y):\n+            spot = scene.free_spot(size=(tub.w, tub.d), clearance=2)\n+            robot.move(scene.get(tub.name), spot[0], spot[1])\n+            tub = scene.get(tub.name)\n+    for ball in balls:\n+        if scene.is_inside(scene.get(ball.name), scene.get(tub.name)):\n             continue\n         robot.pick(scene.get(ball.name))\n         robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 7,
+  "parent_version": 6,
+  "code": "def run(scene, robot):\n    tub = scene.get(\"white plastic tub\")\n    balls = [b for b in scene.of_kind(\"tennis ball\") if not scene.is_inside(b, tub)]\n    if balls:\n        x0, y0, x1, y1 = scene.bounds()\n        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2\n        if abs(tub.x - cx) > 15 or abs(tub.y - cy) > 8 or not robot.can_reach(tub.x, tub.y):\n            tx = min(max(tub.x, cx - 10), cx + 10)\n            ty = min(max(tub.y, cy - 6), cy + 6)\n            for o in scene.objects():\n                if o.name == tub.name:\n                    continue\n                if abs(o.x - tx) < (o.w + tub.w) / 2 + 2 and abs(o.y - ty) < (o.d + tub.d) / 2 + 2:\n                    robot.move(scene.get(o.name), *scene.free_spot(size=(o.w, o.d), clearance=2, avoid=[(tx, ty, tub.w + 4, tub.d + 4)]))\n            robot.move(scene.get(tub.name), tx, ty)\n    for ball in balls:\n        if scene.is_inside(scene.get(ball.name), scene.get(tub.name)):\n            continue\n        robot.pick(scene.get(ball.name))\n        robot.place_in(scene.get(tub.name))\n",
+  "explanation": "",
+  "author": "wonder-correction",
+  "diff_from_parent": "--- v6.py\n+++ v7.py\n@@ -5,9 +5,14 @@\n         x0, y0, x1, y1 = scene.bounds()\n         cx, cy = (x0 + x1) / 2, (y0 + y1) / 2\n         if abs(tub.x - cx) > 15 or abs(tub.y - cy) > 8 or not robot.can_reach(tub.x, tub.y):\n-            spot = scene.free_spot(size=(tub.w, tub.d), clearance=2)\n-            robot.move(scene.get(tub.name), spot[0], spot[1])\n-            tub = scene.get(tub.name)\n+            tx = min(max(tub.x, cx - 10), cx + 10)\n+            ty = min(max(tub.y, cy - 6), cy + 6)\n+            for o in scene.objects():\n+                if o.name == tub.name:\n+                    continue\n+                if abs(o.x - tx) < (o.w + tub.w) / 2 + 2 and abs(o.y - ty) < (o.d + tub.d) / 2 + 2:\n+                    robot.move(scene.get(o.name), *scene.free_spot(size=(o.w, o.d), clearance=2, avoid=[(tx, ty, tub.w + 4, tub.d + 4)]))\n+            robot.move(scene.get(tub.name), tx, ty)\n     for ball in balls:\n         if scene.is_inside(scene.get(ball.name), scene.get(tub.name)):\n             continue\n",
+  "synthesis_trace_id": null,
+  "passed_demo": false
+ }
+]

@@ -1,0 +1,16 @@
+{
+ "run_id": "real-pens-right-of-tub",
+ "title": "Put the green ball in the tub (corrected by voice; demo: Put every pen right of the white box)",
+ "created_at": "2026-10-31T14:02:05Z",
+ "source": "clip_04.mp4",
+ "mode": "dev",
+ "status": "done",
+ "fixture": false,
+ "program_version": 15,
+ "supervised": true,
+ "caveat": "Perceptual check inconclusive due to render detection failure (SAM saw 2/6, both light blue pens not tracked with ambiguous phrase), but real-world SAM measurement and judge (0.92) confirm both pens are right of white box.",
+ "caveat_program": 2,
+ "cost_usd": 2.6603,
+ "baked_from": "real-04",
+ "note": "real model calls on a real handheld phone clip"
+}

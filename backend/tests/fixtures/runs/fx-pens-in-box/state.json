@@ -1,0 +1,17 @@
+{
+ "cursor": "card",
+ "stages": {
+  "ingest": "done",
+  "calibrate": "done",
+  "listen": "done",
+  "watch": "done",
+  "perceive": "done",
+  "ground": "done",
+  "twin_build": "done",
+  "program": "done",
+  "verify": "done",
+  "stress": "done",
+  "harden": "skipped",
+  "card": "done"
+ }
+}

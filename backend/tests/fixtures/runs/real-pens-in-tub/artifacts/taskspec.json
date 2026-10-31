@@ -1,0 +1,157 @@
+{
+ "summary": "Put the green ball in the tub",
+ "objects": [
+  {
+   "name": "left blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "light blue ballpoint pen",
+    "slim blue writing pen"
+   ],
+   "role": "moved",
+   "color": "blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  },
+  {
+   "name": "right blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "blue ink pen",
+    "second slim blue pen"
+   ],
+   "role": "moved",
+   "color": "blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  },
+  {
+   "name": "white plastic tub",
+   "kind": "tub",
+   "alt_names": [
+    "white plastic box",
+    "small white container"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 6.0,
+   "est_size_cm": [
+    12.0,
+    10.0
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "neon green ball",
+    "fuzzy tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow-green",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  },
+  {
+   "name": "light blue pen cap",
+   "kind": "pen cap",
+   "alt_names": [
+    "blue cap",
+    "small light blue cap"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    6.0,
+    1.5
+   ]
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "alt_names": [
+    "metal teaspoon",
+    "silver spoon"
+   ],
+   "role": "distractor",
+   "color": "silver",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    12.0,
+    3.0
+   ]
+  },
+  {
+   "name": "small glue bottle",
+   "kind": "glue bottle",
+   "alt_names": [
+    "adhesive bottle",
+    "white glue tube"
+   ],
+   "role": "distractor",
+   "color": "white",
+   "est_height_cm": 2.0,
+   "est_size_cm": [
+    7.0,
+    2.5
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "left blue pen",
+   "target": "white plastic tub",
+   "relation": null,
+   "t_start": 2.2,
+   "t_end": 7.2,
+   "evidence": "hand gathers blue pen and drops it in tub"
+  },
+  {
+   "action": "place_in",
+   "object": "right blue pen",
+   "target": "white plastic tub",
+   "relation": null,
+   "t_start": 3.0,
+   "t_end": 8.6,
+   "evidence": "hand releases second blue pen inside tub"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "all",
+   "select": {
+    "name": null,
+    "kind": "tennis ball",
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white plastic tub",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "put the green ball in the tub, wherever things start.",
+ "uncertainties": [
+  "The light-blue object left on the table looks like a pen cap but could be a third pen; classified as pen cap distractor with different kind.",
+  "Both pens appear to be grasped together and released together in the tub, so individual start/end times are approximate and overlapping.",
+  "Exact footprints and heights are estimated from video."
+ ]
+}

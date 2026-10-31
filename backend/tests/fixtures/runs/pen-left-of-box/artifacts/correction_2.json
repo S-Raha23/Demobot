@@ -1,0 +1,48 @@
+{
+ "n": 2,
+ "transcript": {
+  "text": "no, the pen goes to the left of the box instead.",
+  "language": "English",
+  "languages": [
+   "English"
+  ],
+  "segments": [
+   {
+    "t0": 0.0,
+    "t1": 3.61,
+    "text": "no, the pen goes to the left of the box instead."
+   }
+  ],
+  "source": "correction"
+ },
+ "gloss": "The back teal pen goes to the left of the white box instead of the right.",
+ "program_before": 6,
+ "program_after": 7,
+ "goal_before": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "back teal pen"
+   },
+   "pred": "right_of",
+   "target": {
+    "name": "white box"
+   }
+  }
+ ],
+ "goal_after": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "back teal pen"
+   },
+   "pred": "left_of",
+   "target": {
+    "name": "white box"
+   }
+  }
+ ],
+ "demo_passes": true,
+ "stress_passed": "12/12",
+ "real_world": "superseded: the correction changes the goal the demo showed"
+}

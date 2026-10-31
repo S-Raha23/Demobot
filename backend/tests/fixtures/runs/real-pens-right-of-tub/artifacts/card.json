@@ -1,0 +1,11 @@
+{
+ "skill_id": "real-pens-right-of-tub",
+ "title": "Put every pen right of the white box",
+ "description": "Every pen goes to the right of the white box, wherever it starts.",
+ "image": "artifacts/card.png",
+ "goal_text": "every pen are right of the white box",
+ "program_version": 13,
+ "robustness": 0.9,
+ "cost_to_learn_usd": 2.6603,
+ "run_id": "real-pens-right-of-tub"
+}

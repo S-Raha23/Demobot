@@ -1,0 +1,102 @@
+{
+ "submitted": true,
+ "turns": 2,
+ "winner": "wonder",
+ "drafts": [
+  {
+   "code": "def run(scene, robot):\n    moved = scene.with_role(\"moved\")\n    spoon = moved[0] if moved else scene.of_kind(\"spoon\")[0]\n    tub = scene.containers()[0]\n    for c in scene.containers():\n        if c.kind == \"tub\":\n            tub = c\n            break\n    if scene.is_inside(scene.get(spoon.name), scene.get(tub.name)):\n        return\n    robot.pick(scene.get(spoon.name))\n    robot.place_in(scene.get(tub.name))",
+   "explanation": "Picks the silver spoon identified by moved role and places it inside the white plastic tub container.",
+   "i": 0,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  },
+  {
+   "code": "def run(scene, robot):\n    moved = scene.with_role(\"moved\")\n    spoon = moved[0] if moved else scene.of_kind(\"spoon\")[0]\n    tub = scene.containers()[0]\n    spoon = scene.get(spoon.name)\n    tub = scene.get(tub.name)\n    if scene.is_inside(spoon, tub):\n        return\n    robot.pick(spoon)\n    robot.place_in(tub)\n",
+   "explanation": "Picks the moved silver spoon and places it inside the white plastic tub, skipping if already inside.",
+   "i": 1,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  }
+ ],
+ "trace": [
+  {
+   "turn": 1,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 2,
+   "calls": [
+    "submit"
+   ]
+  }
+ ],
+ "results": {
+  "v1:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "the silver spoon inside white plastic tub",
+     "holds": true,
+     "detail": "silver spoon inside white plastic tub"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=silver spoon)",
+    "place_in(container=white plastic tub)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "silver spoon",
+     "x": 42.64,
+     "y": 16.66,
+     "z": 1.2
+    },
+    {
+     "name": "white plastic tub",
+     "x": 42.66,
+     "y": 16.67,
+     "z": 4.05
+    },
+    {
+     "name": "yellow tennis ball",
+     "x": 8.84,
+     "y": 17.17,
+     "z": 3.25
+    },
+    {
+     "name": "white glue bottle",
+     "x": 62.32,
+     "y": 14.24,
+     "z": 3.5
+    },
+    {
+     "name": "left light blue pen",
+     "x": 19.84,
+     "y": 17.78,
+     "z": 0.5
+    },
+    {
+     "name": "middle light blue pen",
+     "x": 27.35,
+     "y": 18.09,
+     "z": 0.5
+    },
+    {
+     "name": "right light blue pen",
+     "x": 30.83,
+     "y": 23.1,
+     "z": 0.5
+    }
+   ],
+   "logs": []
+  }
+ }
+}

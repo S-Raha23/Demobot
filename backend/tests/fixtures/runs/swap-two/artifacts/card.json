@@ -1,0 +1,11 @@
+{
+ "skill_id": "swap-two",
+ "title": "Swap the white cylinder and the gray block",
+ "description": "Swap the positions of the white cylinder and the gray block via a temporary free spot, wherever they start, leaving other objects alone.",
+ "image": "artifacts/card.png",
+ "goal_text": "white cylinder and gray block have swapped places",
+ "program_version": 2,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 0.8723,
+ "run_id": "swap-two"
+}

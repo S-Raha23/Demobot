@@ -1,0 +1,15 @@
+{
+ "text": "The box cutter goes left of the box.",
+ "language": "English",
+ "languages": [
+  "English"
+ ],
+ "segments": [
+  {
+   "t0": 1.27,
+   "t1": 3.77,
+   "text": "The box cutter goes left of the box."
+  }
+ ],
+ "source": "narration"
+}

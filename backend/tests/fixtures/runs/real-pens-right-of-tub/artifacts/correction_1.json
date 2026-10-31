@@ -1,0 +1,48 @@
+{
+ "n": 1,
+ "transcript": {
+  "text": "put the green ball in the tub.",
+  "language": "English",
+  "languages": [
+   "English"
+  ],
+  "segments": [
+   {
+    "t0": 0.0,
+    "t1": 5.46,
+    "text": "put the green ball in the tub."
+   }
+  ],
+  "source": "correction"
+ },
+ "gloss": "put the green ball in the tub",
+ "program_before": 13,
+ "program_after": 15,
+ "goal_before": [
+  {
+   "quant": "all",
+   "select": {
+    "kind": "pen"
+   },
+   "pred": "right_of",
+   "target": {
+    "name": "white box"
+   }
+  }
+ ],
+ "goal_after": [
+  {
+   "quant": "all",
+   "select": {
+    "kind": "tennis ball"
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white box"
+   }
+  }
+ ],
+ "demo_passes": true,
+ "stress_passed": "10/10",
+ "real_world": "superseded: the correction changes the goal the demo showed"
+}

@@ -1,0 +1,184 @@
+{
+ "ok": false,
+ "error": "line 32, in run\nCollision: knocked white glue bottle out of place",
+ "error_type": "Collision",
+ "layout_id": "red-00",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 53.6,
+    "y": 16.0,
+    "yaw": 90.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.325
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "right light blue pen"
+   },
+   "ok": false,
+   "error": "Collision: knocked white glue bottle out of place",
+   "t": 6.792
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 54.62,
+   "y": 15.04,
+   "z": 0.5,
+   "yaw": 89.9,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#4189a0",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 15.03,
+   "y": 18.73,
+   "z": 18.42,
+   "yaw": 0.0,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5c909a",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 38.0,
+   "y": 16.0,
+   "z": 3.55,
+   "yaw": -0.0,
+   "w": 25.2,
+   "d": 15.9,
+   "h": 7.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 15.05,
+   "y": 7.82,
+   "z": 3.35,
+   "yaw": -0.8,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.5,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 15.0,
+   "y": 23.2,
+   "z": 0.5,
+   "yaw": -0.0,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5fbcc9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 23.03,
+   "y": 34.77,
+   "z": 1.49,
+   "yaw": 3.7,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 9.0,
+   "color": "#96918c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "left light blue pen",
+    "right light blue pen"
+   ],
+   "measured": {
+    "left light blue pen.gap_cm": 3.01,
+    "left light blue pen.lateral_cm": 0.96,
+    "left light blue pen.lateral_limit_cm": 10.95,
+    "right light blue pen.gap_cm": -41.57,
+    "right light blue pen.lateral_cm": 2.73,
+    "right light blue pen.lateral_limit_cm": 10.95
+   },
+   "detail": "not right of white box: right light blue pen"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [
+  "Collision: knocked white glue bottle out of place"
+ ],
+ "renders": {
+  "top": "artifacts/sim/red-00_v2/top_red-00.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-00_v2/twin_red-00.json",
+ "duration_s": 10.09,
+ "wall_s": 0.79
+}

@@ -1,0 +1,172 @@
+{
+ "initial": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 23.61,
+   "y": 17.25,
+   "z": 0.0,
+   "yaw": 90.2,
+   "w": 19.0,
+   "d": 13.8,
+   "h": 6.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 30.4,
+   "y": 4.91,
+   "z": 0.0,
+   "yaw": 0.6,
+   "w": 15.4,
+   "d": 4.3,
+   "h": 1.5,
+   "color": "#7b9492",
+   "texture": "artifacts/crops/back_teal_pen.png",
+   "hollow": false
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 48.32,
+   "y": 34.12,
+   "z": 0.0,
+   "yaw": 167.9,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.5,
+   "color": "#045663",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 23.65,
+   "y": 17.21,
+   "z": 0.0,
+   "yaw": 90.2,
+   "w": 19.0,
+   "d": 13.8,
+   "h": 6.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 6.48,
+   "y": 17.08,
+   "z": 0.0,
+   "yaw": 0.6,
+   "w": 15.4,
+   "d": 4.3,
+   "h": 1.5,
+   "color": "#7b9492",
+   "texture": "artifacts/crops/back_teal_pen.png",
+   "hollow": false
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 48.33,
+   "y": 34.1,
+   "z": 0.0,
+   "yaw": 167.9,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.5,
+   "color": "#045663",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "back teal pen",
+   "t0": 3.3,
+   "t1": 6.1,
+   "from_cm": [
+    30.49,
+    4.95
+   ],
+   "to_cm": [
+    6.41,
+    17.13
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 2.6,
+   "type": "grasp",
+   "object": "back teal pen"
+  },
+  {
+   "t": 5.8,
+   "type": "release",
+   "object": "back teal pen"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 0,
+   "confidence": 0.511,
+   "timing_delta_s": 0.9
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "back teal pen",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "back teal pen"
+   ],
+   "measured": {
+    "gap_cm": 2.51,
+    "lateral_cm": 0.13,
+    "lateral_limit_cm": 12.52
+   },
+   "detail": "back teal pen left of white box"
+  }
+ ],
+ "flags": []
+}

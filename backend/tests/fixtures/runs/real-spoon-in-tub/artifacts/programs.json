@@ -1,0 +1,32 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    spoon = scene.of_kind(\"spoon\")[0]\n    tubs = [c for c in scene.containers() if c.kind == \"tub\"]\n    tub = tubs[0] if tubs else scene.containers()[0]\n    if scene.is_inside(scene.get(spoon.name), scene.get(tub.name)):\n        return\n    robot.pick(scene.get(spoon.name))\n    robot.place_in(scene.get(tub.name))\n",
+  "explanation": "Pick the spoon (found by kind, not hardcoded position) and place it inside the tub container, skipping the move if it is already inside.",
+  "author": "wonder",
+  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,8 @@\n+def run(scene, robot):\n+    spoon = scene.of_kind(\"spoon\")[0]\n+    tubs = [c for c in scene.containers() if c.kind == \"tub\"]\n+    tub = tubs[0] if tubs else scene.containers()[0]\n+    if scene.is_inside(scene.get(spoon.name), scene.get(tub.name)):\n+        return\n+    robot.pick(scene.get(spoon.name))\n+    robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def run(scene, robot):\n    spoon = scene.get(\"silver spoon\")\n    tub = scene.get(\"white plastic tub\")\n    if scene.is_inside(spoon, tub):\n        return\n    robot.pick(scene.get(spoon.name))\n    robot.place_in(scene.get(tub.name))\n",
+  "explanation": "Selects the exact named silver spoon (not the first spoon, avoiding the twin distractor) and places it inside the exact white plastic tub.",
+  "author": "wonder-harden",
+  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -1,8 +1,7 @@\n def run(scene, robot):\n-    spoon = scene.of_kind(\"spoon\")[0]\n-    tubs = [c for c in scene.containers() if c.kind == \"tub\"]\n-    tub = tubs[0] if tubs else scene.containers()[0]\n-    if scene.is_inside(scene.get(spoon.name), scene.get(tub.name)):\n+    spoon = scene.get(\"silver spoon\")\n+    tub = scene.get(\"white plastic tub\")\n+    if scene.is_inside(spoon, tub):\n         return\n     robot.pick(scene.get(spoon.name))\n     robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 3,
+  "parent_version": 2,
+  "code": "def run(scene, robot):\n    ball = scene.get(\"yellow tennis ball\")\n    tub = scene.get(\"white plastic tub\")\n    if scene.is_inside(ball, tub):\n        return\n    robot.pick(scene.get(ball.name))\n    robot.place_in(scene.get(tub.name))\n",
+  "explanation": "Per the correction, place the yellow/green tennis ball (not the spoon) inside the white plastic tub wherever they start.",
+  "author": "wonder-correction",
+  "diff_from_parent": "--- v2.py\n+++ v3.py\n@@ -1,7 +1,7 @@\n def run(scene, robot):\n-    spoon = scene.get(\"silver spoon\")\n+    ball = scene.get(\"yellow tennis ball\")\n     tub = scene.get(\"white plastic tub\")\n-    if scene.is_inside(spoon, tub):\n+    if scene.is_inside(ball, tub):\n         return\n-    robot.pick(scene.get(spoon.name))\n+    robot.pick(scene.get(ball.name))\n     robot.place_in(scene.get(tub.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ }
+]

@@ -1,0 +1,138 @@
+{
+ "program_version": 1,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "back teal pen",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "back teal pen"
+    ],
+    "measured": {
+     "gap_cm": 2.01,
+     "lateral_cm": 0.0,
+     "lateral_limit_cm": 12.52
+    },
+    "detail": "back teal pen left of white box"
+   }
+  ],
+  "detail": "the goal on the simulated final state",
+  "inconclusive": false
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "back teal pen",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "back teal pen"
+    ],
+    "measured": {
+     "gap_cm": 2.51,
+     "lateral_cm": 0.13,
+     "lateral_limit_cm": 12.52
+    },
+    "detail": "back teal pen left of white box"
+   }
+  ],
+  "detail": "the goal on your real final table, measured by SAM",
+  "inconclusive": false
+ },
+ "perceptual": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "the",
+     "select": {
+      "name": "back teal pen",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "pred": "left_of",
+     "target": {
+      "name": "white box",
+      "kind": null,
+      "role": null,
+      "names": null
+     },
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "back teal pen"
+    ],
+    "measured": {
+     "gap_cm": 0.04,
+     "lateral_cm": 0.82,
+     "lateral_limit_cm": 12.52
+    },
+    "detail": "back teal pen left of white box (back teal pen not seen by SAM in the render: inconclusive)"
+   }
+  ],
+  "detail": "SAM saw 1/3 stand-ins in the render; not every goal object was visible, so this check is inconclusive",
+  "inconclusive": true
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.96,
+  "differences": [
+   "Real table in Image 1 has wood grain and 4 AR markers; simulated table in Image 2 is plain tan with no markers and different lighting",
+   "White box is solid closed in Image 1 vs open hollow rendering in Image 2",
+   "Back teal pen is crisp and close to box in Image 1 vs coarse two-tone flat stand-in with larger gap in Image 2, but left-of side relation preserved; front teal pen distractor remains at bottom-right in both"
+  ],
+  "suspected_error": "none - simulator check 'back teal pen left of white box holds' is visually confirmed in both images; remaining differences are rendering/fidelity only"
+ },
+ "agree": true,
+ "failure_class": null,
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/verify_v1/camera_demo.png",
+  "top": "artifacts/sim/verify_v1/top_demo.png",
+  "perceptual_input": "artifacts/sim/verify_v1/perceptual_input.jpg"
+ }
+}

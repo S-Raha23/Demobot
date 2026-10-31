@@ -1,0 +1,201 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-01",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 11.5,
+    "y": 21.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.325
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.583
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 17.8,
+    "y": 15.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.379
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.637
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 40.0,
+    "y": 26.9
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.446
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 18.921
+  }
+ ],
+ "logs": [
+  "light blue box cutter kind=box cutter role=moved pos=(17.8, 15.0) size=(13.0, 2.0, 1.0) yaw=-0.0",
+  "white glue bottle kind=glue bottle role=moved pos=(40.0, 26.9) size=(3.0, 3.0, 8.0) yaw=-0.0",
+  "light blue pen kind=pen role=distractor pos=(56.7, 15.0) size=(2.0, 14.0, 1.0) yaw=90.0",
+  "white plastic box kind=box role=distractor pos=(40.0, 15.0) size=(26.4, 15.8, 8.0) yaw=-0.0",
+  "yellow tennis ball kind=tennis ball role=distractor pos=(17.8, 8.0) size=(6.6, 6.6, 6.5) yaw=-0.0",
+  "bounds (4.0, 4.0, 65.426352527355, 30.109735030098342)",
+  "temp cutter (11.5, 21.0)"
+ ],
+ "final_state": [
+  {
+   "name": "light blue box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 39.86,
+   "y": 25.32,
+   "z": 0.5,
+   "yaw": -1.0,
+   "w": 13.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#3b6fd6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 17.79,
+   "y": 14.99,
+   "z": 4.0,
+   "yaw": -0.4,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 8.0,
+   "color": "#8e8d8d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 56.67,
+   "y": 15.0,
+   "z": 0.5,
+   "yaw": 89.7,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#94a8ac",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white plastic box",
+   "kind": "box",
+   "role": "distractor",
+   "shape": "box",
+   "x": 40.0,
+   "y": 15.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 26.4,
+   "d": 15.8,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 17.85,
+   "y": 7.94,
+   "z": 3.3,
+   "yaw": -1.4,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#7b7c4d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "light blue box cutter",
+      "white glue bottle"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "light blue box cutter",
+    "white glue bottle"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 1.59,
+    "b_to_a_start_cm": 0.01
+   },
+   "detail": "light blue box cutter is 1.6 cm and white glue bottle 0.0 cm from each other's start"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {},
+ "twin_trajectory": "artifacts/sim/red-01_v6/twin_red-01.json",
+ "duration_s": 20.42,
+ "wall_s": 0.52
+}

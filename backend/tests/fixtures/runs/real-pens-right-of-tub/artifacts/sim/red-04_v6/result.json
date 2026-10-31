@@ -1,0 +1,249 @@
+{
+ "ok": false,
+ "error": "line 81, in run\nline 50, in clear_area\nline 39, in move_away\nline 14, in find_spot\nLoopLimit: loops ran more than 20000 times",
+ "error_type": "LoopLimit",
+ "layout_id": "red-04",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 60.0,
+    "y": 28.0,
+    "yaw": null
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.258
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.525
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 58.0,
+    "y": 28.0,
+    "yaw": null
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.196
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.383
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 55.1,
+    "y": 15.0,
+    "yaw": 90.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.162
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 18.633
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 20.0,
+    "y": 6.0,
+    "yaw": null
+   },
+   "ok": true,
+   "error": null,
+   "t": 21.375
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 55.76,
+   "y": 13.38,
+   "z": 0.5,
+   "yaw": 90.0,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#4189a0",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 11.99,
+   "y": 14.04,
+   "z": 0.5,
+   "yaw": -0.4,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5c909a",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 40.0,
+   "y": 15.0,
+   "z": 3.55,
+   "yaw": -0.0,
+   "w": 25.2,
+   "d": 15.9,
+   "h": 7.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 12.0,
+   "y": 22.0,
+   "z": 3.35,
+   "yaw": -0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.5,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 29.99,
+   "y": 27.04,
+   "z": 0.5,
+   "yaw": -0.4,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5fbcc9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 19.98,
+   "y": 6.0,
+   "z": 4.5,
+   "yaw": -0.3,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 9.0,
+   "color": "#96918c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "red mug",
+   "kind": "mug",
+   "role": "distractor",
+   "shape": "box",
+   "x": 60.1,
+   "y": 20.04,
+   "z": 4.0,
+   "yaw": -0.3,
+   "w": 6.0,
+   "d": 6.0,
+   "h": 8.0,
+   "color": "#8a8f98",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "left light blue pen",
+    "right light blue pen"
+   ],
+   "measured": {
+    "left light blue pen.gap_cm": 2.16,
+    "left light blue pen.lateral_cm": 1.62,
+    "left light blue pen.lateral_limit_cm": 10.95,
+    "right light blue pen.gap_cm": -46.62,
+    "right light blue pen.lateral_cm": 0.96,
+    "right light blue pen.lateral_limit_cm": 10.95
+   },
+   "detail": "not right of white box: right light blue pen"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-04_v6/top_red-04.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-04_v6/twin_red-04.json",
+ "duration_s": 25.13,
+ "wall_s": 1.22
+}

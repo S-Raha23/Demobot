@@ -1,0 +1,150 @@
+{
+ "ok": false,
+ "error": "line 22, in run\nNoFreeSpot: no clear spot for a 8×8 cm object",
+ "error_type": "NoFreeSpot",
+ "layout_id": "red-06",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "extra teal cap"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 11.6,
+    "y": 37.5
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.304
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 28.0,
+   "y": 20.0,
+   "z": 3.05,
+   "yaw": -0.0,
+   "w": 19.0,
+   "d": 13.8,
+   "h": 6.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 49.99,
+   "y": 15.0,
+   "z": 0.75,
+   "yaw": 89.9,
+   "w": 15.4,
+   "d": 4.3,
+   "h": 1.5,
+   "color": "#7b9492",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-01_next_to/artifacts/crops/back_teal_pen.png",
+   "hollow": false
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 10.0,
+   "y": 20.01,
+   "z": 0.75,
+   "yaw": -0.1,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.5,
+   "color": "#045663",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "extra teal cap",
+   "kind": "cap",
+   "role": "distractor",
+   "shape": "box",
+   "x": 11.58,
+   "y": 37.51,
+   "z": 1.0,
+   "yaw": 0.0,
+   "w": 5.0,
+   "d": 5.0,
+   "h": 2.0,
+   "color": "#8a8f98",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "red block",
+   "kind": "block",
+   "role": "distractor",
+   "shape": "box",
+   "x": 38.01,
+   "y": 35.0,
+   "z": 1.5,
+   "yaw": 0.2,
+   "w": 8.0,
+   "d": 8.0,
+   "h": 3.0,
+   "color": "#8a8f98",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "back teal pen",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "back teal pen"
+   ],
+   "measured": {
+    "gap_cm": 10.33,
+    "lateral_cm": 5.0,
+    "lateral_limit_cm": 10.7
+   },
+   "detail": "not right of white box: back teal pen"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [],
+ "renders": {},
+ "twin_trajectory": "artifacts/sim/red-06_v5/twin_red-06.json",
+ "duration_s": 7.14,
+ "wall_s": 0.18
+}

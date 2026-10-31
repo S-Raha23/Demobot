@@ -1,0 +1,11 @@
+{
+ "skill_id": "real-ball-in-tub",
+ "title": "Put the green ball in the white box",
+ "description": "Put the green ball into the white box wherever the ball starts.",
+ "image": "artifacts/card.png",
+ "goal_text": "green ball is inside the white box",
+ "program_version": 2,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 1.3386,
+ "run_id": "real-ball-in-tub"
+}

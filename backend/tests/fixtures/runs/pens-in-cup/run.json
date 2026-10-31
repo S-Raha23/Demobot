@@ -1,0 +1,20 @@
+{
+ "run_id": "pens-in-cup",
+ "title": "Put every pen in the white cup",
+ "created_at": "2026-10-31T01:34:58Z",
+ "source": "clip.mp4",
+ "mode": "dev",
+ "status": "done",
+ "fixture": false,
+ "program_version": 2,
+ "error": {
+  "code": "VERIFY_FAILED",
+  "message": "judge_dissent: symbolic \u2713 real-world \u2713 perceptual \u2713 judge \u2717",
+  "stage": "verify"
+ },
+ "supervised": true,
+ "caveat": "Visual judge miscounted: SAM real-world measures both teal pens at cup center and Spark rewatch confirms two pens inside; the object outside the cup is the gray block distractor, not a second pen (rendering hides one pen behind the other).",
+ "cost_usd": 0.9541,
+ "baked_from": "syn7-00_place_in",
+ "note": "real model calls; the input clip is synthetic"
+}

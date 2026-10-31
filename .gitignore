@@ -1,0 +1,38 @@
+# secrets
+.env
+.env.*
+!.env.example
+.modal.toml
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# node
+node_modules/
+frontend/dist/
+frontend/test-results/
+
+# data and media (large, personal)
+data/
+!data/.gitkeep
+media/
+*.db
+*.sqlite
+
+# reference copy of the first repo (read-only, local only)
+reference/
+
+# os/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Claude Code hook state
+.claude/.keep_going_*
+.claude/ALLOW_STOP
+.claude/settings.local.json

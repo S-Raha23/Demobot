@@ -1,0 +1,163 @@
+{
+ "ok": false,
+ "error": "line 11, in run\nCollision: knocked white glue bottle out of place",
+ "error_type": "Collision",
+ "layout_id": "red-02",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 15.5,
+    "y": 17.5
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.254
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": false,
+   "error": "Collision: knocked white glue bottle out of place",
+   "t": 6.533
+  }
+ ],
+ "logs": [
+  "Parking white glue bottle temporarily at (15.5, 17.5)"
+ ],
+ "final_state": [
+  {
+   "name": "light blue box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 11.14,
+   "y": 30.33,
+   "z": 18.49,
+   "yaw": -6.1,
+   "w": 13.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#3b6fd6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 25.0,
+   "y": 21.9,
+   "z": 1.5,
+   "yaw": 166.8,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 8.0,
+   "color": "#8e8d8d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 15.0,
+   "y": 6.02,
+   "z": 0.5,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#94a8ac",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white plastic box",
+   "kind": "box",
+   "role": "distractor",
+   "shape": "box",
+   "x": 40.0,
+   "y": 15.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 26.4,
+   "d": 15.8,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 60.0,
+   "y": 23.0,
+   "z": 3.3,
+   "yaw": -0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#7b7c4d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "light blue box cutter",
+      "white glue bottle"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "light blue box cutter",
+    "white glue bottle"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 52.99,
+    "b_to_a_start_cm": 15.27
+   },
+   "detail": "light blue box cutter is 53.0 cm and white glue bottle 15.3 cm from each other's start"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [
+  "Collision: knocked white glue bottle out of place"
+ ],
+ "renders": {
+  "top": "artifacts/sim/red-02_v4/top_red-02.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-02_v4/twin_red-02.json",
+ "duration_s": 10.07,
+ "wall_s": 1.54
+}

@@ -1,0 +1,298 @@
+{
+ "initial": [
+  {
+   "name": "silver spoon",
+   "kind": "spoon",
+   "role": "moved",
+   "shape": "box",
+   "x": 55.54,
+   "y": 18.48,
+   "z": 0.0,
+   "yaw": 96.5,
+   "w": 13.4,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#97968d",
+   "texture": "artifacts/crops/silver_spoon.png",
+   "hollow": false
+  },
+  {
+   "name": "white plastic tub",
+   "kind": "tub",
+   "role": "container",
+   "shape": "box",
+   "x": 42.66,
+   "y": 16.67,
+   "z": 0.0,
+   "yaw": 90.1,
+   "w": 23.1,
+   "d": 15.4,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 8.84,
+   "y": 17.17,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 6.5,
+   "d": 6.5,
+   "h": 6.5,
+   "color": "#797b3d",
+   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 62.31,
+   "y": 14.25,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 7.0,
+   "color": "#8e8b83",
+   "texture": "artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 19.85,
+   "y": 17.78,
+   "z": 0.0,
+   "yaw": 87.0,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#afada4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "middle light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 27.36,
+   "y": 18.09,
+   "z": 0.0,
+   "yaw": 91.0,
+   "w": 16.3,
+   "d": 2.5,
+   "h": 1.0,
+   "color": "#a9aa9e",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 27.58,
+   "y": 18.47,
+   "z": 0.0,
+   "yaw": 89.3,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#9b9c90",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "silver spoon",
+   "kind": "spoon",
+   "role": "moved",
+   "shape": "box",
+   "x": 37.59,
+   "y": 12.72,
+   "z": 0.0,
+   "yaw": 96.5,
+   "w": 13.4,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#97968d",
+   "texture": "artifacts/crops/silver_spoon.png",
+   "hollow": false
+  },
+  {
+   "name": "white plastic tub",
+   "kind": "tub",
+   "role": "container",
+   "shape": "box",
+   "x": 42.47,
+   "y": 16.54,
+   "z": 0.0,
+   "yaw": 90.1,
+   "w": 23.1,
+   "d": 15.4,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 8.73,
+   "y": 16.92,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 6.5,
+   "d": 6.5,
+   "h": 6.5,
+   "color": "#797b3d",
+   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 62.19,
+   "y": 14.14,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 7.0,
+   "color": "#8e8b83",
+   "texture": "artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 19.69,
+   "y": 17.53,
+   "z": 0.0,
+   "yaw": 87.0,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#afada4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "middle light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 26.69,
+   "y": 17.47,
+   "z": 0.0,
+   "yaw": 91.0,
+   "w": 16.3,
+   "d": 2.5,
+   "h": 1.0,
+   "color": "#a9aa9e",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 27.78,
+   "y": 18.28,
+   "z": 0.0,
+   "yaw": 89.3,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#9b9c90",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "silver spoon",
+   "t0": 1.4,
+   "t1": 4.7,
+   "from_cm": [
+    55.48,
+    18.45
+   ],
+   "to_cm": [
+    37.3,
+    12.51
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 1.1,
+   "type": "grasp",
+   "object": "silver spoon"
+  },
+  {
+   "t": 4.2,
+   "type": "release",
+   "object": "silver spoon"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 0,
+   "confidence": 0.757,
+   "timing_delta_s": 0.5
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "silver spoon",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white plastic tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "silver spoon"
+   ],
+   "measured": {
+    "margin_cm": 1.84
+   },
+   "detail": "silver spoon inside white plastic tub"
+  }
+ ],
+ "flags": []
+}

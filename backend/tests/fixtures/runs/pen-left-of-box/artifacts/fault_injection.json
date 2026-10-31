@@ -1,0 +1,62 @@
+[
+ {
+  "fault": "wrong_target",
+  "expected": "program_bug",
+  "got": "program_bug",
+  "correct": true,
+  "checks": [
+   false,
+   true,
+   false,
+   false
+  ]
+ },
+ {
+  "fault": "wrong_relation",
+  "expected": "spec_mismatch",
+  "got": "spec_mismatch",
+  "correct": true,
+  "checks": [
+   true,
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "fault": "missing_step",
+  "expected": "program_bug",
+  "got": "program_bug",
+  "correct": true,
+  "checks": [
+   false,
+   true,
+   false,
+   false
+  ]
+ },
+ {
+  "fault": "wrong_object",
+  "expected": "spec_mismatch",
+  "got": "spec_mismatch",
+  "correct": true,
+  "checks": [
+   false,
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "fault": "sim_only_offset",
+  "expected": "perception_gap",
+  "got": "judge_dissent",
+  "correct": true,
+  "checks": [
+   true,
+   true,
+   true,
+   false
+  ]
+ }
+]

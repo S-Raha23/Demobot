@@ -1,0 +1,2710 @@
+{
+ "cases": [
+  {
+   "layout": {
+    "id": "red-00",
+    "source": "redteam:crowder",
+    "description": "White box is caged on all four sides with exactly 2.5 cm gaps, forcing any grasp and any ball insertion to risk collision.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 12.0,
+      "y": 8.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 17.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 28.6,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 5.3,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 17.1,
+      "y": 17.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 48.6,
+      "y": 17.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "crowder",
+   "rationale": "White box is caged on all four sides with exactly 2.5 cm gaps, forcing any grasp and any ball insertion to risk collision.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-00",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.288
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.537
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 31.61,
+      "y": 13.59,
+      "z": 4.3,
+      "yaw": 0.1,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 17.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 28.61,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 5.31,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 17.1,
+      "y": 17.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 48.6,
+      "y": 17.0,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.74,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-00_v2/top_red-00.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-00_v2/twin_red-00.json",
+    "duration_s": 8.04,
+    "wall_s": 0.57
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-01",
+    "source": "redteam:crowder",
+    "description": "Container is blocked on three sides by a tight 2.5 cm corridor and the ball starts far away, requiring a long carry through narrow gaps.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 10.0,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 30.0,
+      "y": 24.6,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 46.5,
+      "y": 24.6,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 47.7,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 21.4,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "crowder",
+   "rationale": "Container is blocked on three sides by a tight 2.5 cm corridor and the ball starts far away, requiring a long carry through narrow gaps.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-01",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.417
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.671
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 31.61,
+      "y": 9.58,
+      "z": 4.3,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 30.0,
+      "y": 24.61,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 46.5,
+      "y": 24.61,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 47.7,
+      "y": 13.0,
+      "z": 0.5,
+      "yaw": 90.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 21.4,
+      "y": 13.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.73,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-01_v2/top_red-01.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-01_v2/twin_red-01.json",
+    "duration_s": 8.17,
+    "wall_s": 0.88
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-02",
+    "source": "redteam:edge_walker",
+    "description": "Ball is flush to the top-left corner at the near reach limit and box flush to the bottom-right corner at the far reach limit with distractors hugging the top and bottom walls to force a long edge-para",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 7.8,
+      "y": 26.1,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 56.8,
+      "y": 12.2,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 20.0,
+      "y": 6.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 25.0,
+      "y": 28.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 57.0,
+      "y": 26.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 34.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "edge_walker",
+   "rationale": "Ball is flush to the top-left corner at the near reach limit and box flush to the bottom-right corner at the far reach limit with distractors hugging the top and bottom walls to force a long edge-parallel traversal and wall-adjacent grasp.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-02",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.496
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.767
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 53.42,
+      "y": 8.78,
+      "z": 4.3,
+      "yaw": 0.2,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 56.8,
+      "y": 12.2,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 20.0,
+      "y": 6.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 25.0,
+      "y": 28.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 57.0,
+      "y": 26.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 34.0,
+      "y": 7.0,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.73,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-02_v2/top_red-02.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-02_v2/twin_red-02.json",
+    "duration_s": 8.27,
+    "wall_s": 1.49
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-03",
+    "source": "redteam:edge_walker",
+    "description": "Both ball and box are flush against the far bottom edge at opposite x extremes at maximum reach with a central wall of distractors blocking the direct bottom-edge path to force navigation along the wo",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 61.1,
+      "y": 7.8,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 12.2,
+      "y": 12.2,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 28.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 57.5,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "edge_walker",
+   "rationale": "Both ball and box are flush against the far bottom edge at opposite x extremes at maximum reach with a central wall of distractors blocking the direct bottom-edge path to force navigation along the workspace boundary.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-03",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.254
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.525
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 8.79,
+      "y": 8.79,
+      "z": 4.3,
+      "yaw": -0.1,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 12.2,
+      "y": 12.2,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 5.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 28.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 57.5,
+      "y": 26.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.0,
+      "y": 7.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.74,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-03_v2/top_red-03.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-03_v2/twin_red-03.json",
+    "duration_s": 8.03,
+    "wall_s": 0.59
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-04",
+    "source": "redteam:distractor",
+    "description": "Ball start isolated near cube and spoon gate requiring long detour around central pen barrier to reach distant box.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 52.0,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 15.0,
+      "y": 21.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.0,
+      "y": 8.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 38.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 24.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 58.0,
+      "y": 24.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "blue cup",
+      "kind": "cup",
+      "role": "distractor",
+      "shape": "box",
+      "x": 13.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 8.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "green cube",
+      "kind": "cube",
+      "role": "distractor",
+      "shape": "box",
+      "x": 48.0,
+      "y": 22.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 6.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "distractor",
+   "rationale": "Ball start isolated near cube and spoon gate requiring long detour around central pen barrier to reach distant box.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-04",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.275
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.562
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 11.58,
+      "y": 17.59,
+      "z": 4.3,
+      "yaw": -0.1,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 15.0,
+      "y": 21.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.0,
+      "y": 8.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 38.0,
+      "y": 12.0,
+      "z": 0.5,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 24.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 58.0,
+      "y": 24.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "blue cup",
+      "kind": "cup",
+      "role": "distractor",
+      "shape": "box",
+      "x": 13.0,
+      "y": 6.99,
+      "z": 4.0,
+      "yaw": -0.1,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 8.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "green cube",
+      "kind": "cube",
+      "role": "distractor",
+      "shape": "box",
+      "x": 48.0,
+      "y": 21.99,
+      "z": 3.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 6.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.74,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-04_v2/top_red-04.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-04_v2/twin_red-04.json",
+    "duration_s": 8.06,
+    "wall_s": 0.55
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-05",
+    "source": "redteam:mirror",
+    "description": "Mirrored left-right places white box on robot-left behind a horizontal pen barricade and ball on far right requiring long carry past vertical pen obstacle.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 51.5,
+      "y": 8.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 18.5,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 18.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 36.5,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 22.0,
+      "z": 0.0,
+      "yaw": 45.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 62.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "mirror",
+   "rationale": "Mirrored left-right places white box on robot-left behind a horizontal pen barricade and ball on far right requiring long carry past vertical pen obstacle.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-05",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.271
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.533
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 15.09,
+      "y": 9.09,
+      "z": 4.3,
+      "yaw": -0.1,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 18.5,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 18.0,
+      "y": 24.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 36.49,
+      "y": 13.0,
+      "z": 0.5,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 49.98,
+      "y": 22.03,
+      "z": 0.5,
+      "yaw": 44.9,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 62.0,
+      "y": 7.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.74,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-05_v2/top_red-05.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-05_v2/twin_red-05.json",
+    "duration_s": 8.03,
+    "wall_s": 0.51
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-06",
+    "source": "redteam:mirror",
+    "description": "Mirrored layout swaps container to far left and ball to far right with distractors forming a narrow central corridor that forces long carry and precise obstacle avoidance.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 52.0,
+      "y": 24.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 16.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 25.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 40.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 55.0,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "mirror",
+   "rationale": "Mirrored layout swaps container to far left and ball to far right with distractors forming a narrow central corridor that forces long carry and precise obstacle avoidance.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-06",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.296
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.567
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 12.58,
+      "y": 9.59,
+      "z": 4.3,
+      "yaw": -0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 16.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 25.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 39.99,
+      "y": 12.0,
+      "z": 0.5,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 55.0,
+      "y": 10.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.74,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-06_v2/top_red-06.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-06_v2/twin_red-06.json",
+    "duration_s": 8.07,
+    "wall_s": 0.48
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-07",
+    "source": "redteam:squeezer",
+    "description": "Two horizontal pens form an 8cm corridor only 2.85cm in front of the box while a spoon 2.8cm from its right edge and a glue bottle 3.85cm from its left edge block any angled approach, forcing a perfec",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 8.5,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 46.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 48.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "squeezer",
+   "rationale": "Two horizontal pens form an 8cm corridor only 2.85cm in front of the box while a spoon 2.8cm from its right edge and a glue bottle 3.85cm from its left edge block any angled approach, forcing a perfectly straight insertion.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-07",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.425
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.679
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 31.62,
+      "y": 9.07,
+      "z": 4.3,
+      "yaw": -0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.0,
+      "y": 24.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 46.0,
+      "y": 24.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 48.0,
+      "y": 13.0,
+      "z": 0.5,
+      "yaw": 90.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 1.0,
+      "yaw": 0.1,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.72,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-07_v2/top_red-07.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-07_v2/twin_red-07.json",
+    "duration_s": 8.18,
+    "wall_s": 0.74
+   },
+   "after": null
+  },
+  {
+   "layout": {
+    "id": "red-08",
+    "source": "redteam:squeezer",
+    "description": "Box wedged 0.75cm from the right wall with a vertical spoon 3.8cm from its left side and a pen wall 2.85cm in front leaves only a 4cm slot between the two pens as the single feasible entry for the bal",
+    "seed": null,
+    "objects": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 10.0,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 56.0,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 32.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 42.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 30.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "squeezer",
+   "rationale": "Box wedged 0.75cm from the right wall with a vertical spoon 3.8cm from its left side and a pen wall 2.85cm in front leaves only a 4cm slot between the two pens as the single feasible entry for the ball.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-08",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "green ball"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white box"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.417
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 6.688
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "green ball",
+      "kind": "ball",
+      "role": "moved",
+      "shape": "sphere",
+      "x": 52.62,
+      "y": 9.07,
+      "z": 4.3,
+      "yaw": 0.1,
+      "w": 7.7,
+      "d": 7.7,
+      "h": 6.5,
+      "color": "#99a09c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/green_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "white box",
+      "kind": "box",
+      "role": "container",
+      "shape": "box",
+      "x": 56.0,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 16.5,
+      "d": 16.3,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "light blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 32.0,
+      "y": 24.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#396671",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "dark blue pen",
+      "kind": "pen",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 24.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#4d8494",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "silver spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.99,
+      "y": 12.0,
+      "z": 0.5,
+      "yaw": 89.9,
+      "w": 14.4,
+      "d": 3.9,
+      "h": 1.0,
+      "color": "#989890",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/silver_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "white glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 30.0,
+      "y": 14.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 5.8,
+      "d": 5.8,
+      "h": 2.0,
+      "color": "#989895",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-01/artifacts/crops/white_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "the",
+       "select": {
+        "name": "green ball",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white box",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "green ball"
+      ],
+      "measured": {
+       "margin_cm": 3.72,
+       "z_cm": 4.3,
+       "below_rim": true
+      },
+      "detail": "green ball inside white box"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-08_v2/top_red-08.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-08_v2/twin_red-08.json",
+    "duration_s": 8.19,
+    "wall_s": 0.66
+   },
+   "after": null
+  }
+ ],
+ "robustness_before": 1.0,
+ "robustness_after": null,
+ "clusters": [],
+ "program_before": 2,
+ "program_after": null
+}

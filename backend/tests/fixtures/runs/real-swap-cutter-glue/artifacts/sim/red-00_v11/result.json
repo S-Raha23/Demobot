@@ -1,0 +1,197 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-00",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 10.5,
+    "y": 29.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.5
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.962
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 35.0,
+    "y": 26.4
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.725
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 13.017
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 52.2,
+    "y": 15.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.942
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 19.413
+  }
+ ],
+ "logs": [
+  "parking cutter at (10.5, 29.0) score 5.23"
+ ],
+ "final_state": [
+  {
+   "name": "light blue box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 54.7,
+   "y": 15.07,
+   "z": 0.5,
+   "yaw": -0.2,
+   "w": 13.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#3b6fd6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 34.98,
+   "y": 26.42,
+   "z": 4.0,
+   "yaw": -0.2,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 8.0,
+   "color": "#8e8d8d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 12.29,
+   "y": 15.03,
+   "z": 0.5,
+   "yaw": -0.3,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#94a8ac",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white plastic box",
+   "kind": "box",
+   "role": "distractor",
+   "shape": "box",
+   "x": 35.0,
+   "y": 15.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 26.4,
+   "d": 15.8,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 16.0,
+   "y": 8.0,
+   "z": 3.3,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#7b7c4d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "light blue box cutter",
+      "white glue bottle"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "light blue box cutter",
+    "white glue bottle"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 2.5,
+    "b_to_a_start_cm": 0.03
+   },
+   "detail": "light blue box cutter is 2.5 cm and white glue bottle 0.0 cm from each other's start"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-00_v11/top_red-00.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-00_v11/twin_red-00.json",
+ "duration_s": 20.91,
+ "wall_s": 1.93
+}

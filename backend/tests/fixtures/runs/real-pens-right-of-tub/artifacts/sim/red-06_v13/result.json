@@ -1,0 +1,247 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-06",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "yellow tennis ball"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 61.6,
+    "y": 26.3,
+    "yaw": -0.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.292
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue spoon"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.558
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 49.3,
+    "y": 10.5,
+    "yaw": 89.9
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.342
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.629
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 32.8,
+    "y": 22.0,
+    "yaw": 90.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.571
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "right light blue pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 19.046
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 35.6,
+    "y": 22.0,
+    "yaw": 90.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 21.988
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 25.45
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 26.45
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 32.98,
+   "y": 20.86,
+   "z": 0.5,
+   "yaw": 89.7,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#4189a0",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 36.61,
+   "y": 22.56,
+   "z": 0.5,
+   "yaw": 90.0,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5c909a",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 18.0,
+   "y": 22.0,
+   "z": 3.55,
+   "yaw": -0.0,
+   "w": 25.2,
+   "d": 15.9,
+   "h": 7.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 61.57,
+   "y": 26.25,
+   "z": 3.35,
+   "yaw": -0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.5,
+   "color": "#797a45",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 49.29,
+   "y": 10.49,
+   "z": 0.5,
+   "yaw": 89.6,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#5fbcc9",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 60.03,
+   "y": 9.98,
+   "z": 4.5,
+   "yaw": 1.5,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 9.0,
+   "color": "#96918c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-04/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "left light blue pen",
+    "right light blue pen"
+   ],
+   "measured": {
+    "left light blue pen.gap_cm": 1.34,
+    "left light blue pen.lateral_cm": 1.14,
+    "left light blue pen.lateral_limit_cm": 10.95,
+    "right light blue pen.gap_cm": 5.01,
+    "right light blue pen.lateral_cm": 0.56,
+    "right light blue pen.lateral_limit_cm": 10.95
+   },
+   "detail": "every pen right of white box"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-06_v13/top_red-06.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-06_v13/twin_red-06.json",
+ "duration_s": 27.95,
+ "wall_s": 1.04
+}

@@ -1,0 +1,224 @@
+{
+ "ok": false,
+ "error": "line 49, in run\nCollision: knocked white correction bottle out of place",
+ "error_type": "Collision",
+ "layout_id": "red-06",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 34.5,
+    "y": 29.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.325
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.796
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 57.5,
+    "y": 25.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.604
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "light blue box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.904
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 15.0,
+    "y": 27.0
+   },
+   "ok": false,
+   "error": "Collision: knocked white correction bottle out of place",
+   "t": 15.862
+  }
+ ],
+ "logs": [
+  "parking cutter at (34.5, 29.0) score 3.48"
+ ],
+ "final_state": [
+  {
+   "name": "light blue box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 14.11,
+   "y": 32.32,
+   "z": 0.5,
+   "yaw": -1.6,
+   "w": 13.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#3b6fd6",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 57.52,
+   "y": 24.97,
+   "z": 4.0,
+   "yaw": -0.2,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 8.0,
+   "color": "#8e8d8d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 57.8,
+   "y": 10.03,
+   "z": 0.5,
+   "yaw": -0.3,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#94a8ac",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white plastic box",
+   "kind": "box",
+   "role": "distractor",
+   "shape": "box",
+   "x": 35.0,
+   "y": 15.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 26.4,
+   "d": 15.8,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 15.0,
+   "y": 10.0,
+   "z": 3.3,
+   "yaw": -0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#7b7c4d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-05/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "light blue highlighter",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 57.8,
+   "y": 20.02,
+   "z": 0.5,
+   "yaw": -0.2,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#8a8f98",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white correction bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "box",
+   "x": 9.84,
+   "y": 14.95,
+   "z": 1.5,
+   "yaw": 37.0,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 8.0,
+   "color": "#8a8f98",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "light blue box cutter",
+      "white glue bottle"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "light blue box cutter",
+    "white glue bottle"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 5.39,
+    "b_to_a_start_cm": 0.04
+   },
+   "detail": "light blue box cutter is 5.4 cm and white glue bottle 0.0 cm from each other's start"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [
+  "Collision: knocked white correction bottle out of place"
+ ],
+ "renders": {
+  "top": "artifacts/sim/red-06_v11/top_red-06.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-06_v11/twin_red-06.json",
+ "duration_s": 19.81,
+ "wall_s": 1.44
+}

@@ -1,0 +1,134 @@
+{
+ "program_version": 1,
+ "symbolic": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "white cylinder",
+       "gray block"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white cylinder",
+     "gray block"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 0.0,
+     "b_to_a_start_cm": 0.01
+    },
+    "detail": "white cylinder is 0.0 cm and gray block 0.0 cm from each other's start"
+   }
+  ],
+  "detail": "the goal on the simulated final state",
+  "inconclusive": false
+ },
+ "real_world": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "white cylinder",
+       "gray block"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white cylinder",
+     "gray block"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 1.64,
+     "b_to_a_start_cm": 1.8
+    },
+    "detail": "white cylinder is 1.6 cm and gray block 1.8 cm from each other's start"
+   }
+  ],
+  "detail": "the goal on your real final table, measured by SAM",
+  "inconclusive": false
+ },
+ "perceptual": {
+  "ok": true,
+  "clauses": [
+   {
+    "clause": {
+     "quant": "pair",
+     "select": {
+      "name": null,
+      "kind": null,
+      "role": null,
+      "names": [
+       "white cylinder",
+       "gray block"
+      ]
+     },
+     "pred": "swapped",
+     "target": null,
+     "point_cm": null,
+     "order_by": null,
+     "order": null
+    },
+    "holds": true,
+    "code": null,
+    "objects": [
+     "white cylinder",
+     "gray block"
+    ],
+    "measured": {
+     "a_to_b_start_cm": 0.0,
+     "b_to_a_start_cm": 2.26
+    },
+    "detail": "white cylinder is 0.0 cm and gray block 2.3 cm from each other's start (white cylinder not seen by SAM in the render: inconclusive)"
+   }
+  ],
+  "detail": "SAM saw 1/2 stand-ins in the render; not every goal object was visible, so this check is inconclusive",
+  "inconclusive": true
+ },
+ "judge": {
+  "same_goal_achieved": true,
+  "confidence": 0.92,
+  "differences": [
+   "Teal pen distractor visible on right in Image 1 not visible in Image 2",
+   "Table AR markers visible in Image 1 missing in Image 2",
+   "Sim uses simple stand-in blocks - white cylinder appears as tan block and is tilted vs upright white cylinder in Image 1",
+   "Colours/textures and lighting simplified in simulation",
+   "Table cropping/zoom slightly different but viewpoint same"
+  ],
+  "suspected_error": "none - simulator check of 0.0cm swap is consistent with Image 1 layout"
+ },
+ "agree": true,
+ "failure_class": null,
+ "renders": {
+  "real": "artifacts/reference_frame.jpg",
+  "camera": "artifacts/sim/verify_v1/camera_demo.png",
+  "top": "artifacts/sim/verify_v1/top_demo.png",
+  "perceptual_input": "artifacts/sim/verify_v1/perceptual_input.jpg"
+ }
+}

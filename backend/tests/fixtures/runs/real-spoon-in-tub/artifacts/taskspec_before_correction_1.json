@@ -1,0 +1,148 @@
+{
+ "summary": "The person put the spoon inside the tub.",
+ "objects": [
+  {
+   "name": "silver spoon",
+   "kind": "spoon",
+   "alt_names": [
+    "steel spoon",
+    "small metal spoon"
+   ],
+   "role": "moved",
+   "color": "silver",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    12.0,
+    3.0
+   ]
+  },
+  {
+   "name": "white plastic tub",
+   "kind": "tub",
+   "alt_names": [
+    "white tub",
+    "white plastic container"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 8.0,
+   "est_size_cm": [
+    15.0,
+    12.0
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "tennis ball",
+    "green ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "alt_names": [
+    "fevicol bottle",
+    "small glue bottle"
+   ],
+   "role": "distractor",
+   "color": "white",
+   "est_height_cm": 7.0,
+   "est_size_cm": [
+    3.0,
+    3.0
+   ]
+  },
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "light blue pen",
+    "cyan pen"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  },
+  {
+   "name": "middle light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "light blue pen",
+    "cyan pen"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "light blue pen",
+    "cyan pen"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "silver spoon",
+   "target": "white plastic tub",
+   "relation": null,
+   "t_start": 1.0,
+   "t_end": 4.2,
+   "evidence": "picked spoon from right of tub and dropped inside tub"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "silver spoon",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white plastic tub",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Put the silver spoon inside the white plastic tub wherever they start.",
+ "uncertainties": [
+  "Exact number and type of the light-blue pen-like objects is unclear; counted as three separate pens as distractors.",
+  "Exact dimensions and colors are estimates from video.",
+  "Exact t_start and t_end times are approximate."
+ ]
+}

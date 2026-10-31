@@ -1,0 +1,172 @@
+{
+ "initial": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 23.5,
+   "y": 17.2,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 13.0,
+   "d": 13.0,
+   "h": 6.5,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 28.3,
+   "y": 5.7,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 15.0,
+   "d": 2.6,
+   "h": 1.8,
+   "color": "#1a9a95",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 48.2,
+   "y": 33.9,
+   "z": 0.0,
+   "yaw": 168.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 23.5,
+   "y": 17.2,
+   "z": 3.25,
+   "yaw": 0.0,
+   "w": 13.0,
+   "d": 13.0,
+   "h": 6.5,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 6.5,
+   "y": 17.2,
+   "z": 0.9,
+   "yaw": 0.0,
+   "w": 15.0,
+   "d": 2.6,
+   "h": 1.8,
+   "color": "#1a9a95",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 48.2,
+   "y": 33.9,
+   "z": 0.6,
+   "yaw": 168.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "teal box cutter",
+   "t0": 3.27,
+   "t1": 5.37,
+   "from_cm": [
+    28.3,
+    5.7
+   ],
+   "to_cm": [
+    6.5,
+    17.2
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 3.27,
+   "type": "grasp",
+   "object": "teal box cutter"
+  },
+  {
+   "t": 5.37,
+   "type": "release",
+   "object": "teal box cutter"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 0,
+   "confidence": 0.9,
+   "timing_delta_s": 0.2
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "teal box cutter",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "teal box cutter"
+   ],
+   "measured": {
+    "gap_cm": 3.0,
+    "lateral_cm": 0.0,
+    "lateral_limit_cm": 9.5
+   },
+   "detail": "teal box cutter left of white box"
+  }
+ ],
+ "flags": []
+}

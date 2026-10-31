@@ -1,0 +1,190 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-00",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "silver spoon"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white plastic tub"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.496
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 6.933
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "silver spoon",
+   "kind": "spoon",
+   "role": "moved",
+   "shape": "box",
+   "x": 40.12,
+   "y": 18.22,
+   "z": 1.2,
+   "yaw": -0.6,
+   "w": 13.4,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#97968d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-03/artifacts/crops/silver_spoon.png",
+   "hollow": false
+  },
+  {
+   "name": "white plastic tub",
+   "kind": "tub",
+   "role": "container",
+   "shape": "box",
+   "x": 40.0,
+   "y": 15.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 23.1,
+   "d": 15.4,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 57.5,
+   "y": 15.0,
+   "z": 3.25,
+   "yaw": 0.0,
+   "w": 6.5,
+   "d": 6.5,
+   "h": 6.5,
+   "color": "#797b3d",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-03/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "distractor",
+   "shape": "cylinder",
+   "x": 24.0,
+   "y": 15.0,
+   "z": 3.5,
+   "yaw": 0.1,
+   "w": 3.0,
+   "d": 3.0,
+   "h": 7.0,
+   "color": "#8e8b83",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-03/artifacts/crops/white_glue_bottle.png",
+   "hollow": false
+  },
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 57.0,
+   "y": 27.01,
+   "z": 0.5,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#afada4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "middle light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 20.0,
+   "y": 27.02,
+   "z": 0.5,
+   "yaw": -0.2,
+   "w": 16.3,
+   "d": 2.5,
+   "h": 1.0,
+   "color": "#a9aa9e",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 18.0,
+   "y": 6.01,
+   "z": 0.5,
+   "yaw": -0.1,
+   "w": 14.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#9b9c90",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "silver spoon",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white plastic tub",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "silver spoon"
+   ],
+   "measured": {
+    "margin_cm": 3.48,
+    "z_cm": 1.2,
+    "below_rim": true
+   },
+   "detail": "silver spoon inside white plastic tub"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-00_v2/top_red-00.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-00_v2/twin_red-00.json",
+ "duration_s": 8.43,
+ "wall_s": 0.46
+}

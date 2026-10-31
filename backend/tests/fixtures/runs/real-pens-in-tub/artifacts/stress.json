@@ -1,0 +1,7059 @@
+{
+ "cases": [
+  {
+   "layout": {
+    "id": "red-00",
+    "source": "redteam:crowder",
+    "description": "Tub centered with pens tightly flanked on west and distractors pinched on east creating narrow 2.5-3.8cm corridors on both sides so any grasp or tub approach risks collision.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 42.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 22.5,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 22.5,
+      "y": 18.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 22.5,
+      "y": 6.3,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 56.5,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 56.5,
+      "y": 24.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 15.0,
+      "y": 25.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "crowder",
+   "rationale": "Tub centered with pens tightly flanked on west and distractors pinched on east creating narrow 2.5-3.8cm corridors on both sides so any grasp or tub approach risks collision.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-00",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.317
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.608
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.379
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.833
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 42.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 41.99,
+      "y": 14.0,
+      "z": 0.95,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 42.51,
+      "y": 20.39,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 22.5,
+      "y": 6.31,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 56.5,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 56.5,
+      "y": 24.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 14.99,
+      "y": 25.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.5,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.11,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-00_v1/top_red-00.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-00_v1/twin_red-00.json",
+    "duration_s": 14.33,
+    "wall_s": 0.69
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-00",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.317
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.608
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.379
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.833
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 42.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 41.99,
+      "y": 14.0,
+      "z": 0.95,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 42.51,
+      "y": 20.39,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 22.5,
+      "y": 6.31,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 56.5,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 56.5,
+      "y": 24.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 14.99,
+      "y": 25.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.5,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.11,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-00_v1/top_red-00.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-00_v1/twin_red-00.json",
+    "duration_s": 14.33,
+    "wall_s": 0.69
+   }
+  },
+  {
+   "layout": {
+    "id": "red-01",
+    "source": "redteam:crowder",
+    "description": "Tub on west with both pens vertical in tight 2.8-3.5cm slot to its east walled by ball, forcing precise longitudinal grasps and blocked tub entry from east.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 32.5,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 38.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 45.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 26.1,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.0,
+      "y": 24.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "crowder",
+   "rationale": "Tub on west with both pens vertical in tight 2.8-3.5cm slot to its east walled by ball, forcing precise longitudinal grasps and blocked tub entry from east.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-01",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.312
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.575
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.338
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.608
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.98,
+      "y": 12.99,
+      "z": 0.95,
+      "yaw": 89.8,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 26.59,
+      "y": 13.59,
+      "z": 0.95,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 45.0,
+      "y": 12.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 26.11,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.0,
+      "y": 24.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 11.98,
+      "y": 26.99,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.11,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-01_v1/top_red-01.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-01_v1/twin_red-01.json",
+    "duration_s": 14.11,
+    "wall_s": 0.64
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-01",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.312
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.575
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.338
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.608
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.98,
+      "y": 12.99,
+      "z": 0.95,
+      "yaw": 89.8,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 26.59,
+      "y": 13.59,
+      "z": 0.95,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 45.0,
+      "y": 12.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 26.11,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.0,
+      "y": 24.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 11.98,
+      "y": 26.99,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.11,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-01_v1/top_red-01.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-01_v1/twin_red-01.json",
+    "duration_s": 14.11,
+    "wall_s": 0.64
+   }
+  },
+  {
+   "layout": {
+    "id": "red-02",
+    "source": "redteam:edge_walker",
+    "description": "Tub is jammed into the far bottom-right corner at the reach limit while both pens are on the opposite top-left edge, forcing long traverses along table edges with distractors blocking the straight pat",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.0,
+      "y": 29.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.0,
+      "y": 23.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 30.0,
+      "y": 12.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.0,
+      "y": 29.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 14.0,
+      "y": 6.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 40.0,
+      "y": 26.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "edge_walker",
+   "rationale": "Tub is jammed into the far bottom-right corner at the reach limit while both pens are on the opposite top-left edge, forcing long traverses along table edges with distractors blocking the straight path.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-02",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.417
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.733
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.571
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 13.046
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.28,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.8,
+      "y": 18.84,
+      "z": 0.95,
+      "yaw": -0.4,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 30.0,
+      "y": 12.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 23.99,
+      "y": 29.02,
+      "z": 0.75,
+      "yaw": -0.7,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 14.0,
+      "y": 6.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 40.0,
+      "y": 26.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.16,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-02_v1/top_red-02.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-02_v1/twin_red-02.json",
+    "duration_s": 14.55,
+    "wall_s": 1.48
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-02",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.417
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.733
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.571
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 13.046
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.28,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.8,
+      "y": 18.84,
+      "z": 0.95,
+      "yaw": -0.4,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 30.0,
+      "y": 12.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 23.99,
+      "y": 29.02,
+      "z": 0.75,
+      "yaw": -0.7,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 14.0,
+      "y": 6.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 40.0,
+      "y": 26.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.16,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-02_v1/top_red-02.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-02_v1/twin_red-02.json",
+    "duration_s": 14.55,
+    "wall_s": 1.48
+   }
+  },
+  {
+   "layout": {
+    "id": "red-03",
+    "source": "redteam:edge_walker",
+    "description": "Tub is pushed to the top-left extreme at the closest reach limit while pens are on the far bottom-right edge, requiring precise edge grasps with clutter crowding both the start and target edges.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 58.0,
+      "y": 5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 58.0,
+      "y": 11.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 12.7,
+      "y": 21.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 7.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 25.0,
+      "y": 5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 27.9,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 30.0,
+      "y": 26.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "edge_walker",
+   "rationale": "Tub is pushed to the top-left extreme at the closest reach limit while pens are on the far bottom-right edge, requiring precise edge grasps with clutter crowding both the start and target edges.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-03",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.283
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.612
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.404
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.875
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 12.68,
+      "y": 21.52,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 12.88,
+      "y": 14.51,
+      "z": 1.27,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 12.7,
+      "y": 21.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 7.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.99,
+      "y": 5.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 27.91,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 30.0,
+      "y": 26.5,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.48,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 0.51,
+       "right blue pen.z_cm": 1.27,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-03_v1/top_red-03.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-03_v1/twin_red-03.json",
+    "duration_s": 14.38,
+    "wall_s": 0.7
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-03",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.283
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.612
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.404
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.875
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 12.68,
+      "y": 21.52,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 12.88,
+      "y": 14.51,
+      "z": 1.27,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 12.7,
+      "y": 21.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 7.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.99,
+      "y": 5.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 50.0,
+      "y": 27.91,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 30.0,
+      "y": 26.5,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.48,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 0.51,
+       "right blue pen.z_cm": 1.27,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-03_v1/top_red-03.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-03_v1/twin_red-03.json",
+    "duration_s": 14.38,
+    "wall_s": 0.7
+   }
+  },
+  {
+   "layout": {
+    "id": "red-04",
+    "source": "redteam:twin_maker",
+    "description": "Tub tucked left while all three pens are clustered far right among similar-sized distractors testing generalization to 3 pens and color discrimination.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 55.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 62.0,
+      "y": 15.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 50.0,
+      "y": 8.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 25.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 35.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 45.0,
+      "y": 20.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "twin_maker",
+   "rationale": "Tub tucked left while all three pens are clustered far right among similar-sized distractors testing generalization to 3 pens and color discrimination.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-04",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "extra blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.292
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.592
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.429
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 12.896
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 15.683
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 18.996
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.64,
+      "y": 18.28,
+      "z": 0.95,
+      "yaw": 2.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 26.61,
+      "y": 12.31,
+      "z": 1.95,
+      "yaw": 89.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.99,
+      "y": 13.06,
+      "z": 0.95,
+      "yaw": -0.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 25.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 34.98,
+      "y": 14.03,
+      "z": 0.75,
+      "yaw": -1.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 45.0,
+      "y": 20.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "extra blue pen",
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "extra blue pen.margin_cm": 7.44,
+       "extra blue pen.z_cm": 0.95,
+       "extra blue pen.below_rim": true,
+       "left blue pen.margin_cm": 2.22,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.09,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-04_v1/top_red-04.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-04_v1/twin_red-04.json",
+    "duration_s": 20.5,
+    "wall_s": 0.9
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-04",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "extra blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.292
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.592
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.429
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 12.896
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 15.683
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 18.996
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 20.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.64,
+      "y": 18.28,
+      "z": 0.95,
+      "yaw": 2.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 26.61,
+      "y": 12.31,
+      "z": 1.95,
+      "yaw": 89.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 19.99,
+      "y": 13.06,
+      "z": 0.95,
+      "yaw": -0.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 25.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 34.98,
+      "y": 14.03,
+      "z": 0.75,
+      "yaw": -1.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 27.01,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 45.0,
+      "y": 20.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "extra blue pen",
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "extra blue pen.margin_cm": 7.44,
+       "extra blue pen.z_cm": 0.95,
+       "extra blue pen.below_rim": true,
+       "left blue pen.margin_cm": 2.22,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.09,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-04_v1/top_red-04.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-04_v1/twin_red-04.json",
+    "duration_s": 20.5,
+    "wall_s": 0.9
+   }
+  },
+  {
+   "layout": {
+    "id": "red-05",
+    "source": "redteam:twin_maker",
+    "description": "Tub centered while three pens are at opposite extreme corners and distractors form a narrow corridor to the tub, testing 3-pen generalization and precise obstacle avoidance.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.5,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 62.5,
+      "y": 22.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.5,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 29.0,
+      "y": 27.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 25.0,
+      "y": 7.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "twin_maker",
+   "rationale": "Tub centered while three pens are at opposite extreme corners and distractors form a narrow corridor to the tub, testing 3-pen generalization and precise obstacle avoidance.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-05",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.408
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "extra blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.725
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.488
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 12.954
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 15.729
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 18.971
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 49.98,
+      "y": 14.08,
+      "z": 0.95,
+      "yaw": 0.4,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.55,
+      "y": 14.56,
+      "z": 1.95,
+      "yaw": 89.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 50.49,
+      "y": 20.41,
+      "z": 0.95,
+      "yaw": -0.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 44.98,
+      "y": 27.03,
+      "z": 0.75,
+      "yaw": -1.1,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 29.0,
+      "y": 27.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 25.0,
+      "y": 7.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "extra blue pen",
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "extra blue pen.margin_cm": 1.09,
+       "extra blue pen.z_cm": 0.95,
+       "extra blue pen.below_rim": true,
+       "left blue pen.margin_cm": 7.42,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.15,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-05_v1/top_red-05.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-05_v1/twin_red-05.json",
+    "duration_s": 20.47,
+    "wall_s": 1.45
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-05",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.408
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "extra blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.725
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.488
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 12.954
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 15.729
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 18.971
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 49.98,
+      "y": 14.08,
+      "z": 0.95,
+      "yaw": 0.4,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.55,
+      "y": 14.56,
+      "z": 1.95,
+      "yaw": 89.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "extra blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 50.49,
+      "y": 20.41,
+      "z": 0.95,
+      "yaw": -0.6,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 44.98,
+      "y": 27.03,
+      "z": 0.75,
+      "yaw": -1.1,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 29.0,
+      "y": 27.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 25.0,
+      "y": 7.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "extra blue pen",
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "extra blue pen.margin_cm": 1.09,
+       "extra blue pen.z_cm": 0.95,
+       "extra blue pen.below_rim": true,
+       "left blue pen.margin_cm": 7.42,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.15,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-05_v1/top_red-05.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-05_v1/twin_red-05.json",
+    "duration_s": 20.47,
+    "wall_s": 1.45
+   }
+  },
+  {
+   "layout": {
+    "id": "red-06",
+    "source": "redteam:distractor",
+    "description": "Tub centered with pens far on opposite sides and distractors placed to force long carries and careful obstacle avoidance near tub entry.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 12.0,
+      "y": 25.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 55.0,
+      "y": 25.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 9.0,
+      "y": 14.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 55.0,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 6.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 55.0,
+      "y": 17.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "red wooden block",
+      "kind": "wooden block",
+      "role": "distractor",
+      "shape": "box",
+      "x": 20.0,
+      "y": 17.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 5.0,
+      "d": 5.0,
+      "h": 5.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "pink eraser",
+      "kind": "eraser",
+      "role": "distractor",
+      "shape": "box",
+      "x": 52.0,
+      "y": 5.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 4.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "distractor",
+   "rationale": "Tub centered with pens far on opposite sides and distractors placed to force long carries and careful obstacle avoidance near tub entry.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-06",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.4
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.7
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.504
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.95
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 34.99,
+      "y": 13.0,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 35.49,
+      "y": 17.62,
+      "z": 0.95,
+      "yaw": -1.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 9.0,
+      "y": 14.5,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 54.99,
+      "y": 10.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 6.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 54.95,
+      "y": 17.1,
+      "z": 1.0,
+      "yaw": -1.1,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "red wooden block",
+      "kind": "wooden block",
+      "role": "distractor",
+      "shape": "box",
+      "x": 20.0,
+      "y": 16.98,
+      "z": 2.5,
+      "yaw": 0.1,
+      "w": 5.0,
+      "d": 5.0,
+      "h": 5.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "pink eraser",
+      "kind": "eraser",
+      "role": "distractor",
+      "shape": "box",
+      "x": 52.0,
+      "y": 5.5,
+      "z": 0.5,
+      "yaw": -0.2,
+      "w": 4.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.5,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 2.88,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-06_v1/top_red-06.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-06_v1/twin_red-06.json",
+    "duration_s": 14.45,
+    "wall_s": 1.24
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-06",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.4
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.7
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.504
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.95
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 34.99,
+      "y": 13.0,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 35.49,
+      "y": 17.62,
+      "z": 0.95,
+      "yaw": -1.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 35.0,
+      "y": 13.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 9.0,
+      "y": 14.5,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 54.99,
+      "y": 10.02,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 12.0,
+      "y": 6.51,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 54.95,
+      "y": 17.1,
+      "z": 1.0,
+      "yaw": -1.1,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "red wooden block",
+      "kind": "wooden block",
+      "role": "distractor",
+      "shape": "box",
+      "x": 20.0,
+      "y": 16.98,
+      "z": 2.5,
+      "yaw": 0.1,
+      "w": 5.0,
+      "d": 5.0,
+      "h": 5.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "pink eraser",
+      "kind": "eraser",
+      "role": "distractor",
+      "shape": "box",
+      "x": 52.0,
+      "y": 5.5,
+      "z": 0.5,
+      "yaw": -0.2,
+      "w": 4.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.5,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 2.88,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-06_v1/top_red-06.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-06_v1/twin_red-06.json",
+    "duration_s": 14.45,
+    "wall_s": 1.24
+   }
+  },
+  {
+   "layout": {
+    "id": "red-07",
+    "source": "redteam:distractor",
+    "description": "Tub pushed to far right with pens on far left and distractors clustered to clutter approach and mimic pen geometry near container.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 22.0,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 10.0,
+      "y": 19.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 30.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 15.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 34.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "blue wooden cube",
+      "kind": "wooden cube",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 4.0,
+      "d": 4.0,
+      "h": 4.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "green ceramic mug",
+      "kind": "mug",
+      "role": "distractor",
+      "shape": "box",
+      "x": 24.0,
+      "y": 19.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 6.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "distractor",
+   "rationale": "Tub pushed to far right with pens on far left and distractors clustered to clutter approach and mimic pen geometry near container.",
+   "before": {
+    "ok": false,
+    "error": "line 6, in run\nCollision: knocked green ceramic mug out of place",
+    "error_type": "Collision",
+    "layout_id": "red-07",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.337
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": false,
+      "error": "Collision: knocked green ceramic mug out of place",
+      "t": 6.658
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 22.02,
+      "y": 26.01,
+      "z": 18.45,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 50.0,
+      "y": 13.99,
+      "z": 0.95,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 26.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 30.0,
+      "y": 7.01,
+      "z": 0.75,
+      "yaw": -0.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 15.0,
+      "y": 7.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 34.0,
+      "y": 14.0,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "blue wooden cube",
+      "kind": "wooden cube",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.0,
+      "y": 26.99,
+      "z": 2.0,
+      "yaw": 0.1,
+      "w": 4.0,
+      "d": 4.0,
+      "h": 4.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "green ceramic mug",
+      "kind": "mug",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.22,
+      "y": 19.2,
+      "z": 3.0,
+      "yaw": 2.2,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 6.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": false,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": -20.28,
+       "left blue pen.z_cm": 18.45,
+       "left blue pen.below_rim": false,
+       "right blue pen.margin_cm": 7.49,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "not inside white plastic tub: left blue pen"
+     }
+    ],
+    "goal_ok": false,
+    "collisions": [
+     "Collision: knocked green ceramic mug out of place"
+    ],
+    "renders": {
+     "top": "artifacts/sim/red-07_v1/top_red-07.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-07_v1/twin_red-07.json",
+    "duration_s": 9.97,
+    "wall_s": 0.7
+   },
+   "after": {
+    "ok": false,
+    "error": "line 6, in run\nCollision: knocked green ceramic mug out of place",
+    "error_type": "Collision",
+    "layout_id": "red-07",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.337
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": false,
+      "error": "Collision: knocked green ceramic mug out of place",
+      "t": 6.658
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 22.02,
+      "y": 26.01,
+      "z": 18.45,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 50.0,
+      "y": 13.99,
+      "z": 0.95,
+      "yaw": 89.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 50.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 35.0,
+      "y": 26.0,
+      "z": 3.3,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 30.0,
+      "y": 7.01,
+      "z": 0.75,
+      "yaw": -0.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 15.0,
+      "y": 7.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 34.0,
+      "y": 14.0,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     },
+     {
+      "name": "blue wooden cube",
+      "kind": "wooden cube",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.0,
+      "y": 26.99,
+      "z": 2.0,
+      "yaw": 0.1,
+      "w": 4.0,
+      "d": 4.0,
+      "h": 4.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "green ceramic mug",
+      "kind": "mug",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.22,
+      "y": 19.2,
+      "z": 3.0,
+      "yaw": 2.2,
+      "w": 6.0,
+      "d": 6.0,
+      "h": 6.0,
+      "color": "#8a8f98",
+      "texture": null,
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": false,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": -20.28,
+       "left blue pen.z_cm": 18.45,
+       "left blue pen.below_rim": false,
+       "right blue pen.margin_cm": 7.49,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "not inside white plastic tub: left blue pen"
+     }
+    ],
+    "goal_ok": false,
+    "collisions": [
+     "Collision: knocked green ceramic mug out of place"
+    ],
+    "renders": {
+     "top": "artifacts/sim/red-07_v1/top_red-07.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-07_v1/twin_red-07.json",
+    "duration_s": 9.97,
+    "wall_s": 0.7
+   }
+  },
+  {
+   "layout": {
+    "id": "red-08",
+    "source": "redteam:mirror",
+    "description": "Mirrored left-right places tub on far left while both pens are on far right opposite corners with distractors forming a corridor barrier requiring long detours.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 55.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 52.0,
+      "y": 7.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 18.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 32.5,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 32.5,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.4,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 42.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "mirror",
+   "rationale": "Mirrored left-right places tub on far left while both pens are on far right opposite corners with distractors forming a corridor barrier requiring long detours.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-08",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.288
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.592
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.429
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.9
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 17.95,
+      "y": 18.87,
+      "z": 0.95,
+      "yaw": 0.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 17.99,
+      "y": 14.01,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 18.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 32.5,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 32.49,
+      "y": 26.02,
+      "z": 0.75,
+      "yaw": -0.7,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.4,
+      "y": 14.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 42.0,
+      "y": 24.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 2.63,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 7.49,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-08_v1/top_red-08.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-08_v1/twin_red-08.json",
+    "duration_s": 14.4,
+    "wall_s": 0.64
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-08",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.288
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.592
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.429
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.9
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 17.95,
+      "y": 18.87,
+      "z": 0.95,
+      "yaw": 0.9,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 17.99,
+      "y": 14.01,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 18.0,
+      "y": 14.0,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 32.5,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 32.49,
+      "y": 26.02,
+      "z": 0.75,
+      "yaw": -0.7,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 45.4,
+      "y": 14.0,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 42.0,
+      "y": 24.5,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 2.63,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 7.49,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-08_v1/top_red-08.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-08_v1/twin_red-08.json",
+    "duration_s": 14.4,
+    "wall_s": 0.64
+   }
+  },
+  {
+   "layout": {
+    "id": "red-09",
+    "source": "redteam:mirror",
+    "description": "Mirrored layout moves tub to far left while both pens cluster on far right behind a staggered barrier of distractors requiring long detours and precise color discrimination.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 57.0,
+      "y": 11.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 57.0,
+      "y": 26.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 14.0,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 180.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 43.0,
+      "y": 14.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 27.0,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 39.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 31.0,
+      "y": 16.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "mirror",
+   "rationale": "Mirrored layout moves tub to far left while both pens cluster on far right behind a staggered barrier of distractors requiring long detours and precise color discrimination.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-09",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.288
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.6
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.442
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.912
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 13.98,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": 89.8,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 13.6,
+      "y": 17.04,
+      "z": 1.95,
+      "yaw": -0.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 14.0,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": 180.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 43.0,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.98,
+      "y": 6.99,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 39.0,
+      "y": 27.0,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 31.0,
+      "y": 16.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 2.96,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-09_v1/top_red-09.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-09_v1/twin_red-09.json",
+    "duration_s": 14.41,
+    "wall_s": 0.61
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-09",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.288
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.6
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.442
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.912
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 13.98,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": 89.8,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 13.6,
+      "y": 17.04,
+      "z": 1.95,
+      "yaw": -0.7,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 14.0,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": 180.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 43.0,
+      "y": 14.0,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 26.98,
+      "y": 6.99,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 39.0,
+      "y": 27.0,
+      "z": 0.5,
+      "yaw": -0.1,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 31.0,
+      "y": 16.0,
+      "z": 1.0,
+      "yaw": -0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 2.96,
+       "right blue pen.z_cm": 1.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-09_v1/top_red-09.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-09_v1/twin_red-09.json",
+    "duration_s": 14.41,
+    "wall_s": 0.61
+   }
+  },
+  {
+   "layout": {
+    "id": "red-10",
+    "source": "redteam:squeezer",
+    "description": "Tub is jammed into the bottom-right corner (touching both walls) with tennis ball and glue bottle leaving only 2.5cm corridors on the only open sides, forcing a precise angled insertion.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.0,
+      "y": 27.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.0,
+      "y": 22.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.8,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 28.0,
+      "y": 24.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 20.0,
+      "y": 12.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "squeezer",
+   "rationale": "Tub is jammed into the bottom-right corner (touching both walls) with tennis ball and glue bottle leaving only 2.5cm corridors on the only open sides, forcing a precise angled insertion.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-10",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.408
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.725
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.558
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 13.033
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.29,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.82,
+      "y": 18.71,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 12.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.79,
+      "y": 24.52,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 28.0,
+      "y": 24.5,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 20.0,
+      "y": 12.5,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.29,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-10_v1/top_red-10.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-10_v1/twin_red-10.json",
+    "duration_s": 14.53,
+    "wall_s": 1.15
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-10",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.408
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.725
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.558
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 13.033
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.29,
+      "y": 12.49,
+      "z": 0.95,
+      "yaw": -0.1,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.82,
+      "y": 18.71,
+      "z": 0.95,
+      "yaw": -0.3,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 12.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 12.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.79,
+      "y": 24.52,
+      "z": 0.75,
+      "yaw": -0.8,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 28.0,
+      "y": 24.5,
+      "z": 0.5,
+      "yaw": -0.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 20.0,
+      "y": 12.5,
+      "z": 1.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.29,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-10_v1/top_red-10.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-10_v1/twin_red-10.json",
+    "duration_s": 14.53,
+    "wall_s": 1.15
+   }
+  },
+  {
+   "layout": {
+    "id": "red-11",
+    "source": "redteam:squeezer",
+    "description": "Tub is squeezed against the top-right corner with tennis ball and spoon forming a 2.5cm tight row on its left, while pens are in a tight 2.5cm row far away requiring long carry through narrow gap.",
+    "seed": null,
+    "objects": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 11.0,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 27.5,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 21.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 21.5,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.8,
+      "y": 7.5,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 33.5,
+      "y": 21.5,
+      "z": 0.0,
+      "yaw": 90.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.6,
+      "y": 7.2,
+      "z": 0.0,
+      "yaw": 0.0,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "work_area": {
+     "x0": 4.0,
+     "y0": 4.0,
+     "x1": 65.426352527355,
+     "y1": 30.109735030098342
+    },
+    "robot_base_cm": [
+     34.7131762636775,
+     58.10973503009834
+    ]
+   },
+   "persona": "squeezer",
+   "rationale": "Tub is squeezed against the top-right corner with tennis ball and spoon forming a 2.5cm tight row on its left, while pens are in a tight 2.5cm row far away requiring long carry through narrow gap.",
+   "before": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-11",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.308
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.638
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.408
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.879
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.3,
+      "y": 21.49,
+      "z": 0.95,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.8,
+      "y": 27.86,
+      "z": 0.95,
+      "yaw": -0.5,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 21.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 21.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.78,
+      "y": 7.49,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 33.5,
+      "y": 21.5,
+      "z": 0.5,
+      "yaw": 90.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.6,
+      "y": 7.2,
+      "z": 1.0,
+      "yaw": 0.1,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.14,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-11_v1/top_red-11.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-11_v1/twin_red-11.json",
+    "duration_s": 14.38,
+    "wall_s": 0.56
+   },
+   "after": {
+    "ok": true,
+    "error": null,
+    "error_type": null,
+    "layout_id": "red-11",
+    "skill_calls": [
+     {
+      "skill": "pick",
+      "args": {
+       "object": "left blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 0.5
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 3.308
+     },
+     {
+      "skill": "pick",
+      "args": {
+       "object": "right blue pen"
+      },
+      "ok": true,
+      "error": null,
+      "t": 6.638
+     },
+     {
+      "skill": "place_in",
+      "args": {
+       "container": "white plastic tub"
+      },
+      "ok": true,
+      "error": null,
+      "t": 9.408
+     },
+     {
+      "skill": "home",
+      "args": {},
+      "ok": true,
+      "error": null,
+      "t": 12.879
+     }
+    ],
+    "logs": [],
+    "final_state": [
+     {
+      "name": "left blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.3,
+      "y": 21.49,
+      "z": 0.95,
+      "yaw": -0.0,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#5bb7bf",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "right blue pen",
+      "kind": "pen",
+      "role": "moved",
+      "shape": "box",
+      "x": 56.8,
+      "y": 27.86,
+      "z": 0.95,
+      "yaw": -0.5,
+      "w": 14.0,
+      "d": 2.0,
+      "h": 1.0,
+      "color": "#366c7a",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "white plastic tub",
+      "kind": "tub",
+      "role": "container",
+      "shape": "box",
+      "x": 56.3,
+      "y": 21.5,
+      "z": 3.05,
+      "yaw": -0.0,
+      "w": 17.4,
+      "d": 17.0,
+      "h": 6.0,
+      "color": "#eeeeea",
+      "texture": null,
+      "hollow": true
+     },
+     {
+      "name": "yellow tennis ball",
+      "kind": "tennis ball",
+      "role": "distractor",
+      "shape": "sphere",
+      "x": 41.8,
+      "y": 21.5,
+      "z": 3.3,
+      "yaw": -0.0,
+      "w": 6.6,
+      "d": 6.6,
+      "h": 6.5,
+      "color": "#838b3b",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/yellow_tennis_ball.png",
+      "hollow": false
+     },
+     {
+      "name": "light blue pen cap",
+      "kind": "pen cap",
+      "role": "distractor",
+      "shape": "box",
+      "x": 41.78,
+      "y": 7.49,
+      "z": 0.75,
+      "yaw": 89.2,
+      "w": 6.0,
+      "d": 2.0,
+      "h": 1.5,
+      "color": "#1e223c",
+      "texture": null,
+      "hollow": false
+     },
+     {
+      "name": "steel spoon",
+      "kind": "spoon",
+      "role": "distractor",
+      "shape": "box",
+      "x": 33.5,
+      "y": 21.5,
+      "z": 0.5,
+      "yaw": 90.0,
+      "w": 14.2,
+      "d": 4.1,
+      "h": 1.0,
+      "color": "#9c9c93",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/steel_spoon.png",
+      "hollow": false
+     },
+     {
+      "name": "small glue bottle",
+      "kind": "glue bottle",
+      "role": "distractor",
+      "shape": "cylinder",
+      "x": 50.6,
+      "y": 7.2,
+      "z": 1.0,
+      "yaw": 0.1,
+      "w": 6.5,
+      "d": 6.5,
+      "h": 2.0,
+      "color": "#9f9f9c",
+      "texture": "/home/soubh_raha24--/The_Demobot/data/runs/real-02/artifacts/crops/small_glue_bottle.png",
+      "hollow": false
+     }
+    ],
+    "goal_results": [
+     {
+      "clause": {
+       "quant": "all",
+       "select": {
+        "name": null,
+        "kind": "pen",
+        "role": null,
+        "names": null
+       },
+       "pred": "inside",
+       "target": {
+        "name": "white plastic tub",
+        "kind": null,
+        "role": null,
+        "names": null
+       },
+       "point_cm": null,
+       "order_by": null,
+       "order": null
+      },
+      "holds": true,
+      "code": null,
+      "objects": [
+       "left blue pen",
+       "right blue pen"
+      ],
+      "measured": {
+       "left blue pen.margin_cm": 7.49,
+       "left blue pen.z_cm": 0.95,
+       "left blue pen.below_rim": true,
+       "right blue pen.margin_cm": 1.14,
+       "right blue pen.z_cm": 0.95,
+       "right blue pen.below_rim": true
+      },
+      "detail": "every pen inside white plastic tub"
+     }
+    ],
+    "goal_ok": true,
+    "collisions": [],
+    "renders": {
+     "top": "artifacts/sim/red-11_v1/top_red-11.png"
+    },
+    "twin_trajectory": "artifacts/sim/red-11_v1/twin_red-11.json",
+    "duration_s": 14.38,
+    "wall_s": 0.56
+   }
+  }
+ ],
+ "robustness_before": 0.917,
+ "robustness_after": 0.917,
+ "clusters": [
+  {
+   "failure": "Collision",
+   "persona": "distractor",
+   "count": 1
+  }
+ ],
+ "program_before": 1,
+ "program_after": 1
+}

@@ -1,0 +1,171 @@
+{
+ "primary": "Muse Spark 1.3 (video)",
+ "spec": {
+  "summary": "The person picked up two blue pens from the left side of the table and placed them together inside the white rectangular container in the center-right.",
+  "objects": [
+   {
+    "name": "yellow tennis ball",
+    "kind": "tennis ball",
+    "alt_names": [
+     "yellow ball",
+     "green tennis ball"
+    ],
+    "role": "distractor",
+    "color": "yellow",
+    "est_height_cm": 6.7,
+    "est_size_cm": [
+     6.7,
+     6.7
+    ]
+   },
+   {
+    "name": "left cyan pen",
+    "kind": "pen",
+    "alt_names": [
+     "light blue pen cap",
+     "aqua pen"
+    ],
+    "role": "distractor",
+    "color": "light cyan",
+    "est_height_cm": 1.2,
+    "est_size_cm": [
+     14.0,
+     1.2
+    ]
+   },
+   {
+    "name": "middle blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "blue ballpoint pen",
+     "dark cyan pen"
+    ],
+    "role": "moved",
+    "color": "blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     14.5,
+     1.2
+    ]
+   },
+   {
+    "name": "right light blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "transparent light blue pen",
+     "clear blue pen"
+    ],
+    "role": "moved",
+    "color": "light blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     14.5,
+     1.2
+    ]
+   },
+   {
+    "name": "white rectangular container",
+    "kind": "box",
+    "alt_names": [
+     "white plastic tub",
+     "white container"
+    ],
+    "role": "container",
+    "color": "white",
+    "est_height_cm": 8.0,
+    "est_size_cm": [
+     14.0,
+     11.0
+    ]
+   },
+   {
+    "name": "metal spoon",
+    "kind": "spoon",
+    "alt_names": [
+     "small steel spoon",
+     "teaspoon"
+    ],
+    "role": "distractor",
+    "color": "silver",
+    "est_height_cm": 1.5,
+    "est_size_cm": [
+     12.0,
+     3.0
+    ]
+   },
+   {
+    "name": "white glue bottle",
+    "kind": "glue bottle",
+    "alt_names": [
+     "fevicol glue tube",
+     "small white bottle with blue cap"
+    ],
+    "role": "distractor",
+    "color": "white",
+    "est_height_cm": 5.5,
+    "est_size_cm": [
+     5.5,
+     1.8
+    ]
+   }
+  ],
+  "steps": [
+   {
+    "action": "place_in",
+    "object": "middle blue pen",
+    "target": "white rectangular container",
+    "relation": null,
+    "t_start": 2.8,
+    "t_end": 7.2,
+    "evidence": "hand grasps two pens and drops them into white tub"
+   },
+   {
+    "action": "place_in",
+    "object": "right light blue pen",
+    "target": "white rectangular container",
+    "relation": null,
+    "t_start": 3.0,
+    "t_end": 7.5,
+    "evidence": "both pens released together inside container"
+   }
+  ],
+  "goal": [
+   {
+    "quant": "all",
+    "select": {
+     "name": "middle blue pen",
+     "kind": "pen",
+     "role": "moved",
+     "names": [
+      "middle blue pen",
+      "right light blue pen"
+     ]
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white rectangular container",
+     "kind": "box",
+     "role": "container",
+     "names": [
+      "white rectangular container"
+     ]
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   }
+  ],
+  "generalization": "Both of the two pens that were moved go inside the white rectangular container, while all other objects remain in place.",
+  "uncertainties": [
+   "Leftmost cyan object appears to be a pen but was not moved; if it is a pen cap or different kind, the moved set would be all pens of kind pen",
+   "Two pens were grasped and placed simultaneously so individual t_start/t_end are approximated as overlapping interval within 2.8-7.5s",
+   "Exact distinction between middle and right pen colors is subtle; both are blue/cyan transparent pens"
+  ]
+ },
+ "agreement": 1.0,
+ "agree": true,
+ "differences": [
+  "objects only in B: left cyan pen",
+  "named differently (A / B): left blue pen / middle blue pen, white plastic tub / white rectangular container, right blue pen / right light blue pen, steel spoon / metal spoon, small glue bottle / white glue bottle"
+ ]
+}

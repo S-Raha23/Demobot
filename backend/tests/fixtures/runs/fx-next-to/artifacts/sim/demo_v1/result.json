@@ -1,0 +1,129 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "demo",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white box",
+    "side": "right_of",
+    "gap": 2
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.462
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 6.896
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 23.5,
+   "y": 17.2,
+   "z": 3.3,
+   "yaw": -0.0,
+   "w": 13.0,
+   "d": 13.0,
+   "h": 6.5,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 39.62,
+   "y": 17.99,
+   "z": 0.9,
+   "yaw": 1.6,
+   "w": 15.0,
+   "d": 2.6,
+   "h": 1.8,
+   "color": "#1a9a95",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 48.19,
+   "y": 33.87,
+   "z": 0.6,
+   "yaw": 167.9,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "teal box cutter",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "teal box cutter"
+   ],
+   "measured": {
+    "gap_cm": -30.15,
+    "lateral_cm": 0.79,
+    "lateral_limit_cm": 9.5
+   },
+   "detail": "not left of white box: teal box cutter"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/demo_v1/top_demo.png",
+  "camera": "artifacts/sim/demo_v1/camera_demo.png"
+ },
+ "twin_trajectory": "artifacts/sim/demo_v1/twin_demo.json",
+ "duration_s": 8.4,
+ "wall_s": 1.92
+}

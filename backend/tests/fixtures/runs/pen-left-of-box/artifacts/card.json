@@ -1,0 +1,11 @@
+{
+ "skill_id": "pen-left-of-box",
+ "title": "Put the teal pen left of the white box",
+ "description": "Move the pen that starts behind the white box to the left side of the white box.",
+ "image": "artifacts/card.png",
+ "goal_text": "back teal pen is left of the white box",
+ "program_version": 7,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 1.6795,
+ "run_id": "pen-left-of-box"
+}

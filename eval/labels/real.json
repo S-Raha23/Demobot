@@ -1,0 +1,61 @@
+{
+ "_note": "Intended goal per real clip, from the human's description of what they filmed (Sat Oct 31); real-05 from its own narration (\"cutter, or glue की position swap किया\"), which corrects the human's line-up guess. A Watch goal counts as correct when one clause uses an allowed predicate on an object whose name contains one of `moved` and, if given, a target whose name contains one of `target` (the white box is a plastic tub).",
+ "real-01": {
+  "preds": [
+   "inside"
+  ],
+  "moved": [
+   "ball"
+  ],
+  "target": [
+   "box",
+   "tub"
+  ]
+ },
+ "real-02": {
+  "preds": [
+   "inside"
+  ],
+  "moved": [
+   "pen"
+  ],
+  "target": [
+   "box",
+   "tub"
+  ]
+ },
+ "real-03": {
+  "preds": [
+   "inside",
+   "near"
+  ],
+  "moved": [
+   "spoon"
+  ],
+  "target": [
+   "box",
+   "tub"
+  ]
+ },
+ "real-04": {
+  "preds": [
+   "right_of"
+  ],
+  "moved": [
+   "pen"
+  ],
+  "target": [
+   "box",
+   "tub"
+  ]
+ },
+ "real-05": {
+  "preds": [
+   "swapped"
+  ],
+  "moved": [
+   "cutter",
+   "glue"
+  ]
+ }
+}

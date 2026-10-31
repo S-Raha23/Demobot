@@ -1,0 +1,282 @@
+{
+ "ok": false,
+ "error": "line 5, in run\nCollision: knocked teal pen out of place",
+ "error_type": "Collision",
+ "layout_id": "red-05",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white box"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.304
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.654
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white mug"
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.463
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white glue bottle"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.783
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white box"
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.508
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal pen 2"
+   },
+   "ok": false,
+   "error": "Collision: knocked teal pen out of place",
+   "t": 18.792
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 48.6,
+   "y": 19.0,
+   "z": 4.8,
+   "yaw": -0.0,
+   "w": 8.5,
+   "d": 8.5,
+   "h": 9.5,
+   "color": "#ecebe6",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "container",
+   "shape": "box",
+   "x": 16.2,
+   "y": 18.2,
+   "z": 3.3,
+   "yaw": 114.9,
+   "w": 13.0,
+   "d": 13.0,
+   "h": 6.5,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 55.46,
+   "y": 20.53,
+   "z": 0.6,
+   "yaw": 90.8,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen 2",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 57.28,
+   "y": 16.01,
+   "z": 18.32,
+   "yaw": 89.9,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 16.27,
+   "y": 18.38,
+   "z": 7.95,
+   "yaw": -1.7,
+   "w": 15.0,
+   "d": 2.6,
+   "h": 1.8,
+   "color": "#1a9a95",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "role": "moved",
+   "shape": "cylinder",
+   "x": 18.0,
+   "y": 23.07,
+   "z": 4.95,
+   "yaw": -0.3,
+   "w": 3.8,
+   "d": 3.8,
+   "h": 9.0,
+   "color": "#f2f0e8",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white mug",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": false,
+   "code": null,
+   "objects": [
+    "teal pen",
+    "teal pen 2"
+   ],
+   "measured": {
+    "teal pen.margin_cm": -3.61,
+    "teal pen.z_cm": 0.6,
+    "teal pen.below_rim": true,
+    "teal pen 2.margin_cm": -5.43,
+    "teal pen 2.z_cm": 18.32,
+    "teal pen 2.below_rim": false
+   },
+   "detail": "not inside white mug: teal pen, teal pen 2"
+  },
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "box cutter",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "teal box cutter"
+   ],
+   "measured": {
+    "margin_cm": 7.45,
+    "z_cm": 7.95,
+    "below_rim": true
+   },
+   "detail": "every box cutter inside white box"
+  },
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "glue bottle",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "white glue bottle"
+   ],
+   "measured": {
+    "margin_cm": 2.76,
+    "z_cm": 4.95,
+    "below_rim": true
+   },
+   "detail": "every glue bottle inside white box"
+  }
+ ],
+ "goal_ok": false,
+ "collisions": [
+  "Collision: knocked teal pen out of place"
+ ],
+ "renders": {
+  "top": "artifacts/sim/red-05_v2/top_red-05.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-05_v2/twin_red-05.json",
+ "duration_s": 22.08,
+ "wall_s": 0.65
+}

@@ -1,0 +1,22 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    pens = scene.of_kind(\"pen\")\n    teal = [p for p in pens if \"teal\" in p.name]\n    if teal:\n        pens = teal\n    for pen in pens:\n        cup = scene.get(\"white cup\")\n        cur = scene.get(pen.name)\n        if scene.is_inside(cur, cup):\n            continue\n        robot.pick(cur)\n        robot.place_in(scene.get(cup.name))\n",
+  "explanation": "",
+  "author": "wonder",
+  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,12 @@\n+def run(scene, robot):\n+    pens = scene.of_kind(\"pen\")\n+    teal = [p for p in pens if \"teal\" in p.name]\n+    if teal:\n+        pens = teal\n+    for pen in pens:\n+        cup = scene.get(\"white cup\")\n+        cur = scene.get(pen.name)\n+        if scene.is_inside(cur, cup):\n+            continue\n+        robot.pick(cur)\n+        robot.place_in(scene.get(cup.name))\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def run(scene, robot):\n    for pen in scene.of_kind(\"pen\"):\n        cup = scene.get(\"white cup\")\n        cur = scene.get(pen.name)\n        if scene.is_inside(cur, cup):\n            continue\n        robot.pick(cur)\n        robot.place_in(scene.get(cup.name))\n",
+  "explanation": "Put every pen inside the white cup, skipping any pen already in it.",
+  "author": "wonder",
+  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -1,9 +1,5 @@\n def run(scene, robot):\n-    pens = scene.of_kind(\"pen\")\n-    teal = [p for p in pens if \"teal\" in p.name]\n-    if teal:\n-        pens = teal\n-    for pen in pens:\n+    for pen in scene.of_kind(\"pen\"):\n         cup = scene.get(\"white cup\")\n         cur = scene.get(pen.name)\n         if scene.is_inside(cur, cup):\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ }
+]

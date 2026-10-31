@@ -1,0 +1,142 @@
+{
+ "summary": "The person moved two light blue pens from the left of the white box to the right side of the white box.",
+ "objects": [
+  {
+   "name": "left light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "left blue ballpoint pen",
+    "left cyan pen"
+   ],
+   "role": "moved",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    14.0,
+    1.0
+   ]
+  },
+  {
+   "name": "right light blue pen",
+   "kind": "pen",
+   "alt_names": [
+    "right blue ballpoint pen",
+    "right cyan pen"
+   ],
+   "role": "moved",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    12.0,
+    1.0
+   ]
+  },
+  {
+   "name": "white box",
+   "kind": "box",
+   "alt_names": [
+    "white plastic tub",
+    "white Amul container"
+   ],
+   "role": "reference",
+   "color": "white",
+   "est_height_cm": 7.0,
+   "est_size_cm": [
+    12.0,
+    12.0
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "yellow-green tennis ball",
+    "neon tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    6.5,
+    6.5
+   ]
+  },
+  {
+   "name": "light blue spoon",
+   "kind": "spoon",
+   "alt_names": [
+    "cyan plastic spoon",
+    "light blue plastic utensil"
+   ],
+   "role": "distractor",
+   "color": "light blue",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    12.0,
+    2.0
+   ]
+  },
+  {
+   "name": "white glue bottle",
+   "kind": "glue bottle",
+   "alt_names": [
+    "small white adhesive bottle",
+    "Fevicol bottle"
+   ],
+   "role": "distractor",
+   "color": "white",
+   "est_height_cm": 9.0,
+   "est_size_cm": [
+    3.0,
+    3.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_next_to",
+   "object": "left light blue pen",
+   "target": "white box",
+   "relation": "right_of",
+   "t_start": 1.0,
+   "t_end": 8.4,
+   "evidence": "hand drags left blue pen together with other pen to right of box"
+  },
+  {
+   "action": "place_next_to",
+   "object": "right light blue pen",
+   "target": "white box",
+   "relation": "right_of",
+   "t_start": 1.2,
+   "t_end": 8.6,
+   "evidence": "hand releases right blue pen to the right of box"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "all",
+   "select": {
+    "name": null,
+    "kind": "pen",
+    "role": null,
+    "names": null
+   },
+   "pred": "right_of",
+   "target": {
+    "name": "white box",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Every pen goes to the right of the white box, wherever it starts.",
+ "uncertainties": [
+  "Identity of the untouched light blue object left of the pens is uncertain; described as spoon but could be pen cap or plastic knife.",
+  "The two pens were moved together in one hand motion, so splitting into two steps with overlapping times is approximate.",
+  "Exact start and end times are approximate due to continuous dragging motion."
+ ]
+}

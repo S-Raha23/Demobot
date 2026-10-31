@@ -1,0 +1,15 @@
+{
+ "text": "दो pens को को cup के बगल में रख रख दिया।",
+ "language": "Hindi",
+ "languages": [
+  "Hindi"
+ ],
+ "segments": [
+  {
+   "t0": 0.0,
+   "t1": 11.46,
+   "text": "दो pens को को cup के बगल में रख रख दिया।"
+  }
+ ],
+ "source": "narration"
+}

@@ -1,0 +1,155 @@
+{
+ "primary": "Muse Spark 1.3 (video)",
+ "spec": {
+  "summary": "The person moved the two light blue pens from the middle of the table to the right side of the white container.",
+  "objects": [
+   {
+    "name": "left light blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "light blue pen with cap",
+     "teal pen left"
+    ],
+    "role": "moved",
+    "color": "light blue",
+    "est_height_cm": 1.2,
+    "est_size_cm": [
+     14.0,
+     1.2
+    ]
+   },
+   {
+    "name": "right light blue pen",
+    "kind": "pen",
+    "alt_names": [
+     "light blue ballpoint pen",
+     "teal pen right"
+    ],
+    "role": "moved",
+    "color": "light blue",
+    "est_height_cm": 1.2,
+    "est_size_cm": [
+     14.0,
+     1.2
+    ]
+   },
+   {
+    "name": "white Amul container",
+    "kind": "box",
+    "alt_names": [
+     "white plastic Amul box",
+     "square container"
+    ],
+    "role": "reference",
+    "color": "white",
+    "est_height_cm": 7.0,
+    "est_size_cm": [
+     12.0,
+     12.0
+    ]
+   },
+   {
+    "name": "yellow tennis ball",
+    "kind": "tennis ball",
+    "alt_names": [
+     "yellow ball",
+     "tennis ball"
+    ],
+    "role": "distractor",
+    "color": "yellow",
+    "est_height_cm": 6.5,
+    "est_size_cm": [
+     6.5,
+     6.5
+    ]
+   },
+   {
+    "name": "light blue pen cap",
+    "kind": "pen cap",
+    "alt_names": [
+     "teal cap",
+     "small blue plastic cap"
+    ],
+    "role": "distractor",
+    "color": "light blue",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     5.0,
+     1.5
+    ]
+   },
+   {
+    "name": "white glue bottle",
+    "kind": "glue bottle",
+    "alt_names": [
+     "Fevicol glue bottle",
+     "small white bottle with blue cap"
+    ],
+    "role": "distractor",
+    "color": "white",
+    "est_height_cm": 8.0,
+    "est_size_cm": [
+     3.0,
+     3.0
+    ]
+   }
+  ],
+  "steps": [
+   {
+    "action": "place_next_to",
+    "object": "left light blue pen",
+    "target": "white Amul container",
+    "relation": "right_of",
+    "t_start": 1.8,
+    "t_end": 6.5,
+    "evidence": "hand drags left pen toward right side of container"
+   },
+   {
+    "action": "place_next_to",
+    "object": "right light blue pen",
+    "target": "white Amul container",
+    "relation": "right_of",
+    "t_start": 2.5,
+    "t_end": 8.5,
+    "evidence": "hand drags right pen to rest beside container near glue bottle"
+   }
+  ],
+  "goal": [
+   {
+    "quant": "all",
+    "select": {
+     "name": "left light blue pen",
+     "kind": "pen",
+     "role": "moved",
+     "names": [
+      "left light blue pen",
+      "right light blue pen"
+     ]
+    },
+    "pred": "right_of",
+    "target": {
+     "name": "white Amul container",
+     "kind": "box",
+     "role": "reference",
+     "names": [
+      "white Amul container"
+     ]
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   }
+  ],
+  "generalization": "Every light blue pen on the table should be placed to the right of the white Amul container, wherever it starts.",
+  "uncertainties": [
+   "Exact identity of pens vs pencils is unclear due to resolution; both treated as pens per Hindi narration.",
+   "Both pens were dragged together in one hand motion, so individual t_start/t_end are approximate and overlapping.",
+   "Light blue pen cap remains unmoved and is listed as distractor, but could be mistaken for a third pen; its kind is uncertain."
+  ]
+ },
+ "agreement": 1.0,
+ "agree": true,
+ "differences": [
+  "named differently (A / B): white box / white Amul container, light blue spoon / light blue pen cap"
+ ]
+}

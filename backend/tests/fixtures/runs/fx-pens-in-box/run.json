@@ -1,0 +1,9 @@
+{
+ "run_id": "fx-pens-in-box",
+ "title": "Put both pens into the white mug.",
+ "created_at": "2026-10-31T09:02:25.480Z",
+ "source": "synthetic:00_place_in",
+ "mode": "replay",
+ "status": "done",
+ "fixture": true
+}

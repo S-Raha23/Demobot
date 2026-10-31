@@ -1,0 +1,128 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-02",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal box cutter"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white box",
+    "side": "left_of",
+    "gap": 2.5
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.333
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 6.608
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 43.9,
+   "y": 17.5,
+   "z": 3.3,
+   "yaw": 90.0,
+   "w": 13.0,
+   "d": 13.0,
+   "h": 6.5,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "role": "moved",
+   "shape": "box",
+   "x": 33.6,
+   "y": 17.49,
+   "z": 0.9,
+   "yaw": 90.0,
+   "w": 15.0,
+   "d": 2.6,
+   "h": 1.8,
+   "color": "#1a9a95",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 16.59,
+   "y": 13.7,
+   "z": 0.6,
+   "yaw": 89.9,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "teal box cutter",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "teal box cutter"
+   ],
+   "measured": {
+    "gap_cm": 2.5,
+    "lateral_cm": 0.01,
+    "lateral_limit_cm": 10.5
+   },
+   "detail": "teal box cutter left of white box"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-02_v2/top_red-02.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-02_v2/twin_red-02.json",
+ "duration_s": 8.11,
+ "wall_s": 0.3
+}

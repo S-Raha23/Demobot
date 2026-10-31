@@ -1,0 +1,11 @@
+{
+ "skill_id": "real-pens-in-tub",
+ "title": "Put every pen in the white plastic tub",
+ "description": "Every pen goes into the white plastic tub, wherever it starts.",
+ "image": "artifacts/card.png",
+ "goal_text": "every pen are inside the white plastic tub",
+ "program_version": 1,
+ "robustness": 0.917,
+ "cost_to_learn_usd": 1.6633,
+ "run_id": "real-pens-in-tub"
+}

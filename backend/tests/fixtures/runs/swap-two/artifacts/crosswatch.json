@@ -1,0 +1,230 @@
+{
+ "primary": "Muse Spark 1.3 (video)",
+ "spec": {
+  "summary": "The person moved the white cylinder behind the gray block, then moved the gray block forward and to the left, then moved the white cylinder to a central position between the gray block and the teal pen.",
+  "objects": [
+   {
+    "name": "white cylinder",
+    "kind": "cylinder",
+    "alt_names": [
+     "white can",
+     "white pill object"
+    ],
+    "role": "moved",
+    "color": "white",
+    "est_height_cm": 4.0,
+    "est_size_cm": [
+     1.8,
+     1.8
+    ]
+   },
+   {
+    "name": "gray rectangular block",
+    "kind": "block",
+    "alt_names": [
+     "gray bar",
+     "silver rectangular prism"
+    ],
+    "role": "moved",
+    "color": "gray",
+    "est_height_cm": 1.0,
+    "est_size_cm": [
+     5.5,
+     1.5
+    ]
+   },
+   {
+    "name": "teal pen",
+    "kind": "pen",
+    "alt_names": [
+     "turquoise pen",
+     "blue-green stick"
+    ],
+    "role": "reference",
+    "color": "teal",
+    "est_height_cm": 0.8,
+    "est_size_cm": [
+     6.0,
+     0.7
+    ]
+   }
+  ],
+  "steps": [
+   {
+    "action": "place_next_to",
+    "object": "white cylinder",
+    "target": "gray rectangular block",
+    "relation": "behind",
+    "t_start": 2.3,
+    "t_end": 5.0,
+    "evidence": "hand grasps white cylinder on left and places it just north of gray block"
+   },
+   {
+    "action": "place_next_to",
+    "object": "gray rectangular block",
+    "target": "white cylinder",
+    "relation": "in_front_of",
+    "t_start": 6.1,
+    "t_end": 10.3,
+    "evidence": "hand drags gray block southwest to lower-left area in front of white cylinder"
+   },
+   {
+    "action": "place_next_to",
+    "object": "white cylinder",
+    "target": "gray rectangular block",
+    "relation": "right_of",
+    "t_start": 10.6,
+    "t_end": 13.8,
+    "evidence": "hand picks white cylinder again and places it in center south of its prior spot, to the right of gray block"
+   }
+  ],
+  "goal": [
+   {
+    "quant": "the",
+    "select": {
+     "name": "gray rectangular block<|message|>",
+     "kind": "block",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "pred": "collinear",
+    "target": {
+     "name": "white cylinder",
+     "kind": "cylinder",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "point_cm": [
+     2.0,
+     0.0
+    ],
+    "order_by": "x",
+    "order": [
+     "the",
+     "name"
+    ]
+   },
+   {
+    "quant": "the",
+    "select": {
+     "name": "white cylinder",
+     "kind": "cylinder",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "teal pen",
+     "kind": "pen",
+     "role": "reference",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "point_cm": [
+     2.0,
+     0.0
+    ],
+    "order_by": "x",
+    "order": [
+     "the",
+     "name"
+    ]
+   },
+   {
+    "quant": "the",
+    "select": {
+     "name": "gray rectangular block",
+     "kind": "block",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white cylinder",
+     "kind": "cylinder",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "point_cm": [
+     2.0,
+     0.0
+    ],
+    "order_by": "x",
+    "order": [
+     "the",
+     "name"
+    ]
+   },
+   {
+    "quant": "all",
+    "select": {
+     "name": "white cylinder",
+     "kind": "cylinder",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "pred": "behind",
+    "target": {
+     "name": "gray rectangular block",
+     "kind": "block",
+     "role": "moved",
+     "names": [
+      "gray rectangular block",
+      "white cylinder"
+     ]
+    },
+    "point_cm": [
+     2.0,
+     0.0
+    ],
+    "order_by": "x",
+    "order": [
+     "the",
+     "name"
+    ]
+   }
+  ],
+  "generalization": "Place the gray block to the left and slightly in front of the white cylinder and place the white cylinder to the left of and behind the teal pen wherever they start, leaving the teal pen in place.",
+  "uncertainties": [
+   "Video is low-resolution simulation with hand occlusion, so exact start/end times and final left_of vs in_front_of/ behind distinctions are approximate",
+   "No narration so intended relative placement tolerance and whether teal pen is meant as a fixed reference or simply a distractor to be left untouched is uncertain",
+   "Estimated object heights and footprints are approximate from synthetic top-down view"
+  ]
+ },
+ "agreement": 0.0,
+ "agree": false,
+ "differences": [
+  "only A: place_at white cylinder",
+  "only A: place_at gray block",
+  "only A: place_at white cylinder",
+  "only B: place_next_to white cylinder \u2192 gray block (behind)",
+  "only B: place_next_to gray block \u2192 white cylinder (in_front_of)",
+  "only B: place_next_to white cylinder \u2192 gray block (right_of)",
+  "named differently (A / B): gray block / gray rectangular block",
+  "goal predicates differ: A [('swapped', 'pair')] vs B [('behind', 'all'), ('collinear', 'the'), ('left_of', 'the')]"
+ ],
+ "arbitration": {
+  "reason": "Spec A correctly identified a swap, whereas Spec B mistook intermediate relative positions for the goal: the keyframes show the white cylinder first moved to a temporary spot behind, the gray block then moved to the cylinder's original left spot, and the cylinder finally placed in the gray block's original center spot, with the teal pen untouched.",
+  "used": true
+ }
+}
