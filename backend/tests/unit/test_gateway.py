@@ -342,3 +342,12 @@ def test_modal_llm_flag_disables_modal(live, monkeypatch) -> None:
     assert gateway.provider_available("modal")
     monkeypatch.setattr(settings, "modal_llm", False)
     assert not gateway.provider_available("modal")
+
+
+async def test_two_incomplete_answers_hand_over_to_the_fallback(live, ctx, sleeps) -> None:
+    cut = gateway.IncompleteResponse(0.01, {"output_tokens": 5000})
+    call = FakeCall(cut, cut, ({"answer": "never"}, 0.01, {}))
+    with pytest.raises(DemoBotError) as err:
+        await go(call, ctx)
+    assert err.value.code == "API_UNAVAILABLE" and len(call.timeouts) == gateway.MAX_INCOMPLETE
+    assert [r.note for r in rows()] == ["incomplete", "incomplete"]  # both were billed

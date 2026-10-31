@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M9 Red team + hardening (M8 done Sat 13:10 IST)
+**Now:** M10 Voice correction, plus the UI's backend endpoints and a baked real run (M9 done Sat 12:05 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -20,7 +20,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M6 | Coder (Wonder) + MVP gate | doing | | Stateless Wonder tool loop + 2 Spark Open drafts works live (syn7-00: submitted v2 in 3 turns, ~$0.10). Restart of the program stage = $0 new spend (verified). Live ≥ 4/5 needs real clips; run on more synthetic clips next. |
 | M7 | Verify (three ways + judge) | done | Sat 12:20 | Fault injection on syn7-01: **5/5 faults caught, 4/5 with the exact class** (the sim-only offset was caught by the judge, not by perceptual, because SAM did not see that stand-in). SAM on simulated stand-ins is unreliable, so an unseen stand-in is *inconclusive* (shown grey), never a silent pass or a false failure. `eval/fault_injection.py`. |
 | M8 | Supervisor agent | done | Sat 13:10 | Spark Open (Baseten → Modal → fixed policy) with rewatch, retrack, revise_spec, reprogram, ask_user, accept, stop; ≤ 4 decisions, each a decision event. **Recovered 4/5 injected failures** (judge dissent → rewatch + accept with caveat; program bug → reprogram; wrong relation and wrong object → rewatch + revise_spec; a lost track was not recovered). `eval/supervisor_injection.py`. `adjust_skill` is not offered (skill parameters are not plumbed in this build). |
-| M9 | Red team + hardening | todo | | |
+| M9 | Red team + hardening | done | Sat 12:05 | 6 Spark Open personas in parallel (Baseten, Modal fallback), validator with one repair round, 12 layouts simulated in parallel on the local pool, Wonder hardening (≤ 2 rounds, kept only if the demo passes and robustness does not drop). 3 synthetic skills: next-to **92% → 100%** (v1 → v4), swap **92% → 100%** (v1 → v2), pens-in-mug 100% (no hardening needed). Gateway now stops after 2 cut-short answers. |
 | M10 | Voice correction | todo | | |
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
 | M12 | Skill cards, library and export | todo | | |
@@ -55,7 +55,7 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M9 red team + hardening (`docs/05-agents.md` §C).
+1. M10 voice correction (`docs/04-pipeline.md` §12); M12 card/library/export; UI endpoints (samples, POST /runs, /correct, /eval, markers.pdf).
 3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
 4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
 5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.

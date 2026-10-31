@@ -55,6 +55,7 @@ TIMEOUTS = {  # seconds, per purpose prefix
     "probe": 300,
 }
 MAX_ATTEMPTS = 4
+MAX_INCOMPLETE = 2  # a request cut short twice will not fit; hand it to the fallback
 HEARTBEAT_S = 5.0
 
 _sleep = asyncio.sleep  # patched in tests
@@ -235,6 +236,7 @@ async def cached_call(
 
     timeout = TIMEOUTS.get(purpose.split(":")[0], 180)
     last_err: BaseException | None = None
+    incompletes = 0
     for attempt in range(MAX_ATTEMPTS):
         call_id = budget.reserve(
             mode=ctx.mode,
@@ -267,6 +269,11 @@ async def cached_call(
                 note="incomplete",
             )
             last_err = e
+            incompletes += 1
+            if incompletes >= MAX_INCOMPLETE:  # the same request will run out of tokens again
+                raise DemoBotError(
+                    "API_UNAVAILABLE", "the answer was cut short twice", stage=purpose
+                ) from e
         except (APITimeoutError, httpx.TimeoutException) as e:  # may be billed: the estimate
             budget.settle(call_id, estimate_usd, {}, _ms(t0), note="timeout")
             last_err = e

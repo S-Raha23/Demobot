@@ -26,6 +26,8 @@ from demobot.schemas import (
     IngestInfo,
     Layout,
     Program,
+    StressCase,
+    StressReport,
     TaskSpec,
     Track,
     Transcript,
@@ -368,6 +370,116 @@ async def _supervise(run: Run, stage: str, error: DemoBotError) -> str | None:
     )
 
 
+async def stage_stress(run: Run) -> str:
+    from demobot.agents import redteam
+
+    spec = run.read("taskspec.json", TaskSpec)
+    base = textured(run, repair(demo_layout(run))[0])
+    prog = latest_program(run)
+    proposals = await redteam.red_team(run.ctx, base, spec.goal)
+    if not proposals:
+        raise DemoBotError(
+            "REDTEAM_EMPTY", "the red team produced no valid layouts", stage="stress"
+        )
+    layouts = [lay for lay, _, _ in proposals]
+    results = await redteam.simulate_all(run.ctx, prog.code, layouts, spec.goal, prog.version)
+    results = [
+        keep_sim(run, r, lay.id, prog.version) for lay, r in zip(layouts, results, strict=True)
+    ]
+    cases = [StressCase(layout=lay, persona=persona, rationale=why, before=res)
+             for (lay, persona, why), res in zip(proposals, results, strict=True)]  # fmt: skip
+    rb = sum(bool(c.before and c.before.goal_ok) for c in cases) / len(cases)
+    report = StressReport(cases=cases, robustness_before=round(rb, 3), program_before=prog.version,
+                          clusters=redteam.clusters([(c.layout, c.before) for c in cases if c.before]))  # fmt: skip
+    run.write("stress.json", report)
+    run.ctx.emit("metric", "stress", payload={"name": "robustness_before", "value": round(rb, 3),
+                                              "passed": sum(bool(c.before and c.before.goal_ok) for c in cases), "total": len(cases)})  # fmt: skip
+    run.artifact("stress", run.art / "stress.json", "json", "Red-team layouts")
+    return f"robustness {sum(bool(c.before and c.before.goal_ok) for c in cases)}/{len(cases)} on red-team layouts"
+
+
+async def stage_harden(run: Run, max_rounds: int = 2) -> str:
+    from demobot.agents import redteam
+
+    report = run.read("stress.json", StressReport)
+    if report.robustness_before >= 1.0:
+        return "not needed: every red-team layout passes"
+    spec = run.read("taskspec.json", TaskSpec)
+    gd = run.read("grounded.json", GroundedDemo)
+    info = run.read("ingest.json", IngestInfo)
+    tr = run.read("transcript.json", Transcript)
+    cal = run.read("calibration.json", Calibration)
+    demo = textured(run, repair(demo_layout(run))[0])
+    layouts = [c.layout for c in report.cases]
+    current = latest_program(run)
+    best = report.robustness_before
+    results = [c.before for c in report.cases]
+    kf = list(zip(info.keyframe_times, [run.art / k for k in info.keyframes], strict=True))
+    picks = [kf[0], kf[-1]] if kf else []
+    for rnd in range(1, max_rounds + 1):
+        failing = [
+            (lay, res)
+            for lay, res in zip(layouts, results, strict=True)
+            if res is not None and not res.goal_ok
+        ]
+        if not failing:
+            break
+        previous = json.loads((run.art / "programs.json").read_text())
+        si = synth.SynthInput(spec=spec, grounded=gd, layouts={"demo": demo} | {lay.id: lay for lay, _ in failing},
+                              transcript=tr, keyframes=picks, calibration_json=cal.model_dump_json(), art=run.art,
+                              mode="harden", start_code=current.code, extra=redteam.harden_brief(failing),
+                              first_version=len(previous) + 1, drafts=False)  # fmt: skip
+        out = await synth.synthesize(run.ctx, si)
+        (run.art / "programs.json").write_text(
+            json.dumps(previous + [json.loads(p.model_dump_json()) for p in out.versions], indent=1)
+        )
+        if out.program is None or not out.program.passed_demo:
+            run.ctx.emit(
+                "log",
+                "harden",
+                payload={
+                    "message": f"round {rnd}: no hardened program passed the demo; keeping v{current.version}"
+                },
+            )
+            break
+        new = await redteam.simulate_all(
+            run.ctx, out.program.code, layouts, spec.goal, out.program.version, tag="harden"
+        )
+        rate = sum(r.goal_ok for r in new) / len(new)
+        run.ctx.emit(
+            "metric",
+            "harden",
+            payload={"name": "robustness_round", "round": rnd, "value": round(rate, 3)},
+        )
+        if rate < best:
+            run.ctx.emit(
+                "log",
+                "harden",
+                payload={
+                    "message": f"round {rnd}: v{out.program.version} scores {rate:.0%}, below {best:.0%}; kept v{current.version}"
+                },
+            )
+            break
+        new = [
+            keep_sim(run, r, lay.id, out.program.version)
+            for lay, r in zip(layouts, new, strict=True)
+        ]
+        current, best, results = out.program, rate, new
+        run.update_meta(program_version=current.version)
+        if rate >= 1.0:
+            break
+    for c, r in zip(report.cases, results, strict=True):
+        c.after = r
+    report.robustness_after = round(best, 3)
+    report.program_after = current.version
+    run.write("stress.json", report)
+    run.ctx.emit("metric", "harden", payload={"name": "robustness_after", "value": round(best, 3),
+                                              "passed": sum(bool(r and r.goal_ok) for r in results), "total": len(results)})  # fmt: skip
+    run.artifact("harden", run.art / "stress.json", "json", "Red-team layouts after hardening")
+    return (f"robustness {report.robustness_before:.0%} → {best:.0%} "
+            f"(program v{report.program_before} → v{current.version})")  # fmt: skip
+
+
 StageFn = Callable[[Run], Awaitable[str]]
 STAGE_FNS: dict[str, StageFn] = {
     "ingest": stage_ingest,
@@ -379,6 +491,8 @@ STAGE_FNS: dict[str, StageFn] = {
     "twin_build": stage_twin_build,
     "program": stage_program,
     "verify": stage_verify,
+    "stress": stage_stress,
+    "harden": stage_harden,
 }
 
 
