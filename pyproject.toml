@@ -86,5 +86,6 @@ plugins = ["pydantic.mypy"]
 "backend/demobot/agents/supervisor.py" = ["E501"]  # the prompt and tool table
 "backend/demobot/agents/redteam.py" = ["E501"]
 "backend/demobot/pipeline.py" = ["E501"]
+"backend/demobot/card.py" = ["E501"]
 "backend/tests/**" = ["E501"]
 "synth/**" = ["E501"]

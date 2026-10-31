@@ -219,6 +219,19 @@ def skills() -> list[dict[str, Any]]:
             for r in list_runs() if r.get("card")]  # fmt: skip
 
 
+@app.get("/api/skills/{run_id}/export")
+def export_skill(run_id: str) -> Any:
+    from fastapi.responses import Response
+
+    from demobot.export import build_zip
+
+    d = run_dir(run_id)
+    if not (d / "artifacts" / "card.json").exists():
+        raise HTTPException(409, "this run has not finished learning a skill")
+    return Response(build_zip(d), media_type="application/zip",
+                    headers={"Content-Disposition": f'attachment; filename="{run_id}-skill.zip"'})  # fmt: skip
+
+
 @app.get("/api/costs")
 def costs() -> dict[str, Any]:
     runs = []

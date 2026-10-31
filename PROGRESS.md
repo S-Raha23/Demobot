@@ -4,7 +4,7 @@ PROJECT_STATUS: IN_PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M12 Skill cards, library and export (M10 done in English, Sat 12:40 IST)
+**Now:** MVP gate (bake real runs), then M13 deploy (M12 done Sat 13:00 IST)
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -23,7 +23,7 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M9 | Red team + hardening | done | Sat 12:05 | 6 Spark Open personas in parallel (Baseten, Modal fallback), validator with one repair round, 12 layouts simulated in parallel on the local pool, Wonder hardening (≤ 2 rounds, kept only if the demo passes and robustness does not drop). 3 synthetic skills: next-to **92% → 100%** (v1 → v4), swap **92% → 100%** (v1 → v2), pens-in-mug 100% (no hardening needed). Gateway now stops after 2 cut-short answers. |
 | M10 | Voice correction | done in English (Hindi/Bengali waits for the human's voice notes) | Sat 12:40 | `correct.py` + Wonder correction mode with an `update_goal` tool (goal diff + English gloss) → new program → re-checked on demo + red-team. Live: a typed and a **spoken English** correction flipped `left_of`↔`right_of` on syn7-01 (v4 → v6 → v7, red-team 12/12 each). espeak-ng Hindi/Bengali speech is too robotic for STT, so that check needs `correction_bn.m4a` from the human. Voice Transcribe returns `turns: []` even with speech (one segment is used). |
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
-| M12 | Skill cards, library and export | todo | | |
+| M12 | Skill cards, library and export | done | Sat 13:00 | Muse Image anchored-edit cards (template fallback), imperative titles/steps from the goal, `costs.json` per run from its own events (syn7-01: $1.68 to learn, 51% of spend on open weights), export zip (`/api/skills/{id}/export`), `docs/skill_api.md`. |
 | M13 | Deploy judge mode | todo | | |
 | M14 | Eval, README, demo video | todo | | |
 | S1–S3 | Stretch goals | — | | |

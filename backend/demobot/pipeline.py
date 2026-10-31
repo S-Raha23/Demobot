@@ -488,6 +488,54 @@ async def stage_harden(run: Run, max_rounds: int = 2) -> str:
             f"(program v{report.program_before} → v{current.version})")  # fmt: skip
 
 
+def run_costs(run: Run) -> dict[str, Any]:
+    """Spend of this run from its own model_call events (cache hits cost 0)."""
+    from demobot.config import OPEN_WEIGHT_MODELS
+    from demobot.events import read_events
+
+    by_model: dict[str, float] = {}
+    by_provider: dict[str, float] = {}
+    calls = cached = 0
+    for e in read_events(run.dir / "events.jsonl"):
+        if e.type != "model_call":
+            continue
+        calls += 1
+        cached += bool(e.cached)
+        c = e.cost_usd or 0.0
+        by_model[e.model or "?"] = round(by_model.get(e.model or "?", 0) + c, 6)
+        by_provider[e.provider or "?"] = round(by_provider.get(e.provider or "?", 0) + c, 6)
+    total = round(sum(by_model.values()), 4)
+    ow = sum(v for k, v in by_model.items() if k in OPEN_WEIGHT_MODELS)
+    open_calls = 0
+    for e in read_events(run.dir / "events.jsonl"):
+        if e.type == "model_call" and e.model in OPEN_WEIGHT_MODELS:
+            open_calls += 1
+    return {"by_model": by_model, "by_provider": by_provider, "total_usd": total, "calls": calls, "cache_hits": cached,
+            "open_weight_share": round(ow / total, 3) if total else 0.0,
+            "open_weight_call_share": round(open_calls / calls, 3) if calls else 0.0}  # fmt: skip
+
+
+async def stage_card(run: Run) -> str:
+    from demobot import card
+
+    spec = run.read("taskspec.json", TaskSpec)
+    prog = latest_program(run)
+    robustness = None
+    if (run.art / "stress.json").exists():
+        rep = run.read("stress.json", StressReport)
+        robustness = (
+            rep.robustness_after if rep.robustness_after is not None else rep.robustness_before
+        )
+    costs = run_costs(run)
+    c = await card.make_card(run.ctx, run.dir, spec, robustness, costs["total_usd"], prog.version)
+    costs = run_costs(run)  # including the card itself
+    (run.art / "costs.json").write_text(json.dumps(costs, indent=1))
+    run.artifact("card", run.art / "card.png", "image", "Skill card")
+    run.artifact("card", run.art / "card.json", "json", "Skill card")
+    run.update_meta(status="done", cost_usd=costs["total_usd"])
+    return f"skill '{c.title}' saved: ${costs['total_usd']:.2f} to learn"
+
+
 StageFn = Callable[[Run], Awaitable[str]]
 STAGE_FNS: dict[str, StageFn] = {
     "ingest": stage_ingest,
@@ -501,6 +549,7 @@ STAGE_FNS: dict[str, StageFn] = {
     "verify": stage_verify,
     "stress": stage_stress,
     "harden": stage_harden,
+    "card": stage_card,
 }
 
 
