@@ -32,6 +32,9 @@ Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 
 ## Budget log (update after any live batch; reconcile with dashboards daily)
 
+**Estimate before batch (Sat Oct 31 14:20 IST):** finish 7 synthetic runs (program → verify → stress → harden → card) for the eval: ~$0.40 Wonder + ~$0.30 Spark Open + ~$0.05 SAM/judge + ~$0.01 card ≈ **$0.80 per run, ~$5.60 total** (Meta ~$3.50, Baseten ~$1.80, Modal ~$0.30). Pools after: Meta ~$9 of $130, Baseten ~$3 of $90, Modal ~$0.6 of $110.
+
+
 | Date (IST) | Pool | What | $ this batch | Pool total | Dashboard check |
 | --- | --- | --- | --- | --- | --- |
 | Sat Oct 31 05:00 | Meta ($130 cap) | M0 probes (Spark, Wonder, SAM, Voice, Image) | 0.057 | 0.057 | not yet |
