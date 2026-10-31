@@ -11,7 +11,7 @@ import { modelInfo, providerLabel, providerOf } from "../lib/models";
 
 const ROLES: { model: string; provider?: string; job: string; why: string }[] = [
   { model: "muse-spark-1.3", job: "Watches the demo video with the transcript and writes the TaskSpec: objects, timed steps, a checkable goal, a generalisation rule.", why: "Native video understanding and structured output" },
-  { model: "muse-voice-transcribe-1.0", job: "Transcribes narration in the clip and spoken corrections (English, Hindi, Bengali).", why: "Multilingual speech-to-text" },
+  { model: "muse-voice-transcribe-1.0", job: "Transcribes narration in the clip and spoken corrections (English/Hindi verified; Bengali model-supported, clip pending).", why: "Multilingual speech-to-text" },
   { model: "sam-3.1", job: "Text-prompted masks and persistent track IDs for every object and the hand; also segments the simulator's render.", why: "Pixel-precise, identity-preserving tracks" },
   { model: "muse-wonder-1.0", job: "Writes the robot program and debugs it with simulator tool calls; hardens it; applies corrections as code edits.", why: "Long-horizon agentic coding" },
   { model: "meta-models/muse-spark-open-1026", provider: "baseten", job: "Supervisor, six-persona red-team swarm, and the judge that compares real and twin.", why: "Open weights, cheap and fast at volume" },
@@ -52,7 +52,7 @@ export default function About() {
   return (
     <div className="min-h-full">
       <TopNav />
-      <main className="mx-auto max-w-[1400px] space-y-10 px-5 py-10 md:px-8">
+      <main id="main-content" className="mx-auto max-w-[1400px] space-y-10 px-5 py-10 md:px-8">
         <div>
           <div className="eyebrow">Costs &amp; about</div>
           <h1 className="mt-1 text-[34px] font-semibold tracking-tight text-ink-50">What it costs to learn a skill</h1>

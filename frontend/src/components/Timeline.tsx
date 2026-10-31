@@ -39,6 +39,8 @@ export function Timeline(p: Props) {
   const headRef = useRef<HTMLDivElement>(null);
   const timeRef = useRef<HTMLSpanElement>(null);
   const [playing, setPlaying] = useState(clock.playing);
+  const [now, setNow] = useState(clock.t);
+  const nowRef = useRef(clock.t);
   const pct = (t: number) => `${(Math.max(0, Math.min(duration, t)) / Math.max(duration, 1e-6)) * 100}%`;
   const R = (t: number) => (p.anchors ? robotToVideo(p.anchors, t) : t);
 
@@ -46,6 +48,10 @@ export function Timeline(p: Props) {
     return clock.subscribe((t) => {
       if (headRef.current) headRef.current.style.left = pct(t);
       if (timeRef.current) timeRef.current.textContent = `${t.toFixed(1)}`;
+      if (Math.abs(t - nowRef.current) >= 0.1) {
+        nowRef.current = t;
+        setNow(t);
+      }
       if (clock.playing !== playing) setPlaying(clock.playing);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,6 +84,24 @@ export function Timeline(p: Props) {
 
   const disabled = duration <= 0;
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled) return;
+    const step = e.shiftKey ? 5 : 1;
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      clock.seek(Math.min(duration, clock.t + step));
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      clock.seek(Math.max(0, clock.t - step));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      clock.seek(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      clock.seek(duration);
+    }
+  };
+
   return (
     <div className="panel shrink-0 px-3 py-2.5" data-testid="timeline">
       <div className="grid grid-cols-[104px_minmax(0,1fr)] gap-x-3">
@@ -100,7 +124,20 @@ export function Timeline(p: Props) {
             <span className="text-ink-400"> / {duration.toFixed(1)}s</span>
           </div>
         </div>
-        <div ref={trackRef} className="relative row-span-4 cursor-pointer select-none" onPointerDown={onDown}>
+        <div
+          ref={trackRef}
+          role="slider"
+          tabIndex={disabled ? -1 : 0}
+          aria-label="Seek"
+          aria-valuemin={0}
+          aria-valuemax={duration}
+          aria-valuenow={Number(now.toFixed(1))}
+          aria-valuetext={`${now.toFixed(1)} of ${duration.toFixed(1)} seconds`}
+          aria-disabled={disabled}
+          className="relative row-span-4 cursor-pointer select-none"
+          onPointerDown={onDown}
+          onKeyDown={onKeyDown}
+        >
           <div className="relative h-7">
             {ticks.map((t) => (
               <div key={t} className="absolute top-[7px] flex -translate-x-1/2 flex-col items-center" style={{ left: pct(t) }}>

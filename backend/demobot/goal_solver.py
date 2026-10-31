@@ -47,15 +47,25 @@ def solve(goal: list[GoalClause], layout: Layout) -> Layout:
             continue
         if clause.pred == "collinear" and objs:
             objs = sorted(objs, key=lambda o: o.name)
-            cy = sum(o.y for o in objs) / len(objs)
             order = [state[n] for n in clause.order] if clause.order else objs
-            total = sum(max(o.extents()) * 2 + GAP_CM for o in order) - GAP_CM
-            x = sum(o.x for o in objs) / len(objs) - total / 2
-            for o in order:
-                ex, _ = o.extents()
-                x += ex
-                state[o.name] = _moved(o, x, cy)
-                x += ex + GAP_CM
+            if clause.order_by == "y":  # a front-to-back column, not a row
+                cx = sum(o.x for o in objs) / len(objs)
+                total = sum(o.extents()[1] * 2 + GAP_CM for o in order) - GAP_CM
+                y = sum(o.y for o in objs) / len(objs) - total / 2
+                for o in order:
+                    _, ey = o.extents()
+                    y += ey
+                    state[o.name] = _moved(o, cx, y)
+                    y += ey + GAP_CM
+            else:  # a left-to-right row (order_by "x" or unset)
+                cy = sum(o.y for o in objs) / len(objs)
+                total = sum(max(o.extents()) * 2 + GAP_CM for o in order) - GAP_CM
+                x = sum(o.x for o in objs) / len(objs) - total / 2
+                for o in order:
+                    ex, _ = o.extents()
+                    x += ex
+                    state[o.name] = _moved(o, x, cy)
+                    x += ex + GAP_CM
             continue
         targets = g.select(clause.target, state) if clause.target else []
         targets = [t for t in targets if t.name not in {o.name for o in objs}]

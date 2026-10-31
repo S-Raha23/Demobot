@@ -16,7 +16,7 @@ const MOMENTS = [
   { icon: "code", title: "It wrote its own program", text: "Muse Wonder writes the robot program, runs it in simulation, reads the failure and fixes it.", models: ["muse-wonder-1.0"] },
   { icon: "shield", title: "It checks itself", text: "The same eyes judge the twin from your camera's pose: symbolic, real-world and perceptual checks.", models: ["sam-3.1", "meta-models/muse-spark-open-1026"] },
   { icon: "grid", title: "It attacks itself", text: "A swarm of open-weight Spark Open personas invents layouts to break it. Wonder hardens it.", models: ["meta-models/muse-spark-open-1026", "muse-wonder-1.0"] },
-  { icon: "mic", title: "Talk to it", text: "Correct it by voice in English, Hindi or Bengali. The goal and the code change as a new skill version; it re-verifies.", models: ["muse-voice-transcribe-1.0", "muse-wonder-1.0"] },
+  { icon: "mic", title: "Talk to it", text: "Correct it by voice (English/Hindi verified; Bengali model-supported, clip pending). The goal and the code change as a new skill version; it re-verifies.", models: ["muse-voice-transcribe-1.0", "muse-wonder-1.0"] },
   { icon: "hand", title: "Your turn", text: "Drag anything on the 3D twin. The learned program runs on your layout in PyBullet: no model calls, free. Each skill gets a card illustrated by Muse Image.", models: ["muse-image-1.0"], note: "simulation only" },
 ];
 
@@ -31,12 +31,23 @@ export default function Home() {
   const [samples, setSamples] = useState<Sample[] | null>(null);
   const [health, setHealth] = useState<Health | null>(null);
   const [upload, setUpload] = useState(false);
+  const [skillsError, setSkillsError] = useState<string | null>(null);
+  const [retry, setRetry] = useState(0);
   useEffect(() => {
     api.runs().then(setRuns).catch(() => setRuns([]));
-    api.skills().then(setSkills).catch(() => setSkills([]));
+    api
+      .skills()
+      .then((v) => {
+        setSkills(v);
+        setSkillsError(null);
+      })
+      .catch((e) => {
+        setSkills([]);
+        setSkillsError(e instanceof Error ? e.message : "Failed to load skills");
+      });
     api.samples().then(setSamples).catch(() => setSamples([]));
     api.health().then(setHealth).catch(() => undefined);
-  }, []);
+  }, [retry]);
 
   const best = useMemo(() => {
     if (!runs?.length) return null;
@@ -93,11 +104,27 @@ export default function Home() {
         </div>
       </section>
 
-      <main className="mx-auto max-w-[1560px] space-y-14 px-5 pb-16 md:px-8">
+      <main id="main-content" className="mx-auto max-w-[1560px] space-y-14 px-5 pb-16 md:px-8">
         <section>
           <SectionTitle eyebrow="Skill library" title="Skills it has learned" sub="Each one from a single demo. Open the replay to see how, or move things around and watch it adapt." />
           {skills == null ? (
             <SkeletonRow />
+          ) : skillsError ? (
+            <div className="panel p-8 text-center" role="alert">
+              <div className="text-[14px] font-semibold text-ink-50">Could not load skills</div>
+              <p className="mt-1 text-[12.5px] text-ink-400">{skillsError}</p>
+              <button
+                type="button"
+                className="btn btn-primary mt-4"
+                onClick={() => {
+                  setSkills(null);
+                  setSkillsError(null);
+                  setRetry((n) => n + 1);
+                }}
+              >
+                Retry
+              </button>
+            </div>
           ) : skills.length === 0 ? (
             <div className="panel p-8 text-center text-[13px] text-ink-400">No skills yet. Teach the first one.</div>
           ) : (
@@ -182,6 +209,8 @@ function Hero({ run }: { run: RunMeta | null }) {
   const [scene, setScene] = useState<TwinSceneData | null>(null);
   const [traj, setTraj] = useState<TwinTrajectory | null>(null);
   const [muted, setMuted] = useState(true); // browsers only autoplay muted; the button turns sound on
+  const [reducedMotion] = useState(() => typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [paused, setPaused] = useState(reducedMotion);
   useEffect(() => {
     if (!run) return;
     let alive = true;
@@ -232,11 +261,13 @@ function Hero({ run }: { run: RunMeta | null }) {
               ref={vid}
               src={artifactUrl(run.run_id, "artifacts/display.mp4")}
               muted={muted}
-              autoPlay
+              autoPlay={!reducedMotion}
               loop
               playsInline
               preload="auto"
               className="absolute inset-0 h-full w-full object-cover"
+              onPlay={() => setPaused(false)}
+              onPause={() => setPaused(true)}
             />
             <span className={`absolute left-3 top-3 ${pill}`}>You, once</span>
             <button
@@ -253,6 +284,19 @@ function Hero({ run }: { run: RunMeta | null }) {
               aria-label={muted ? "Play with sound" : "Mute"}
             >
               <Icon name={muted ? "mute" : "sound"} size={13} /> {muted ? "Sound" : "On"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const v = vid.current;
+                if (!v) return;
+                if (v.paused) v.play().catch(() => undefined);
+                else v.pause();
+              }}
+              className={`absolute bottom-3 left-3 flex items-center gap-1.5 ${pill} transition hover:bg-black/75`}
+              aria-label={paused ? "Play video" : "Pause video"}
+            >
+              <Icon name={paused ? "play" : "pause"} size={13} /> {paused ? "Play" : "Pause"}
             </button>
           </div>
           <div className="pointer-events-none relative aspect-video bg-ink-900 lg:col-span-3">
@@ -399,6 +443,13 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
   const [err, setErr] = useState<string | null>(null);
   const [noMarkers, setNoMarkers] = useState(false);
   const nav = useNavigate();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
   const submit = async () => {
     if (!file) return;
     setBusy(true);
@@ -423,7 +474,7 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="panel animate-slide-in w-full max-w-lg !bg-ink-800 p-6" onClick={(e) => e.stopPropagation()}>
+      <div role="dialog" aria-modal="true" aria-label="Teach a new skill" className="panel animate-slide-in w-full max-w-lg !bg-ink-800 p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="text-[18px] font-semibold text-ink-50">Teach a new skill</h3>
           <button type="button" className="btn btn-ghost !p-1.5" onClick={onClose} aria-label="Close">
@@ -433,7 +484,7 @@ function UploadDialog({ onClose, mode }: { onClose: () => void; mode?: string })
         <ol className="mt-3 space-y-1.5 text-[13px] text-ink-300">
           <li>1. Put the four printed ArUco markers at the corners of your work area.</li>
           <li>2. Hold your phone in one hand and do the task once with the other (10–30 s).</li>
-          <li>3. Narrate if you like, in English, Hindi or Bengali.</li>
+          <li>3. Narrate if you like (English/Hindi verified; Bengali model-supported, clip pending).</li>
         </ol>
         <p className="mt-2 text-[12.5px] text-ink-300">
           No markers yet? <MarkersLink /> and print it at 100% scale.

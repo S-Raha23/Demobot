@@ -181,6 +181,7 @@ class Selector(BaseModel):
     kind: str | None = None
     role: Role | None = None
     names: list[str] | None = None
+    colour: str | None = None  # e.g. "teal": matched against the object's name/kind (goal_dsl)
 
 
 class GoalClause(BaseModel):

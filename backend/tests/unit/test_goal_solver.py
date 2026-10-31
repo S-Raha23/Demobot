@@ -60,6 +60,25 @@ def test_solve_turned_and_collinear() -> None:
     assert gs.consistent(line, gs.solve(line, lay), lay)
 
 
+def test_solve_collinear_order_by_y_makes_a_column() -> None:
+    pens = [
+        _o("p1", 10, 10, kind="pen"),
+        _o("p2", 30, 12, kind="pen"),
+        _o("p3", 12, 30, kind="pen"),
+    ]
+    lay = _layout(*pens)
+    col = [GoalClause(quant="all", select=Selector(kind="pen"), pred="collinear", order_by="y")]
+    out = {o.name: o for o in gs.solve(col, lay).objects}
+    assert len({o.x for o in out.values()}) == 1  # one x: a column, not a row
+    assert [o.name for o in sorted(out.values(), key=lambda o: o.y)] == ["p1", "p2", "p3"]
+    assert gs.consistent(col, gs.solve(col, lay), lay)
+    # and the row form is unchanged
+    row = [GoalClause(quant="all", select=Selector(kind="pen"), pred="collinear", order_by="x")]
+    out_r = {o.name: o for o in gs.solve(row, lay).objects}
+    assert len({o.y for o in out_r.values()}) == 1
+    assert gs.consistent(row, gs.solve(row, lay), lay)
+
+
 def test_hypotheses_differ_and_probe_separates() -> None:
     # "pens in box" (kind) vs "this pen in box" (name): a second pen separates them
     lay = _layout(BOX, PEN, _o("pen2", 12, 30, kind="pen"))

@@ -1,6 +1,7 @@
 """Export a learned skill as a robot-agnostic zip (docs/04 §14): the program, the skill API contract
 any robot stack can implement, the goal, the task spec, the card and a README."""
 
+import ast
 import io
 import json
 import zipfile
@@ -51,12 +52,33 @@ def skill_api_md() -> str:
     return SKILL_API_MD.replace("{api}", api_reference())
 
 
+def forged_skills_used(code: str) -> list[str]:
+    """Promoted forged skills the program actually calls (bare-name calls, as the
+    sandbox injects them), sorted for determinism."""
+    from demobot.program.forge import load_forged
+
+    known = load_forged()
+    if not known:
+        return []
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return sorted(n for n in known if f"{n}(" in code)
+    called = {
+        node.func.id
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+    }
+    return sorted(called & known.keys())
+
+
 def build_zip(run_dir: Path) -> bytes:
     art = run_dir / "artifacts"
     card = SkillCard.model_validate_json((art / "card.json").read_text())
     spec = TaskSpec.model_validate_json((art / "taskspec.json").read_text())
     programs = [Program.model_validate(p) for p in json.loads((art / "programs.json").read_text())]
     prog = next((p for p in programs if p.version == card.program_version), programs[-1])
+    used = forged_skills_used(prog.code)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr(
@@ -70,11 +92,25 @@ def build_zip(run_dir: Path) -> bytes:
         z.writestr("taskspec.json", spec.model_dump_json(indent=1))
         if (art / "card.png").exists():
             z.write(art / "card.png", "card.png")
+        if used:  # the program calls forged skills: bundle their source so it can run
+            from demobot.program.forge import load_forged
+
+            sources = load_forged()
+            for name in used:
+                if name in sources:
+                    z.writestr(f"forged/{name}.py", sources[name])
         robust = (
             f", robustness {card.robustness:.0%} on red-team layouts"
             if card.robustness is not None
             else ""
         )
-        z.writestr("README.md", README.format(title=card.title, description=card.description, run_id=card.run_id,
-                                              version=prog.version, robust=robust))  # fmt: skip
+        readme = README.format(title=card.title, description=card.description, run_id=card.run_id,
+                               version=prog.version, robust=robust)  # fmt: skip
+        if used:
+            readme += (
+                "\nThis program uses DemoBot-forged skills, bundled under `forged/` "
+                "(define them alongside `run` or import them before running):\n"
+                + "".join(f"- `forged/{n}.py`: the `{n}` skill.\n" for n in used)
+            )
+        z.writestr("README.md", readme)
     return buf.getvalue()

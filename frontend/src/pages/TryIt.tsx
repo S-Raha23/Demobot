@@ -212,7 +212,7 @@ function Playground({ runId, version }: { runId: string; version: number }) {
     );
 
   return (
-    <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-cols-[minmax(0,1fr)_400px]">
+    <main id="main-content" className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-cols-[minmax(0,1fr)_400px]">
       <div className="panel relative flex min-h-[460px] flex-col overflow-hidden">
         <div className="flex h-11 shrink-0 items-center gap-2 border-b border-ink-700/60 px-3">
           <Icon name="hand" size={15} className="text-ink-300" />

@@ -190,7 +190,7 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
       <TopNav center={<NowLine pb={pb} card={card} />}>
         <ReplayControls pb={pb} />
       </TopNav>
-      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-rows-[auto_minmax(0,1.12fr)_auto_minmax(0,1fr)]">
+      <main id="main-content" className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-rows-[auto_minmax(0,1.12fr)_auto_minmax(0,1fr)]">
         <div className="flex min-w-0 items-stretch gap-3">
           <div className="min-w-0 flex-1">
             <StageStepper stages={view.stages} finalStatus={pb.finished ? detail?.state?.stages : null} />
@@ -256,11 +256,13 @@ function MissionControl({ pb, initialTab }: { pb: RunPlayback; initialTab: Tab |
             <AgentFeed footer={<CorrectionDock runId={runId} enabled={pb.finished} onNotice={setNotice} />} />
           </div>
           <div className="panel flex min-h-[420px] flex-col overflow-hidden lg:min-h-0" data-testid="tabs">
-            <div className="flex h-10 shrink-0 items-center gap-1 border-b border-ink-700/60 px-2">
+            <div role="tablist" aria-label="Run details" className="scroll-thin flex h-10 shrink-0 items-center gap-1 overflow-x-auto border-b border-ink-700/60 px-2">
               {TABS.filter((t) => t.id !== "forge" || forgeArt).map((t) => (
                 <button
                   key={t.id}
                   type="button"
+                  role="tab"
+                  aria-selected={tab === t.id}
                   onClick={() => {
                     pinned.current = true;
                     setTab(t.id);

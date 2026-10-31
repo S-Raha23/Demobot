@@ -135,6 +135,34 @@ def test_turned_needs_no_target() -> None:
     assert not g.evaluate_clause(c, st(unturned), st(unturned)).holds
 
 
+def test_colour_selects_by_word_in_name_or_kind_case_insensitively() -> None:
+    state = st(
+        o("teal pen", 10, 10, kind="pen"),
+        o("box cutter", 20, 10, kind="teal cutter"),
+        o("red pen", 30, 10, kind="pen"),
+        MUG,
+    )
+    got = g.select(Selector(colour="Teal"), state)
+    assert [x.name for x in got] == ["box cutter", "teal pen"]  # sorted; pen kind or cutter kind
+    # colour combines with kind: only the teal pen
+    assert [x.name for x in g.select(Selector(kind="pen", colour="teal"), state)] == ["teal pen"]
+    # a "teal things" hypothesis is expressible and evaluable end to end
+    c = clause(
+        quant="all", select=Selector(colour="teal"), pred="inside", target=Selector(name="mug")
+    )
+    both_in = st(MUG, o("teal pen", 30, 20, kind="pen"), o("box cutter", 30, 20, kind="teal cutter"),
+                 o("red pen", 5, 5, kind="pen"))  # fmt: skip
+    assert g.evaluate_clause(c, both_in, both_in).holds
+    one_out = st(MUG, o("teal pen", 30, 20, kind="pen"), o("box cutter", 5, 5, kind="teal cutter"))
+    assert not g.evaluate_clause(c, one_out, one_out).holds
+
+
+def test_colour_describe_mentions_it() -> None:
+    assert g.describe(Selector(colour="teal")) == "every teal thing"
+    assert g.describe(Selector(kind="pen", colour="teal")) == "every teal pen"
+    assert "teal" in g.describe(Selector(name="pen", colour="teal"))
+
+
 def test_rotated_footprint_extents() -> None:
     pen = o("pen", 0, 0, w=14, d=1.2)
     assert pen.extents() == (7, 0.6)

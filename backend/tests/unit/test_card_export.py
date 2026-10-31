@@ -74,3 +74,29 @@ def test_template_card_and_export_zip(tmp_path: Path) -> None:
     assert "def place_next_to(" in z.read("skill_api.md").decode()
     assert json.loads(z.read("goal.json"))[0]["pred"] == "inside"
     assert "not on a physical" in z.read("README.md").decode()
+    assert export.forged_skills_used("def run(scene, robot):\n    pass\n") == []
+
+
+def test_export_bundles_forged_skill_source_and_notes_it(tmp_path: Path) -> None:
+    run = tmp_path / "run2"
+    art = run / "artifacts"
+    art.mkdir(parents=True)
+    s = spec([INSIDE])
+    code = (
+        "def run(scene, robot):\n"
+        "    rotate_in_place(robot, scene, scene.get('left teal pen'), 90)\n"
+    )
+    (art / "taskspec.json").write_text(s.model_dump_json())
+    (art / "programs.json").write_text(json.dumps([Program(version=1, code=code,
+                                                           author="wonder").model_dump()]))  # fmt: skip
+    (art / "card.json").write_text(SkillCard(skill_id="run2", title="t", description="d",
+                                             goal_text="g", program_version=1, robustness=None,
+                                             cost_to_learn_usd=0.1, run_id="run2").model_dump_json())  # fmt: skip
+    assert export.forged_skills_used(code) == ["rotate_in_place"]
+    # a mere mention (comment) is not a call
+    assert export.forged_skills_used("def run(scene, robot):\n    pass  # rotate_in_place\n") == []
+    z = zipfile.ZipFile(io.BytesIO(export.build_zip(run)))
+    assert "forged/rotate_in_place.py" in z.namelist()
+    assert "def rotate_in_place(" in z.read("forged/rotate_in_place.py").decode()
+    readme = z.read("README.md").decode()
+    assert "forged/rotate_in_place.py" in readme and "rotate_in_place" in readme

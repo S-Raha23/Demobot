@@ -121,6 +121,36 @@ def test_ground_finds_the_carry_contacts_and_match() -> None:
     assert box.hollow and abs(box.w - 6) < 1  # the box mask is 6 cm wide
 
 
+def test_filled_near_clause_is_marked_filled_from_measurement() -> None:
+    spec, tracks = scenario()
+    # Watch could not know centimetres: a bare `near` gets its point from the measured end
+    spec.goal = [GoalClause(quant="the", select=Selector(name="eraser"), pred="near")]
+    cam = identity_track(len(tracks[0].frames))
+    gd = ground.ground(spec, tracks, {}, _calib(cam), cam, 10.0)
+    assert gd.goal is not None and gd.goal[0].point_cm is not None
+    r = gd.real_world[0]
+    assert r.holds  # holds by construction: the point IS the measured end
+    assert r.measured.get("filled_from_measurement") is True
+    assert "filled_from_measurement" in r.detail
+    # an ordinary (unfilled) clause carries no marker
+    spec2, tracks2 = scenario()
+    gd2 = ground.ground(
+        spec2,
+        tracks2,
+        {},
+        _calib(identity_track(len(tracks2[0].frames))),
+        identity_track(len(tracks2[0].frames)),
+        10.0,
+    )
+    assert "filled_from_measurement" not in gd2.real_world[0].detail
+    assert "filled_from_measurement" not in gd2.real_world[0].measured
+    # the turned form is detected the same way (yaw filled, was absent before)
+    orig_t = GoalClause(quant="the", select=Selector(name="eraser"), pred="turned")
+    filled_t = orig_t.model_copy(update={"yaw_deg": 45.0, "point_cm": (10.0, 10.0)})
+    assert ground._filled_from_measurement(orig_t, filled_t)
+    assert not ground._filled_from_measurement(filled_t, filled_t)
+
+
 def test_untracked_objects_never_pass_vacuously() -> None:
     spec, tracks = scenario()
     spec.goal = [

@@ -32,6 +32,12 @@ function NotFound() {
 export default function App() {
   return (
     <Suspense fallback={<Loading />}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ink-800 focus:px-4 focus:py-2 focus:text-[13px] focus:font-semibold focus:text-ink-50 focus:ring-1 focus:ring-sparkopen"
+      >
+        Skip to content
+      </a>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/run/:id" element={<Run />} />

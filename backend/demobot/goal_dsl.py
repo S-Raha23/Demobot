@@ -38,27 +38,44 @@ _EPS = 1e-9
 
 
 # ---------- selection ----------
+def _colour_matches(sel: Selector, o: SceneObject) -> bool:
+    """`colour` is a word ("teal") matched case-insensitively in the object's name/kind,
+    so "teal things" can select a teal pen and a teal cutter alike."""
+    if not sel.colour:
+        return True
+    word = sel.colour.strip().lower()
+    return bool(word) and word in f"{o.name} {o.kind}".lower()
+
+
 def select(sel: Selector, state: State) -> list[SceneObject]:
     """Objects matching a selector, sorted by name for determinism."""
     if sel.names:
-        return [state[n] for n in sel.names if n in state]
+        return [state[n] for n in sel.names if n in state and _colour_matches(sel, state[n])]
     out = [
         o
         for o in state.values()
         if (sel.name is None or o.name == sel.name)
         and (sel.kind is None or o.kind == sel.kind)
         and (sel.role is None or o.role == sel.role)
+        and _colour_matches(sel, o)
     ]
     return sorted(out, key=lambda o: o.name)
 
 
 def describe(sel: Selector) -> str:
     if sel.names:
-        return " and ".join(sel.names)
+        base = " and ".join(sel.names)
+        return f"{base} ({sel.colour})" if sel.colour else base
     if sel.name:
-        return sel.name
+        if not sel.colour or sel.colour.lower() in sel.name.lower():
+            return sel.name
+        return f"{sel.colour} {sel.name}"
     if sel.kind:
-        return f"every {sel.kind}"
+        if not sel.colour or sel.colour.lower() in sel.kind.lower():
+            return f"every {sel.kind}"
+        return f"every {sel.colour} {sel.kind}"
+    if sel.colour:
+        return f"every {sel.colour} thing"
     return f"every {sel.role} object"
 
 

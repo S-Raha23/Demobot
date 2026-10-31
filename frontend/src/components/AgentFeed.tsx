@@ -130,14 +130,12 @@ const Row = memo(function Row({ e }: { e: RunEvent }) {
           </div>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {q.options.map((o) => (
-              <button key={o} type="button" className="btn !px-2 !py-1 !text-[11px]" disabled title="Answers go to live runs">
+              <span key={o} className="rounded-full bg-ink-700/60 px-2 py-1 text-[11px] text-ink-200 ring-1 ring-inset ring-ink-600">
                 {o}
-              </button>
+              </span>
             ))}
-            <button type="button" className="btn !px-2 !py-1" disabled aria-label="Answer by voice">
-              <Icon name="mic" size={12} />
-            </button>
           </div>
+          <p className="mt-1.5 text-[11px] text-ink-400">Answered in the recorded run — read-only in replay.</p>
         </div>
       );
     }

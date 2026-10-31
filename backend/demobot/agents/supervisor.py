@@ -7,6 +7,7 @@ policy decides. After each action only the affected stages are rerun.
 
 import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 from demobot import gateway, goal_dsl, providers
@@ -53,6 +54,24 @@ TOOLS: list[dict[str, Any]] = [
     {"type": "function", "function": {"name": "stop", "description": "Give up cleanly.",
      "parameters": {"type": "object", "properties": {"reason": {"type": "string"}}, "required": ["reason"]}}},
 ]  # fmt: skip
+
+
+def drop_final_mask(art: Path, name: str) -> bool:
+    """Remove `name`'s entry from final_masks.json (the reference-frame segmentation
+    from the old track). After a retrack it is stale: Ground would otherwise let it
+    override the re-measured final position. Returns whether an entry was removed."""
+    p = art / "final_masks.json"
+    if not p.exists():
+        return False
+    try:
+        masks = json.loads(p.read_text())
+    except (json.JSONDecodeError, OSError):
+        return False
+    if not isinstance(masks, dict) or name not in masks:
+        return False
+    del masks[name]
+    p.write_text(json.dumps(masks))
+    return True
 
 
 @dataclass
@@ -299,6 +318,7 @@ class Supervisor:
             json.loads(tr.model_dump_json()) if t["name"] == name else t for t in raw["tracks"]
         ]
         (run.art / "tracks.json").write_text(json.dumps(raw))
+        drop_final_mask(run.art, name)  # the old reference-frame mask no longer applies
         _ = (ground_mod, Track)
         await pipeline.stage_ground(run)
         await pipeline.stage_twin_build(run)

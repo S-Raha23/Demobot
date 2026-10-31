@@ -72,6 +72,21 @@ class LiveTracker:
         for name, t in self.tracks.items():
             if name not in used_t:
                 t.seen = 0  # must re-confirm after a miss; position holds meanwhile
+        # Unseeded detections ("Add object"): start a provisional track for each
+        # one no existing track claimed. It joins `tracks` unconfirmed, so the
+        # greedy match above associates later frames with it; it is returned
+        # only after `confirm_frames` sightings (a miss resets the count).
+        for i, d in enumerate(dets):
+            if i in used_d:
+                continue
+            name = d.label
+            if name in self.tracks:
+                k = 2
+                while f"{d.label} {k}" in self.tracks:
+                    k += 1
+                name = f"{d.label} {k}"
+            self.tracks[name] = Track(name, d.label, d.x, d.y, seen=1,
+                                      confirmed=self.confirm_frames <= 1)  # fmt: skip
         return {n: (t.x, t.y) for n, t in self.tracks.items() if t.confirmed}
 
     def rate_ok(self, timestamps: list[float], min_hz: float = 2.0) -> bool:

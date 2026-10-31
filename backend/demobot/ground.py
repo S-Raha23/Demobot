@@ -262,6 +262,15 @@ def fill_goal(
     return out
 
 
+def _filled_from_measurement(orig: GoalClause, filled: GoalClause) -> bool:
+    """Whether fill_goal took this clause's numbers from the measured final state itself
+    (a `near` point or a `turned` yaw Watch could not know). Such a clause is self-scored
+    on the real final state, so its result is marked, not silently trusted."""
+    return (orig.pred == "near" and orig.point_cm is None and filled.point_cm is not None) or (
+        orig.pred == "turned" and orig.yaw_deg is None and filled.yaw_deg is not None
+    )
+
+
 def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal: Calibration, cam: CameraTrack,
            fps: float, art: Path | None = None) -> GroundedDemo:  # fmt: skip
     by = {t.name: t for t in tracks}
@@ -387,7 +396,8 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
         sel = r.clause.select
         wanted = [o for o in spec_state.values()
                   if (sel.name in (None, o.name)) and (sel.kind in (None, o.kind)) and (sel.role in (None, o.role))
-                  and (not sel.names or o.name in sel.names)]  # fmt: skip
+                  and (not sel.names or o.name in sel.names)
+                  and (not sel.colour or sel.colour.strip().lower() in f"{o.name} {o.kind}".lower())]  # fmt: skip
         missing = [o.name for o in wanted if o.name not in grounded]
         if missing:
             r.holds, r.code = False, "NOT_TRACKED"
@@ -395,6 +405,18 @@ def ground(spec: TaskSpec, tracks: list[Track], final_masks: dict[str, Any], cal
         elif not r.holds and r.clause.pred == "swapped" and unseen_start & set(r.objects):
             r.code = "START_UNSEEN"
             r.detail += f"; {', '.join(sorted(unseen_start & set(r.objects)))} was hidden at the start, so this is inconclusive"
+    # Clauses fill_goal completed from the measurement itself hold by construction on
+    # this state. Mark them instead of re-scoring them as inconclusive: flipping
+    # holds/inconclusive here would change verify's classification and the baked
+    # fixtures' semantics, while the marker keeps the self-scoring visible everywhere
+    # the clause detail is shown (verify, supervisor, judge table).
+    for r, orig, filled in zip(real, spec.goal, goal, strict=True):
+        if _filled_from_measurement(orig, filled):
+            r.measured["filled_from_measurement"] = True
+            if "filled_from_measurement" not in r.detail:
+                r.detail += (
+                    "; filled_from_measurement (self-scored: filled from the measured final state)"
+                )
     gd = GroundedDemo(initial=init_objs, final=final_objs, segments=all_segments,
                       contacts=sorted(contact_list, key=lambda c: c.t), matches=matches,
                       real_world=real, flags=flags, goal=goal)  # fmt: skip
