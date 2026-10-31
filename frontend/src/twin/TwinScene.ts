@@ -363,11 +363,11 @@ export class TwinScene {
       position: "absolute",
       left: "0px",
       top: "0px",
-      font: "600 10.5px Inter Variable, Inter, sans-serif",
+      font: "600 9px Inter Variable, Inter, sans-serif",
       color: "#e6edf5",
       background: "rgba(10,15,22,0.82)",
       border: "1px solid rgba(91,107,128,0.5)",
-      padding: "1px 6px",
+      padding: "0px 4px",
       borderRadius: "999px",
       whiteSpace: "nowrap",
       transform: "translate(-50%, -100%) translate(0px, -6px)",
@@ -673,7 +673,7 @@ export class TwinScene {
       pts.push(q.setY(q.y + e.spec.h / 200 + 0.04)); // the object's top, where its label sits
     }
     const centre = new THREE.Vector3((x0 + x1) / 2, 0.06, (z0 + z1) / 2 + 0.06);
-    const dir = new THREE.Vector3(0.25, 1.25, -1).normalize();
+    const dir = new THREE.Vector3(0.22, 1.0, -1).normalize();
     this.camera.aspect = Math.max(0.3, this.host.clientWidth / Math.max(1, this.host.clientHeight));
     this.camera.updateProjectionMatrix();
     let dist = 1.6;
@@ -682,7 +682,7 @@ export class TwinScene {
       this.camera.lookAt(centre);
       this.camera.updateMatrixWorld(true);
       const m = Math.max(...pts.map((q) => { const v = q.clone().project(this.camera); return Math.max(Math.abs(v.x), Math.abs(v.y)); }));
-      dist *= 1 + (m / 0.9 - 1) * 0.9; // settle where the farthest point is at 90% of the edge
+      dist *= 1 + (m / 0.95 - 1) * 0.9; // settle where the farthest point is at 95% of the edge (table fills the panel)
     }
     dist = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, dist));
     this.orbitTarget.copy(centre);

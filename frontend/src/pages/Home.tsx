@@ -226,8 +226,8 @@ function Hero({ run }: { run: RunMeta | null }) {
     <div className="group relative">
       <div className="absolute -inset-3 rounded-[26px] bg-gradient-to-br from-sparkopen/20 via-transparent to-spark/20 opacity-70 blur-2xl" />
       <div className="panel relative overflow-hidden !rounded-[20px] p-0">
-        <div className="grid grid-cols-1 gap-px bg-ink-700 sm:grid-cols-2">
-          <div className="relative aspect-video bg-black">
+        <div className="grid grid-cols-1 gap-px bg-ink-700 lg:grid-cols-5">
+          <div className="relative aspect-video bg-black lg:col-span-2">
             <video
               ref={vid}
               src={artifactUrl(run.run_id, "artifacts/display.mp4")}
@@ -255,7 +255,7 @@ function Hero({ run }: { run: RunMeta | null }) {
               <Icon name={muted ? "mute" : "sound"} size={13} /> {muted ? "Sound" : "On"}
             </button>
           </div>
-          <div className="pointer-events-none relative aspect-video bg-ink-900">
+          <div className="pointer-events-none relative aspect-video bg-ink-900 lg:col-span-3">
             {scene && traj ? (
               <Suspense fallback={<div className="flex h-full items-center justify-center"><Spinner /></div>}>
                 <TwinView runId={run.run_id} scene={scene} trajectory={traj} timeSource={timeSource} cameraMode="orbit" labels options={{ frameRobot: true }} className="h-full w-full" />

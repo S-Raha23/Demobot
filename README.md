@@ -19,6 +19,11 @@ Film yourself doing a task once ("put the pens in the cup"). A team of agents bu
 5. **Talk to it.** "No, the pen goes to the left of the box": the correction becomes a goal diff and a code diff, and the robot complies.
 6. **Your turn.** Drag objects in the 3D twin; the robot re-plans and does it, live and free.
 
+## Contributors
+
+- **Soubhagya Raha** (S-Raha23) — author: filmed the demos, glued the markers, owns the table, keys, deploys and submission.
+- **Muse Code** (powered by Muse Wonder 1.0, Meta) — coding contributor: wrote and tested the code with the author; credited as co-author on its commits.
+
 ## How Meta's models are used
 
 | Capability | Meta model | Its job in DemoBot |
