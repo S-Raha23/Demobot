@@ -1,0 +1,11 @@
+{
+ "skill_id": "fx-next-to",
+ "title": "Put the teal box cutter left of the white box",
+ "description": "The item ends up on that side of the reference, wherever both are.",
+ "image": null,
+ "goal_text": "Put the teal box cutter left of the white box.",
+ "program_version": 2,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 0.4126,
+ "run_id": "fx-next-to"
+}

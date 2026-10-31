@@ -15,7 +15,7 @@ Everything else is Claude Code's job. Claude adds items under **Waiting on you**
 
 **Phone setup:**
 - Hold the phone in one hand from the near (robot) side of the table, looking forward and down at the markers, and do the task with the other hand. Any angle from straight down to about 45° is fine.
-- **All 4 markers must be in view** for the whole clip.
+- **All 4 markers must be in view** for the whole clip, and not hidden behind tall items (keep the glue bottle, mug and box a hand's width away from the markers).
 - **Same camera mode as your checkerboard video:** 1080p, 30 fps, normal 1× lens, no zoom, good light. Portrait like the checkerboard video is best; landscape also works.
 - **Keep the phone as steady as you comfortably can** (small handheld motion is fine; DemoBot tracks it). Tap record, wait 2 s, do the task with natural movements, wait 2 s, then stop.
 

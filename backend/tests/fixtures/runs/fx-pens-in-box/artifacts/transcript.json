@@ -1,0 +1,15 @@
+{
+ "text": "All the pens go in the mug.",
+ "language": "English",
+ "languages": [
+  "English"
+ ],
+ "segments": [
+  {
+   "t0": 1.67,
+   "t1": 4.17,
+   "text": "All the pens go in the mug."
+  }
+ ],
+ "source": "narration"
+}

@@ -1,0 +1,187 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-10",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white mug"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.312
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "teal pen 2"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.592
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white mug"
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.508
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 12.992
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 13.992
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 49.0,
+   "y": 21.7,
+   "z": 4.8,
+   "yaw": -0.0,
+   "w": 8.5,
+   "d": 8.5,
+   "h": 9.5,
+   "color": "#ecebe6",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 48.66,
+   "y": 23.11,
+   "z": 6.83,
+   "yaw": -72.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen 2",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 46.59,
+   "y": 20.26,
+   "z": 7.61,
+   "yaw": 37.4,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 19.61,
+   "y": 29.04,
+   "z": 0.5,
+   "yaw": 128.1,
+   "w": 15.5,
+   "d": 3.4,
+   "h": 1.0,
+   "color": "#b9bec4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 31.3,
+   "y": 14.8,
+   "z": 3.35,
+   "yaw": -0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.7,
+   "color": "#d9e43a",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white mug",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "teal pen",
+    "teal pen 2"
+   ],
+   "measured": {
+    "teal pen.margin_cm": 1.84,
+    "teal pen.z_cm": 6.83,
+    "teal pen.below_rim": true,
+    "teal pen 2.margin_cm": 0.84,
+    "teal pen 2.z_cm": 7.61,
+    "teal pen 2.below_rim": true
+   },
+   "detail": "every pen inside white mug"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-10_v2/top_red-10.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-10_v2/twin_red-10.json",
+ "duration_s": 15.49,
+ "wall_s": 0.49
+}

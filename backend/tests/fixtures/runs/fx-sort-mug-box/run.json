@@ -1,0 +1,9 @@
+{
+ "run_id": "fx-sort-mug-box",
+ "title": "Pens into the white mug, everything else into the white box.",
+ "created_at": "2026-10-31T09:02:35.430Z",
+ "source": "synthetic:03_sort",
+ "mode": "replay",
+ "status": "done",
+ "fixture": true
+}

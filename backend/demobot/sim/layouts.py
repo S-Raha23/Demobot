@@ -89,7 +89,7 @@ def _place_one(o: SceneObject, placed: list[SceneObject], layout: Layout,
 def random_layout(base: Layout, seed: int, layout_id: str | None = None) -> Layout:
     """A valid random rearrangement of the same objects (containers placed first)."""
     rng = np.random.default_rng(seed)
-    order = sorted(base.objects, key=lambda o: (not o.is_container, -o.w * o.d))
+    order = sorted(base.objects, key=lambda o: (not o.is_open, -o.w * o.d))
     for _ in range(50):
         placed: list[SceneObject] = []
         for o in order:

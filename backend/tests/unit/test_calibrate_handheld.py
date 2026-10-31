@@ -1,6 +1,7 @@
 """Calibration with a handheld (moving) camera: per-frame homographies, smoothing,
 interpolation across frames without markers, the blur flag, and the stabilised display."""
 
+import json
 import subprocess
 from pathlib import Path
 
@@ -93,23 +94,30 @@ def test_stabilised_display_holds_markers_still(tmp_path: Path) -> None:
     for name in ("display.mp4", "camera_track.json", "stabilise.json", "rectified_last.png"):
         assert (out / name).exists(), name
     first = calibrate.detect_markers(imgs[0])
+    track = json.loads((out / "camera_track.json").read_text())["frames"]
     cap = cv2.VideoCapture(str(out / "display.mp4"))
-    worst_raw, worst_stab = 0.0, 0.0
+    worst_raw, worst_stab, worst_interp = 0.0, 0.0, 0.0
     k = 0
     while True:
         ok, fr = cap.read()
         if not ok:
             break
-        if k % 9 == 0:
+        if k % 3 == 0:
             det = calibrate.detect_markers(fr)
             raw_det = calibrate.detect_markers(imgs[k // 3])
-            for i in det.keys() & first.keys():
-                worst_stab = max(worst_stab, float(np.abs(det[i] - first[i]).max()))
+            err = max(
+                (float(np.abs(det[i] - first[i]).max()) for i in det.keys() & first.keys()),
+                default=0.0,
+            )
+            if track[k // 3]["interpolated"]:  # 1–2 markers in the compressed frame
+                worst_interp = max(worst_interp, err)
+            else:
+                worst_stab = max(worst_stab, err)
             for i in raw_det.keys() & first.keys():
                 worst_raw = max(worst_raw, float(np.abs(raw_det[i] - first[i]).max()))
         k += 1
     cap.release()
-    assert k == 3 * N and worst_raw > 8 and worst_stab < 3.0
+    assert k == 3 * N and worst_raw > 8 and worst_stab < 3.0 and worst_interp < 8.0
     assert cal.frames_total == N
     dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of",
                           "csv=p=0", str(out / "display.mp4")], capture_output=True, text=True)  # fmt: skip

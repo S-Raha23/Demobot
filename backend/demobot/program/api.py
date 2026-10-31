@@ -212,7 +212,7 @@ class Robot:
     def _contained(self) -> set[str]:
         """Objects inside some container right now."""
         state = self._sim.state()
-        boxes = [o for o in state if o.is_container]
+        boxes = [o for o in state if o.is_open]
         return {
             o.name for o in state
             if any(goal_dsl.inside(o, c, sim=True)[0] for c in boxes if c.name != o.name)
@@ -252,7 +252,7 @@ class Robot:
             raise self._fail(
                 call, NotReachable(f"{obj.name} at ({x:.0f}, {y:.0f}) is out of reach")
             )
-        if self._sim.objects[obj.name].spec.is_container:
+        if self._sim.objects[obj.name].spec.is_open:
             raise self._fail(call, NotReachable(f"{obj.name} is a container; containers stay put"))
         before = self._snapshot_xy()
         try:

@@ -68,7 +68,7 @@ def build_twin(scene: Scene, recorder: TwinRecorder, layout: Layout) -> TwinTraj
                 role=o.role,
                 shape=o.shape,
                 size=(o.w, o.d, o.h),
-                container=o.is_container,
+                container=o.is_open,
                 texture=o.texture,
                 color=o.color,
             )

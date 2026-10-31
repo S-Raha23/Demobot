@@ -197,7 +197,7 @@ def _container_parts(
 
 def _shapes(o: SceneObject, cid: int) -> tuple[int, int]:
     rgba = hex_rgba(o.color)
-    if o.is_container:
+    if o.is_open:
         types, half, pos, orn = _container_parts(o)
         radii = [h[0] for h in half]
         lengths = [2 * h[2] for h in half]
@@ -253,7 +253,7 @@ def _add_object(o: SceneObject, cid: int) -> int:
     col, vis = _shapes(o, cid)
     x, y = to_sim((o.x, o.y))
     body = p.createMultiBody(
-        baseMass=0.0 if o.is_container else mass_kg(o),
+        baseMass=0.0 if o.is_open else mass_kg(o),
         baseCollisionShapeIndex=col,
         baseVisualShapeIndex=vis,
         basePosition=[x, y, o.h / 200.0 + 0.0005],
@@ -320,7 +320,7 @@ def build_scene(
         robot = _add_robot(layout.robot_base_cm, cid)
         objs: dict[str, SimObject] = {}
         # containers first, so anything laid inside one rests on its floor
-        for o in sorted(layout.objects, key=lambda o: not o.is_container):
+        for o in sorted(layout.objects, key=lambda o: not o.is_open):
             if o.name in objs:
                 raise ValueError(f"duplicate object name {o.name!r}")
             objs[o.name] = SimObject(o, _add_object(o, cid))

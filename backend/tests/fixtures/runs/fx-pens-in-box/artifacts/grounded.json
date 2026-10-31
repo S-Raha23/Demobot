@@ -1,0 +1,265 @@
+{
+ "initial": [
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 42.9,
+   "y": 32.4,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 8.5,
+   "d": 8.5,
+   "h": 9.5,
+   "color": "#ecebe6",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 37.3,
+   "y": 24.4,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen 2",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 6.7,
+   "y": 20.2,
+   "z": 0.0,
+   "yaw": 90.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 49.7,
+   "y": 17.1,
+   "z": 0.0,
+   "yaw": 90.0,
+   "w": 15.5,
+   "d": 3.4,
+   "h": 1.0,
+   "color": "#b9bec4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 24.3,
+   "y": 12.7,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.7,
+   "color": "#d9e43a",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 42.9,
+   "y": 32.4,
+   "z": 4.75,
+   "yaw": 0.0,
+   "w": 8.5,
+   "d": 8.5,
+   "h": 9.5,
+   "color": "#ecebe6",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 42.9,
+   "y": 32.4,
+   "z": 7.65,
+   "yaw": 0.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "teal pen 2",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 42.9,
+   "y": 32.4,
+   "z": 7.65,
+   "yaw": 90.0,
+   "w": 14.5,
+   "d": 1.2,
+   "h": 1.2,
+   "color": "#178f8f",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "role": "distractor",
+   "shape": "box",
+   "x": 49.7,
+   "y": 17.1,
+   "z": 0.5,
+   "yaw": 90.0,
+   "w": 15.5,
+   "d": 3.4,
+   "h": 1.0,
+   "color": "#b9bec4",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 24.3,
+   "y": 12.7,
+   "z": 3.35,
+   "yaw": 0.0,
+   "w": 6.7,
+   "d": 6.7,
+   "h": 6.7,
+   "color": "#d9e43a",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "teal pen",
+   "t0": 3.43,
+   "t1": 5.33,
+   "from_cm": [
+    37.3,
+    24.4
+   ],
+   "to_cm": [
+    42.9,
+    32.4
+   ]
+  },
+  {
+   "object": "teal pen 2",
+   "t0": 7.6,
+   "t1": 9.5,
+   "from_cm": [
+    6.7,
+    20.2
+   ],
+   "to_cm": [
+    42.9,
+    32.4
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 3.43,
+   "type": "grasp",
+   "object": "teal pen"
+  },
+  {
+   "t": 5.33,
+   "type": "release",
+   "object": "teal pen"
+  },
+  {
+   "t": 7.6,
+   "type": "grasp",
+   "object": "teal pen 2"
+  },
+  {
+   "t": 9.5,
+   "type": "release",
+   "object": "teal pen 2"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 0,
+   "confidence": 0.9,
+   "timing_delta_s": 0.2
+  },
+  {
+   "step": 1,
+   "segment": 1,
+   "confidence": 0.9,
+   "timing_delta_s": 0.2
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white mug",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "teal pen",
+    "teal pen 2"
+   ],
+   "measured": {
+    "teal pen.margin_cm": 3.25,
+    "teal pen 2.margin_cm": 3.25
+   },
+   "detail": "every pen inside white mug"
+  }
+ ],
+ "flags": []
+}

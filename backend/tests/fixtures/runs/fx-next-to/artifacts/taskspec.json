@@ -1,0 +1,81 @@
+{
+ "summary": "Put the teal box cutter left of the white box.",
+ "objects": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "alt_names": [
+    "box"
+   ],
+   "role": "reference",
+   "color": "white",
+   "est_height_cm": 6.5,
+   "est_size_cm": [
+    13.0,
+    13.0
+   ]
+  },
+  {
+   "name": "teal box cutter",
+   "kind": "box cutter",
+   "alt_names": [
+    "box cutter"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.8,
+   "est_size_cm": [
+    15.0,
+    2.6
+   ]
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "pen"
+   ],
+   "role": "distractor",
+   "color": "teal",
+   "est_height_cm": 1.2,
+   "est_size_cm": [
+    14.5,
+    1.2
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_next_to",
+   "object": "teal box cutter",
+   "target": "white box",
+   "relation": "left_of",
+   "t_start": 1.77,
+   "t_end": 5.7,
+   "evidence": "the hand lifts the teal box cutter and sets it down"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "teal box cutter",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "pred": "left_of",
+   "target": {
+    "name": "white box",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "The item ends up on that side of the reference, wherever both are.",
+ "uncertainties": []
+}

@@ -331,6 +331,23 @@ def smooth_and_fill(
     return [_norm(H) for H in out], [k not in pos for k in range(n)]
 
 
+def _correct_with_visible(H: F64, corners: dict[int, F64], poses: dict[int, F64]) -> F64:
+    """An interpolated frame that still shows 1–2 markers: fit a 2D similarity (in-image shift,
+    rotation, scale) from the interpolated prediction of those markers to where they are seen,
+    and apply it. Small handheld motion between frames is mostly that."""
+    ids = [i for i in corners if i in poses]
+    G = _norm(np.linalg.inv(H))
+    pred = np.concatenate([_project(G, _marker_corners(poses[i])) for i in ids])
+    seen = np.concatenate([corners[i] for i in ids])
+    S, _ = cv2.estimateAffinePartial2D(pred, seen, method=cv2.LMEDS)
+    if S is None:
+        return H
+    G2 = _norm(np.vstack([S, [0.0, 0.0, 1.0]]) @ G)
+    if _rms(G2, {i: corners[i] for i in ids}, poses) > OUTLIER_PX:
+        return H
+    return _norm(np.linalg.inv(G2))
+
+
 def build_track(
     obs: list[Obs], width: int, height: int, fps: float
 ) -> tuple[Calibration, CameraTrack]:
@@ -367,6 +384,9 @@ def build_track(
             continue
         if _rms(_norm(np.linalg.inv(Hs[k])), obs[k].corners, poses) > e_raw + SMOOTH_SLACK_PX:
             Hs[k] = H_raw
+    for k in range(len(obs)):
+        if interp[k] and 0 < len(obs[k].corners) < MIN_MARKERS and not blurred[k]:
+            Hs[k] = _correct_with_visible(Hs[k], obs[k].corners, poses)
     Gs = [_norm(np.linalg.inv(H)) for H in Hs]
     f, cx, cy, source, warnings = solve_focal(
         [G for G, r in zip(Gs, raw, strict=True) if r is not None], width, height

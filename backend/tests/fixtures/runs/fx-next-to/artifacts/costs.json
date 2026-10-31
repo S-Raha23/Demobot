@@ -1,0 +1,1 @@
+{"by_model": {"muse-voice-transcribe-1.0": 0.0008, "muse-spark-1.3": 0.0288, "meta-models/Muse-Spark-Open-816B-A42B": 0.0201, "sam-3.1": 0.0771, "muse-wonder-1.0": 0.25, "meta-models/muse-spark-open-1026": 0.0358}, "by_provider": {"meta": 0.3567, "modal": 0.0201, "baseten": 0.0358}, "total_usd": 0.4126, "open_weight_share": 0.135, "fixture": true}

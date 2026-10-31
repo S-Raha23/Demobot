@@ -1,0 +1,32 @@
+{
+ "source_name": "clip.mp4",
+ "width": 1280,
+ "height": 720,
+ "raw_duration_s": 13.333333,
+ "trim_start_s": 0.0,
+ "trim_end_s": 13.333,
+ "duration_s": 13.3,
+ "analysis_fps": 10.0,
+ "analysis_frames": 133,
+ "has_audio": false,
+ "keyframes": [
+  "keyframes/kf_00.jpg",
+  "keyframes/kf_01.jpg",
+  "keyframes/kf_02.jpg",
+  "keyframes/kf_03.jpg",
+  "keyframes/kf_04.jpg",
+  "keyframes/kf_05.jpg",
+  "keyframes/kf_06.jpg",
+  "keyframes/kf_07.jpg"
+ ],
+ "keyframe_times": [
+  0.0,
+  1.88,
+  3.76,
+  5.64,
+  7.51,
+  9.39,
+  11.27,
+  13.15
+ ]
+}

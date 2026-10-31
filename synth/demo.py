@@ -68,7 +68,7 @@ def _obj(kind: str, rng: np.random.Generator, role: str, taken: set[str]) -> Sce
         name, k = f"{word} {kind} {k}", k + 1
     taken.add(name)
     return SceneObject(name=name, kind=kind, role=role, shape=item.shape, x=0, y=0, w=item.w,  # type: ignore[arg-type]
-                       d=item.d, h=item.h, color=hexcol, texture=item.texture(word))  # fmt: skip
+                       d=item.d, h=item.h, color=hexcol, texture=item.texture(word), hollow=item.container)  # fmt: skip
 
 
 def _frame(table: TableTruth) -> tuple[Rect, tuple[float, float]]:
@@ -287,7 +287,7 @@ class Stage:
 
     def _body(self, o: SceneObject) -> int:
         rgba = hex_rgba(o.color)
-        if o.is_container:
+        if o.is_open:
             types, half, pos, orn = _container_parts(o)
             vis = p.createVisualShapeArray(
                 shapeTypes=types, halfExtents=half, radii=[h[0] for h in half],
@@ -304,7 +304,7 @@ class Stage:
             vis = p.createVisualShape(p.GEOM_BOX, halfExtents=[o.w / 200, o.d / 200, o.h / 200],
                                       rgbaColor=rgba, physicsClientId=self.cid)  # fmt: skip
         body = p.createMultiBody(0, -1, vis, physicsClientId=self.cid)
-        if o.texture and not o.is_container:
+        if o.texture:
             tex = p.loadTexture(o.texture, physicsClientId=self.cid)
             p.changeVisualShape(
                 body, -1, textureUniqueId=tex, rgbaColor=[1, 1, 1, 1], physicsClientId=self.cid
@@ -641,11 +641,38 @@ def render_clip(plan: Plan, table: TableTruth, cams: list[Camera], frames: list[
     return tracks
 
 
+def occludes_markers(
+    objs: list[SceneObject], table: TableTruth, cam: Camera, margin_px: float = 12
+) -> bool:
+    """True if any object's projected 3D box overlaps a marker's image (with a margin)."""
+    from synth.table import MARKER_CM, PAPER_MARGIN_CM
+
+    rects = []
+    s = MARKER_CM / 2 + PAPER_MARGIN_CM
+    for x, y, _ in table.markers.values():
+        pts = cam.project(np.array([[x + dx, y + dy, 0.0] for dx in (-s, s) for dy in (-s, s)]))
+        rects.append((*pts.min(axis=0) - margin_px, *pts.max(axis=0) + margin_px))
+    for o in objs:
+        ex, ey = o.extents()
+        corners = [
+            [o.x + dx, o.y + dy, -z] for dx in (-ex, ex) for dy in (-ey, ey) for z in (0.0, o.h)
+        ]
+        pts = cam.project(np.array(corners))
+        x0, y0 = pts.min(axis=0)
+        x1, y1 = pts.max(axis=0)
+        if any(x0 < r[2] and x1 > r[0] and y0 < r[3] and y1 > r[1] for r in rects):
+            return True
+    return False
+
+
 def make_clip(family: str, seed: int, out_dir: Path, shake: float = 1.0) -> dict[str, Any]:
     rng = np.random.default_rng(seed)
     table = draw_texture(sample_markers(rng), rng)
     cam = sample_camera(table, rng, W, H)
-    plan = plan_task(family, table, rng)
+    for _ in range(30):  # no object may hide a marker from this camera (a real failure mode)
+        plan = plan_task(family, table, rng)
+        if not occludes_markers(plan.layout.objects, table, cam):
+            break
     moves = resolve_moves(plan)
     frames, steps = animate(plan, moves, rng)
     cams = shaky_cameras(cam, len(frames), rng, shake)

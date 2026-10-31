@@ -129,10 +129,16 @@ class SceneObject(BaseModel):
     h: float
     color: str = "#9aa3ad"
     texture: str | None = None
+    hollow: bool = False  # an open box or cup, whatever its role in this task
 
     @property
     def is_container(self) -> bool:
         return self.role == "container"
+
+    @property
+    def is_open(self) -> bool:
+        """Built as an open container (a floor and walls) that stays put in the sim."""
+        return self.role == "container" or self.hollow
 
     def extents(self) -> tuple[float, float]:
         """Half-extents of the axis-aligned footprint at this yaw (cylinders ignore yaw)."""
@@ -211,3 +217,174 @@ class SimResult(BaseModel):
     twin_trajectory: str | None = None
     duration_s: float = 0.0  # simulated seconds
     wall_s: float = 0.0
+
+
+# ---------- understanding (Listen, Watch) ----------
+class Segment(BaseModel):
+    t0: float
+    t1: float
+    text: str
+
+
+class Transcript(BaseModel):
+    text: str
+    language: str = "unknown"  # English | Hindi | Bengali | ...
+    languages: list[str] = Field(default_factory=list)
+    segments: list[Segment] = Field(default_factory=list)
+    source: Literal["narration", "correction", "none"] = "narration"
+
+
+class SpecObject(BaseModel):
+    name: str  # a short noun phrase SAM can segment, unique in the clip
+    kind: str
+    alt_names: list[str] = Field(default_factory=list)
+    role: Role
+    color: str = ""
+    est_height_cm: float = 3.0
+    est_size_cm: tuple[float, float] = (5.0, 5.0)
+
+
+class Step(BaseModel):
+    action: Literal["place_in", "place_next_to", "place_at"]
+    object: str
+    target: str | None = None
+    relation: Literal["left_of", "right_of", "in_front_of", "behind"] | None = None
+    t_start: float
+    t_end: float
+    evidence: str = ""
+
+
+class TaskSpec(BaseModel):
+    summary: str
+    objects: list[SpecObject]
+    steps: list[Step]
+    goal: list[GoalClause]
+    generalization: str
+    uncertainties: list[str] = Field(default_factory=list)
+
+
+# ---------- perception (Perceive, Ground) ----------
+class TrackFrame(BaseModel):
+    t: float
+    bbox_px: tuple[float, float, float, float] | None  # x0, y0, x1, y1 (analysis pixels)
+    centroid_px: Vec2 | None = None
+    poly_px: list[Vec2] | None = None  # mask outline in stabilised display pixels
+    score: float | None = None
+
+
+class Track(BaseModel):
+    name: str
+    phrase: str
+    track_id: str | None = None
+    quality: float
+    frames: list[TrackFrame]
+    flags: list[str] = Field(default_factory=list)
+
+
+class Contact(BaseModel):
+    t: float
+    type: Literal["grasp", "release"]
+    object: str
+
+
+class MotionSegment(BaseModel):
+    object: str
+    t0: float
+    t1: float
+    from_cm: Vec2
+    to_cm: Vec2
+
+
+class StepMatch(BaseModel):
+    step: int
+    segment: int | None
+    confidence: float
+    timing_delta_s: float | None = None
+
+
+class GroundedDemo(BaseModel):
+    initial: list[SceneObject]
+    final: list[SceneObject]
+    segments: list[MotionSegment]
+    contacts: list[Contact]
+    matches: list[StepMatch]
+    real_world: list[ClauseResult] = Field(default_factory=list)
+    flags: list[str] = Field(default_factory=list)
+
+
+# ---------- programs, verification, agents ----------
+class Program(BaseModel):
+    version: int
+    parent_version: int | None = None
+    code: str
+    explanation: str = ""
+    author: Literal["wonder", "wonder-harden", "wonder-correction", "spark-open-draft", "human"]
+    diff_from_parent: str = ""
+    synthesis_trace_id: str | None = None
+    passed_demo: bool = False
+
+
+class JudgeVerdict(BaseModel):
+    same_goal_achieved: bool
+    confidence: float
+    differences: list[str] = Field(default_factory=list)
+    suspected_error: str = ""
+
+
+class CheckResult(BaseModel):
+    ok: bool
+    clauses: list[ClauseResult] = Field(default_factory=list)
+    detail: str = ""
+
+
+class Verification(BaseModel):
+    program_version: int
+    symbolic: CheckResult
+    real_world: CheckResult
+    perceptual: CheckResult
+    judge: JudgeVerdict | None = None
+    agree: bool
+    failure_class: (
+        Literal["spec_mismatch", "program_bug", "perception_gap", "judge_dissent"] | None
+    ) = None
+    renders: dict[str, str] = Field(default_factory=dict)  # real, camera, top (artifact paths)
+
+
+class AgentDecision(BaseModel):
+    agent: Literal["supervisor", "coder", "redteam"]
+    step: int
+    observation: str
+    reasoning_summary: str  # one sentence, never a chain of thought
+    tool: str
+    args: dict[str, object] = Field(default_factory=dict)
+    result: str = ""
+    cost_usd: float = 0.0
+
+
+class StressCase(BaseModel):
+    layout: Layout
+    persona: str
+    rationale: str = ""
+    before: SimResult | None = None
+    after: SimResult | None = None
+
+
+class StressReport(BaseModel):
+    cases: list[StressCase]
+    robustness_before: float
+    robustness_after: float | None = None
+    clusters: list[dict[str, object]] = Field(default_factory=list)
+    program_before: int
+    program_after: int | None = None
+
+
+class SkillCard(BaseModel):
+    skill_id: str
+    title: str
+    description: str
+    image: str | None = None  # card.png from Muse Image, or None (the UI shows the final frame)
+    goal_text: str
+    program_version: int
+    robustness: float | None = None
+    cost_to_learn_usd: float
+    run_id: str

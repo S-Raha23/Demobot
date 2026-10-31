@@ -72,9 +72,10 @@ class EventLog:
 
     def emit(self, type: EventType, stage: str, **fields: Any) -> Event:
         tokens = fields.pop("tokens", None)
+        ts = fields.pop("ts", None) or now_iso()  # a fixed ts only for fixture runs
         with self._lock:
             ev = Event(
-                ts=now_iso(),
+                ts=ts,
                 run_id=self.run_id,
                 seq=self._seq,
                 stage=stage,

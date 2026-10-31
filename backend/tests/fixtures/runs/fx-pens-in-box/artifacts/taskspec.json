@@ -1,0 +1,118 @@
+{
+ "summary": "Put both pens into the white mug.",
+ "objects": [
+  {
+   "name": "white mug",
+   "kind": "mug",
+   "alt_names": [
+    "mug"
+   ],
+   "role": "container",
+   "color": "white",
+   "est_height_cm": 9.5,
+   "est_size_cm": [
+    8.5,
+    8.5
+   ]
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "pen"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.2,
+   "est_size_cm": [
+    14.5,
+    1.2
+   ]
+  },
+  {
+   "name": "teal pen 2",
+   "kind": "pen",
+   "alt_names": [
+    "pen"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.2,
+   "est_size_cm": [
+    14.5,
+    1.2
+   ]
+  },
+  {
+   "name": "steel spoon",
+   "kind": "spoon",
+   "alt_names": [
+    "spoon"
+   ],
+   "role": "distractor",
+   "color": "steel",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    15.5,
+    3.4
+   ]
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "alt_names": [
+    "tennis ball"
+   ],
+   "role": "distractor",
+   "color": "yellow",
+   "est_height_cm": 6.7,
+   "est_size_cm": [
+    6.7,
+    6.7
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_in",
+   "object": "teal pen",
+   "target": "white mug",
+   "relation": null,
+   "t_start": 2.17,
+   "t_end": 5.93,
+   "evidence": "the hand lifts the teal pen and sets it down"
+  },
+  {
+   "action": "place_in",
+   "object": "teal pen 2",
+   "target": "white mug",
+   "relation": null,
+   "t_start": 5.93,
+   "t_end": 10.1,
+   "evidence": "the hand lifts the teal pen 2 and sets it down"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "all",
+   "select": {
+    "name": null,
+    "kind": "pen",
+    "role": null,
+    "names": null
+   },
+   "pred": "inside",
+   "target": {
+    "name": "white mug",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Every pen goes into the container, wherever it starts.",
+ "uncertainties": []
+}

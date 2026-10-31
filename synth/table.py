@@ -2,6 +2,7 @@
 seen by a random phone-like camera. Ground truth is exact (docs/09 "Synthetic demo generator")."""
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -12,6 +13,7 @@ TEX_PX_PER_CM = 12.0
 MARKER_CM = 6.0
 PAPER_MARGIN_CM = 1.0  # the white border of each printed marker
 DESK_BGR = (120, 160, 196)  # light wood
+WOOD = Path(__file__).resolve().parents[1] / "assets" / "textures" / "desk_wood.png"
 
 
 @dataclass
@@ -55,8 +57,20 @@ def draw_texture(
     W = int((extent[2] - extent[0]) * TEX_PX_PER_CM)
     H = int((extent[3] - extent[1]) * TEX_PX_PER_CM)
     tex = np.empty((H, W, 3), np.uint8)
-    tex[:] = DESK_BGR
-    grain = rng.normal(0, 6, (H // 8 + 1, W // 2 + 1)).astype(np.float32)
+    wood = WOOD.exists() and rng.uniform() < 0.7
+    if wood:  # a Muse Image wood swatch, ~40 cm per tile, tiled with mirrored seams
+        sw = cv2.imread(str(WOOD))
+        side = int(40 * TEX_PX_PER_CM)
+        sw = cv2.resize(sw, (side, side), interpolation=cv2.INTER_AREA)
+        if rng.uniform() < 0.5:
+            sw = cv2.rotate(sw, cv2.ROTATE_90_CLOCKWISE)
+        row = np.concatenate([sw, sw[:, ::-1]], axis=1)
+        tile = np.concatenate([row, row[::-1]], axis=0)
+        reps = (H // tile.shape[0] + 1, W // tile.shape[1] + 1, 1)
+        tex[:] = np.tile(tile, reps)[:H, :W]
+    else:
+        tex[:] = DESK_BGR
+    grain = rng.normal(0, 6 if not wood else 2, (H // 8 + 1, W // 2 + 1)).astype(np.float32)
     grain = cv2.resize(grain, (W, H), interpolation=cv2.INTER_LINEAR)
     tex = np.clip(tex.astype(np.float32) + grain[..., None], 0, 255).astype(np.uint8)
     dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
