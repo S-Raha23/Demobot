@@ -31,6 +31,7 @@ from demobot.sim.scene import build_scene
 
 SIM_VERSION = "sim3"  # place_at honours yaw
 CPU_LIMIT_S = 20
+TEST_CPU_LIMIT_S = 60  # forge tests push/turn with repeated IK moves; 20 s starved them (every push test timed out)
 MEMORY_LIMIT_BYTES = 2 * 1024**3  # PyBullet + NumPy need more address space than 1 GB
 WALL_TIMEOUT_S = 90
 MAX_LOOP_TICKS = 20_000
@@ -399,7 +400,8 @@ def execute_test(skill: str, skill_code: str, tests_code: str, test: str, layout
 async def run_test(skill: str, skill_code: str, tests_code: str, test: str, layout: Layout,
                    out_dir: Path | None = None, workers: int = 4) -> dict[str, Any]:  # fmt: skip
     payload = json.dumps({"kind": "test", "skill": skill, "skill_code": skill_code, "tests_code": tests_code, "test": test,
-                          "layout": layout.model_dump(mode="json"), "out_dir": str(out_dir) if out_dir else None})  # fmt: skip
+                          "layout": layout.model_dump(mode="json"), "out_dir": str(out_dir) if out_dir else None,
+                          "cpu_limit_s": TEST_CPU_LIMIT_S})  # fmt: skip
     fut = asyncio.get_running_loop().run_in_executor(pool(workers), _worker_run, payload)
     try:
         return dict(json.loads(await asyncio.wait_for(fut, WALL_TIMEOUT_S)))

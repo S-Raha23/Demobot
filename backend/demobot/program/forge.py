@@ -201,7 +201,7 @@ async def run_tests(
                 if art is not None and i < keep and j == 0
                 else None
             )
-            jobs.append((lay, t, sandbox.run_test(name, code, tests, t, lay, out)))
+            jobs.append((lay, t, sandbox.run_test(name, code, tests, t, lay, out, workers=2)))
     results = await asyncio.gather(*(j[2] for j in jobs))
     per: dict[str, list[dict[str, Any]]] = {}
     for (lay, t, _), r in zip(jobs, results, strict=True):
