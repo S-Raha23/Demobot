@@ -161,3 +161,24 @@ def test_objects_put_in_a_container_end_inside_it() -> None:
     out = {o.name: o for o in ground._settle_into_containers(spec, [mug, near])}
     assert (out["pen"].x, out["pen"].y) == (41.0, 31.0)
     _ = np
+
+
+def _box_track(name: str, x: float, quality: float = 1.0) -> Track:
+    frames = [TrackFrame(t=k / 10, bbox_px=(x, 100.0, x + 40, 120.0), centroid_px=(x + 20, 110.0))
+              for k in range(10)]  # fmt: skip
+    return Track(name=name, phrase=name, quality=quality, frames=frames)
+
+
+def test_dedupe_moves_a_duplicate_to_another_sam_instance(tmp_path: Path) -> None:
+    from demobot.events import EventLog, RunContext
+
+    ctx = RunContext("r", "dev", EventLog(tmp_path / "events.jsonl", "r"), "perceive")
+    # both phrases matched the pen at x=100; SAM also returned the other pen (x=300) for the second
+    tracks = [_box_track("smooth teal pen", 100), _box_track("ridged teal pen", 100, 0.9)]
+    perceive._dedupe(ctx, tracks, {"ridged teal pen": [_box_track("ridged teal pen", 300, 0.8)]})
+    assert [t.frames[0].centroid_px for t in tracks] == [(120.0, 110.0), (320.0, 110.0)]
+    assert all("not_found" not in t.flags for t in tracks)
+    # with no spare instance the weaker one is still left out
+    tracks = [_box_track("smooth teal pen", 100), _box_track("ridged teal pen", 100, 0.9)]
+    perceive._dedupe(ctx, tracks, {})
+    assert "not_found" in tracks[1].flags and "duplicate_of:smooth teal pen" in tracks[1].flags

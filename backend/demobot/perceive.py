@@ -220,9 +220,11 @@ async def perceive(
     alts = {o.name: o.alt_names for o in spec.objects}
     specs = {o.name: o for o in spec.objects}
     tracks: list[Track] = []
+    spares: dict[str, list[Track]] = {}  # other SAM instances of the same phrase, for _dedupe
     for phrase, names in groups.items():
         tried = [phrase]
         per = split_tracks(await sam_video(ctx, clip, clip_sha, phrase), n)
+        pool = per
 
         def good(
             tracks_: dict[str, dict[int, Instance]], k: int = len(names)
@@ -252,9 +254,10 @@ async def perceive(
                         "message": f"SAM found {len(best)}/{len(names)} for '{phrase}'; retrying as '{alt}'"
                     },
                 )
-                cand = good(split_tracks(await sam_video(ctx, clip, clip_sha, alt), n))
+                found = split_tracks(await sam_video(ctx, clip, clip_sha, alt), n)
+                cand = good(found)
                 if len(cand) > len(best):
-                    best, phrase = cand, alt
+                    best, phrase, pool = cand, alt, found
                 if len(best) >= len(names):
                     break
         if not best:  # keep the weak tracks rather than nothing, flagged
@@ -265,13 +268,20 @@ async def perceive(
         for name, (oid, inst) in zip(ordered, best, strict=False):
             f = list(flags) + (["low_quality"] if quality(inst, n) < MIN_QUALITY else [])
             tracks.append(to_track(name, phrase, oid, inst, n, fps, stab, f))
+        used = {oid for oid, _ in best}
+        rest = [kv for kv in sorted(pool.items(), key=lambda kv: -quality(kv[1], n))
+                if kv[0] not in used and quality(kv[1], n) >= MIN_QUALITY][:3]  # fmt: skip
+        for name in ordered:
+            spares[name] = [
+                to_track(name, phrase, oid, inst, n, fps, stab, list(flags)) for oid, inst in rest
+            ]
         for name in ordered[len(best) :]:
             tracks.append(Track(name=name, phrase=phrase, quality=0.0, flags=["not_found", *flags],
                                 frames=[TrackFrame(t=round(k / fps, 2), bbox_px=None) for k in range(n)]))  # fmt: skip
             ctx.emit(
                 "log", payload={"message": f"SAM did not find {name} (tried {', '.join(tried)})"}
             )
-    _dedupe(ctx, tracks)
+    _dedupe(ctx, tracks, spares)
     # the hand: every instance per frame, merged into one box
     hand = split_tracks(await sam_video(ctx, clip, clip_sha, HAND), n)
     merged: dict[int, Instance] = {}
@@ -340,23 +350,48 @@ def _box_iou(a: tuple[float, ...], b: tuple[float, ...]) -> float:
     return inter / union if union > 0 else 0.0
 
 
-def _dedupe(ctx: RunContext, tracks: list[Track]) -> None:
-    """Two objects must not share one SAM instance: when two tracks overlap heavily in most
-    shared frames, keep the better one and mark the other not found (visible in the log)."""
-    for i, a in enumerate(tracks):
-        for b in tracks[i + 1 :]:
-            if "not_found" in a.flags or "not_found" in b.flags:
+def _overlap(a: Track, b: Track) -> bool:
+    """True when two tracks follow the same SAM instance (heavy box overlap in most shared frames)."""
+    if "not_found" in a.flags or "not_found" in b.flags:
+        return False
+    ious = [_box_iou(fa.bbox_px, fb.bbox_px) for fa, fb in zip(a.frames, b.frames, strict=False)
+            if fa.bbox_px is not None and fb.bbox_px is not None]  # fmt: skip
+    return len(ious) >= 5 and float(np.median(ious)) > 0.6
+
+
+def _dedupe(
+    ctx: RunContext, tracks: list[Track], spares: dict[str, list[Track]] | None = None
+) -> None:
+    """Two objects must not share one SAM instance. When two tracks overlap, move one of them to
+    another instance SAM returned for its phrase that no other track uses (two teal pens: each
+    phrase finds both). Only when there is none, keep the better track and mark the other not
+    found (visible in the log)."""
+    spares = spares or {}
+    for i in range(len(tracks)):
+        for j in range(i + 1, len(tracks)):
+            a, b = tracks[i], tracks[j]
+            if not _overlap(a, b):
                 continue
-            ious = [_box_iou(fa.bbox_px, fb.bbox_px) for fa, fb in zip(a.frames, b.frames, strict=False)
-                    if fa.bbox_px is not None and fb.bbox_px is not None]  # fmt: skip
-            if len(ious) >= 5 and float(np.median(ious)) > 0.6:
-                loser = b if a.quality >= b.quality else a
-                winner = a if loser is b else b
-                loser.flags.append("not_found")
-                loser.flags.append(f"duplicate_of:{winner.name}")
-                loser.quality = 0.0
-                for f in loser.frames:
-                    f.bbox_px = f.centroid_px = f.area_px = None
-                    f.poly_px = None
-                ctx.emit("log", payload={"message": f"SAM's '{loser.phrase}' found the same thing as "
-                                                    f"'{winner.phrase}'; {loser.name} is left out"})  # fmt: skip
+            moved = False
+            for k in (j, i) if a.quality >= b.quality else (i, j):  # move the weaker one first
+                others = [t for m, t in enumerate(tracks) if m != k]
+                alt = next((s for s in spares.get(tracks[k].name, [])
+                            if not any(_overlap(s, t) for t in others)), None)  # fmt: skip
+                if alt is not None:
+                    ctx.emit("log", payload={"message": f"{tracks[k].name} and {tracks[i + j - k].name} matched "
+                                                        f"the same SAM instance; {tracks[k].name} moved to another"})  # fmt: skip
+                    tracks[k] = alt
+                    moved = True
+                    break
+            if moved:
+                continue
+            loser = b if a.quality >= b.quality else a
+            winner = a if loser is b else b
+            loser.flags.append("not_found")
+            loser.flags.append(f"duplicate_of:{winner.name}")
+            loser.quality = 0.0
+            for f in loser.frames:
+                f.bbox_px = f.centroid_px = f.area_px = None
+                f.poly_px = None
+            ctx.emit("log", payload={"message": f"SAM's '{loser.phrase}' found the same thing as "
+                                                f"'{winner.phrase}'; {loser.name} is left out"})  # fmt: skip
