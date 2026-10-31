@@ -532,7 +532,7 @@ async def stage_card(run: Run) -> str:
     (run.art / "costs.json").write_text(json.dumps(costs, indent=1))
     run.artifact("card", run.art / "card.png", "image", "Skill card")
     run.artifact("card", run.art / "card.json", "json", "Skill card")
-    run.update_meta(status="done", cost_usd=costs["total_usd"])
+    run.update_meta(status="done", cost_usd=costs["total_usd"], title=c.title)
     return f"skill '{c.title}' saved: ${costs['total_usd']:.2f} to learn"
 
 

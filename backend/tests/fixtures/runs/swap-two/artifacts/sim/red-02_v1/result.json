@@ -1,0 +1,147 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-02",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white cylinder"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 28.6,
+    "y": 20.2
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.283
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "gray block"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.575
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 7.0,
+    "y": 6.6
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.387
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "white cylinder"
+   },
+   "ok": true,
+   "error": null,
+   "t": 12.683
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 29.0,
+    "y": 34.9
+   },
+   "ok": true,
+   "error": null,
+   "t": 15.454
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 18.775
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "white cylinder",
+   "kind": "cylinder",
+   "role": "moved",
+   "shape": "box",
+   "x": 29.0,
+   "y": 34.9,
+   "z": 2.0,
+   "yaw": -0.4,
+   "w": 9.4,
+   "d": 4.5,
+   "h": 4.0,
+   "color": "#b6a38c",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-09_swap/artifacts/crops/white_cylinder.png",
+   "hollow": false
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "role": "moved",
+   "shape": "box",
+   "x": 6.99,
+   "y": 6.61,
+   "z": 0.75,
+   "yaw": -0.4,
+   "w": 15.7,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#7a7976",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-09_swap/artifacts/crops/gray_block.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "white cylinder",
+      "gray block"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "white cylinder",
+    "gray block"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 0.0,
+    "b_to_a_start_cm": 0.01
+   },
+   "detail": "white cylinder is 0.0 cm and gray block 0.0 cm from each other's start"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-02_v1/top_red-02.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-02_v1/twin_red-02.json",
+ "duration_s": 20.27,
+ "wall_s": 0.7
+}

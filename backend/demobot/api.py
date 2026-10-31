@@ -72,7 +72,8 @@ def list_runs() -> list[dict[str, Any]]:
             if meta and d.name not in seen:
                 card = _read_json(d / "artifacts" / "card.json")
                 seen[d.name] = {**meta, "baked": root == BAKED, "card": card}
-    return sorted(seen.values(), key=lambda r: r.get("created_at", ""), reverse=True)
+    ordered = sorted(seen.values(), key=lambda r: r.get("created_at", ""), reverse=True)
+    return sorted(ordered, key=lambda r: bool(r.get("fixture")))  # real runs before fixture runs
 
 
 @app.get("/api/runs/{run_id}")

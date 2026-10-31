@@ -1,0 +1,103 @@
+{
+ "summary": "The person swapped the positions of the white cylinder and the gray block while leaving the teal pen in place.",
+ "objects": [
+  {
+   "name": "white cylinder",
+   "kind": "cylinder",
+   "alt_names": [
+    "white tube",
+    "small white cylinder"
+   ],
+   "role": "moved",
+   "color": "white",
+   "est_height_cm": 4.0,
+   "est_size_cm": [
+    2.5,
+    2.5
+   ]
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "alt_names": [
+    "gray bar",
+    "gray rectangular block"
+   ],
+   "role": "moved",
+   "color": "gray",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    10.0,
+    3.0
+   ]
+  },
+  {
+   "name": "teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "teal stick",
+    "green pen"
+   ],
+   "role": "distractor",
+   "color": "teal",
+   "est_height_cm": 1.0,
+   "est_size_cm": [
+    10.0,
+    1.0
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_at",
+   "object": "white cylinder",
+   "target": null,
+   "relation": null,
+   "t_start": 2.3,
+   "t_end": 5.0,
+   "evidence": "hand picks white cylinder from left and sets it down in a temporary spot behind the center"
+  },
+  {
+   "action": "place_at",
+   "object": "gray block",
+   "target": null,
+   "relation": null,
+   "t_start": 6.1,
+   "t_end": 10.3,
+   "evidence": "hand picks gray block from center and sets it down on the left where the white cylinder started"
+  },
+  {
+   "action": "place_at",
+   "object": "white cylinder",
+   "target": null,
+   "relation": null,
+   "t_start": 10.6,
+   "t_end": 13.8,
+   "evidence": "hand picks white cylinder from temporary spot and sets it down in the center where the gray block started"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "pair",
+   "select": {
+    "name": null,
+    "kind": null,
+    "role": null,
+    "names": [
+     "white cylinder",
+     "gray block"
+    ]
+   },
+   "pred": "swapped",
+   "target": null,
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Swap the positions of the white cylinder and the gray block via a temporary free spot, wherever they start, leaving other objects alone.",
+ "uncertainties": [
+  "Exact t_start and t_end times are estimated from the keyframes and motion.",
+  "Object heights and footprints are approximate from the synthetic top-down view."
+ ]
+}

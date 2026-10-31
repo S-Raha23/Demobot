@@ -1,0 +1,139 @@
+{
+ "submitted": true,
+ "turns": 3,
+ "winner": "spark-open-draft",
+ "drafts": [
+  {
+   "code": "def run(scene, robot):\n    for pen in scene.of_kind(\"pen\"):\n        cup = scene.get(\"white cup\")\n        cur = scene.get(pen.name)\n        if scene.is_inside(cur, cup):\n            continue\n        robot.pick(cur)\n        robot.place_in(scene.get(cup.name))",
+   "explanation": "Pick every pen not already inside the white cup and place it inside the cup.",
+   "i": 0,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  },
+  {
+   "code": "def run(scene, robot):\n    cup = scene.get(\"white cup\")\n    for pen in scene.of_kind(\"pen\"):\n        if scene.is_inside(pen, cup):\n            continue\n        robot.pick(pen)\n        robot.place_in(cup)\n",
+   "explanation": "Moves every pen into the white cup using pick and place_in, skipping any already inside.",
+   "i": 1,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  }
+ ],
+ "trace": [
+  {
+   "turn": 1,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 2,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 3,
+   "calls": [
+    "submit"
+   ]
+  }
+ ],
+ "results": {
+  "v1:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "all pen inside white cup",
+     "holds": true,
+     "detail": "every pen inside white cup"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=left teal pen)",
+    "place_in(container=white cup)",
+    "pick(object=right teal pen)",
+    "place_in(container=white cup)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "left teal pen",
+     "x": 42.57,
+     "y": 35.24,
+     "z": 6.3
+    },
+    {
+     "name": "right teal pen",
+     "x": 43.5,
+     "y": 31.79,
+     "z": 5.65
+    },
+    {
+     "name": "white cup",
+     "x": 43.46,
+     "y": 31.9,
+     "z": 4.05
+    },
+    {
+     "name": "yellow tennis ball",
+     "x": 24.47,
+     "y": 12.65,
+     "z": 3.3
+    }
+   ],
+   "logs": []
+  },
+  "v2:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "all pen inside white cup",
+     "holds": true,
+     "detail": "every pen inside white cup"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=left teal pen)",
+    "place_in(container=white cup)",
+    "pick(object=right teal pen)",
+    "place_in(container=white cup)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "left teal pen",
+     "x": 42.57,
+     "y": 35.24,
+     "z": 6.3
+    },
+    {
+     "name": "right teal pen",
+     "x": 43.5,
+     "y": 31.79,
+     "z": 5.65
+    },
+    {
+     "name": "white cup",
+     "x": 43.46,
+     "y": 31.9,
+     "z": 4.05
+    },
+    {
+     "name": "yellow tennis ball",
+     "x": 24.47,
+     "y": 12.65,
+     "z": 3.3
+    }
+   ],
+   "logs": []
+  }
+ }
+}

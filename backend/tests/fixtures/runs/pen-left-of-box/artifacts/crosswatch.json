@@ -1,0 +1,103 @@
+{
+ "primary": "Muse Spark 1.3 (video)",
+ "spec": {
+  "summary": "The person moved the teal pen from behind the white box to the left side of the white box.",
+  "objects": [
+   {
+    "name": "white box",
+    "kind": "box",
+    "alt_names": [
+     "white cube",
+     "white block"
+    ],
+    "role": "reference",
+    "color": "white",
+    "est_height_cm": 6.0,
+    "est_size_cm": [
+     8.0,
+     8.0
+    ]
+   },
+   {
+    "name": "rear teal pen",
+    "kind": "pen",
+    "alt_names": [
+     "back teal pen",
+     "teal pen behind white box"
+    ],
+    "role": "moved",
+    "color": "teal",
+    "est_height_cm": 1.2,
+    "est_size_cm": [
+     7.0,
+     1.0
+    ]
+   },
+   {
+    "name": "front teal pen",
+    "kind": "pen",
+    "alt_names": [
+     "lower teal pen",
+     "teal pen near front"
+    ],
+    "role": "distractor",
+    "color": "teal",
+    "est_height_cm": 1.2,
+    "est_size_cm": [
+     7.0,
+     1.0
+    ]
+   }
+  ],
+  "steps": [
+   {
+    "action": "place_next_to",
+    "object": "rear teal pen",
+    "target": "white box",
+    "relation": "left_of",
+    "t_start": 2.1,
+    "t_end": 6.0,
+    "evidence": "hand grasps pen behind box and repositions it to left of box"
+   }
+  ],
+  "goal": [
+   {
+    "quant": "the",
+    "select": {
+     "name": "rear teal pen\n\nEvidence: the teal pen behind the box is grasped and moved; the other teal pen starts in the front-right and does not move.",
+     "kind": "pen",
+     "role": "moved",
+     "names": [
+      "rear teal pen",
+      "front teal pen"
+     ]
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": "box",
+     "role": "reference",
+     "names": [
+      "white box"
+     ]
+    },
+    "point_cm": [
+     -5.0,
+     -5.0
+    ],
+    "order_by": "x",
+    "order": null
+   }
+  ],
+  "generalization": "The teal pen that starts behind the white box should be placed to the left of the white box, regardless of exact starting positions.",
+  "uncertainties": [
+   "Exact final distance to the left of the white box is approximate due to handheld camera motion.",
+   "No narration to confirm whether only one pen or all pens should be moved, inferred from observed single move."
+  ]
+ },
+ "agreement": 1.0,
+ "agree": true,
+ "differences": [
+  "named differently (A / B): back teal pen / rear teal pen"
+ ]
+}

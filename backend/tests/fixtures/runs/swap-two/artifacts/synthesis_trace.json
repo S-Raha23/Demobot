@@ -1,0 +1,76 @@
+{
+ "submitted": true,
+ "turns": 2,
+ "winner": "wonder",
+ "drafts": [
+  {
+   "code": "def run(scene, robot):\n    a = scene.get(\"white cylinder\")\n    b = scene.get(\"gray block\")\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    size = max(a.w, a.d, b.w, b.d) + 2\n    tx, ty = scene.free_spot(size=(size, size), clearance=3, avoid=[(ax, ay, a.w+4, a.d+4), (bx, by, b.w+4, b.d+4)])\n    robot.move(a, tx, ty)\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)",
+   "explanation": "Swaps the white cylinder and gray block by moving one to a temporary free spot then exchanging their original positions, leaving the teal pen untouched.",
+   "i": 0,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  },
+  {
+   "code": "def run(scene, robot):\n    a = scene.get(\"white cylinder\")\n    b = scene.get(\"gray block\")\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    side = max(a.w, a.d, b.w, b.d) + 2\n    robot.move(a, *scene.free_spot(size=(side, side), clearance=3))\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)\n",
+   "explanation": "Swaps white cylinder and gray block by moving one to a temporary free spot then exchanging their original positions, leaving other objects untouched.",
+   "i": 1,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  }
+ ],
+ "trace": [
+  {
+   "turn": 1,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 2,
+   "calls": [
+    "submit"
+   ]
+  }
+ ],
+ "results": {
+  "v1:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "pair white cylinder, gray block swapped",
+     "holds": true,
+     "detail": "white cylinder is 0.0 cm and gray block 0.0 cm from each other's start"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=gray block)",
+    "place_at(x=28.7, y=15.9)",
+    "pick(object=white cylinder)",
+    "place_at(x=22.8, y=23.3)",
+    "pick(object=gray block)",
+    "place_at(x=7.8, y=26.5)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "white cylinder",
+     "x": 22.83,
+     "y": 23.34,
+     "z": 2.0
+    },
+    {
+     "name": "gray block",
+     "x": 7.78,
+     "y": 26.49,
+     "z": 0.75
+    }
+   ],
+   "logs": []
+  }
+ }
+}

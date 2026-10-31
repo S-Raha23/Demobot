@@ -1,0 +1,258 @@
+{
+ "initial": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 6.73,
+   "y": 20.64,
+   "z": 0.0,
+   "yaw": 89.6,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#218796",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 35.14,
+   "y": 24.41,
+   "z": 0.0,
+   "yaw": 0.2,
+   "w": 10.4,
+   "d": 2.3,
+   "h": 1.0,
+   "color": "#005663",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white cup",
+   "kind": "cup",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 43.46,
+   "y": 31.9,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 9.9,
+   "d": 9.9,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 24.47,
+   "y": 12.65,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#9f9247",
+   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 43.36,
+   "y": 32.33,
+   "z": 0.0,
+   "yaw": 89.6,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#218796",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 43.36,
+   "y": 32.33,
+   "z": 0.0,
+   "yaw": 0.2,
+   "w": 10.4,
+   "d": 2.3,
+   "h": 1.0,
+   "color": "#005663",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white cup",
+   "kind": "cup",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 43.36,
+   "y": 32.33,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 9.9,
+   "d": 9.9,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 24.43,
+   "y": 12.66,
+   "z": 0.0,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#9f9247",
+   "texture": "artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "left teal pen",
+   "t0": 6.8,
+   "t1": 9.1,
+   "from_cm": [
+    6.73,
+    20.62
+   ],
+   "to_cm": [
+    46.6,
+    30.0
+   ]
+  },
+  {
+   "object": "left teal pen",
+   "t0": 9.2,
+   "t1": 9.4,
+   "from_cm": [
+    47.4,
+    25.69
+   ],
+   "to_cm": [
+    46.4,
+    30.62
+   ]
+  },
+  {
+   "object": "right teal pen",
+   "t0": 3.5,
+   "t1": 6.5,
+   "from_cm": [
+    35.07,
+    24.46
+   ],
+   "to_cm": [
+    45.29,
+    25.25
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 2.8,
+   "type": "grasp",
+   "object": "right teal pen"
+  },
+  {
+   "t": 6.1,
+   "type": "release",
+   "object": "right teal pen"
+  },
+  {
+   "t": 6.5,
+   "type": "grasp",
+   "object": "left teal pen"
+  },
+  {
+   "t": 8.5,
+   "type": "grasp",
+   "object": "left teal pen"
+  },
+  {
+   "t": 10.1,
+   "type": "release",
+   "object": "left teal pen"
+  },
+  {
+   "t": 10.1,
+   "type": "release",
+   "object": "left teal pen"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 2,
+   "confidence": 0.425,
+   "timing_delta_s": 1.0
+  },
+  {
+   "step": 1,
+   "segment": 0,
+   "confidence": 0.415,
+   "timing_delta_s": 0.8
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white cup",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "left teal pen",
+    "right teal pen"
+   ],
+   "measured": {
+    "left teal pen.margin_cm": 3.95,
+    "right teal pen.margin_cm": 3.95
+   },
+   "detail": "every pen inside white cup"
+  }
+ ],
+ "flags": [
+  "gray block: not tracked"
+ ]
+}

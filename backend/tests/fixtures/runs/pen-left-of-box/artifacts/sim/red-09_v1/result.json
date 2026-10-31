@@ -1,0 +1,149 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-09",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "front teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_at",
+   "args": {
+    "x": 23.1,
+    "y": 29.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.3
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "back teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.6
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white box",
+    "side": "left_of",
+    "gap": 2.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.4
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 12.679
+  }
+ ],
+ "logs": [
+  "placing pen left of box"
+ ],
+ "final_state": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 45.0,
+   "y": 15.0,
+   "z": 3.05,
+   "yaw": -0.0,
+   "w": 19.0,
+   "d": 13.8,
+   "h": 6.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 25.8,
+   "y": 15.0,
+   "z": 0.75,
+   "yaw": -0.1,
+   "w": 15.4,
+   "d": 4.3,
+   "h": 1.5,
+   "color": "#7b9492",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-01_next_to/artifacts/crops/back_teal_pen.png",
+   "hollow": false
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 23.09,
+   "y": 28.99,
+   "z": 0.75,
+   "yaw": 89.8,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.5,
+   "color": "#045663",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "back teal pen",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "back teal pen"
+   ],
+   "measured": {
+    "gap_cm": 2.0,
+    "lateral_cm": 0.0,
+    "lateral_limit_cm": 9.9
+   },
+   "detail": "back teal pen left of white box"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-09_v1/top_red-09.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-09_v1/twin_red-09.json",
+ "duration_s": 14.18,
+ "wall_s": 0.62
+}

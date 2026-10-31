@@ -1,0 +1,22 @@
+[
+ {
+  "version": 1,
+  "parent_version": null,
+  "code": "def run(scene, robot):\n    items = scene.with_role(\"moved\")\n    a = items[0]\n    b = items[1]\n    if a.w * a.d > b.w * b.d:\n        a, b = b, a\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    tx, ty = scene.free_spot(size=(a.w, a.d), clearance=3)\n    robot.move(a, tx, ty)\n    robot.move(scene.get(b.name), ax, ay)\n    robot.move(scene.get(a.name), bx, by)\n",
+  "explanation": "Swap the two moved objects by parking the smaller-footprint one in a free spot, moving the other to its start, then moving the first to the other's start.",
+  "author": "wonder",
+  "diff_from_parent": "--- v0.py\n+++ v1.py\n@@ -0,0 +1,12 @@\n+def run(scene, robot):\n+    items = scene.with_role(\"moved\")\n+    a = items[0]\n+    b = items[1]\n+    if a.w * a.d > b.w * b.d:\n+        a, b = b, a\n+    ax, ay = a.x, a.y\n+    bx, by = b.x, b.y\n+    tx, ty = scene.free_spot(size=(a.w, a.d), clearance=3)\n+    robot.move(a, tx, ty)\n+    robot.move(scene.get(b.name), ax, ay)\n+    robot.move(scene.get(a.name), bx, by)\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ },
+ {
+  "version": 2,
+  "parent_version": 1,
+  "code": "def clear(scene, robot, x, y, w, d, skip, avoid):\n    for o in scene.objects():\n        if o.name in skip:\n            continue\n        if abs(o.x - x) < (o.w + w) / 2 + 2 and abs(o.y - y) < (o.d + d) / 2 + 2:\n            robot.move(o, *scene.free_spot(size=(o.w, o.d), clearance=3, avoid=avoid))\n\ndef run(scene, robot):\n    a = scene.get(\"white cylinder\")\n    b = scene.get(\"gray block\")\n    ax, ay = a.x, a.y\n    bx, by = b.x, b.y\n    avoid = [(ax, ay, b.w + 4, b.d + 4), (bx, by, a.w + 4, a.d + 4)]\n    tx, ty = scene.free_spot(size=(a.w, a.d), clearance=3)\n    robot.move(scene.get(a.name), tx, ty)\n    b_fresh = scene.get(b.name)\n    clear(scene, robot, ax, ay, b_fresh.w, b_fresh.d, [a.name, b.name], avoid)\n    robot.move(scene.get(b.name), ax, ay)\n    a_fresh = scene.get(a.name)\n    clear(scene, robot, bx, by, a_fresh.w, a_fresh.d, [a.name, b.name], avoid)\n    robot.move(scene.get(a.name), bx, by)\n",
+  "explanation": "Selects the white cylinder and gray block by exact name (rejecting the twin), moves the cylinder to a free temporary spot, clears any blockers from the two start positions, then swaps their positions.",
+  "author": "wonder-harden",
+  "diff_from_parent": "--- v1.py\n+++ v2.py\n@@ -1,12 +1,21 @@\n+def clear(scene, robot, x, y, w, d, skip, avoid):\n+    for o in scene.objects():\n+        if o.name in skip:\n+            continue\n+        if abs(o.x - x) < (o.w + w) / 2 + 2 and abs(o.y - y) < (o.d + d) / 2 + 2:\n+            robot.move(o, *scene.free_spot(size=(o.w, o.d), clearance=3, avoid=avoid))\n+\n def run(scene, robot):\n-    items = scene.with_role(\"moved\")\n-    a = items[0]\n-    b = items[1]\n-    if a.w * a.d > b.w * b.d:\n-        a, b = b, a\n+    a = scene.get(\"white cylinder\")\n+    b = scene.get(\"gray block\")\n     ax, ay = a.x, a.y\n     bx, by = b.x, b.y\n+    avoid = [(ax, ay, b.w + 4, b.d + 4), (bx, by, a.w + 4, a.d + 4)]\n     tx, ty = scene.free_spot(size=(a.w, a.d), clearance=3)\n-    robot.move(a, tx, ty)\n+    robot.move(scene.get(a.name), tx, ty)\n+    b_fresh = scene.get(b.name)\n+    clear(scene, robot, ax, ay, b_fresh.w, b_fresh.d, [a.name, b.name], avoid)\n     robot.move(scene.get(b.name), ax, ay)\n+    a_fresh = scene.get(a.name)\n+    clear(scene, robot, bx, by, a_fresh.w, a_fresh.d, [a.name, b.name], avoid)\n     robot.move(scene.get(a.name), bx, by)\n",
+  "synthesis_trace_id": null,
+  "passed_demo": true
+ }
+]

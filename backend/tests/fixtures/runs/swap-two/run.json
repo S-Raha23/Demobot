@@ -1,0 +1,18 @@
+{
+ "run_id": "swap-two",
+ "title": "Swap the white cylinder and the gray block",
+ "created_at": "2026-10-31T01:37:26Z",
+ "source": "clip.mp4",
+ "mode": "dev",
+ "status": "done",
+ "fixture": false,
+ "program_version": 2,
+ "error": {
+  "code": "VERIFY_FAILED",
+  "message": "perception_gap: symbolic \u2713 real-world \u2713 perceptual \u2717 judge \u2713",
+  "stage": "verify"
+ },
+ "cost_usd": 0.8823,
+ "baked_from": "syn7-09_swap",
+ "note": "real model calls; the input clip is synthetic"
+}

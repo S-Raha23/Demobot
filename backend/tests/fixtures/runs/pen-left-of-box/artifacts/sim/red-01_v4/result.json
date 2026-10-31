@@ -1,0 +1,130 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-01",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "back teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_next_to",
+   "args": {
+    "ref": "white box",
+    "side": "left_of",
+    "gap": 2.0
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.496
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 6.783
+  }
+ ],
+ "logs": [
+  "moving back teal pen left of white box"
+ ],
+ "final_state": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "role": "reference",
+   "shape": "box",
+   "x": 30.0,
+   "y": 20.0,
+   "z": 3.05,
+   "yaw": 90.0,
+   "w": 19.0,
+   "d": 13.8,
+   "h": 6.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 13.57,
+   "y": 22.1,
+   "z": 0.75,
+   "yaw": -0.1,
+   "w": 15.4,
+   "d": 4.3,
+   "h": 1.5,
+   "color": "#7b9492",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-01_next_to/artifacts/crops/back_teal_pen.png",
+   "hollow": false
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "role": "distractor",
+   "shape": "box",
+   "x": 40.49,
+   "y": 20.0,
+   "z": 0.75,
+   "yaw": 89.9,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.5,
+   "color": "#045663",
+   "texture": null,
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "the",
+    "select": {
+     "name": "back teal pen",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "pred": "left_of",
+    "target": {
+     "name": "white box",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "back teal pen"
+   ],
+   "measured": {
+    "gap_cm": 1.83,
+    "lateral_cm": 2.1,
+    "lateral_limit_cm": 12.5
+   },
+   "detail": "back teal pen left of white box"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-01_v4/top_red-01.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-01_v4/twin_red-01.json",
+ "duration_s": 8.28,
+ "wall_s": 0.44
+}

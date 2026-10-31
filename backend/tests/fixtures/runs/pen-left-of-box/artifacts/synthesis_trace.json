@@ -1,0 +1,80 @@
+{
+ "submitted": true,
+ "turns": 2,
+ "winner": "wonder",
+ "drafts": [
+  {
+   "code": "def run(scene, robot):\n    box = scene.get(\"white box\")\n    pens = scene.of_kind(\"pen\")\n    cands = [p for p in pens if p.y < box.y]\n    if cands:\n        pen = min(cands, key=lambda p: abs(p.x - box.x))\n    else:\n        pen = min(pens, key=lambda p: p.y)\n    gap = 2.0\n    tx = box.x - box.w/2 - gap - pen.w/2\n    ty = box.y\n    skip = {box.name, pen.name}\n    for o in scene.objects():\n        if o.name in skip:\n            continue\n        if abs(o.x - tx) < (o.w + pen.w)/2 + 4 and abs(o.y - ty) < (o.d + pen.d)/2 + 4:\n            robot.move(o, *scene.free_spot(size=(o.w, o.d), clearance=3, avoid=[(tx, ty, pen.w+4, pen.d+4)]))\n            box = scene.get(box.name)\n            pen = scene.get(pen.name)\n            tx = box.x - box.w/2 - gap - pen.w/2\n            ty = box.y\n    robot.pick(scene.get(pen.name))\n    robot.place_next_to(scene.get(box.name), \"left_of\", gap=gap)\n",
+   "explanation": "Find the pen whose y is behind the white box (smallest y / closest x among those with y < box.y) and place it to the left of the box after clearing any blockers at the target spot.",
+   "i": 0,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  },
+  {
+   "code": "import math\ndef run(scene, robot):\n    refs = scene.with_role(\"reference\")\n    if refs:\n        box = refs[0]\n    else:\n        boxes = scene.of_kind(\"box\")\n        box = boxes[0] if boxes else scene.get(\"white box\")\n    pens = scene.of_kind(\"pen\")\n    cands = [p for p in pens if p.y < box.y]\n    if cands:\n        pen = min(cands, key=lambda o: abs(o.x - box.x))\n    else:\n        pen = min(pens, key=lambda o: o.y)\n    gap = 2.5\n    tx = box.x - box.w/2 - gap - pen.w/2\n    ty = box.y\n    for o in scene.objects():\n        if o.name == pen.name or o.name == box.name:\n            continue\n        if abs(o.x - tx) < (o.w + pen.w)/2 + 4 and abs(o.y - ty) < (o.d + pen.d)/2 + 4:\n            robot.move(o, *scene.free_spot(size=(o.w, o.d), clearance=3, avoid=[(tx, ty, pen.w+4, pen.d+4)]))\n    box = scene.get(box.name)\n    pen = scene.get(pen.name)\n    robot.pick(pen)\n    robot.place_next_to(box, \"left_of\", gap=gap)\n",
+   "explanation": "Identify the white box via reference role and the pen behind it by smallest y (and closest x), clear the left-of target spot, then pick that pen and place it left of the box.",
+   "i": 1,
+   "passed": 1,
+   "goal_ok": true,
+   "error": null
+  }
+ ],
+ "trace": [
+  {
+   "turn": 1,
+   "calls": [
+    "simulate"
+   ]
+  },
+  {
+   "turn": 2,
+   "calls": [
+    "submit"
+   ]
+  }
+ ],
+ "results": {
+  "v1:demo": {
+   "ok": true,
+   "goal_passed": true,
+   "clauses_passed": "1/1",
+   "error": null,
+   "clauses": [
+    {
+     "clause": "the back teal pen left of white box",
+     "holds": true,
+     "detail": "back teal pen left of white box"
+    }
+   ],
+   "robot_calls": [
+    "pick(object=back teal pen)",
+    "place_next_to(ref=white box, side=left_of, gap=2.0)",
+    "home()"
+   ],
+   "final_positions": [
+    {
+     "name": "white box",
+     "x": 23.61,
+     "y": 17.25,
+     "z": 3.05
+    },
+    {
+     "name": "back teal pen",
+     "x": 6.95,
+     "y": 17.25,
+     "z": 0.75
+    },
+    {
+     "name": "front teal pen",
+     "x": 48.32,
+     "y": 34.09,
+     "z": 0.75
+    }
+   ],
+   "logs": [
+    "placing pen left of box"
+   ]
+  }
+ }
+}

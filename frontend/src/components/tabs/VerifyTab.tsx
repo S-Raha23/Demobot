@@ -7,13 +7,16 @@ import { Segmented } from "../PanelHeader";
 import { Empty, OkMark } from "../ui";
 import { GoalChips } from "./SpecTab";
 
-function Check({ title, sub, ok, children, badge }: { title: string; sub: string; ok: boolean; children?: React.ReactNode; badge?: React.ReactNode }) {
+function Check({ title, sub, ok, inconclusive, children, badge }: { title: string; sub: string; ok: boolean; inconclusive?: boolean; children?: React.ReactNode; badge?: React.ReactNode }) {
+  const tone = inconclusive ? "bg-ink-700/25 ring-ink-500/40" : ok ? "bg-ok/[0.06] ring-ok/30" : "bg-bad/[0.07] ring-bad/35";
   return (
-    <div
-      className={`animate-fade-in rounded-xl px-3 py-2.5 ring-1 ring-inset transition-colors ${ok ? "bg-ok/[0.06] ring-ok/30" : "bg-bad/[0.07] ring-bad/35"}`}
-    >
+    <div className={`animate-fade-in rounded-xl px-3 py-2.5 ring-1 ring-inset transition-colors ${tone}`}>
       <div className="flex items-center gap-2">
-        <OkMark ok={ok} size={13} />
+        {inconclusive ? (
+          <span title="inconclusive" className="grid h-[17px] w-[17px] place-items-center rounded-full bg-ink-600 text-[11px] font-bold leading-none text-ink-200">–</span>
+        ) : (
+          <OkMark ok={ok} size={13} />
+        )}
         <span className="text-[13px] font-semibold text-ink-50">{title}</span>
         <span className="ml-auto">{badge}</span>
       </div>
@@ -47,7 +50,15 @@ export function VerifyTab({ runId, verify }: { runId: string; verify: Verificati
         <div className="grid grid-cols-2 gap-2.5">
           <Check title="Symbolic" sub="The goal, checked on the simulated final state" ok={verify.symbolic.ok} badge={<span className="text-[10.5px] text-ink-400">PyBullet</span>} />
           <Check title="Real world" sub="The same goal on your real final table, from the tracks" ok={verify.real_world.ok} badge={<ModelBadge model="sam-3.1" size="xs" showProvider={false} />} />
-          <Check title="Perceptual" sub="SAM 3.1 segments the twin's render; the goal is checked on what it sees" ok={verify.perceptual.ok} badge={<ModelBadge model="sam-3.1" size="xs" showProvider={false} />} />
+          <Check
+            title="Perceptual"
+            sub="SAM 3.1 segments the twin's render; the goal is checked on what it sees"
+            ok={verify.perceptual.ok}
+            inconclusive={verify.perceptual.inconclusive}
+            badge={<ModelBadge model="sam-3.1" size="xs" showProvider={false} />}
+          >
+            {verify.perceptual.detail && <div className="mt-1 text-[11px] text-ink-400">{verify.perceptual.detail}</div>}
+          </Check>
           {verify.judge ? (
             <Check
               title="Judge"
@@ -63,9 +74,21 @@ export function VerifyTab({ runId, verify }: { runId: string; verify: Verificati
         </div>
         <div className={`flex items-center gap-2 rounded-lg px-3 py-2 text-[12.5px] ring-1 ring-inset ${verify.agree ? "bg-ok/[0.06] text-ok ring-ok/25" : "bg-warn/[0.08] text-warn ring-warn/30"}`}>
           <Icon name={verify.agree ? "shield" : "alert"} size={15} />
-          <span className="font-semibold">{verify.agree ? "All checks agree" : `Checks disagree${verify.failure_class ? ` · ${verify.failure_class.replace(/_/g, " ")}` : ""}`}</span>
+          <span className="font-semibold">
+            {verify.agree
+              ? "All checks agree"
+              : verify.accepted_caveat
+                ? "Accepted by the supervisor"
+                : `Checks disagree${verify.failure_class ? ` · ${verify.failure_class.replace(/_/g, " ")}` : ""}`}
+          </span>
           <span className="ml-auto num text-[11px] text-ink-300">program v{verify.program_version}</span>
         </div>
+        {verify.accepted_caveat && (
+          <div className="rounded-lg bg-warn/[0.06] px-3 py-2 text-[11.5px] leading-snug text-ink-200 ring-1 ring-inset ring-warn/25">
+            <span className="font-semibold text-warn">Caveat · </span>
+            {verify.accepted_caveat}
+          </div>
+        )}
         <div>
           <div className="eyebrow mb-1.5">Clauses</div>
           <div className="overflow-hidden rounded-lg ring-1 ring-inset ring-ink-700/60">

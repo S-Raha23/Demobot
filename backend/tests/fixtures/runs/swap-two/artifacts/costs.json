@@ -1,0 +1,20 @@
+{
+ "by_model": {
+  "muse-spark-1.3": 0.024887,
+  "meta-models/Muse-Spark-Open-816B-A42B": 0.04028,
+  "muse-wonder-1.0": 0.232372,
+  "sam-3.1": 0.2155,
+  "meta-models/muse-spark-open-1026": 0.359308,
+  "muse-image-1.0": 0.01
+ },
+ "by_provider": {
+  "meta": 0.482759,
+  "modal": 0.04028,
+  "baseten": 0.359308
+ },
+ "total_usd": 0.8823,
+ "calls": 33,
+ "cache_hits": 1,
+ "open_weight_share": 0.453,
+ "open_weight_call_share": 0.394
+}

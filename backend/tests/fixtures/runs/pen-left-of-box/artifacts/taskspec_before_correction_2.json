@@ -1,0 +1,87 @@
+{
+ "summary": "The person moved the teal pen from behind the white box to the left side of the white box.",
+ "objects": [
+  {
+   "name": "white box",
+   "kind": "box",
+   "alt_names": [
+    "white cube",
+    "white block"
+   ],
+   "role": "reference",
+   "color": "white",
+   "est_height_cm": 6.0,
+   "est_size_cm": [
+    8.0,
+    8.0
+   ]
+  },
+  {
+   "name": "back teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "rear teal stick",
+    "teal pen behind box"
+   ],
+   "role": "moved",
+   "color": "teal",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    12.0,
+    1.5
+   ]
+  },
+  {
+   "name": "front teal pen",
+   "kind": "pen",
+   "alt_names": [
+    "lower teal stick",
+    "teal pen in front"
+   ],
+   "role": "distractor",
+   "color": "teal",
+   "est_height_cm": 1.5,
+   "est_size_cm": [
+    12.0,
+    1.5
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "action": "place_next_to",
+   "object": "back teal pen",
+   "target": "white box",
+   "relation": "left_of",
+   "t_start": 2.4,
+   "t_end": 5.8,
+   "evidence": "hand picks pen from behind box and sets it down left of box"
+  }
+ ],
+ "goal": [
+  {
+   "quant": "the",
+   "select": {
+    "name": "back teal pen",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "pred": "right_of",
+   "target": {
+    "name": "white box",
+    "kind": null,
+    "role": null,
+    "names": null
+   },
+   "point_cm": null,
+   "order_by": null,
+   "order": null
+  }
+ ],
+ "generalization": "Move the pen that starts behind the white box to the left side of the white box.",
+ "uncertainties": [
+  "With no narration it is unclear whether the rule is about the specific back pen or any pen behind the box; the unmoved front pen was treated as distractor.",
+  "Exact t_start and t_end times are estimated."
+ ]
+}

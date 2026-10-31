@@ -418,6 +418,8 @@ export interface CheckResult {
   ok: boolean;
   clauses: ClauseResult[];
   detail: string;
+  /** nothing contradicts the goal, but the evidence is incomplete (shown grey) */
+  inconclusive?: boolean;
 }
 
 export interface Verification {
@@ -428,11 +430,13 @@ export interface Verification {
   judge?: JudgeVerdict | null;
   agree: boolean;
   failure_class?: string | null;
+  /** the supervisor accepted the run despite a failed check */
+  accepted_caveat?: string | null;
   renders: Record<string, string>;
 }
 
 export interface AgentDecision {
-  agent: "supervisor" | "coder" | "redteam";
+  agent: "supervisor" | "coder" | "redteam" | "arbiter";
   step: number;
   observation: string;
   reasoning_summary: string;

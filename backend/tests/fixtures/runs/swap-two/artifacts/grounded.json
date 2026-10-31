@@ -1,0 +1,221 @@
+{
+ "initial": [
+  {
+   "name": "white cylinder",
+   "kind": "cylinder",
+   "role": "moved",
+   "shape": "box",
+   "x": 7.79,
+   "y": 26.49,
+   "z": 0.0,
+   "yaw": 53.5,
+   "w": 9.4,
+   "d": 4.5,
+   "h": 4.0,
+   "color": "#b6a38c",
+   "texture": "artifacts/crops/white_cylinder.png",
+   "hollow": false
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "role": "moved",
+   "shape": "box",
+   "x": 22.83,
+   "y": 23.34,
+   "z": 0.0,
+   "yaw": 179.9,
+   "w": 15.7,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#7a7976",
+   "texture": "artifacts/crops/gray_block.png",
+   "hollow": false
+  }
+ ],
+ "final": [
+  {
+   "name": "white cylinder",
+   "kind": "cylinder",
+   "role": "moved",
+   "shape": "box",
+   "x": 22.61,
+   "y": 21.71,
+   "z": 0.0,
+   "yaw": 53.5,
+   "w": 9.4,
+   "d": 4.5,
+   "h": 4.0,
+   "color": "#b6a38c",
+   "texture": "artifacts/crops/white_cylinder.png",
+   "hollow": false
+  },
+  {
+   "name": "gray block",
+   "kind": "block",
+   "role": "moved",
+   "shape": "box",
+   "x": 8.75,
+   "y": 28.01,
+   "z": 0.0,
+   "yaw": 179.9,
+   "w": 15.7,
+   "d": 3.8,
+   "h": 1.5,
+   "color": "#7a7976",
+   "texture": "artifacts/crops/gray_block.png",
+   "hollow": false
+  }
+ ],
+ "segments": [
+  {
+   "object": "white cylinder",
+   "t0": 3.4,
+   "t1": 6.7,
+   "from_cm": [
+    8.0,
+    26.69
+   ],
+   "to_cm": [
+    29.47,
+    12.57
+   ]
+  },
+  {
+   "object": "white cylinder",
+   "t0": 10.8,
+   "t1": 12.3,
+   "from_cm": [
+    29.44,
+    12.59
+   ],
+   "to_cm": [
+    23.06,
+    13.89
+   ]
+  },
+  {
+   "object": "white cylinder",
+   "t0": 12.4,
+   "t1": 13.9,
+   "from_cm": [
+    27.13,
+    8.84
+   ],
+   "to_cm": [
+    22.54,
+    20.23
+   ]
+  },
+  {
+   "object": "gray block",
+   "t0": 6.1,
+   "t1": 10.4,
+   "from_cm": [
+    22.76,
+    23.37
+   ],
+   "to_cm": [
+    8.72,
+    27.91
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "t": 2.5,
+   "type": "grasp",
+   "object": "white cylinder"
+  },
+  {
+   "t": 5.1,
+   "type": "grasp",
+   "object": "gray block"
+  },
+  {
+   "t": 7.7,
+   "type": "release",
+   "object": "white cylinder"
+  },
+  {
+   "t": 10.1,
+   "type": "release",
+   "object": "gray block"
+  },
+  {
+   "t": 10.3,
+   "type": "grasp",
+   "object": "white cylinder"
+  },
+  {
+   "t": 11.4,
+   "type": "grasp",
+   "object": "white cylinder"
+  },
+  {
+   "t": 13.3,
+   "type": "release",
+   "object": "white cylinder"
+  },
+  {
+   "t": 13.9,
+   "type": "release",
+   "object": "white cylinder"
+  }
+ ],
+ "matches": [
+  {
+   "step": 0,
+   "segment": 0,
+   "confidence": 0.249,
+   "timing_delta_s": 1.7
+  },
+  {
+   "step": 1,
+   "segment": 3,
+   "confidence": 0.977,
+   "timing_delta_s": 0.1
+  },
+  {
+   "step": 2,
+   "segment": 1,
+   "confidence": 0.321,
+   "timing_delta_s": 1.5
+  }
+ ],
+ "real_world": [
+  {
+   "clause": {
+    "quant": "pair",
+    "select": {
+     "name": null,
+     "kind": null,
+     "role": null,
+     "names": [
+      "white cylinder",
+      "gray block"
+     ]
+    },
+    "pred": "swapped",
+    "target": null,
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "white cylinder",
+    "gray block"
+   ],
+   "measured": {
+    "a_to_b_start_cm": 1.64,
+    "b_to_a_start_cm": 1.8
+   },
+   "detail": "white cylinder is 1.6 cm and gray block 1.8 cm from each other's start"
+  }
+ ],
+ "flags": [
+  "teal pen: not tracked"
+ ]
+}

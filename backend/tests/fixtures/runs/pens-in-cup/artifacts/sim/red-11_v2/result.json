@@ -1,0 +1,164 @@
+{
+ "ok": true,
+ "error": null,
+ "error_type": null,
+ "layout_id": "red-11",
+ "skill_calls": [
+  {
+   "skill": "pick",
+   "args": {
+    "object": "left teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 0.5
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white cup"
+   },
+   "ok": true,
+   "error": null,
+   "t": 3.487
+  },
+  {
+   "skill": "pick",
+   "args": {
+    "object": "right teal pen"
+   },
+   "ok": true,
+   "error": null,
+   "t": 6.829
+  },
+  {
+   "skill": "place_in",
+   "args": {
+    "container": "white cup"
+   },
+   "ok": true,
+   "error": null,
+   "t": 9.762
+  },
+  {
+   "skill": "home",
+   "args": {},
+   "ok": true,
+   "error": null,
+   "t": 13.112
+  }
+ ],
+ "logs": [],
+ "final_state": [
+  {
+   "name": "left teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 11.14,
+   "y": 28.81,
+   "z": 5.6,
+   "yaw": -171.1,
+   "w": 12.0,
+   "d": 2.0,
+   "h": 1.0,
+   "color": "#218796",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "right teal pen",
+   "kind": "pen",
+   "role": "moved",
+   "shape": "box",
+   "x": 8.75,
+   "y": 30.92,
+   "z": 5.72,
+   "yaw": -89.1,
+   "w": 10.4,
+   "d": 2.3,
+   "h": 1.0,
+   "color": "#005663",
+   "texture": null,
+   "hollow": false
+  },
+  {
+   "name": "white cup",
+   "kind": "cup",
+   "role": "container",
+   "shape": "cylinder",
+   "x": 9.0,
+   "y": 30.0,
+   "z": 4.05,
+   "yaw": -0.0,
+   "w": 9.9,
+   "d": 9.9,
+   "h": 8.0,
+   "color": "#eeeeea",
+   "texture": null,
+   "hollow": true
+  },
+  {
+   "name": "yellow tennis ball",
+   "kind": "tennis ball",
+   "role": "distractor",
+   "shape": "sphere",
+   "x": 19.9,
+   "y": 30.0,
+   "z": 3.3,
+   "yaw": 0.0,
+   "w": 6.6,
+   "d": 6.6,
+   "h": 6.5,
+   "color": "#9f9247",
+   "texture": "/home/soubh_raha24--/The_Demobot/data/runs/syn7-00_place_in/artifacts/crops/yellow_tennis_ball.png",
+   "hollow": false
+  }
+ ],
+ "goal_results": [
+  {
+   "clause": {
+    "quant": "all",
+    "select": {
+     "name": null,
+     "kind": "pen",
+     "role": null,
+     "names": null
+    },
+    "pred": "inside",
+    "target": {
+     "name": "white cup",
+     "kind": null,
+     "role": null,
+     "names": null
+    },
+    "point_cm": null,
+    "order_by": null,
+    "order": null
+   },
+   "holds": true,
+   "code": null,
+   "objects": [
+    "left teal pen",
+    "right teal pen"
+   ],
+   "measured": {
+    "left teal pen.margin_cm": 1.81,
+    "left teal pen.z_cm": 5.6,
+    "left teal pen.below_rim": true,
+    "right teal pen.margin_cm": 3.03,
+    "right teal pen.z_cm": 5.72,
+    "right teal pen.below_rim": true
+   },
+   "detail": "every pen inside white cup"
+  }
+ ],
+ "goal_ok": true,
+ "collisions": [],
+ "renders": {
+  "top": "artifacts/sim/red-11_v2/top_red-11.png"
+ },
+ "twin_trajectory": "artifacts/sim/red-11_v2/twin_red-11.json",
+ "duration_s": 14.61,
+ "wall_s": 0.56
+}

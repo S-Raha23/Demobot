@@ -1,0 +1,11 @@
+{
+ "skill_id": "pens-in-cup",
+ "title": "Put every pen in the white cup",
+ "description": "Every teal pen goes inside the white cup, wherever it starts.",
+ "image": "artifacts/card.png",
+ "goal_text": "every pen are inside the white cup",
+ "program_version": 2,
+ "robustness": 1.0,
+ "cost_to_learn_usd": 0.9441,
+ "run_id": "pens-in-cup"
+}
