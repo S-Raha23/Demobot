@@ -72,6 +72,8 @@ Follow `PROMPT.md`.
 
 (Claude adds items here, newest first, with the date and why it is blocking.)
 
+- **Sat Oct 31 16:00 IST: one yes/no.** Every commit so far ends with a "Co-Authored-By: Claude" line (from now on, none will). Removing it from the existing 24 commits means rewriting their messages and force-pushing `main`; the commit dates stay the same. Reply "rewrite history" if you want that, otherwise nothing to do.
+
 - **Sat Oct 31 14:10 IST: deploy the judge site (2 minutes, one command).** Hugging Face now charges (PRO, $9/month) for any Docker Space, so DemoBot deploys to **Modal** instead, on the Modal credits you already have. Claude Code's safety check does not let Claude run a production deploy itself. In the VS Code terminal run:
   `cd ~/The_Demobot && uv run python scripts/deploy_modal.py`
   It builds the frontend, stores your keys as a Modal secret (never printed), deploys, and prints the URL (`https://<workspace>--demobot.modal.run`). Then tell Claude the URL. (Prefer Hugging Face? Subscribe to PRO and run `uv run python scripts/deploy_space.py` instead.) To let Claude redeploy updates later by itself, add `"Bash(uv run python scripts/deploy_modal.py)"` to the allow list in `.claude/settings.local.json`.

@@ -1,10 +1,10 @@
-PROJECT_STATUS: IN_PROGRESS
+PROJECT_STATUS: BLOCKED_ON_HUMAN
 
 # PROGRESS
 
 Single source of truth for status. Update it in the same commit that finishes a milestone. All times are IST.
 
-**Now:** M14 eval, README, demo video (M13 waits for the human's one deploy command)
+**Now:** waiting for the real clips and the deploy command; everything else that can be done without them is done
 **Freeze:** Wed Nov 4, 14:00 IST · **Submit target:** Wed Nov 4, 22:00 IST · **Hard deadline:** Thu Nov 5, 07:30 IST
 
 ## Milestones
@@ -25,12 +25,14 @@ Single source of truth for status. Update it in the same commit that finishes a 
 | M11 | Frontend | doing | | Core done by the subagent (Sat 11:30): all pages, replay engine, twin with URDF, overlays, synced timeline, Try-it; 19 Vitest tests + Playwright smoke pass. Open: backend endpoints in `frontend/NEEDS_FROM_BACKEND.md` (samples, POST /runs, /correct, /eval, markers.pdf), Lighthouse, 1366 px stepper. Playwright in WSL needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu`; H.264 video needs Chrome for Testing (`PW_CHROME=~/.local/cft/chrome-linux64/chrome`). |
 | M12 | Skill cards, library and export | done | Sat 13:00 | Muse Image anchored-edit cards (template fallback), imperative titles/steps from the goal, `costs.json` per run from its own events (syn7-01: $1.68 to learn, 51% of spend on open weights), export zip (`/api/skills/{id}/export`), `docs/skill_api.md`. |
 | M13 | Deploy judge mode | blocked: the human runs one deploy command | | Hugging Face needs PRO ($9/mo) for Docker Spaces, so the target is a Modal ASGI endpoint (`deploy/modal_app.py`, ledger on a Modal Volume so caps survive restarts; `scripts/deploy_modal.py`). Dockerfile kept for portability. Judge mode: 429 when a provider's judge-daily headroom < $1; 2 uploads per visitor per day; 3 synthetic sample clips + 3 baked real runs. The auto-mode classifier refuses production deploys by Claude. |
-| M14 | Eval, README, demo video | todo | | |
+| M14 | Eval, README, demo video | doing (real-clip parts wait for the clips) | | Synthetic eval in `eval/results.md`; README with numbers copied by `scripts/update_readme.py`; `scripts/record_demo.py` makes a 3:00 and a 30 s cut from the replay UI; `docs/submission-form.md`; history secret scan clean. |
 | S1–S3 | Stretch goals | — | | |
 
 Status values: `todo` → `doing` → `done`, or `blocked: <reason>`.
 
 ## Budget log (update after any live batch; reconcile with dashboards daily)
+
+| Sat Oct 31 16:30 IST | all | 10 synthetic runs end to end (incl. re-runs) | — | Meta $9.89, Baseten $4.31, Modal $0.61 spent; caps left: Meta $120, Baseten $86, Modal $109 | not yet |
 
 **Estimate before batch (Sat Oct 31 14:20 IST):** finish 7 synthetic runs (program → verify → stress → harden → card) for the eval: ~$0.40 Wonder + ~$0.30 Spark Open + ~$0.05 SAM/judge + ~$0.01 card ≈ **$0.80 per run, ~$5.60 total** (Meta ~$3.50, Baseten ~$1.80, Modal ~$0.30). Pools after: Meta ~$9 of $130, Baseten ~$3 of $90, Modal ~$0.6 of $110.
 
@@ -58,8 +60,14 @@ Full detail in `docs/probe-results.md`. Everything in the docs/03 checklist work
 
 ## Next steps: handoff note for the next session
 
-1. M14: `eval/run_eval.py` → `eval/results.md`; README per docs/10; `scripts/record_demo.py` → `media/demo/demo_final.mp4`.
-2. After the human deploys: open the URL, check health, a replay, Try-it and one live sample run.
-3. Run the full pipeline (to verify) on more synthetic clips; bake a real run (not a fixture) for the UI.
-4. Backend endpoints for the UI: `GET /api/samples`, `POST /api/runs`, `POST /api/runs/{id}/correct`, `GET /api/eval`, serve `markers.pdf`, keep `status: running` in run.json during live runs.
-5. When real clips arrive (by Sun Nov 1 evening): calibrate (M1 live), watch (M4 live), perceive+ground (M5 live), program (M6 live); label in `eval/labels/`.
+Everything that does not need the real clips is done (Sat Oct 31, 16:00 IST). Status is BLOCKED_ON_HUMAN until the clips (and the deploy) arrive.
+
+When the clips land in `data/clips/raw/`:
+1. `uv run demobot calibrate data/clips/raw/<clip>` on each (M1 live), then `uv run demobot run <clip> --run-id real-<name>` on each (M4–M6 live, need ≥ 4/5). Estimate ~$1.5 per clip; write the batch estimate here first.
+2. Label each clip's goal in `eval/labels/`; `uv run python -m eval.run_eval` (real section appears automatically); `uv run python scripts/update_readme.py`.
+3. Hindi/Bengali correction (M10) with the human's voice notes: `uv run demobot correct real-<id> --audio <file>`.
+4. Bake the best real runs for replay (`scripts/bake_runs.py`), replacing the synthetic samples where the UI points at them.
+5. Re-record the video with the real run: `uv run python scripts/record_demo.py --run real-<id>` (needs `LD_LIBRARY_PATH=~/.local/pwlibs/root/usr/lib/x86_64-linux-gnu PW_CHROME=~/.local/cft/chrome-linux64/chrome`). Known issue: the screencast captured only ~3 fps on the replay page (swiftshader WebGL); try a smaller twin canvas or `--disable-gpu-vsync`, or record at 1600×900 and upscale. The correction mark text did not match on the page; check what the UI shows for the correction transcript.
+6. After the human deploys: open the URL; check health, a replay, Try-it, one live sample run.
+7. Frontend leftovers: Lighthouse ≥ 70, stepper at 1366 px, duplicate "skill saved" lines in the agent feed.
+8. At submission: make the repo public; fill links in `docs/submission-form.md`.
