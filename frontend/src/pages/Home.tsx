@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { ModelBadge } from "../components/ModelBadge";
 import { TopNav } from "../components/TopNav";
 import { Pill, Spinner } from "../components/ui";
-import { api, ApiError, artifactUrl, type Sample } from "../lib/api";
+import { api, ApiError, artifactUrl, fetchArtifactJson, type Sample } from "../lib/api";
 import { istDate, usd } from "../lib/format";
-import type { Health, RunMeta, SkillCard } from "../lib/types";
+import type { Health, RunMeta, SkillCard, TwinScene as TwinSceneData, TwinTrajectory } from "../lib/types";
+
+const TwinView = lazy(() => import("../twin/TwinView").then((m) => ({ default: m.TwinView })));
 
 const MOMENTS = [
   { icon: "eye", title: "It watched me once", text: "Spark 1.3 turns the clip and your narration into a task spec. SAM 3.1 tracks every object and your hand.", models: ["muse-spark-1.3", "muse-voice-transcribe-1.0", "sam-3.1"] },
@@ -167,49 +169,75 @@ function SkeletonRow() {
   );
 }
 
-/** A looping 6-second replay of the best run: the real video crossfading to the twin. */
+/** A loop of the best run: the end of the real video, then the 3D twin where the Panda does the
+ *  same task (the program verified against that video; for a corrected run, the one before the
+ *  correction). */
 function Hero({ run }: { run: RunMeta | null }) {
   const vid = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"real" | "twin">("real");
-  const [twinSrc, setTwinSrc] = useState<string | null>(null);
+  const phaseRef = useRef<"real" | "twin">("real");
+  const twinT0 = useRef(0);
+  const [scene, setScene] = useState<TwinSceneData | null>(null);
+  const [traj, setTraj] = useState<TwinTrajectory | null>(null);
   useEffect(() => {
     if (!run) return;
     let alive = true;
-    api
-      .run(run.run_id)
-      .then((d) => {
-        if (!alive) return;
-        const cams = d.artifacts.filter((a) => /sim\/demo_v\d+\/camera_demo\.png$/.test(a)).sort();
-        setTwinSrc(cams.length ? artifactUrl(run.run_id, cams[cams.length - 1]) : null);
-      })
-      .catch(() => undefined);
+    const id = run.run_id;
+    (async () => {
+      const d = await api.run(id);
+      const ver = (a: string) => Number(/demo_v(\d+)\//.exec(a)?.[1] ?? 0);
+      const demos = d.artifacts.filter((a) => /sim\/demo_v\d+\/twin_demo\.json$/.test(a)).sort((a, b) => ver(a) - ver(b));
+      let pick = demos[demos.length - 1];
+      if (d.artifacts.includes("artifacts/correction_1.json")) {
+        const c = await fetchArtifactJson<{ program_before: number }>(id, "artifacts/correction_1.json");
+        pick = demos.find((a) => ver(a) === c.program_before) ?? pick;
+      }
+      const [sc, tr] = await Promise.all([
+        fetchArtifactJson<TwinSceneData>(id, "artifacts/twin_scene.json"),
+        pick ? fetchArtifactJson<TwinTrajectory>(id, pick) : Promise.resolve(null),
+      ]);
+      if (alive) {
+        setScene(sc);
+        setTraj(tr);
+      }
+    })().catch(() => undefined);
     return () => {
       alive = false;
     };
   }, [run]);
+  const go = (ph: "real" | "twin") => {
+    phaseRef.current = ph;
+    setPhase(ph);
+  };
+  const timeSource = useCallback(() => {
+    if (phaseRef.current !== "twin" || !traj) return 0;
+    return Math.min(traj.duration_s, (performance.now() - twinT0.current) / 1000);
+  }, [traj]);
   useEffect(() => {
     const v = vid.current;
     if (!v || !run) return;
     let timer = 0;
-    const loop = () => {
+    const start = () => Math.max(0, (v.duration || 13) - 6.2);
+    const onTime = () => {
       const d = v.duration || 13;
-      const start = Math.max(0, d - 6.2);
-      if (v.currentTime < start - 0.5 || v.ended) v.currentTime = start;
+      if (phaseRef.current === "twin") return;
+      if (v.currentTime < start() - 0.5) v.currentTime = start();
       if (v.currentTime >= d - 0.15 || v.ended) {
-        if (twinSrc) {
-          setPhase("twin");
-          v.pause();
-          timer = window.setTimeout(() => {
-            setPhase("real");
-            v.currentTime = start;
-            v.play().catch(() => undefined);
-          }, 2600);
+        if (!traj) {
+          v.currentTime = start();
           return;
         }
-        v.currentTime = start;
+        // the robot's turn: play its whole run, hold the result a moment, then back to the video
+        v.pause();
+        twinT0.current = performance.now();
+        go("twin");
+        timer = window.setTimeout(() => {
+          go("real");
+          v.currentTime = start();
+          v.play().catch(() => undefined);
+        }, traj.duration_s * 1000 + 1800);
       }
     };
-    const onTime = () => loop();
     v.addEventListener("timeupdate", onTime);
     v.addEventListener("ended", onTime);
     return () => {
@@ -217,7 +245,7 @@ function Hero({ run }: { run: RunMeta | null }) {
       v.removeEventListener("ended", onTime);
       window.clearTimeout(timer);
     };
-  }, [run, twinSrc]);
+  }, [run, traj]);
 
   if (!run)
     return (
@@ -242,13 +270,13 @@ function Hero({ run }: { run: RunMeta | null }) {
             }}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          {twinSrc && (
-            <img
-              src={twinSrc}
-              alt="The digital twin, rendered from the phone's pose"
-              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
-              style={{ opacity: phase === "twin" ? 1 : 0 }}
-            />
+          {scene && traj && (
+            // mounted from the start so the Panda's meshes are loaded when its turn comes
+            <div className="pointer-events-none absolute inset-0 bg-ink-900 transition-opacity duration-700" style={{ opacity: phase === "twin" ? 1 : 0 }}>
+              <Suspense fallback={null}>
+                <TwinView runId={run.run_id} scene={scene} trajectory={traj} timeSource={timeSource} cameraMode="orbit" labels className="h-full w-full" />
+              </Suspense>
+            </div>
           )}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
           <div className="absolute left-4 top-4 flex gap-1.5">

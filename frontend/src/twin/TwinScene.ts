@@ -400,6 +400,7 @@ export class TwinScene {
       e.group.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), (-o.yaw * Math.PI) / 180);
     }
     this.setJoints(PANDA_HOME);
+    if (this.mode === "orbit" && !this.userMoved) this.fitOrbit();
   }
 
   setTrajectory(traj: TwinTrajectory | null) {
@@ -597,13 +598,17 @@ export class TwinScene {
     const x0 = wa.x0 / 100, x1 = wa.x1 / 100, z0 = wa.y0 / 100, z1 = wa.y1 / 100;
     const xr = this.robotBase ? this.robotBase[0] : (x0 + x1) / 2;
     const zr = this.robotBase ? -this.robotBase[1] : z1 + 0.25;
-    // what must stay in view: the table top's corners, and the arm (base, top, forward reach)
+    // the objects come first: fit the table top (and the objects' tops) to the panel; the arm's
+    // base and lower links stay in view, its top may be cut off (orbit to see all of it)
     const pts = [
-      [x0, 0, z0], [x1, 0, z0], [x0, 0, z1], [x1, 0, z1],
-      [xr, 0, zr], [xr, 0.72, zr], [xr - 0.12, 0.62, zr - 0.15], [xr + 0.12, 0.62, zr - 0.15],
+      [x0, 0, z0], [x1, 0, z0], [x0, 0, z1], [x1, 0, z1], [xr, 0, zr], [xr, 0.25, zr],
     ].map(([x, y, z]) => new THREE.Vector3(x, y, z));
-    const centre = new THREE.Vector3((x0 + x1) / 2, 0.16, (z0 + Math.max(z1, zr)) / 2);
-    const dir = new THREE.Vector3(0.3, 0.95, -1).normalize();
+    for (const e of this.objects.values()) {
+      const q = e.group.getWorldPosition(new THREE.Vector3());
+      pts.push(q.setY(q.y + e.spec.h / 200 + 0.04)); // the object's top, where its label sits
+    }
+    const centre = new THREE.Vector3((x0 + x1) / 2, 0.06, (z0 + z1) / 2 + 0.06);
+    const dir = new THREE.Vector3(0.25, 1.25, -1).normalize();
     this.camera.aspect = Math.max(0.3, this.host.clientWidth / Math.max(1, this.host.clientHeight));
     this.camera.updateProjectionMatrix();
     let dist = 1.6;
@@ -612,7 +617,7 @@ export class TwinScene {
       this.camera.lookAt(centre);
       this.camera.updateMatrixWorld(true);
       const m = Math.max(...pts.map((q) => { const v = q.clone().project(this.camera); return Math.max(Math.abs(v.x), Math.abs(v.y)); }));
-      dist *= 1 + (m / 0.92 - 1) * 0.9; // settle where the farthest point is at 92% of the edge
+      dist *= 1 + (m / 0.9 - 1) * 0.9; // settle where the farthest point is at 90% of the edge
     }
     dist = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, dist));
     this.orbitTarget.copy(centre);
