@@ -29,5 +29,10 @@ jobs:
         working-directory: frontend
         run: npm ci --legacy-peer-deps --no-audit --no-fund
 
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Run checks
         run: make check
