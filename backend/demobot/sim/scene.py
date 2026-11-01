@@ -1,7 +1,7 @@
 """PyBullet scene (docs/06 "Scene"): table, Panda and stand-ins, one DIRECT client per scene.
 
 Ported from the first repo. Table cm -> sim metres: X = x/100, Y = −y/100, Z up (the table
-frame is left-handed with z up; see docs/decisions.md). Yaw flips sign for the same reason.
+frame is left-handed with z up; see docs/internal/decisions.md). Yaw flips sign for the same reason.
 """
 
 import math

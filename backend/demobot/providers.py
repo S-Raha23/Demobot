@@ -1,7 +1,7 @@
 """Provider clients and the call builders the gateway runs. Each builder returns a gateway.Call:
 call(timeout) -> (raw JSON-able output, cost_usd, usage).
 
-Facts confirmed by the M0 probes (docs/probe-results.md) are isolated in one function each here.
+Facts confirmed by the M0 probes (docs/internal/probe-results.md) are isolated in one function each here.
 """
 
 import json

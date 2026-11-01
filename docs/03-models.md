@@ -1,6 +1,6 @@
 # 03. Models, APIs, probes and budget
 
-Facts here came from Meta's docs, participant notes and our own Oct 28 hello tests. Anything marked **PROBE** must be confirmed by `scripts/probe_models.py` in M0. The script writes its findings to `docs/probe-results.md`, and code that depends on a probed fact is isolated in one function.
+Facts here came from Meta's docs, participant notes and our own Oct 28 hello tests. Anything marked **PROBE** must be confirmed by `scripts/probe_models.py` in M0. The script writes its findings to `docs/internal/probe-results.md`, and code that depends on a probed fact is isolated in one function.
 
 ## Endpoints and keys (`.env`)
 
@@ -95,7 +95,7 @@ Facts here came from Meta's docs, participant notes and our own Oct 28 hello tes
 
 ### Muse Glimmer 30B (open weights, Apache 2.0): stretch only
 
-An optional offline judge served with vLLM on a Modal GPU (`docs/08-build-plan.md`, S2).
+An optional offline judge served with vLLM on a Modal GPU (stretch only; not part of the shipped pipeline).
 
 ## Purpose → model → provider chain
 
@@ -127,7 +127,7 @@ Meta has **no hard spend limit**, only email alerts, and spend past the credit i
 
 Expected cost per learned skill: Watch, then SAM on 5 phrases × ~200 frames, then Wonder at ~6 turns, then stress plus harden, then the card. **About $2–4.** Budget for about 25 full live runs during development. Everything after that is cache hits and replays.
 
-## PROBE checklist (M0 writes the answers to `docs/probe-results.md`)
+## PROBE checklist (M0 writes the answers to `docs/internal/probe-results.md`)
 
 - [ ] Meta hello on `muse-spark-1.3`; reasoning-effort field; reasoning tokens counted in `max_output_tokens`; rate-limit headers
 - [ ] Spark 1.3 video via `file_id`; JSON-schema acceptance (`$defs`)

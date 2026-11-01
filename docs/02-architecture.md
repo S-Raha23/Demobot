@@ -20,7 +20,7 @@
 The_Demobot/
   CLAUDE.md  PROMPT.md  HUMAN_TASKS.md  PROGRESS.md  README.md  Makefile  pyproject.toml  .env.example
   .claude/settings.json            # permissions so the build needs few approvals
-  docs/                            # this spec, decisions.md, probe-results.md (generated)
+  docs/                            # this spec; internal/ holds decisions.md, probe-results.md (generated)
   backend/demobot/
     config.py  errors.py  logging.py  events.py  schemas.py  goal_dsl.py
     gateway.py  budget.py  providers.py        # all paid calls; ledger; caps; fallbacks; fixtures

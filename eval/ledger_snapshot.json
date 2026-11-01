@@ -1,22 +1,22 @@
 {
  "by_provider": {
   "meta": {
-   "usd": 23.492087021875,
-   "calls": 833,
-   "cache_hits": 293,
-   "today_usd": 23.435120021875004
+   "usd": 23.579043021875002,
+   "calls": 834,
+   "cache_hits": 322,
+   "today_usd": 0.0
   },
   "baseten": {
    "usd": 11.81221974999999,
    "calls": 458,
    "cache_hits": 37,
-   "today_usd": 11.80497574999999
+   "today_usd": 0.0
   },
   "modal": {
    "usd": 1.8472882499999994,
    "calls": 95,
    "cache_hits": 23,
-   "today_usd": 1.8373822499999994
+   "today_usd": 0.0
   }
  },
  "by_model": {
@@ -24,58 +24,58 @@
    "usd": 0.6095322500000002,
    "calls": 35,
    "cache_hits": 16,
-   "today_usd": 0.6044712500000002
+   "today_usd": 0.0
   },
   "muse-wonder-1.0": {
-   "usd": 18.66163120000001,
-   "calls": 386,
-   "cache_hits": 40,
-   "today_usd": 18.638475200000013
+   "usd": 18.74858720000001,
+   "calls": 387,
+   "cache_hits": 69,
+   "today_usd": 0.0
   },
   "sam-3.1": {
    "usd": 3.90439999999999,
    "calls": 364,
    "cache_hits": 218,
-   "today_usd": 3.8958999999999904
+   "today_usd": 0.0
   },
   "muse-voice-transcribe-1.0": {
    "usd": 0.006523571875,
    "calls": 17,
    "cache_hits": 13,
-   "today_usd": 0.006273571875
+   "today_usd": 0.0
   },
   "muse-image-1.0": {
    "usd": 0.3100000000000001,
    "calls": 31,
    "cache_hits": 6,
-   "today_usd": 0.2900000000000001
+   "today_usd": 0.0
   },
   "meta-models/muse-spark-open-1026": {
    "usd": 11.81221974999999,
    "calls": 458,
    "cache_hits": 37,
-   "today_usd": 11.80497574999999
+   "today_usd": 0.0
   },
   "meta-models/Muse-Spark-Open-816B-A42B": {
    "usd": 1.8472882499999994,
    "calls": 95,
    "cache_hits": 23,
-   "today_usd": 1.8373822499999994
+   "today_usd": 0.0
   }
  },
  "remaining": {
   "meta": {
-   "meta_total": 106.507912978125,
-   "meta_dev_daily": 16.564879978125
+   "meta_total": 106.42095697812499,
+   "meta_dev_daily": 40.0
   },
   "baseten": {
    "baseten_total": 78.18778025,
-   "baseten_dev_daily": 23.195024250000003
+   "baseten_dev_daily": 35.0
   },
   "modal": {
    "modal_total": 108.15271175,
-   "modal_dev_daily": 38.16261775
+   "modal_dev_daily": 40.0
   }
  },
- "snapshot": "Sat Oct 31 2026, 19:31 UTC"
+ "snapshot": "Sun Nov 01 2026, 00:05 UTC"
 }

@@ -1,7 +1,7 @@
 """M0 probes: answer every PROBE item in docs/03-models.md with real calls through the gateway.
 
 Every call is cached, so a second run costs $0.00. Raw findings go to data/probe/results.json;
-the human-readable summary is docs/probe-results.md.
+the human-readable summary is docs/internal/probe-results.md.
 
     uv run python scripts/probe_models.py [--only name,name] [--fresh name,name]
 """
