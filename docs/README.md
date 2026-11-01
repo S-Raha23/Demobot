@@ -11,7 +11,7 @@ Start here. The guides below are the public design story; the internal notes at 
 5. [05 · Agents: the coder, the supervisor and the red team](05-agents.md) — how the Wonder coder loop, the failure-routing supervisor, and the seven red-team personas work.
 6. [06 · Simulation, skill API and the digital twin](06-simulation.md) — PyBullet Panda, the centimetre goal DSL, and the browser twin.
 7. [07 · Frontend, replay, judge mode and deployment](07-frontend.md) — the React app, mission-control replay, and the Docker/Hugging Face deploy.
-8. [09 · Quality: tests, fixtures, synthetic clips, evaluation and security](09-quality.md) — how correctness is checked offline and live.
+8. [08 · Quality: tests, fixtures, synthetic clips, evaluation and security](08-quality.md) — how correctness is checked offline and live.
 9. [Run directory and event payloads](run-artifacts.md) — the UI ↔ backend contract: every file a run produces and the event schema.
 10. [DemoBot skill API](skill_api.md) — the `run(scene, robot)` API an exported skill targets on any robot.
 

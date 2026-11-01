@@ -1,4 +1,4 @@
-# 09. Quality: tests, fixtures, synthetic clips, evaluation and security
+# 08. Quality: tests, fixtures, synthetic clips, evaluation and security
 
 ## Tests
 

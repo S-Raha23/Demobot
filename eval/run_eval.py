@@ -1,4 +1,4 @@
-"""Compute every metric of docs/09 from the run artifacts and write eval/results.md.
+"""Compute every metric of docs/08 from the run artifacts and write eval/results.md.
 
     uv run python -m eval.run_eval [--set data/synth/set7] [--runs syn7-] [--real real-]
 

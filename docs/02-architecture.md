@@ -18,7 +18,7 @@
 
 ```
 The_Demobot/
-  CLAUDE.md  PROMPT.md  HUMAN_TASKS.md  PROGRESS.md  README.md  Makefile  pyproject.toml  .env.example
+  CLAUDE.md  PROMPT.md  HUMAN_TASKS.md  PROGRESS.md  README.md  Makefile  pyproject.toml
   .claude/settings.json            # permissions so the build needs few approvals
   docs/                            # this spec; internal/ holds decisions.md, probe-results.md (generated)
   backend/demobot/
@@ -35,7 +35,7 @@ The_Demobot/
     prompts/*.md                               # versioned prompts (prompt_version in cache keys)
   backend/tests/ unit/ integration/ fixtures/{clips,responses,runs}
   frontend/ src/{pages,components,twin,replay,lib}
-  synth/                                       # synthetic demo-clip generator (docs/09)
+  synth/                                       # synthetic demo-clip generator (docs/08)
   eval/  run_eval.py  results.md (generated)
   scripts/ probe_models.py  calibrate_camera.py  bake_runs.py  record_demo.py
   assets/ print/ textures/                     # markers.pdf, checkerboard.pdf, Muse Image textures (committed)

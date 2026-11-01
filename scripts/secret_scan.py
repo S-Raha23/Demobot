@@ -58,7 +58,7 @@ def walk() -> list[str]:
         rel = p.relative_to(ROOT)
         if any(part in SKIP_DIRS for part in rel.parts[:-1]) or not p.is_file():
             continue
-        if p.name.startswith(".env") and p.name != ".env.example":
+        if p.name.startswith(".env"):
             continue
         out.append(str(rel))
     return out
@@ -86,7 +86,7 @@ def main() -> int:
         files = res.stdout.split() if res.returncode == 0 else walk()
         for f in files:
             p = ROOT / f
-            if not p.is_file() or p.stat().st_size > 5_000_000 or f == ".env.example":
+            if not p.is_file() or p.stat().st_size > 5_000_000:
                 continue
             try:
                 text = p.read_text(errors="ignore")

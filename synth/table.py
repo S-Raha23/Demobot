@@ -1,5 +1,5 @@
 """The synthetic table: a desk texture with the four ArUco markers glued at random positions,
-seen by a random phone-like camera. Ground truth is exact (docs/09 "Synthetic demo generator")."""
+seen by a random phone-like camera. Ground truth is exact (docs/08 "Synthetic demo generator")."""
 
 from dataclasses import dataclass
 from pathlib import Path

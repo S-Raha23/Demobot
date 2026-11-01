@@ -1,4 +1,4 @@
-"""Synthetic demo clips with exact ground truth (docs/09 "Synthetic demo generator").
+"""Synthetic demo clips with exact ground truth (docs/08 "Synthetic demo generator").
 
 A random marker table (synth/table.py), 2–6 desk items, and a skin-toned arm that picks and
 places them along scripted arcs, filmed by a random phone-like camera. Objects and the arm are
