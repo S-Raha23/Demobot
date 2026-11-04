@@ -30,7 +30,6 @@ You film yourself doing a tabletop task once with a phone, for example "put the 
 | Judge | **Muse Spark Open** (images) | Compares the real final frame with the simulated final render | Cheap visual judgement, open weights |
 | Second opinion | **Muse Spark Open on Modal** (video) | Watches the same clip independently. Disagreement with Spark 1.3 triggers Wonder arbitration. | Open-weight video path; a measured cross-model agreement number |
 | Illustrate | **Muse Image** | Illustrated skill cards anchored on the real final frame; realistic object textures for the synthetic test generator; (stretch) an "imagined result" preview | Accurate text rendering, anchored editing, $0.01 per image |
-| Build | Claude Code (build tool only) | Writes this repository | Not part of the product |
 
 **Open-weight share:** the supervisor, red team and judge (the highest-volume calls) all run on Muse Spark Open. The UI shows a live meter of open-weight versus API calls and spend. This supports the "Best Build on Open Weight Models" bonus.
 

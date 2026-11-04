@@ -85,7 +85,7 @@
   - the Panda assets copied from `pybullet_data`;
   - baked runs from `backend/tests/fixtures/runs/` plus the library.
 - **Space:** Docker SDK, port 7860. Secrets go in the Space settings: `MODEL_API_KEY`, `BASETEN_API_KEY`, `MODAL_*`, `DEMOBOT_MODE=judge`.
-  - Claude creates the Space with `huggingface_hub` using `HF_TOKEN` from `.env`.
+  - The deploy script creates the Space with `huggingface_hub` using `HF_TOKEN` from `.env`.
   - The human only creates the token.
 - **Judge caps** are in `docs/03-models.md`. When a cap is reached, live features show "Live budget for today is used. Enjoy the recorded runs and the free Try-it page."
   - Try-it is always available because it is free.

@@ -14,7 +14,7 @@
 - **Integration:** `backend/tests/integration/`
   - simulation skill programs on random layouts;
   - the full pipeline on fixture runs (`DEMOBOT_FIXTURES=1`, recorded model responses), giving identical artifacts.
-- **Frontend:** Vitest for the replay engine and the timeline sync maths. Playwright smoke test: Home, then a replay to the end, then Try-it run, with screenshots saved to `frontend/test-results/`. Claude looks at these screenshots and fixes any visual problems.
+- **Frontend:** Vitest for the replay engine and the timeline sync maths. Playwright smoke test: Home, then a replay to the end, then Try-it run, with screenshots saved to `frontend/test-results/`. The screenshots are reviewed and any visual problems fixed.
 - **`make check`** = ruff, mypy (backend), tsc, offline pytest, Vitest, plus a secret scan (`gitleaks` if installed, otherwise a regex scan for `sk-`, `wk-`, `Bearer`, and the key variable names with values).
 - **Recording fixtures:** `demobot fixtures <run_id>` copies a run's cached model responses into `backend/tests/fixtures/responses/`. Record one fixture run per task family as soon as M6 works.
 
@@ -36,7 +36,7 @@ Purpose: build and test the whole pipeline before, or without, the human's clips
 
 ## Evaluation (`eval/run_eval.py` → `eval/results.md`)
 
-Run all of this on the real clips (labels written by Claude from keyframes, stored in `eval/labels/`) and on the synthetic set (exact truth).
+Run all of this on the real clips (labels written from keyframes, stored in `eval/labels/`) and on the synthetic set (exact truth).
 
 | Metric | Definition |
 | --- | --- |

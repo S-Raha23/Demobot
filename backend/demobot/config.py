@@ -1,4 +1,4 @@
-"""Settings from the environment and `.env`. The only module that reads keys (CLAUDE.md rule 5)."""
+"""Settings from the environment and `.env`. The only module that reads keys."""
 
 from pathlib import Path
 from typing import Literal

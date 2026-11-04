@@ -18,8 +18,7 @@
 
 ```
 The_Demobot/
-  CLAUDE.md  PROMPT.md  HUMAN_TASKS.md  PROGRESS.md  README.md  Makefile  pyproject.toml
-  .claude/settings.json            # permissions so the build needs few approvals
+  README.md  RESTORE.md  LICENSE  Makefile  pyproject.toml  Dockerfile
   docs/                            # this spec; internal/ holds decisions.md, probe-results.md (generated)
   backend/demobot/
     config.py  errors.py  logging.py  events.py  schemas.py  goal_dsl.py

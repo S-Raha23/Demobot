@@ -30,8 +30,3 @@ reference/
 .DS_Store
 Thumbs.db
 .vscode/
-
-# Claude Code hook state
-.claude/.keep_going_*
-.claude/ALLOW_STOP
-.claude/settings.local.json

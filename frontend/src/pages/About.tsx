@@ -187,7 +187,7 @@ export default function About() {
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Note title="Built during the hackathon" icon="clock">
             DemoBot was built for the Meta Global AI Developer Hackathon (Indie track, Push the Frontier), Oct 26 – Nov 4, 2026. This repo restarts DemoBot on Oct 31, 2026, porting code from the
-            author's first repo of the same event (Oct 27–30). Claude Code was the build tool; Meta's models do all of the AI work in the product.
+            author's first repo of the same event (Oct 27–30). Muse Code (powered by Muse Wonder) co-authored the code; Meta's models do all of the AI work in the product.
           </Note>
           <Note title="Honest about what is real" icon="shield">
             The robot is simulated: a Franka Panda in PyBullet. DemoBot exports a robot-agnostic program; no physical robot was used. Recorded runs are labelled as replays, and synthetic fixture runs
